@@ -49,7 +49,6 @@
             transition: background .3s, color .3s;
         }
 
-        /* Header */
         .site-header {
             background: var(--header-bg);
             padding: 1rem 0;
@@ -76,7 +75,6 @@
         }
         .theme-btn:hover { background:rgba(255,255,255,.15); color:white; }
 
-        /* Nav */
         .nav-wrap {
             display:flex; gap:.3rem;
             background:var(--nav-bg);
@@ -94,7 +92,6 @@
         .nav-item:hover { background:rgba(255,255,255,.08); color:white; }
         .nav-item.active { background:white; color:#0f172a; font-weight:600; }
 
-        /* Stats */
         .stat-card {
             background:var(--surface); border:1px solid var(--border);
             border-radius:16px; padding:1.25rem 1.4rem;
@@ -114,7 +111,6 @@
         .stat-value { font-size:1.85rem; font-weight:700; color:var(--text); line-height:1; }
         .stat-sub   { font-size:.78rem; color:var(--muted); margin-top:.3rem; }
 
-        /* Search */
         .search-wrap {
             background:var(--surface); border:1px solid var(--border);
             border-radius:12px; padding:.48rem 1rem;
@@ -130,7 +126,6 @@
         }
         .search-wrap input::placeholder { color:var(--muted); }
 
-        /* Project card */
         .proj-card {
             background:var(--surface); border:1px solid var(--border);
             border-radius:18px; overflow:hidden;
@@ -167,12 +162,10 @@
             font-size:.7rem; font-weight:600;
             padding:.24rem .78rem; border-radius:50px;
         }
-        /* Light badges */
         [data-theme="light"] .proj-badge.finalise { background:#dcfce7; color:#166534; }
         [data-theme="light"] .proj-badge.retard   { background:#fee2e2; color:#991b1b; }
         [data-theme="light"] .proj-badge.cours    { background:#ffedd5; color:#9a3412; }
         [data-theme="light"] .proj-badge.planifie { background:#ede9fe; color:#4c1d95; }
-        /* Dark badges */
         [data-theme="dark"]  .proj-badge.finalise { background:rgba(16,185,129,.15); color:#34d399; }
         [data-theme="dark"]  .proj-badge.retard   { background:rgba(239,68,68,.15);  color:#f87171; }
         [data-theme="dark"]  .proj-badge.cours    { background:rgba(249,115,22,.15); color:#fb923c; }
@@ -250,8 +243,8 @@
         .act-btn:hover          { background:var(--accent); color:white; border-color:var(--accent); }
         .act-btn.del:hover      { background:#ef4444; border-color:#ef4444; color:white; }
         .act-btn.edit-b:hover   { background:#8b5cf6; border-color:#8b5cf6; color:white; }
+        .act-btn.gantt-b:hover  { background:#10b981; border-color:#10b981; color:white; }
 
-        /* Dark mode stat icons */
         [data-theme="dark"] .si-blue   { background:rgba(59,130,246,.15)  !important; color:#60a5fa !important; }
         [data-theme="dark"] .si-green  { background:rgba(16,185,129,.15)  !important; color:#34d399 !important; }
         [data-theme="dark"] .si-red    { background:rgba(239,68,68,.15)   !important; color:#f87171 !important; }
@@ -322,12 +315,12 @@ foreach($projets as $p) {
                     <i class="bi bi-moon-fill" id="themeIcon"></i>
                 </button>
                 <form method="POST" action="/logout" style="margin:0">
-    @csrf
-    <button type="button" class="theme-btn" title="Déconnexion" 
-        onclick="this.closest('form').submit()">
-        <i class="bi bi-box-arrow-right"></i>
-    </button>
-</form>
+                    @csrf
+                    <button type="button" class="theme-btn" title="Déconnexion"
+                        onclick="this.closest('form').submit()">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -345,10 +338,10 @@ foreach($projets as $p) {
                 <i class="bi bi-plus-circle"></i> Nouveau Projet
             </a>
             @if(auth()->user()->isSuperAdmin())
-<a href="/admin/users" class="nav-item {{ request()->is('admin/users') ? 'active' : '' }}">
-    Accès
-</a>
-@endif
+            <a href="/admin/users" class="nav-item {{ request()->is('admin/users') ? 'active' : '' }}">
+                Accès
+            </a>
+            @endif
         </div>
     </div>
 </div>
@@ -465,24 +458,25 @@ foreach($projets as $p) {
                     <div class="prog-bg">
                         <div class="prog-fill {{ $sc }}" style="width:{{ $projet->avancement_percent }}%"></div>
                     </div>
-                    {{-- Avancement chapitres SMI --}}
-@php
-    $chapitres = \Illuminate\Support\Facades\DB::table('suivi_chapitres')
-        ->where('projet_id', $projet->id)
-        ->get();
-    $avgChap = $chapitres->count() > 0 
-        ? round($chapitres->avg('avancement_percent')) 
-        : null;
-@endphp
-@if($avgChap !== null)
-<div style="display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:var(--muted);margin-bottom:.3rem;margin-top:.4rem;">
-    <span><i class="bi bi-list-check me-1"></i>Chapitres SMI</span>
-    <span style="font-weight:600;color:var(--text2)">moy. {{ $avgChap }}%</span>
-</div>
-<div class="prog-bg">
-    <div class="prog-fill" style="width:{{ $avgChap }}%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div>
-</div>
-@endif
+
+                    @php
+                        $chapitres = \Illuminate\Support\Facades\DB::table('suivi_chapitres')
+                            ->where('projet_id', $projet->id)
+                            ->get();
+                        $avgChap = $chapitres->count() > 0
+                            ? round($chapitres->avg('avancement_percent'))
+                            : null;
+                    @endphp
+                    @if($avgChap !== null)
+                    <div style="display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:var(--muted);margin-bottom:.3rem;margin-top:.4rem;">
+                        <span><i class="bi bi-list-check me-1"></i>Chapitres SMI</span>
+                        <span style="font-weight:600;color:var(--text2)">moy. {{ $avgChap }}%</span>
+                    </div>
+                    <div class="prog-bg">
+                        <div class="prog-fill" style="width:{{ $avgChap }}%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div>
+                    </div>
+                    @endif
+
                     @if($projet->blocage && $projet->blocage !== 'RAS')
                     <div>
                         <span class="blocage-tag">
@@ -491,25 +485,33 @@ foreach($projets as $p) {
                     </div>
                     @endif
 
+                    {{-- ════ FOOTER BOUTONS ════ --}}
                     <div class="proj-footer">
-    @if(auth()->user()->hasPermission('voir_details'))
-    <a href="/projet/{{ $projet->id }}" class="act-btn" title="Voir détails">
-        <i class="bi bi-eye"></i>
-    </a>
-    @endif
 
-    @if(auth()->user()->hasPermission('modifier_projets'))
-    <a href="/projet/{{ $projet->id }}/edit" class="act-btn edit-b" title="Modifier">
-        <i class="bi bi-pencil"></i>
-    </a>
-    @endif
+                        @if(auth()->user()->hasPermission('voir_details'))
+                        <a href="/projet/{{ $projet->id }}" class="act-btn" title="Voir détails">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        @endif
 
-    @if(auth()->user()->hasPermission('supprimer_projets'))
-    <button class="act-btn del" onclick="confirmDelete({{ $projet->id }})" title="Supprimer">
-        <i class="bi bi-trash"></i>
-    </button>
-    @endif
-</div>
+                        {{-- BOUTON GANTT — NOUVEAU --}}
+                        <a href="/projet/{{ $projet->id }}/gantt" class="act-btn gantt-b" title="Planning Gantt">
+                            <i class="bi bi-bar-chart-steps"></i>
+                        </a>
+
+                        @if(auth()->user()->hasPermission('modifier_projets'))
+                        <a href="/projet/{{ $projet->id }}/edit" class="act-btn edit-b" title="Modifier">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        @endif
+
+                        @if(auth()->user()->hasPermission('supprimer_projets'))
+                        <button class="act-btn del" onclick="confirmDelete({{ $projet->id }})" title="Supprimer">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                        @endif
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -536,7 +538,6 @@ foreach($projets as $p) {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// Search
 document.getElementById('searchInput')?.addEventListener('keyup', function() {
     const t = this.value.toLowerCase();
     document.querySelectorAll('.project-item').forEach(el => {
@@ -544,7 +545,6 @@ document.getElementById('searchInput')?.addEventListener('keyup', function() {
     });
 });
 
-// Theme toggle
 const html = document.documentElement;
 const icon = document.getElementById('themeIcon');
 const saved = localStorage.getItem('lmc-theme') || 'light';
@@ -566,7 +566,7 @@ function confirmDelete(id) {
         fetch(`/projets/${id}`, {
             method: 'DELETE',
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content 
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
                     || '{{ csrf_token() }}'
             }
         }).then(() => location.reload());

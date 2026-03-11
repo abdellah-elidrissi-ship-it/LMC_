@@ -10,7 +10,8 @@
     <style>
         [data-theme="light"] {
             --bg:#f1f5f9; --surface:#ffffff; --surface2:#f8fafc; --border:#e2e8f0;
-            --text:#0f172a; --text2:#475569; --muted:#94a3b8; --accent:#3b82f6;
+            --text:#0f172a; --text2:#475569; --muted:#94a3b8;
+            --accent:#3b82f6; --accent2:#8b5cf6;
             --input-bg:#ffffff; --input-border:#e2e8f0;
             --thead-bg:#f1f5f9; --thead-text:#475569;
             --shadow:0 2px 12px rgba(0,0,0,.06);
@@ -20,7 +21,8 @@
         }
         [data-theme="dark"] {
             --bg:#0f172a; --surface:#1e293b; --surface2:#162032; --border:#334155;
-            --text:#e2e8f0; --text2:#94a3b8; --muted:#64748b; --accent:#3b82f6;
+            --text:#e2e8f0; --text2:#94a3b8; --muted:#64748b;
+            --accent:#3b82f6; --accent2:#a78bfa;
             --input-bg:#162032; --input-border:#334155;
             --thead-bg:#162032; --thead-text:#64748b;
             --shadow:0 2px 12px rgba(0,0,0,.3);
@@ -38,49 +40,114 @@
         .meta-pill { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.5); padding:.28rem .8rem; border-radius:50px; font-size:.73rem; }
         .theme-btn { width:34px; height:34px; border-radius:50%; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.08); color:rgba(255,255,255,.65); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s; }
         .theme-btn:hover { background:rgba(255,255,255,.15); color:white; }
-
         .nav-wrap { display:flex; gap:.3rem; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.08); padding:.38rem; border-radius:50px; margin-top:.85rem; width:fit-content; }
         .nav-item { padding:.48rem 1.15rem; border-radius:50px; font-size:.82rem; font-weight:500; color:rgba(255,255,255,.55); text-decoration:none; transition:all .2s; display:inline-flex; align-items:center; gap:.35rem; }
         .nav-item:hover { background:rgba(255,255,255,.08); color:white; }
         .nav-item.active { background:white; color:#0f172a; font-weight:600; }
 
         .form-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:1.8rem; box-shadow:var(--shadow); margin-bottom:1.5rem; transition:background .3s; }
-
-        .section-title { font-size:1rem; font-weight:700; color:var(--text); margin-bottom:1.3rem; padding-bottom:.6rem; border-bottom:2px solid var(--accent); display:flex; align-items:center; gap:.5rem; }
+        .section-title { font-size:1rem; font-weight:700; color:var(--text); margin-bottom:1.3rem; padding-bottom:.6rem; border-bottom:2px solid var(--accent); display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
         .section-title i { color:var(--accent); }
+        .section-hint { margin-left:auto; font-size:.71rem; font-weight:400; color:var(--muted); display:flex; align-items:center; gap:.4rem; }
 
-        .form-label { font-size:.82rem; font-weight:600; color:var(--text2); margin-bottom:.35rem; display:block; }
+        .form-label { font-size:.82rem; font-weight:600; color:var(--text2); margin-bottom:.35rem; display:flex; align-items:center; gap:.4rem; }
         .form-control, .form-select { background:var(--input-bg) !important; border:1.5px solid var(--input-border) !important; border-radius:10px !important; padding:.6rem .9rem !important; font-size:.88rem !important; color:var(--text) !important; font-family:'Inter',sans-serif !important; transition:border-color .2s !important; }
         .form-control:focus, .form-select:focus { border-color:var(--accent) !important; box-shadow:0 0 0 3px rgba(59,130,246,.12) !important; outline:none !important; }
         .form-control::placeholder { color:var(--muted) !important; }
         textarea.form-control { resize:vertical; min-height:75px; }
         textarea[readonly] { background:var(--surface2) !important; color:var(--muted) !important; }
         [data-theme="dark"] option { background:#1e293b; color:#e2e8f0; }
+        input[type="number"] { -moz-appearance:textfield; }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance:none; }
 
+        /* ── Auto-calc fields ── */
+        .form-control.auto-blue {
+            background:rgba(59,130,246,.06) !important;
+            border:1.5px dashed #3b82f6 !important;
+            color:#3b82f6 !important;
+            font-weight:700 !important;
+            cursor:not-allowed !important;
+        }
+        .form-control.auto-purple {
+            background:rgba(139,92,246,.06) !important;
+            border:1.5px dashed #8b5cf6 !important;
+            color:var(--accent2) !important;
+            font-weight:700 !important;
+            cursor:not-allowed !important;
+        }
+        .badge-auto { display:inline-flex; align-items:center; gap:.25rem; font-size:.67rem; font-weight:600; padding:.12rem .5rem; border-radius:50px; }
+        .badge-auto.blue  { background:rgba(59,130,246,.1);  color:#3b82f6; }
+        .badge-auto.purple{ background:rgba(139,92,246,.1); color:var(--accent2); }
+        .auto-tag { display:inline-flex; align-items:center; gap:.28rem; font-size:.7rem; font-weight:500; color:var(--muted); margin-top:.3rem; }
+
+        /* ── Mini progress inside indicateurs ── */
+        .mini-prog { margin-top:.6rem; }
+        .mini-prog-row { display:flex; justify-content:space-between; font-size:.71rem; color:var(--muted); margin-bottom:.3rem; }
+        .mini-prog-bar { height:4px; background:var(--border); border-radius:50px; overflow:hidden; }
+        .mini-prog-fill { height:100%; border-radius:50px; transition:width .35s ease; }
+        .fill-blue   { background:linear-gradient(90deg,#3b82f6,#60a5fa); }
+        .fill-purple { background:linear-gradient(90deg,#8b5cf6,#a78bfa); }
+
+        /* ── Buttons ── */
         .btn-main { background:var(--btn-primary-bg); color:white; border:none; border-radius:11px; padding:.7rem 1.8rem; font-weight:600; font-size:.88rem; cursor:pointer; transition:all .2s; display:inline-flex; align-items:center; gap:.4rem; }
         .btn-main:hover { background:var(--btn-primary-hover); transform:translateY(-1px); }
         .btn-cancel { background:var(--surface); color:var(--text2); border:1.5px solid var(--border); border-radius:11px; padding:.7rem 1.8rem; font-weight:600; font-size:.88rem; text-decoration:none; transition:all .2s; display:inline-flex; align-items:center; gap:.4rem; }
         .btn-cancel:hover { background:var(--surface2); color:var(--text); }
 
-        /* Consultant rows */
+        /* ── Consultant rows ── */
         .cons-row { background:var(--cons-row-bg); border:1px solid var(--border); border-left:3px solid var(--cons-row-border); border-radius:12px; padding:1rem; margin-bottom:.7rem; }
-
-        /* Add section */
         .add-section { background:var(--add-section-bg); border:1px dashed var(--border); border-radius:14px; padding:1.2rem; margin-top:1.2rem; }
         .add-section h6 { color:var(--text2); font-size:.85rem; font-weight:600; margin-bottom:.9rem; }
 
-        /* Table */
+        /* ── SMI Table ── */
+        .table-smi { width:100%; border-collapse:collapse; font-size:.82rem; }
+        .table-smi thead th {
+            padding:.65rem .8rem; font-size:.71rem; font-weight:700;
+            text-transform:uppercase; letter-spacing:.05em;
+            background:var(--surface2); color:var(--muted);
+            border-bottom:2px solid var(--border);
+            border-right:1px solid var(--border);
+        }
+        .table-smi thead th:last-child { border-right:none; }
+        .table-smi tbody td {
+            padding:.55rem .75rem; border-bottom:1px solid var(--border);
+            border-right:1px solid var(--border); vertical-align:middle;
+        }
+        .table-smi tbody td:last-child { border-right:none; }
+        .table-smi tbody tr:hover td { background:rgba(59,130,246,.02); }
+        .table-smi tfoot td {
+            padding:.65rem .75rem; font-weight:700;
+            border-top:2px solid var(--border);
+            border-right:1px solid var(--border);
+            background:var(--surface2);
+        }
+        .table-smi tfoot td:last-child { border-right:none; }
+
+        .th-jours  { background:rgba(59,130,246,.08) !important; color:#3b82f6 !important; }
+        .th-av     { background:rgba(139,92,246,.08) !important; color:var(--accent2) !important; }
+        .col-jours { background:rgba(59,130,246,.03); }
+        .col-av    { background:rgba(139,92,246,.03); }
+
+        .smi-num { border-radius:8px !important; padding:.35rem .5rem !important; text-align:center; font-size:.82rem; }
+        .smi-jours:focus { border-color:var(--accent) !important; }
+        .smi-av:focus    { border-color:var(--accent2) !important; }
+        [data-theme="light"] .smi-jours { border-color:rgba(59,130,246,.3) !important; }
+        [data-theme="light"] .smi-av    { border-color:rgba(139,92,246,.3) !important; }
+        [data-theme="dark"]  .smi-jours { border-color:rgba(59,130,246,.4) !important; }
+        [data-theme="dark"]  .smi-av    { border-color:rgba(139,92,246,.4) !important; }
+
+        .foot-blue   { color:#3b82f6; text-align:center; font-size:.95rem; }
+        .foot-purple { color:var(--accent2); text-align:center; font-size:.95rem; }
+        .foot-sub { font-size:.63rem; color:var(--muted); font-weight:400; margin-top:.15rem; }
+
+        /* ── Other ── */
         .table-bordered { border-color:var(--border) !important; }
         .table-bordered td, .table-bordered th { border-color:var(--border) !important; color:var(--text); }
-        thead.table-dark th, .thead-dark th { background:#1e293b !important; color:#94a3b8 !important; border-color:#334155 !important; font-size:.78rem; font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
-        [data-theme="dark"] .table-bordered td { color:var(--text); }
-
+        thead.table-dark th { background:#1e293b !important; color:#94a3b8 !important; border-color:#334155 !important; font-size:.78rem; }
         .form-check-input:checked { background-color:var(--accent); border-color:var(--accent); }
         .form-check-label { color:var(--text2); font-size:.85rem; }
-
         .alert-float { position:fixed; top:20px; right:20px; z-index:9999; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,.15); min-width:300px; font-size:.88rem; }
-        input[type="number"] { -moz-appearance:textfield; }
-        input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance:none; }
     </style>
 </head>
 <body>
@@ -127,29 +194,24 @@
 <form action="{{ route('projets.update', $projet->id) }}" method="POST">
 @csrf @method('PUT')
 
-<!-- A - Informations Générales -->
+{{-- A — INFOS --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-info-circle"></i> A — Informations Générales</div>
     <div class="row g-3">
         <div class="col-md-3">
             <label class="form-label">Référence Projet</label>
-            <input type="text" class="form-control" name="reference_projet"
-                value="{{ old('reference_projet', $projet->reference_projet) }}" required>
+            <input type="text" class="form-control" name="reference_projet" value="{{ old('reference_projet', $projet->reference_projet) }}" required>
         </div>
         <div class="col-md-3">
             <label class="form-label">Client <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="client_nom"
-                value="{{ old('client_nom', $projet->client->nom_client ?? '') }}" required>
+            <input type="text" class="form-control" name="client_nom" value="{{ old('client_nom', $projet->client->nom_client ?? '') }}" required>
         </div>
         <div class="col-md-3">
             <label class="form-label">Chef de Projet <span class="text-danger">*</span></label>
             <select class="form-select" name="chef_projet_id" required>
                 <option value="">-- Sélectionner --</option>
                 @foreach($consultants as $cons)
-                <option value="{{ $cons->id }}"
-                    {{ old('chef_projet_id', $projet->chef_projet_id) == $cons->id ? 'selected' : '' }}>
-                    {{ $cons->nom_complet }}
-                </option>
+                <option value="{{ $cons->id }}" {{ old('chef_projet_id', $projet->chef_projet_id) == $cons->id ? 'selected' : '' }}>{{ $cons->nom_complet }}</option>
                 @endforeach
             </select>
         </div>
@@ -163,63 +225,78 @@
         </div>
         <div class="col-md-6">
             <label class="form-label">Secteur d'activité</label>
-            <input type="text" class="form-control" name="secteur_activite"
-                value="{{ old('secteur_activite', $projet->client->secteur_activite ?? '') }}"
-                placeholder="Ex: Industrie, BTP...">
+            <input type="text" class="form-control" name="secteur_activite" value="{{ old('secteur_activite', $projet->client->secteur_activite ?? '') }}" placeholder="Ex: Industrie, BTP...">
         </div>
         <div class="col-md-6">
             <label class="form-label">Type Projet</label>
-            <input type="text" class="form-control" name="type_projet"
-                value="{{ old('type_projet', $projet->type_projet) }}">
+            <input type="text" class="form-control" name="type_projet" value="{{ old('type_projet', $projet->type_projet) }}">
         </div>
     </div>
 </div>
 
-<!-- Dates -->
+{{-- DATES --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-calendar"></i> Dates</div>
     <div class="row g-3">
         <div class="col-md-4">
             <label class="form-label">Date début</label>
-            <input type="date" class="form-control" name="date_debut"
-                value="{{ old('date_debut', $projet->date_debut) }}">
+            <input type="date" class="form-control" name="date_debut" value="{{ old('date_debut', $projet->date_debut) }}">
         </div>
         <div class="col-md-4">
             <label class="form-label">Date fin prévue</label>
-            <input type="date" class="form-control" name="date_fin_prevue"
-                value="{{ old('date_fin_prevue', $projet->date_fin_prevue) }}">
+            <input type="date" class="form-control" name="date_fin_prevue" value="{{ old('date_fin_prevue', $projet->date_fin_prevue) }}">
         </div>
         <div class="col-md-4">
             <label class="form-label">Date fin réelle</label>
-            <input type="date" class="form-control" name="date_fin_reelle"
-                value="{{ old('date_fin_reelle', $projet->date_fin_reelle) }}">
+            <input type="date" class="form-control" name="date_fin_reelle" value="{{ old('date_fin_reelle', $projet->date_fin_reelle) }}">
         </div>
     </div>
 </div>
 
-<!-- Indicateurs -->
+{{-- INDICATEURS --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-graph-up"></i> Indicateurs</div>
-    <div class="row g-3">
+    <div class="row g-3 align-items-start">
+
         <div class="col-md-4">
             <label class="form-label">Jours prévus</label>
-            <input type="number" class="form-control" name="jours_prevus"
-                min="0" value="{{ old('jours_prevus', $projet->jours_prevus) }}" required>
+            <input type="number" class="form-control" name="jours_prevus" id="jours_prevus"
+                min="0" value="{{ old('jours_prevus', $projet->jours_prevus) }}" required
+                oninput="recalcAll()">
         </div>
+
         <div class="col-md-4">
-            <label class="form-label">Jours réalisés</label>
-            <input type="number" class="form-control" name="jours_realises"
-                min="0" value="{{ old('jours_realises', $projet->jours_realises) }}" required>
+            <label class="form-label">
+                Jours réalisés
+                <span class="badge-auto blue"><i class="bi bi-lock-fill" style="font-size:.58rem;"></i> Auto</span>
+            </label>
+            <input type="number" class="form-control auto-blue" name="jours_realises" id="jours_realises"
+                min="0" value="{{ old('jours_realises', $projet->jours_realises) }}" required readonly>
+            <div class="auto-tag"><i class="bi bi-calculator"></i> = Σ Jours d'intervention — Section C</div>
+            <div class="mini-prog">
+                <div class="mini-prog-row"><span>Consommation</span><span id="consoLabel">—</span></div>
+                <div class="mini-prog-bar"><div class="mini-prog-fill fill-blue" id="consoBar" style="width:0%"></div></div>
+            </div>
         </div>
+
         <div class="col-md-4">
-            <label class="form-label">Avancement %</label>
-            <input type="number" class="form-control" name="avancement_percent"
-                min="0" max="100" value="{{ old('avancement_percent', $projet->avancement_percent) }}" required>
+            <label class="form-label">
+                Avancement %
+                <span class="badge-auto purple"><i class="bi bi-lock-fill" style="font-size:.58rem;"></i> Auto</span>
+            </label>
+            <input type="number" class="form-control auto-purple" name="avancement_percent" id="avancement_percent"
+                min="0" max="100" value="{{ old('avancement_percent', $projet->avancement_percent) }}" required readonly>
+            <div class="auto-tag"><i class="bi bi-bar-chart"></i> = Moyenne Av. % chapitres — Section C</div>
+            <div class="mini-prog">
+                <div class="mini-prog-row"><span>Avancement global</span><span id="avLabel">—</span></div>
+                <div class="mini-prog-bar"><div class="mini-prog-fill fill-purple" id="avBar" style="width:0%"></div></div>
+            </div>
         </div>
+
     </div>
 </div>
 
-<!-- Normes -->
+{{-- NORMES --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-check-square"></i> Normes</div>
     <div class="row g-3">
@@ -227,9 +304,7 @@
         @php $checked = $projet->normes->contains('id', $norme->id); @endphp
         <div class="col-md-4 col-lg-3">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox"
-                    name="normes[]" value="{{ $norme->id }}"
-                    id="norme{{ $norme->id }}" {{ $checked ? 'checked' : '' }}>
+                <input class="form-check-input" type="checkbox" name="normes[]" value="{{ $norme->id }}" id="norme{{ $norme->id }}" {{ $checked ? 'checked' : '' }}>
                 <label class="form-check-label" for="norme{{ $norme->id }}">{{ $norme->code_norme }}</label>
             </div>
         </div>
@@ -237,10 +312,9 @@
     </div>
 </div>
 
-<!-- B - Consultants -->
+{{-- B — CONSULTANTS --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-people"></i> B — Charge de travail par consultant</div>
-
     <div id="existingConsultantsContainer">
         @forelse($projet->affectations as $aff)
         @php $charge = $aff->jours_alloues > 0 ? round(($aff->jours_realises / $aff->jours_alloues) * 100) : 0; @endphp
@@ -248,8 +322,7 @@
             <div class="row align-items-center g-3">
                 <div class="col-md-3">
                     <span style="font-weight:600; font-size:.9rem;">
-                        <i class="bi bi-person-circle me-1" style="color:var(--accent);"></i>
-                        {{ $aff->consultant->nom_complet }}
+                        <i class="bi bi-person-circle me-1" style="color:var(--accent);"></i>{{ $aff->consultant->nom_complet }}
                     </span>
                     <input type="hidden" name="consultants[{{ $aff->consultant_id }}][id]" value="{{ $aff->consultant_id }}">
                 </div>
@@ -261,34 +334,25 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <input type="number" class="form-control form-control-sm"
-                        name="consultants[{{ $aff->consultant_id }}][jours_alloues]"
-                        min="0" step="0.1" value="{{ $aff->jours_alloues }}" placeholder="Alloués">
+                    <input type="number" class="form-control form-control-sm" name="consultants[{{ $aff->consultant_id }}][jours_alloues]" min="0" step="0.1" value="{{ $aff->jours_alloues }}" placeholder="Alloués">
                 </div>
                 <div class="col-md-2">
-                    <input type="number" class="form-control form-control-sm"
-                        name="consultants[{{ $aff->consultant_id }}][jours_realises]"
-                        min="0" step="0.1" value="{{ $aff->jours_realises }}" placeholder="Réalisés">
+                    <input type="number" class="form-control form-control-sm" name="consultants[{{ $aff->consultant_id }}][jours_realises]" min="0" step="0.1" value="{{ $aff->jours_realises }}" placeholder="Réalisés">
                 </div>
-                <div class="col-md-1 text-center">
-                    <span class="badge bg-info">{{ $charge }}%</span>
-                </div>
+                <div class="col-md-1 text-center"><span class="badge bg-info">{{ $charge }}%</span></div>
                 <div class="col-md-2 text-center">
-                    <button type="button" class="btn btn-sm btn-outline-danger"
-                        onclick="removeConsultant(this, {{ $aff->consultant_id }})">
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeConsultant(this, {{ $aff->consultant_id }})">
                         <i class="bi bi-trash"></i>
                     </button>
                 </div>
             </div>
         </div>
         @empty
-        <p style="color:var(--muted); font-size:.85rem;" id="emptyMsg">Aucun consultant associé.</p>
+        <p style="color:var(--muted); font-size:.85rem;">Aucun consultant associé.</p>
         @endforelse
     </div>
-
     <div id="newConsultantsContainer"></div>
     <div id="deletedConsultantsContainer"></div>
-
     <div class="add-section">
         <h6><i class="bi bi-plus-circle me-1"></i> Ajouter un consultant</h6>
         <div class="row g-3 align-items-end">
@@ -327,20 +391,33 @@
     </div>
 </div>
 
-<!-- C - Chapitres SMI -->
+{{-- C — CHAPITRES SMI --}}
 <div class="form-card">
-    <div class="section-title"><i class="bi bi-journal-check"></i> C — Planification par chapitre SMI</div>
+    <div class="section-title">
+        <i class="bi bi-journal-check"></i> C — Planification par chapitre SMI
+        <span class="section-hint">
+            <i class="bi bi-arrow-up" style="color:#3b82f6;"></i>
+            <span style="color:#3b82f6; font-weight:600;">J. Interv.</span> → Jours réalisés
+            &nbsp;·&nbsp;
+            <i class="bi bi-arrow-up" style="color:var(--accent2);"></i>
+            <span style="color:var(--accent2); font-weight:600;">Av. %</span> → Avancement global
+        </span>
+    </div>
     <div class="table-responsive">
-        <table class="table table-bordered" style="min-width:1200px; font-size:.82rem;">
+        <table class="table-smi" style="min-width:1150px;">
             <thead>
-                <tr style="background:var(--thead-bg);">
-                    <th style="color:var(--thead-text); width:12%;">Chapitre</th>
-                    <th style="color:var(--thead-text); width:20%;">Exigences Clés</th>
-                    <th style="color:var(--thead-text); width:20%;">Livrables</th>
-                    <th style="color:var(--thead-text); width:7%;">Av. %</th>
-                    <th style="color:var(--thead-text); width:12%;">Phase</th>
-                    <th style="color:var(--thead-text); width:7%;">J. Interv.</th>
-                    <th style="color:var(--thead-text);">Observations</th>
+                <tr>
+                    <th style="width:12%;">Chapitre</th>
+                    <th style="width:18%;">Exigences Clés</th>
+                    <th style="width:18%;">Livrables</th>
+                    <th class="th-av" style="width:7%;">
+                        <i class="bi bi-bar-chart-fill me-1"></i>Av. %
+                    </th>
+                    <th style="width:11%;">Phase</th>
+                    <th class="th-jours" style="width:8%;">
+                        <i class="bi bi-clock-fill me-1"></i>J. Interv.
+                    </th>
+                    <th>Observations</th>
                 </tr>
             </thead>
             <tbody>
@@ -348,24 +425,21 @@
                 <tr>
                     <td>
                         <strong style="color:var(--accent);">{{ $chap->chapitre->code_chapitre }}</strong><br>
-                        <small style="color:var(--muted);">{{ $chap->chapitre->titre_chapitre }}</small>
+                        <small style="color:var(--muted); display:block; margin-top:.2rem; line-height:1.3;">{{ $chap->chapitre->titre_chapitre }}</small>
                         <input type="hidden" name="chapitres[{{ $index }}][id]" value="{{ $chap->id }}">
                         <input type="hidden" name="chapitres[{{ $index }}][chapitre_id]" value="{{ $chap->chapitre_id }}">
                     </td>
                     <td>
-                        <textarea class="form-control form-control-sm"
-                            name="chapitres[{{ $index }}][exigences_cles]"
-                            rows="3" readonly>{{ $chap->chapitre->exigences_cles }}</textarea>
+                        <textarea class="form-control form-control-sm" name="chapitres[{{ $index }}][exigences_cles]" rows="3" readonly>{{ $chap->chapitre->exigences_cles }}</textarea>
                     </td>
                     <td>
-                        <textarea class="form-control form-control-sm"
-                            name="chapitres[{{ $index }}][livrables]" rows="3">{{ $chap->statut_livrables }}</textarea>
+                        <textarea class="form-control form-control-sm" name="chapitres[{{ $index }}][livrables]" rows="3">{{ $chap->statut_livrables }}</textarea>
                     </td>
-                    <td>
-                        <input type="number" class="form-control form-control-sm"
+                    <td class="col-av">
+                        <input type="number" class="form-control smi-num smi-av"
                             name="chapitres[{{ $index }}][avancement]"
                             min="0" max="100" value="{{ $chap->avancement_percent }}"
-                            style="width:65px; text-align:center;">
+                            style="width:70px;" oninput="recalcAll()">
                     </td>
                     <td>
                         <select class="form-select form-select-sm" name="chapitres[{{ $index }}][phase]">
@@ -374,25 +448,40 @@
                             @endforeach
                         </select>
                     </td>
-                    <td>
-                        <input type="number" class="form-control form-control-sm"
+                    <td class="col-jours">
+                        <input type="number" class="form-control smi-num smi-jours"
                             name="chapitres[{{ $index }}][jours]"
                             min="0" value="{{ $chap->jours_intervention }}"
-                            style="width:65px; text-align:center;">
+                            style="width:70px;" oninput="recalcAll()">
                     </td>
                     <td>
-                        <input type="text" class="form-control form-control-sm"
-                            name="chapitres[{{ $index }}][observations]"
-                            value="{{ $chap->observations }}" placeholder="—">
+                        <input type="text" class="form-control form-control-sm" name="chapitres[{{ $index }}][observations]" value="{{ $chap->observations }}" placeholder="—">
                     </td>
                 </tr>
                 @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align:right; color:var(--muted); font-size:.77rem; font-weight:500;">
+                        <i class="bi bi-calculator me-1"></i> Résultats calculés →
+                    </td>
+                    <td class="foot-purple col-av">
+                        <span id="footAvancement">{{ $projet->avancement_percent }}</span>%
+                        <div class="foot-sub">moyenne</div>
+                    </td>
+                    <td style="background:var(--surface2);"></td>
+                    <td class="foot-blue col-jours">
+                        <span id="footJours">{{ $projet->suiviChapitres->sum('jours_intervention') }}</span>
+                        <div class="foot-sub">total j.</div>
+                    </td>
+                    <td style="background:var(--surface2);"></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </div>
 
-<!-- D - Formations -->
+{{-- D — FORMATIONS --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-mortarboard"></i> D — Plan de formation</div>
     <div class="table-responsive">
@@ -419,9 +508,7 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" class="form-control form-control-sm"
-                            name="formations[{{ $index }}][observations]"
-                            value="{{ $form->pivot->observations }}" placeholder="—">
+                        <input type="text" class="form-control form-control-sm" name="formations[{{ $index }}][observations]" value="{{ $form->pivot->observations }}" placeholder="—">
                     </td>
                 </tr>
                 @endforeach
@@ -430,7 +517,7 @@
     </div>
 </div>
 
-<!-- E - Contraintes -->
+{{-- E — CONTRAINTES --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-exclamation-triangle"></i> E — Contraintes & Points de vigilance</div>
     <div class="row g-3">
@@ -445,7 +532,7 @@
     </div>
 </div>
 
-<!-- BOUTONS -->
+{{-- BOUTONS --}}
 <div class="d-flex justify-content-end gap-3 mb-5">
     <a href="{{ route('projet.details', $projet->id) }}" class="btn-cancel">
         <i class="bi bi-x-circle"></i> Annuler
@@ -460,7 +547,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// Theme
+/* ─── Theme ─── */
 (function() {
     const t = localStorage.getItem('lmc-theme') || 'light';
     document.documentElement.setAttribute('data-theme', t);
@@ -473,72 +560,83 @@ document.getElementById('themeToggle').addEventListener('click', () => {
     document.getElementById('themeIcon').className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
 });
 
-let newConsultantIndex = @json(count($projet->affectations));
+/* ══════════════════════════════════════════════════════
+   RECALC — Jours réalisés = Σ J.Interv  |  Av% = AVG
+   ══════════════════════════════════════════════════════ */
+function recalcAll() {
+    const jp = parseFloat(document.getElementById('jours_prevus').value) || 0;
 
+    /* Jours réalisés */
+    let totalJ = 0;
+    document.querySelectorAll('input[name^="chapitres"][name$="[jours]"]').forEach(i => {
+        totalJ += parseFloat(i.value) || 0;
+    });
+    totalJ = Math.round(totalJ * 10) / 10;
+    document.getElementById('jours_realises').value = totalJ;
+    document.getElementById('footJours').textContent  = totalJ;
+    const conso = jp > 0 ? Math.round((totalJ / jp) * 100) : 0;
+    document.getElementById('consoLabel').textContent = conso + '%';
+    document.getElementById('consoBar').style.width   = Math.min(conso, 100) + '%';
+
+    /* Avancement % */
+    const avInputs = document.querySelectorAll('input[name^="chapitres"][name$="[avancement]"]');
+    let sumAv = 0, countAv = 0;
+    avInputs.forEach(i => { const v = parseFloat(i.value); if (!isNaN(v)) { sumAv += v; countAv++; } });
+    const avgAv = countAv > 0 ? Math.round(sumAv / countAv) : 0;
+    document.getElementById('avancement_percent').value = avgAv;
+    document.getElementById('footAvancement').textContent = avgAv;
+    document.getElementById('avLabel').textContent = avgAv + '%';
+    document.getElementById('avBar').style.width   = avgAv + '%';
+}
+
+document.addEventListener('DOMContentLoaded', recalcAll);
+
+/* ─── Consultants ─── */
 function addExistingConsultant() {
     const select = document.getElementById('existingConsultantSelect');
     const consId = select.value;
     const consNom = select.options[select.selectedIndex]?.getAttribute('data-nom') || '';
-    const role = document.getElementById('existingConsultantRole').value;
+    const role  = document.getElementById('existingConsultantRole').value;
     const joursA = parseFloat(document.getElementById('existingConsultantJoursAlloues').value) || 0;
     const joursR = parseFloat(document.getElementById('existingConsultantJoursRealises').value) || 0;
-
     if (!consId) { alert('Veuillez sélectionner un consultant'); return; }
     if (document.getElementById(`consultant-row-${consId}`)) { alert('Ce consultant est déjà affecté'); return; }
-
     const charge = joursA > 0 ? Math.round((joursR / joursA) * 100) : 0;
-
     document.getElementById('newConsultantsContainer').insertAdjacentHTML('beforeend', `
         <div class="cons-row mt-2" id="consultant-row-${consId}">
             <div class="row align-items-center g-3">
                 <div class="col-md-3">
-                    <span style="font-weight:600; font-size:.9rem;">
-                        <i class="bi bi-person-plus-fill me-1" style="color:#10b981;"></i>${consNom}
-                    </span>
+                    <span style="font-weight:600;font-size:.9rem;"><i class="bi bi-person-plus-fill me-1" style="color:#10b981;"></i>${consNom}</span>
                     <input type="hidden" name="consultants[${consId}][id]" value="${consId}">
                     <span class="badge bg-success ms-1" style="font-size:.62rem;">Nouveau</span>
                 </div>
                 <div class="col-md-2">
                     <select class="form-select form-select-sm" name="consultants[${consId}][role]">
-                        <option value="Chef de Projet" ${role==='Chef de Projet'?'selected':''}>Chef de Projet</option>
-                        <option value="Consultant" ${role==='Consultant'?'selected':''}>Consultant</option>
-                        <option value="Consultant Ext." ${role==='Consultant Ext.'?'selected':''}>Consultant Ext.</option>
-                        <option value="Expert" ${role==='Expert'?'selected':''}>Expert</option>
+                        <option ${role==='Chef de Projet'?'selected':''}>Chef de Projet</option>
+                        <option ${role==='Consultant'?'selected':''}>Consultant</option>
+                        <option ${role==='Consultant Ext.'?'selected':''}>Consultant Ext.</option>
+                        <option ${role==='Expert'?'selected':''}>Expert</option>
                     </select>
                 </div>
-                <div class="col-md-2">
-                    <input type="number" class="form-control form-control-sm"
-                        name="consultants[${consId}][jours_alloues]" min="0" step="0.1" value="${joursA}">
-                </div>
-                <div class="col-md-2">
-                    <input type="number" class="form-control form-control-sm"
-                        name="consultants[${consId}][jours_realises]" min="0" step="0.1" value="${joursR}">
-                </div>
-                <div class="col-md-1 text-center">
-                    <span class="badge bg-info">${charge}%</span>
-                </div>
+                <div class="col-md-2"><input type="number" class="form-control form-control-sm" name="consultants[${consId}][jours_alloues]" min="0" step="0.1" value="${joursA}"></div>
+                <div class="col-md-2"><input type="number" class="form-control form-control-sm" name="consultants[${consId}][jours_realises]" min="0" step="0.1" value="${joursR}"></div>
+                <div class="col-md-1 text-center"><span class="badge bg-info">${charge}%</span></div>
                 <div class="col-md-2 text-center">
-                    <button type="button" class="btn btn-sm btn-outline-danger"
-                        onclick="removeConsultant(this, ${consId})">
-                        <i class="bi bi-trash"></i>
-                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeConsultant(this,${consId})"><i class="bi bi-trash"></i></button>
                 </div>
             </div>
-        </div>
-    `);
-
+        </div>`);
     select.value = '';
     document.getElementById('existingConsultantRole').value = 'Consultant';
     document.getElementById('existingConsultantJoursAlloues').value = '0';
     document.getElementById('existingConsultantJoursRealises').value = '0';
 }
 
-function removeConsultant(button, consId) {
+function removeConsultant(btn, consId) {
     if (confirm('Supprimer ce consultant du projet ?')) {
-        button.closest('.cons-row').remove();
+        btn.closest('.cons-row').remove();
         document.getElementById('deletedConsultantsContainer').insertAdjacentHTML('beforeend',
-            `<input type="hidden" name="deleted_consultants[]" value="${consId}">`
-        );
+            `<input type="hidden" name="deleted_consultants[]" value="${consId}">`);
     }
 }
 
