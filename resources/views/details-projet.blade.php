@@ -270,21 +270,25 @@ $doneChap          = $chapsColl->where('phase', '✅ Terminé')->count();
             <div class="col-md-3 col-6">
                 <div class="kpi-box">
                     <div class="kpi-label">Jours Réalisés</div>
-                    <div class="kpi-value">{{ $projet->jours_realises }}</div>
+                    <div class="kpi-value">{{ $joursRealisesCalc }}</div>
+                    <div style="font-size:.68rem; color:var(--muted); margin-top:.2rem;">= Σ J. Intervention</div>
                 </div>
             </div>
+            @php
+                $consoCalc = $projet->jours_prevus > 0 ? round(($joursRealisesCalc / $projet->jours_prevus) * 100) : 0;
+                $ecartCalc = $joursRealisesCalc - $projet->jours_prevus;
+            @endphp
             <div class="col-md-3 col-6">
                 <div class="kpi-box">
                     <div class="kpi-label">Consommation</div>
-                    <div class="kpi-value">{{ $conso }}%</div>
+                    <div class="kpi-value">{{ $consoCalc }}%</div>
                 </div>
             </div>
             <div class="col-md-3 col-6">
                 <div class="kpi-box">
                     <div class="kpi-label">Écart</div>
-                    @php $ecart = $projet->jours_realises - $projet->jours_prevus; @endphp
-                    <div class="kpi-value" style="color:{{ $ecart >= 0 ? '#10b981' : '#ef4444' }};">
-                        {{ $ecart > 0 ? '+' : '' }}{{ $ecart }}
+                    <div class="kpi-value" style="color:{{ $ecartCalc >= 0 ? '#10b981' : '#ef4444' }};">
+                        {{ $ecartCalc > 0 ? '+' : '' }}{{ $ecartCalc }}
                     </div>
                 </div>
             </div>
@@ -292,10 +296,10 @@ $doneChap          = $chapsColl->where('phase', '✅ Terminé')->count();
         <div class="mt-3">
             <div class="d-flex justify-content-between" style="font-size:.85rem; margin-bottom:.4rem;">
                 <span style="color:var(--text2); font-weight:500;">Avancement global</span>
-                <span style="font-weight:700; color:var(--text);">{{ $projet->avancement_percent }}%</span>
+                <span style="font-weight:700; color:var(--text);">{{ $avancementCalc }}%</span>
             </div>
             <div class="prog-bg">
-                <div class="prog-fill" style="width:{{ $projet->avancement_percent }}%"></div>
+                <div class="prog-fill" style="width:{{ $avancementCalc }}%"></div>
             </div>
         </div>
     </div>
