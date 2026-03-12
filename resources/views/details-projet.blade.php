@@ -10,14 +10,12 @@
     <style>
         [data-theme="light"] {
             --bg:#f1f5f9; --surface:#ffffff; --surface2:#f8fafc; --border:#e2e8f0;
-            --text:#0f172a; --text2:#475569; --muted:#94a3b8;
-            --accent:#3b82f6; --accent2:#8b5cf6;
+            --text:#0f172a; --text2:#475569; --muted:#94a3b8; --accent:#3b82f6;
             --shadow:0 2px 12px rgba(0,0,0,.06); --shadow-md:0 4px 20px rgba(0,0,0,.08);
         }
         [data-theme="dark"] {
             --bg:#0f172a; --surface:#1e293b; --surface2:#162032; --border:#334155;
-            --text:#e2e8f0; --text2:#94a3b8; --muted:#64748b;
-            --accent:#3b82f6; --accent2:#a78bfa;
+            --text:#e2e8f0; --text2:#94a3b8; --muted:#64748b; --accent:#3b82f6;
             --shadow:0 2px 12px rgba(0,0,0,.3); --shadow-md:0 4px 20px rgba(0,0,0,.4);
         }
 
@@ -27,28 +25,29 @@
         .site-header { background:linear-gradient(135deg,#0f172a,#1e293b); padding:1rem 0; border-bottom:3px solid #3b82f6; }
         .logo { font-size:1.3rem; font-weight:700; color:white; }
         .logo-sub { font-size:.73rem; color:rgba(255,255,255,.4); margin-top:.1rem; }
+        .meta-pill { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.5); padding:.28rem .8rem; border-radius:50px; font-size:.73rem; }
         .theme-btn { width:34px; height:34px; border-radius:50%; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.08); color:rgba(255,255,255,.65); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s; }
         .theme-btn:hover { background:rgba(255,255,255,.15); color:white; }
+
         .nav-wrap { display:flex; gap:.3rem; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.08); padding:.38rem; border-radius:50px; margin-top:.85rem; width:fit-content; }
         .nav-item { padding:.48rem 1.15rem; border-radius:50px; font-size:.82rem; font-weight:500; color:rgba(255,255,255,.55); text-decoration:none; transition:all .2s; display:inline-flex; align-items:center; gap:.35rem; }
         .nav-item:hover { background:rgba(255,255,255,.08); color:white; }
         .nav-item.active { background:white; color:#0f172a; font-weight:600; }
+
         .btn-retour { background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.2); color:white; padding:.55rem 1.4rem; border-radius:50px; font-weight:600; font-size:.83rem; text-decoration:none; transition:.2s; display:inline-flex; align-items:center; gap:.4rem; }
         .btn-retour:hover { background:white; color:#0f172a; }
 
         .detail-card { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:1.5rem; box-shadow:var(--shadow); margin-bottom:1.3rem; transition:background .3s; }
+
         .section-title { font-size:1rem; font-weight:700; color:var(--text); margin-bottom:1.2rem; padding-bottom:.6rem; border-bottom:2px solid var(--accent); display:flex; align-items:center; gap:.5rem; }
         .section-title i { color:var(--accent); }
 
-        /* ── Info grid ── */
         .info-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:.9rem; }
         .info-item { background:var(--surface2); padding:.9rem 1rem; border-radius:12px; border-left:3px solid var(--accent); }
         .info-label { font-size:.7rem; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:.3rem; }
         .info-value { font-weight:600; font-size:.95rem; color:var(--text); }
         .info-sub { font-size:.78rem; color:var(--muted); margin-top:.2rem; }
-        .norme-pill { background:var(--surface2); border:1px solid var(--border); color:var(--text2); padding:.25rem .75rem; border-radius:50px; font-size:.78rem; font-weight:500; display:inline-block; margin:.2rem; }
 
-        /* ── Status badges ── */
         .bs { padding:.28rem .85rem; border-radius:50px; font-weight:600; font-size:.72rem; display:inline-block; }
         [data-theme="light"] .bs.finalise { background:#dcfce7; color:#166534; }
         [data-theme="light"] .bs.retard   { background:#fee2e2; color:#991b1b; }
@@ -59,78 +58,79 @@
         [data-theme="dark"]  .bs.cours    { background:rgba(249,115,22,.15); color:#fb923c; }
         [data-theme="dark"]  .bs.planifie { background:rgba(99,102,241,.15); color:#a5b4fc; }
 
-        /* ── KPI Cards ── */
-        .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem; }
-        @media(max-width:768px){ .kpi-grid { grid-template-columns:repeat(2,1fr); } }
-        .kpi-box {
-            background:var(--surface2); border-radius:16px; padding:1.1rem 1rem;
-            text-align:center; border:1px solid var(--border);
-            transition:transform .2s; position:relative; overflow:hidden;
-        }
-        .kpi-box:hover { transform:translateY(-2px); }
-        .kpi-box::before {
-            content:''; position:absolute; top:0; left:0; right:0;
-            height:3px; border-radius:16px 16px 0 0;
-        }
-        .kpi-box.blue::before   { background:linear-gradient(90deg,#3b82f6,#60a5fa); }
-        .kpi-box.purple::before { background:linear-gradient(90deg,#8b5cf6,#a78bfa); }
-        .kpi-box.green::before  { background:linear-gradient(90deg,#10b981,#34d399); }
-        .kpi-box.red::before    { background:linear-gradient(90deg,#ef4444,#f87171); }
-        .kpi-box.neutral::before{ background:linear-gradient(90deg,#64748b,#94a3b8); }
+        .norme-pill { background:var(--surface2); border:1px solid var(--border); color:var(--text2); padding:.25rem .75rem; border-radius:50px; font-size:.78rem; font-weight:500; display:inline-block; margin:.2rem; }
 
-        .kpi-label { font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:.5rem; }
-        .kpi-value { font-size:2rem; font-weight:800; line-height:1; color:var(--text); }
-        .kpi-value.blue   { color:#3b82f6; }
-        .kpi-value.purple { color:var(--accent2); }
-        .kpi-value.green  { color:#10b981; }
-        .kpi-value.red    { color:#ef4444; }
-        .kpi-sub { font-size:.7rem; color:var(--muted); margin-top:.4rem; }
-        .kpi-auto-tag { display:inline-flex; align-items:center; gap:.22rem; font-size:.63rem; font-weight:600; padding:.12rem .48rem; border-radius:50px; margin-top:.35rem; }
-        .kpi-auto-tag.blue   { background:rgba(59,130,246,.1);  color:#3b82f6; }
-        .kpi-auto-tag.purple { background:rgba(139,92,246,.1); color:var(--accent2); }
+        .kpi-box { background:var(--surface2); border-radius:14px; padding:1rem; text-align:center; }
+        .kpi-label { font-size:.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:.4rem; }
+        .kpi-value { font-size:1.8rem; font-weight:700; color:var(--text); line-height:1; }
 
-        /* ── Progress bars ── */
-        .prog-section { margin-top:1.3rem; }
-        .prog-row { display:flex; justify-content:space-between; align-items:center; font-size:.83rem; margin-bottom:.4rem; }
-        .prog-label { color:var(--text2); font-weight:500; display:flex; align-items:center; gap:.4rem; }
-        .prog-val { font-weight:700; color:var(--text); }
-        .prog-bg { height:8px; background:var(--border); border-radius:50px; overflow:hidden; }
-        .prog-fill { height:100%; border-radius:50px; }
-        .fill-blue   { background:linear-gradient(90deg,#3b82f6,#60a5fa); }
-        .fill-purple { background:linear-gradient(90deg,#8b5cf6,#a78bfa); }
+        .prog-bg { height:7px; background:var(--border); border-radius:50px; overflow:hidden; margin-top:.8rem; }
+        .prog-fill { height:100%; border-radius:50px; background:linear-gradient(90deg,#3b82f6,#8b5cf6); }
 
-        /* ── Tables ── */
         .table-pro { width:100%; border-collapse:collapse; font-size:.83rem; }
         .table-pro thead th { background:var(--surface2); color:var(--muted); padding:.65rem .75rem; font-weight:600; font-size:.73rem; text-transform:uppercase; letter-spacing:.05em; border-bottom:2px solid var(--border); }
         .table-pro tbody td { padding:.65rem .75rem; border-bottom:1px solid var(--border); color:var(--text); vertical-align:middle; }
         .table-pro tbody tr:last-child td { border-bottom:none; }
         .table-pro tbody tr:hover td { background:var(--surface2); }
-        .table-pro tfoot td { padding:.65rem .75rem; border-top:2px solid var(--border); background:var(--surface2); font-weight:700; }
-
-        .th-jours  { color:#3b82f6 !important; }
-        .th-av     { color:var(--accent2) !important; }
-        .td-jours  { color:#3b82f6; font-weight:600; text-align:center; }
-        .td-av     { color:var(--accent2); font-weight:600; text-align:center; }
-        .foot-jours  { color:#3b82f6; font-size:.95rem; text-align:center; }
-        .foot-av     { color:var(--accent2); font-size:.95rem; text-align:center; }
-        .foot-note { font-size:.62rem; color:var(--muted); font-weight:400; margin-top:.15rem; }
-
-        /* ── Phase badges ── */
-        .phase-done    { background:rgba(16,185,129,.15); color:#10b981; font-size:.72rem; font-weight:600; padding:.2rem .65rem; border-radius:50px; }
-        .phase-inprog  { background:rgba(251,191,36,.15);  color:#f59e0b; font-size:.72rem; font-weight:600; padding:.2rem .65rem; border-radius:50px; }
-        .phase-started { background:rgba(59,130,246,.15);  color:#3b82f6; font-size:.72rem; font-weight:600; padding:.2rem .65rem; border-radius:50px; }
-        .phase-none    { background:rgba(148,163,184,.15); color:#94a3b8; font-size:.72rem; font-weight:600; padding:.2rem .65rem; border-radius:50px; }
 
         .exig-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.3rem; margin-bottom:1.3rem; }
         .exig-title { font-size:.88rem; font-weight:700; color:var(--accent); margin-bottom:.9rem; padding-bottom:.5rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:.4rem; }
         .exig-item { margin-bottom:.9rem; padding-bottom:.9rem; border-bottom:1px solid var(--border); }
         .exig-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
-        .exig-chap  { font-size:.82rem; font-weight:700; color:var(--accent); }
-        .exig-titre { font-size:.82rem; color:var(--text2); }
-        .exig-content { font-size:.8rem; color:var(--muted); line-height:1.6; margin-top:.3rem; }
+        .exig-chap { font-size:.82rem; font-weight:700; color:var(--accent); }
+        .exig-titre { font-size:.82rem; color:var(--text2); margin-bottom:.3rem; }
+        .exig-content { font-size:.8rem; color:var(--muted); line-height:1.6; }
+
+        .phase-done    { background:rgba(16,185,129,.15); color:#10b981; font-size:.72rem; font-weight:600; padding:.2rem .65rem; border-radius:50px; }
+        .phase-inprog  { background:rgba(251,191,36,.15); color:#f59e0b; font-size:.72rem; font-weight:600; padding:.2rem .65rem; border-radius:50px; }
+        .phase-started { background:rgba(59,130,246,.15); color:#3b82f6; font-size:.72rem; font-weight:600; padding:.2rem .65rem; border-radius:50px; }
+        .phase-none    { background:rgba(148,163,184,.15); color:#94a3b8; font-size:.72rem; font-weight:600; padding:.2rem .65rem; border-radius:50px; }
 
         [data-theme="dark"] .alert-danger { background:rgba(239,68,68,.12); border-color:rgba(239,68,68,.25); color:#fca5a5; }
         [data-theme="dark"] .alert-info   { background:rgba(59,130,246,.12); border-color:rgba(59,130,246,.25); color:#93c5fd; }
+
+        /* ── Livrables Accordion ── */
+        .liv-accordion { border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:.7rem; }
+        .liv-header {
+            display:flex; align-items:center; gap:.75rem;
+            padding:.85rem 1.1rem; cursor:pointer;
+            background:var(--surface2);
+            border-bottom:1px solid transparent;
+            transition:background .2s;
+            user-select:none;
+        }
+        .liv-header:hover { background:rgba(59,130,246,.05); }
+        .liv-header.open { border-bottom:1px solid var(--border); background:var(--surface); }
+        .liv-chap-code { font-size:.95rem; font-weight:700; color:var(--accent); min-width:42px; }
+        .liv-chap-titre { font-size:.85rem; font-weight:600; color:var(--text); flex:1; }
+        .liv-counter { font-size:.75rem; color:var(--muted); display:flex; align-items:center; gap:.4rem; }
+        .liv-prog-wrap { width:110px; }
+        .liv-prog-bg { height:5px; background:var(--border); border-radius:50px; overflow:hidden; }
+        .liv-prog-fill { height:100%; border-radius:50px; background:linear-gradient(90deg,#10b981,#34d399); transition:width .35s; }
+        .liv-badge-statut {
+            font-size:.7rem; font-weight:600; padding:.2rem .65rem; border-radius:50px;
+        }
+        .liv-badge-statut.done    { background:rgba(16,185,129,.15); color:#10b981; }
+        .liv-badge-statut.partial { background:rgba(251,191,36,.15);  color:#f59e0b; }
+        .liv-badge-statut.none    { background:rgba(148,163,184,.15); color:#94a3b8; }
+        .liv-arrow { color:var(--muted); font-size:.8rem; transition:transform .25s; }
+        .liv-header.open .liv-arrow { transform:rotate(180deg); }
+
+        .liv-body { display:none; padding:.2rem 0; }
+        .liv-body.open { display:block; }
+
+        .liv-row {
+            display:grid; grid-template-columns:70px 1fr auto;
+            align-items:center; gap:.75rem;
+            padding:.6rem 1.1rem;
+            border-bottom:1px solid var(--border);
+            transition:background .15s;
+        }
+        .liv-row:last-child { border-bottom:none; }
+        .liv-row:hover { background:rgba(59,130,246,.03); }
+        .liv-clause { font-size:.75rem; font-weight:600; color:var(--accent); }
+        .liv-libelle { font-size:.82rem; color:var(--text2); line-height:1.4; }
+        .liv-save-indicator { display:none; } /* unused in details */
     </style>
 </head>
 <body>
@@ -154,24 +154,40 @@ $normes      = DB::select("SELECT n.* FROM normes n JOIN projet_normes pn ON n.i
 $consultants = DB::select("SELECT cons.*, a.role_dans_projet, a.jours_alloues, a.jours_realises FROM affectations a JOIN consultants cons ON a.consultant_id = cons.id WHERE a.projet_id = ?", [$id]);
 $chapitres   = DB::select("SELECT sc.*, cs.code_chapitre, cs.titre_chapitre, cs.exigences_cles FROM suivi_chapitres sc JOIN chapitres_smis cs ON sc.chapitre_id = cs.id WHERE sc.projet_id = ? ORDER BY cs.ordre", [$id]);
 $formations  = DB::select("SELECT f.*, pf.statut, pf.observations FROM formations f JOIN projet_formations pf ON f.id = pf.formation_id WHERE pf.projet_id = ?", [$id]);
+$conso       = $projet->jours_prevus > 0 ? round(($projet->jours_realises / $projet->jours_prevus) * 100) : 0;
+$sc = match($projet->statut) { 'Finalisé' => 'finalise', 'En retard' => 'retard', 'En cours' => 'cours', default => 'planifie' };
 
-// ══════════════════════════════════════════════════
-//  CALCULS CENTRALISÉS depuis chapitres Section C
-// ══════════════════════════════════════════════════
-$chapsColl          = collect($chapitres);
-$joursRealisesCalc  = $chapsColl->sum('jours_intervention');          // Σ J.Interv
-$avancementCalc     = $chapsColl->count() > 0
-                        ? round($chapsColl->avg('avancement_percent'))  // AVG Av.%
-                        : 0;
-$conso  = $projet->jours_prevus > 0
-            ? round(($joursRealisesCalc / $projet->jours_prevus) * 100) : 0;
-$ecart  = $joursRealisesCalc - $projet->jours_prevus;
-
-$totalChap = $chapsColl->count();
-$doneChap  = $chapsColl->where('phase', '✅ Terminé')->count();
-
-$sc = match($projet->statut) { 'Finalisé'=>'finalise','En retard'=>'retard','En cours'=>'cours', default=>'planifie' };
+// Stats Gantt pour affichage rapide
 $ganttCount = DB::table('gantt_taches')->where('projet_id', $id)->count();
+
+// ── Livrables SMI par chapitre ──────────────────────────────────
+$livrableRows = DB::select("
+    SELECT
+        ls.id, ls.chapitre_code, ls.clause, ls.libelle, ls.phase_smi, ls.ordre,
+        COALESCE(pl.statut, 'Non commencé') as statut
+    FROM livrables_smi ls
+    LEFT JOIN projet_livrables pl ON pl.livrable_id = ls.id AND pl.projet_id = ?
+    ORDER BY ls.ordre ASC
+", [$id]);
+
+$livrablesByChap = [];
+foreach ($livrableRows as $lrow) {
+    $chap = $lrow->chapitre_code;
+    if (!isset($livrablesByChap[$chap])) {
+        $livrablesByChap[$chap] = ['items' => [], 'total' => 0, 'termines' => 0];
+    }
+    $livrablesByChap[$chap]['items'][] = $lrow;
+    $livrablesByChap[$chap]['total']++;
+    if ($lrow->statut === 'Terminé') $livrablesByChap[$chap]['termines']++;
+}
+
+// Calculs chapitres
+$chapsColl         = collect($chapitres);
+$joursRealisesCalc = $chapsColl->sum('jours_intervention');
+$avancementCalc    = $chapsColl->count() > 0 ? round($chapsColl->avg('avancement_percent')) : 0;
+$ecart             = $joursRealisesCalc - $projet->jours_prevus;
+$totalChap         = $chapsColl->count();
+$doneChap          = $chapsColl->where('phase', '✅ Terminé')->count();
 @endphp
 
 <div class="site-header">
@@ -186,11 +202,14 @@ $ganttCount = DB::table('gantt_taches')->where('projet_id', $id)->count();
                 <a href="{{ url('/') }}" class="btn-retour"><i class="bi bi-arrow-left"></i> Retour</a>
             </div>
         </div>
+
+        {{-- NAV avec Gantt --}}
         <div class="nav-wrap">
             <a href="/" class="nav-item"><i class="bi bi-table"></i> Données</a>
             <a href="/tableau-de-bord" class="nav-item"><i class="bi bi-bar-chart"></i> Tableau de Bord</a>
             <a href="/consultants" class="nav-item"><i class="bi bi-people"></i> Consultants</a>
             <a href="/nouveau-projet" class="nav-item"><i class="bi bi-plus-circle"></i> Nouveau Projet</a>
+            {{-- BOUTON GANTT — NOUVEAU --}}
             <a href="/projet/{{ $projet->id }}/gantt" class="nav-item">
                 <i class="bi bi-bar-chart-steps"></i> Gantt
                 @if($ganttCount > 0)
@@ -203,7 +222,7 @@ $ganttCount = DB::table('gantt_taches')->where('projet_id', $id)->count();
 
 <div class="container py-4">
 
-    {{-- Infos générales --}}
+    <!-- Infos Générales -->
     <div class="detail-card">
         <div class="section-title"><i class="bi bi-info-circle"></i> Informations Générales</div>
         <div class="info-grid">
@@ -227,84 +246,61 @@ $ganttCount = DB::table('gantt_taches')->where('projet_id', $id)->count();
                 <div class="info-sub">Fin prévue: {{ $projet->date_fin_prevue ?? '—' }}</div>
             </div>
         </div>
+
         @if(count($normes))
         <div class="mt-3">
             <div class="info-label mb-1">Normes d'accompagnement</div>
-            @foreach($normes as $n)<span class="norme-pill">{{ $n->code_norme }}</span>@endforeach
+            @foreach($normes as $n)
+                <span class="norme-pill">{{ $n->code_norme }}</span>
+            @endforeach
         </div>
         @endif
     </div>
 
-    {{-- Indicateurs KPI --}}
+    <!-- Indicateurs -->
     <div class="detail-card">
         <div class="section-title"><i class="bi bi-graph-up"></i> Indicateurs de Suivi</div>
-
-        <div class="kpi-grid">
-            {{-- Jours prévus --}}
-            <div class="kpi-box neutral">
-                <div class="kpi-label">Jours Prévus</div>
-                <div class="kpi-value">{{ $projet->jours_prevus }}</div>
-                <div class="kpi-sub">Budget initial</div>
-            </div>
-
-            {{-- Jours réalisés — AUTO Σ J.Interv --}}
-            <div class="kpi-box blue">
-                <div class="kpi-label">Jours Réalisés</div>
-                <div class="kpi-value blue">{{ $joursRealisesCalc }}</div>
-                <div>
-                    <span class="kpi-auto-tag blue"><i class="bi bi-calculator"></i> Σ J. Intervention</span>
+        <div class="row g-3">
+            <div class="col-md-3 col-6">
+                <div class="kpi-box">
+                    <div class="kpi-label">Jours Prévus</div>
+                    <div class="kpi-value">{{ $projet->jours_prevus }}</div>
                 </div>
             </div>
-
-            {{-- Consommation --}}
-            @php $consoColor = $conso > 100 ? 'red' : ($conso >= 80 ? 'blue' : 'green'); @endphp
-            <div class="kpi-box {{ $consoColor }}">
-                <div class="kpi-label">Consommation</div>
-                <div class="kpi-value {{ $consoColor }}">{{ $conso }}%</div>
-                <div class="kpi-sub">{{ $conso > 100 ? 'Dépassement' : 'Dans les limites' }}</div>
+            <div class="col-md-3 col-6">
+                <div class="kpi-box">
+                    <div class="kpi-label">Jours Réalisés</div>
+                    <div class="kpi-value">{{ $projet->jours_realises }}</div>
+                </div>
             </div>
-
-            {{-- Avancement — AUTO AVG Av.% --}}
-            <div class="kpi-box purple">
-                <div class="kpi-label">Avancement Global</div>
-                <div class="kpi-value purple">{{ $avancementCalc }}%</div>
-                <div>
-                    <span class="kpi-auto-tag purple"><i class="bi bi-bar-chart"></i> Moy. chapitres</span>
+            <div class="col-md-3 col-6">
+                <div class="kpi-box">
+                    <div class="kpi-label">Consommation</div>
+                    <div class="kpi-value">{{ $conso }}%</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="kpi-box">
+                    <div class="kpi-label">Écart</div>
+                    @php $ecart = $projet->jours_realises - $projet->jours_prevus; @endphp
+                    <div class="kpi-value" style="color:{{ $ecart >= 0 ? '#10b981' : '#ef4444' }};">
+                        {{ $ecart > 0 ? '+' : '' }}{{ $ecart }}
+                    </div>
                 </div>
             </div>
         </div>
-
-        {{-- Progress bars --}}
-        <div class="prog-section">
-            <div class="prog-row" style="margin-bottom:.5rem;">
-                <span class="prog-label"><i class="bi bi-clock-fill" style="color:#3b82f6;"></i> Consommation des jours</span>
-                <span class="prog-val" style="color:#3b82f6;">{{ $joursRealisesCalc }} / {{ $projet->jours_prevus }} j.</span>
-            </div>
-            <div class="prog-bg mb-3">
-                <div class="prog-fill fill-blue" style="width:{{ min($conso,100) }}%"></div>
-            </div>
-
-            <div class="prog-row" style="margin-bottom:.5rem;">
-                <span class="prog-label"><i class="bi bi-bar-chart-fill" style="color:var(--accent2);"></i> Avancement global</span>
-                <span class="prog-val" style="color:var(--accent2);">{{ $avancementCalc }}%</span>
+        <div class="mt-3">
+            <div class="d-flex justify-content-between" style="font-size:.85rem; margin-bottom:.4rem;">
+                <span style="color:var(--text2); font-weight:500;">Avancement global</span>
+                <span style="font-weight:700; color:var(--text);">{{ $projet->avancement_percent }}%</span>
             </div>
             <div class="prog-bg">
-                <div class="prog-fill fill-purple" style="width:{{ $avancementCalc }}%"></div>
+                <div class="prog-fill" style="width:{{ $projet->avancement_percent }}%"></div>
             </div>
         </div>
-
-        {{-- Écart --}}
-        @if($ecart != 0)
-        <div style="margin-top:1rem; padding:.75rem 1rem; border-radius:12px; background:{{ $ecart > 0 ? 'rgba(239,68,68,.08)' : 'rgba(16,185,129,.08)' }}; border:1px solid {{ $ecart > 0 ? 'rgba(239,68,68,.2)' : 'rgba(16,185,129,.2)' }}; display:flex; align-items:center; gap:.5rem; font-size:.84rem;">
-            <i class="bi bi-{{ $ecart > 0 ? 'exclamation-triangle-fill' : 'check-circle-fill' }}" style="color:{{ $ecart > 0 ? '#ef4444' : '#10b981' }};"></i>
-            <span style="color:var(--text2);">Écart :</span>
-            <strong style="color:{{ $ecart > 0 ? '#ef4444' : '#10b981' }};">{{ $ecart > 0 ? '+' : '' }}{{ $ecart }} jours</strong>
-            <span style="color:var(--muted);">— {{ $ecart > 0 ? 'Dépassement du budget' : 'En avance sur le planning' }}</span>
-        </div>
-        @endif
     </div>
 
-    {{-- Exigences SMI --}}
+    <!-- Exigences SMI -->
     @if(count($chapitres))
     <div class="exig-card">
         <div class="exig-title"><i class="bi bi-list-check"></i> Exigences Clés SMI</div>
@@ -313,14 +309,14 @@ $ganttCount = DB::table('gantt_taches')->where('projet_id', $id)->count();
             <span class="exig-chap">{{ $chap->code_chapitre }}</span>
             <span class="exig-titre"> — {{ $chap->titre_chapitre }}</span>
             @if($chap->exigences_cles)
-            <div class="exig-content">{!! nl2br(e($chap->exigences_cles)) !!}</div>
+            <div class="exig-content mt-1">{!! nl2br(e($chap->exigences_cles)) !!}</div>
             @endif
         </div>
         @endforeach
     </div>
     @endif
 
-    {{-- Chapitres SMI --}}
+    <!-- Chapitres SMI -->
     <div class="detail-card">
         <div class="section-title"><i class="bi bi-journal-check"></i> Suivi des Chapitres SMI</div>
         <div class="table-responsive">
@@ -331,7 +327,6 @@ $ganttCount = DB::table('gantt_taches')->where('projet_id', $id)->count();
                         <th class="text-center th-av">Av. %</th>
                         <th>Phase</th>
                         <th class="text-center th-jours">J. Interv.</th>
-                        <th>Livrables</th>
                         <th>Observations</th>
                     </tr>
                 </thead>
@@ -339,55 +334,118 @@ $ganttCount = DB::table('gantt_taches')->where('projet_id', $id)->count();
                     @foreach($chapitres as $chap)
                     @php
                         $phaseClass = match($chap->phase) {
-                            '✅ Terminé'  => 'phase-done',
-                            '🔄 En cours' => 'phase-inprog',
-                            '⏳ Démarré'  => 'phase-started',
-                            default       => 'phase-none'
+                            '✅ Terminé'   => 'phase-done',
+                            '🔄 En cours'  => 'phase-inprog',
+                            '⏳ Démarré'   => 'phase-started',
+                            default        => 'phase-none'
                         };
                     @endphp
                     <tr>
-                        <td>
-                            <strong style="color:var(--accent);">{{ $chap->code_chapitre }}</strong>
-                            <span style="color:var(--muted);"> — {{ $chap->titre_chapitre }}</span>
-                        </td>
+                        <td><strong style="color:var(--accent);">{{ $chap->code_chapitre }}</strong> <span style="color:var(--muted);">— {{ $chap->titre_chapitre }}</span></td>
                         <td class="td-av">{{ $chap->avancement_percent }}%</td>
                         <td><span class="{{ $phaseClass }}">{{ $chap->phase }}</span></td>
                         <td class="td-jours">{{ $chap->jours_intervention }}</td>
-                        <td style="color:var(--text2); font-size:.81rem;">{{ Str::limit($chap->statut_livrables ?? '—', 50) }}</td>
-                        <td style="color:var(--muted); font-size:.8rem;">{{ Str::limit($chap->observations ?? '—', 30) }}</td>
+                        <td style="color:var(--muted); font-size:.8rem;">{{ Str::limit($chap->observations ?? '—', 40) }}</td>
                     </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="1" style="text-align:right; color:var(--muted); font-size:.77rem; font-weight:500;">
-                            <i class="bi bi-calculator me-1"></i> Résultats →
-                        </td>
-                        <td class="foot-av">
-                            {{ $avancementCalc }}%
-                            <div class="foot-note">moyenne</div>
-                        </td>
+                        <td colspan="1" style="text-align:right; color:var(--muted); font-size:.77rem; font-weight:500;"><i class="bi bi-calculator me-1"></i> Résultats →</td>
+                        <td class="foot-av">{{ $avancementCalc }}%<div class="foot-note">moyenne</div></td>
                         <td style="background:var(--surface2);"></td>
-                        <td class="foot-jours">
-                            {{ $joursRealisesCalc }}
-                            <div class="foot-note">total j.</div>
-                        </td>
-                        <td colspan="2" style="background:var(--surface2);"></td>
+                        <td class="foot-jours">{{ $joursRealisesCalc }}<div class="foot-note">total j.</div></td>
+                        <td style="background:var(--surface2);"></td>
                     </tr>
                 </tfoot>
             </table>
         </div>
-
-        <div style="margin-top:1.2rem; padding-top:1rem; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem;">
-            <span style="font-size:.82rem; color:var(--text2); font-weight:600; display:flex; align-items:center; gap:.4rem;">
-                <i class="bi bi-check-circle-fill" style="color:#10b981;"></i>
-                Chapitres terminés
+        <div style="margin-top:1.2rem; padding-top:1rem; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:.82rem; font-weight:600; color:var(--text2); display:flex; align-items:center; gap:.4rem;">
+                <i class="bi bi-check-circle-fill" style="color:#10b981;"></i> Chapitres terminés
             </span>
             <span style="font-size:.9rem; font-weight:700; color:var(--text);">{{ $doneChap }} / {{ $totalChap }}</span>
         </div>
     </div>
 
-    {{-- Consultants + Formations --}}
+    <!-- ══ LIVRABLES SMI ══ -->
+    @if(count($livrablesByChap))
+    <div class="detail-card">
+        <div class="section-title">
+            <i class="bi bi-list-check"></i> Livrables SMI
+            @php
+                $totalLiv   = collect($livrablesByChap)->sum('total');
+                $terminesLiv = collect($livrablesByChap)->sum('termines');
+                $pctLiv     = $totalLiv > 0 ? round(($terminesLiv / $totalLiv) * 100) : 0;
+            @endphp
+            <span style="margin-left:auto; font-size:.75rem; font-weight:500; color:var(--muted); display:flex; align-items:center; gap:.5rem;">
+                <span style="color:#10b981; font-weight:700;">{{ $terminesLiv }}</span> / {{ $totalLiv }} terminés
+                <span style="background:rgba(16,185,129,.12); color:#10b981; padding:.15rem .6rem; border-radius:50px; font-weight:700; font-size:.72rem;">{{ $pctLiv }}%</span>
+            </span>
+        </div>
+
+        @php
+            $chapOrder = ['§4','§5','§6','§7','§8','§9','§10','Transversal'];
+            $chapTitres = [
+                '§4'          => 'Contexte de l\'organisme',
+                '§5'          => 'Leadership & Engagement',
+                '§6'          => 'Planification',
+                '§7'          => 'Support',
+                '§8'          => 'Réalisation des opérations',
+                '§9'          => 'Évaluation des performances',
+                '§10'         => 'Amélioration',
+                'Transversal' => 'Documents Transversaux',
+            ];
+        @endphp
+
+        @foreach($chapOrder as $chapCode)
+        @if(isset($livrablesByChap[$chapCode]))
+        @php
+            $chapData = $livrablesByChap[$chapCode];
+            $pct = $chapData['total'] > 0 ? round(($chapData['termines'] / $chapData['total']) * 100) : 0;
+            $badgeClass = $pct === 100 ? 'done' : ($pct > 0 ? 'partial' : 'none');
+            $badgeLabel = $pct === 100 ? '✅ Terminé' : ($pct > 0 ? '🔄 En cours' : '⬜ Planifié');
+            $accordionId = 'acc-' . str_replace(['§', ' '], ['s', '-'], $chapCode);
+        @endphp
+        <div class="liv-accordion">
+            <div class="liv-header" onclick="toggleAcc('{{ $accordionId }}')" id="hdr-{{ $accordionId }}">
+                <span class="liv-chap-code">{{ $chapCode }}</span>
+                <span class="liv-chap-titre">{{ $chapTitres[$chapCode] ?? $chapCode }}</span>
+                <span class="liv-counter">
+                    <i class="bi bi-file-earmark-check"></i>
+                    {{ $chapData['termines'] }} / {{ $chapData['total'] }} livrables
+                </span>
+                <div class="liv-prog-wrap">
+                    <div class="liv-prog-bg">
+                        <div class="liv-prog-fill" style="width:{{ $pct }}%"></div>
+                    </div>
+                </div>
+                <span class="liv-badge-statut {{ $badgeClass }}">{{ $badgeLabel }}</span>
+                <i class="bi bi-chevron-down liv-arrow"></i>
+            </div>
+            <div class="liv-body" id="{{ $accordionId }}">
+                @foreach($chapData['items'] as $liv)
+                <div class="liv-row" id="liv-row-{{ $liv->id }}">
+                    <span class="liv-clause">{{ $liv->clause ?: '—' }}</span>
+                    <span class="liv-libelle">{{ $liv->libelle }}</span>
+                    @php
+                        $badgeStatut = match($liv->statut) {
+                            'Terminé'  => ['class' => 'done',    'label' => '✅ Terminé'],
+                            'En cours' => ['class' => 'partial', 'label' => '🔄 En cours'],
+                            default    => ['class' => 'none',    'label' => '⬜ Non commencé'],
+                        };
+                    @endphp
+                    <span class="liv-badge-statut {{ $badgeStatut['class'] }}">{{ $badgeStatut['label'] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+        @endforeach
+    </div>
+    @endif
+
+    <!-- Consultants + Formations -->
     <div class="row g-3">
         <div class="col-md-6">
             <div class="detail-card" style="height:100%;">
@@ -425,10 +483,22 @@ $ganttCount = DB::table('gantt_taches')->where('projet_id', $id)->count();
             <div class="detail-card" style="height:100%;">
                 <div class="section-title"><i class="bi bi-mortarboard"></i> Plan de Formation</div>
                 <table class="table-pro">
-                    <thead><tr><th>Formation</th><th>Statut</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>Formation</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         @foreach($formations as $f)
-                        @php $fClass = match($f->statut) { 'Finalisée'=>'phase-done','Réalisée'=>'phase-inprog','En cours'=>'phase-started', default=>'phase-none' }; @endphp
+                        @php
+                            $fClass = match($f->statut) {
+                                'Finalisée'  => 'phase-done',
+                                'Réalisée'   => 'phase-inprog',
+                                'En cours'   => 'phase-started',
+                                default      => 'phase-none'
+                            };
+                        @endphp
                         <tr>
                             <td>{{ $f->titre_formation }}</td>
                             <td><span class="{{ $fClass }}">{{ $f->statut }}</span></td>
@@ -440,28 +510,31 @@ $ganttCount = DB::table('gantt_taches')->where('projet_id', $id)->count();
         </div>
     </div>
 
-    {{-- Blocage & Commentaire --}}
+    <!-- Blocage & Commentaire -->
     @if(($projet->blocage && $projet->blocage != 'RAS') || $projet->commentaire)
     <div class="detail-card mt-3">
         <div class="section-title"><i class="bi bi-exclamation-triangle"></i> Points d'attention</div>
         @if($projet->blocage && $projet->blocage != 'RAS')
         <div class="alert alert-danger" style="border-radius:12px; font-size:.88rem;">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i><strong>Blocage :</strong> {{ $projet->blocage }}
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <strong>Blocage :</strong> {{ $projet->blocage }}
         </div>
         @endif
         @if($projet->commentaire)
         <div class="alert alert-info" style="border-radius:12px; font-size:.88rem;">
-            <i class="bi bi-chat-fill me-2"></i><strong>Commentaire :</strong> {{ $projet->commentaire }}
+            <i class="bi bi-chat-fill me-2"></i>
+            <strong>Commentaire :</strong> {{ $projet->commentaire }}
         </div>
         @endif
     </div>
     @endif
 
-    {{-- Actions --}}
+    <!-- Actions — avec bouton Gantt -->
     <div class="d-flex justify-content-end gap-3 mb-5">
         <a href="{{ url('/') }}" class="btn btn-secondary" style="border-radius:11px;">
             <i class="bi bi-arrow-left me-1"></i> Retour
         </a>
+        {{-- BOUTON GANTT — NOUVEAU --}}
         <a href="/projet/{{ $projet->id }}/gantt" class="btn btn-success" style="border-radius:11px;">
             <i class="bi bi-bar-chart-steps me-1"></i> Planning Gantt
             @if($ganttCount > 0)
@@ -478,6 +551,7 @@ $ganttCount = DB::table('gantt_taches')->where('projet_id', $id)->count();
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+/* ── Theme ── */
 (function() {
     const t = localStorage.getItem('lmc-theme') || 'light';
     document.documentElement.setAttribute('data-theme', t);
@@ -489,6 +563,14 @@ document.getElementById('themeToggle').addEventListener('click', () => {
     localStorage.setItem('lmc-theme', next);
     document.getElementById('themeIcon').className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
 });
+
+/* ── Accordion ── */
+function toggleAcc(id) {
+    const body = document.getElementById(id);
+    const hdr  = document.getElementById('hdr-' + id);
+    body.classList.toggle('open');
+    hdr.classList.toggle('open');
+}
 </script>
 </body>
 </html>

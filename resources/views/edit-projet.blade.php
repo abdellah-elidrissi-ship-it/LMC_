@@ -61,27 +61,13 @@
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button { -webkit-appearance:none; }
 
-        /* ── Auto-calc fields ── */
-        .form-control.auto-blue {
-            background:rgba(59,130,246,.06) !important;
-            border:1.5px dashed #3b82f6 !important;
-            color:#3b82f6 !important;
-            font-weight:700 !important;
-            cursor:not-allowed !important;
-        }
-        .form-control.auto-purple {
-            background:rgba(139,92,246,.06) !important;
-            border:1.5px dashed #8b5cf6 !important;
-            color:var(--accent2) !important;
-            font-weight:700 !important;
-            cursor:not-allowed !important;
-        }
+        .form-control.auto-blue { background:rgba(59,130,246,.06) !important; border:1.5px dashed #3b82f6 !important; color:#3b82f6 !important; font-weight:700 !important; cursor:not-allowed !important; }
+        .form-control.auto-purple { background:rgba(139,92,246,.06) !important; border:1.5px dashed #8b5cf6 !important; color:var(--accent2) !important; font-weight:700 !important; cursor:not-allowed !important; }
         .badge-auto { display:inline-flex; align-items:center; gap:.25rem; font-size:.67rem; font-weight:600; padding:.12rem .5rem; border-radius:50px; }
-        .badge-auto.blue  { background:rgba(59,130,246,.1);  color:#3b82f6; }
+        .badge-auto.blue  { background:rgba(59,130,246,.1); color:#3b82f6; }
         .badge-auto.purple{ background:rgba(139,92,246,.1); color:var(--accent2); }
         .auto-tag { display:inline-flex; align-items:center; gap:.28rem; font-size:.7rem; font-weight:500; color:var(--muted); margin-top:.3rem; }
 
-        /* ── Mini progress inside indicateurs ── */
         .mini-prog { margin-top:.6rem; }
         .mini-prog-row { display:flex; justify-content:space-between; font-size:.71rem; color:var(--muted); margin-bottom:.3rem; }
         .mini-prog-bar { height:4px; background:var(--border); border-radius:50px; overflow:hidden; }
@@ -89,62 +75,69 @@
         .fill-blue   { background:linear-gradient(90deg,#3b82f6,#60a5fa); }
         .fill-purple { background:linear-gradient(90deg,#8b5cf6,#a78bfa); }
 
-        /* ── Buttons ── */
         .btn-main { background:var(--btn-primary-bg); color:white; border:none; border-radius:11px; padding:.7rem 1.8rem; font-weight:600; font-size:.88rem; cursor:pointer; transition:all .2s; display:inline-flex; align-items:center; gap:.4rem; }
         .btn-main:hover { background:var(--btn-primary-hover); transform:translateY(-1px); }
         .btn-cancel { background:var(--surface); color:var(--text2); border:1.5px solid var(--border); border-radius:11px; padding:.7rem 1.8rem; font-weight:600; font-size:.88rem; text-decoration:none; transition:all .2s; display:inline-flex; align-items:center; gap:.4rem; }
         .btn-cancel:hover { background:var(--surface2); color:var(--text); }
 
-        /* ── Consultant rows ── */
         .cons-row { background:var(--cons-row-bg); border:1px solid var(--border); border-left:3px solid var(--cons-row-border); border-radius:12px; padding:1rem; margin-bottom:.7rem; }
         .add-section { background:var(--add-section-bg); border:1px dashed var(--border); border-radius:14px; padding:1.2rem; margin-top:1.2rem; }
         .add-section h6 { color:var(--text2); font-size:.85rem; font-weight:600; margin-bottom:.9rem; }
 
-        /* ── SMI Table ── */
         .table-smi { width:100%; border-collapse:collapse; font-size:.82rem; }
-        .table-smi thead th {
-            padding:.65rem .8rem; font-size:.71rem; font-weight:700;
-            text-transform:uppercase; letter-spacing:.05em;
-            background:var(--surface2); color:var(--muted);
-            border-bottom:2px solid var(--border);
-            border-right:1px solid var(--border);
-        }
+        .table-smi thead th { padding:.65rem .8rem; font-size:.71rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; background:var(--surface2); color:var(--muted); border-bottom:2px solid var(--border); border-right:1px solid var(--border); }
         .table-smi thead th:last-child { border-right:none; }
-        .table-smi tbody td {
-            padding:.55rem .75rem; border-bottom:1px solid var(--border);
-            border-right:1px solid var(--border); vertical-align:middle;
-        }
+        .table-smi tbody td { padding:.55rem .75rem; border-bottom:1px solid var(--border); border-right:1px solid var(--border); vertical-align:middle; }
         .table-smi tbody td:last-child { border-right:none; }
         .table-smi tbody tr:hover td { background:rgba(59,130,246,.02); }
-        .table-smi tfoot td {
-            padding:.65rem .75rem; font-weight:700;
-            border-top:2px solid var(--border);
-            border-right:1px solid var(--border);
-            background:var(--surface2);
-        }
+        .table-smi tfoot td { padding:.65rem .75rem; font-weight:700; border-top:2px solid var(--border); border-right:1px solid var(--border); background:var(--surface2); }
         .table-smi tfoot td:last-child { border-right:none; }
-
-        .th-jours  { background:rgba(59,130,246,.08) !important; color:#3b82f6 !important; }
-        .th-av     { background:rgba(139,92,246,.08) !important; color:var(--accent2) !important; }
+        .th-jours { background:rgba(59,130,246,.08) !important; color:#3b82f6 !important; }
+        .th-av    { background:rgba(139,92,246,.08) !important; color:var(--accent2) !important; }
         .col-jours { background:rgba(59,130,246,.03); }
         .col-av    { background:rgba(139,92,246,.03); }
-
         .smi-num { border-radius:8px !important; padding:.35rem .5rem !important; text-align:center; font-size:.82rem; }
-        .smi-jours:focus { border-color:var(--accent) !important; }
-        .smi-av:focus    { border-color:var(--accent2) !important; }
         [data-theme="light"] .smi-jours { border-color:rgba(59,130,246,.3) !important; }
         [data-theme="light"] .smi-av    { border-color:rgba(139,92,246,.3) !important; }
         [data-theme="dark"]  .smi-jours { border-color:rgba(59,130,246,.4) !important; }
         [data-theme="dark"]  .smi-av    { border-color:rgba(139,92,246,.4) !important; }
-
         .foot-blue   { color:#3b82f6; text-align:center; font-size:.95rem; }
         .foot-purple { color:var(--accent2); text-align:center; font-size:.95rem; }
         .foot-sub { font-size:.63rem; color:var(--muted); font-weight:400; margin-top:.15rem; }
 
-        /* ── Other ── */
+        /* ══ LIVRABLES ══ */
+        .liv-section { margin-top:1.4rem; padding-top:1.2rem; border-top:2px dashed var(--border); }
+        .liv-section-title { font-size:.85rem; font-weight:700; color:var(--text2); margin-bottom:.9rem; display:flex; align-items:center; gap:.5rem; }
+        .liv-accordion { border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:.6rem; }
+        .liv-header { display:flex; align-items:center; gap:.75rem; padding:.75rem 1rem; cursor:pointer; background:var(--surface2); border-bottom:1px solid transparent; transition:background .2s; user-select:none; }
+        .liv-header:hover { background:rgba(59,130,246,.05); }
+        .liv-header.open { border-bottom:1px solid var(--border); background:var(--surface); }
+        .liv-chap-code { font-size:.88rem; font-weight:700; color:var(--accent); min-width:38px; }
+        .liv-chap-titre { font-size:.8rem; font-weight:600; color:var(--text); flex:1; }
+        .liv-counter { font-size:.72rem; color:var(--muted); display:flex; align-items:center; gap:.35rem; }
+        .liv-prog-wrap { width:90px; }
+        .liv-prog-bg { height:4px; background:var(--border); border-radius:50px; overflow:hidden; }
+        .liv-prog-fill { height:100%; border-radius:50px; background:linear-gradient(90deg,#10b981,#34d399); transition:width .35s; }
+        .liv-badge-statut { font-size:.68rem; font-weight:600; padding:.18rem .6rem; border-radius:50px; }
+        .liv-badge-statut.done    { background:rgba(16,185,129,.15); color:#10b981; }
+        .liv-badge-statut.partial { background:rgba(251,191,36,.15);  color:#f59e0b; }
+        .liv-badge-statut.none    { background:rgba(148,163,184,.15); color:#94a3b8; }
+        .liv-arrow { color:var(--muted); font-size:.75rem; transition:transform .25s; }
+        .liv-header.open .liv-arrow { transform:rotate(180deg); }
+        .liv-body { display:none; }
+        .liv-body.open { display:block; }
+        .liv-row { display:grid; grid-template-columns:65px 1fr 165px; align-items:center; gap:.7rem; padding:.55rem 1rem; border-bottom:1px solid var(--border); transition:background .15s; }
+        .liv-row:last-child { border-bottom:none; }
+        .liv-row:hover { background:rgba(59,130,246,.03); }
+        .liv-clause { font-size:.72rem; font-weight:600; color:var(--accent); }
+        .liv-libelle { font-size:.8rem; color:var(--text2); line-height:1.4; }
+        .liv-statut-select { font-size:.75rem; font-weight:600; padding:.3rem .75rem; border-radius:50px; border:1.5px solid var(--border); background:var(--surface2); color:var(--text); cursor:pointer; outline:none; transition:border-color .2s,background .2s; width:100%; }
+        .liv-statut-select.s-nc { border-color:rgba(148,163,184,.4); color:#94a3b8; }
+        .liv-statut-select.s-ec { border-color:rgba(251,191,36,.5); color:#f59e0b; background:rgba(251,191,36,.06) !important; }
+        .liv-statut-select.s-ok { border-color:rgba(16,185,129,.5); color:#10b981; background:rgba(16,185,129,.06) !important; }
+
         .table-bordered { border-color:var(--border) !important; }
         .table-bordered td, .table-bordered th { border-color:var(--border) !important; color:var(--text); }
-        thead.table-dark th { background:#1e293b !important; color:#94a3b8 !important; border-color:#334155 !important; font-size:.78rem; }
         .form-check-input:checked { background-color:var(--accent); border-color:var(--accent); }
         .form-check-label { color:var(--text2); font-size:.85rem; }
         .alert-float { position:fixed; top:20px; right:20px; z-index:9999; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,.15); min-width:300px; font-size:.88rem; }
@@ -169,6 +162,39 @@
 </div>
 @endif
 
+@php
+use Illuminate\Support\Facades\DB;
+$livrableRows = DB::select("
+    SELECT ls.id, ls.chapitre_code, ls.clause, ls.libelle, ls.ordre,
+           COALESCE(pl.statut, 'Non commencé') as statut
+    FROM livrables_smi ls
+    LEFT JOIN projet_livrables pl ON pl.livrable_id = ls.id AND pl.projet_id = ?
+    ORDER BY ls.ordre ASC
+", [$projet->id]);
+
+$livrablesByChap = [];
+foreach ($livrableRows as $lrow) {
+    $chap = $lrow->chapitre_code;
+    if (!isset($livrablesByChap[$chap])) {
+        $livrablesByChap[$chap] = ['items' => [], 'total' => 0, 'termines' => 0];
+    }
+    $livrablesByChap[$chap]['items'][] = $lrow;
+    $livrablesByChap[$chap]['total']++;
+    if ($lrow->statut === 'Terminé') $livrablesByChap[$chap]['termines']++;
+}
+$chapOrder  = ['§4','§5','§6','§7','§8','§9','§10','Transversal'];
+$chapTitres = [
+    '§4'          => 'Contexte',
+    '§5'          => 'Leadership',
+    '§6'          => 'Planification',
+    '§7'          => 'Support',
+    '§8'          => 'Réalisation',
+    '§9'          => 'Évaluation',
+    '§10'         => 'Amélioration',
+    'Transversal' => 'Transversaux',
+];
+@endphp
+
 <div class="site-header">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
@@ -185,7 +211,8 @@
             <a href="/" class="nav-item"><i class="bi bi-table"></i> Données</a>
             <a href="/tableau-de-bord" class="nav-item"><i class="bi bi-bar-chart"></i> Tableau de Bord</a>
             <a href="/consultants" class="nav-item"><i class="bi bi-people"></i> Consultants</a>
-            <a href="{{ route('projet.details', $projet->id) }}" class="nav-item active"><i class="bi bi-eye"></i> Détails</a>
+            <a href="{{ route('projet.details', $projet->id) }}" class="nav-item"><i class="bi bi-eye"></i> Détails</a>
+            <a href="#" class="nav-item active"><i class="bi bi-pencil"></i> Modifier</a>
         </div>
     </div>
 </div>
@@ -225,7 +252,7 @@
         </div>
         <div class="col-md-6">
             <label class="form-label">Secteur d'activité</label>
-            <input type="text" class="form-control" name="secteur_activite" value="{{ old('secteur_activite', $projet->client->secteur_activite ?? '') }}" placeholder="Ex: Industrie, BTP...">
+            <input type="text" class="form-control" name="secteur_activite" value="{{ old('secteur_activite', $projet->client->secteur_activite ?? '') }}">
         </div>
         <div class="col-md-6">
             <label class="form-label">Type Projet</label>
@@ -257,42 +284,37 @@
 <div class="form-card">
     <div class="section-title"><i class="bi bi-graph-up"></i> Indicateurs</div>
     <div class="row g-3 align-items-start">
-
         <div class="col-md-4">
             <label class="form-label">Jours prévus</label>
             <input type="number" class="form-control" name="jours_prevus" id="jours_prevus"
-                min="0" value="{{ old('jours_prevus', $projet->jours_prevus) }}" required
-                oninput="recalcAll()">
+                min="0" value="{{ old('jours_prevus', $projet->jours_prevus) }}" required oninput="recalcAll()">
         </div>
-
         <div class="col-md-4">
             <label class="form-label">
                 Jours réalisés
                 <span class="badge-auto blue"><i class="bi bi-lock-fill" style="font-size:.58rem;"></i> Auto</span>
             </label>
             <input type="number" class="form-control auto-blue" name="jours_realises" id="jours_realises"
-                min="0" value="{{ old('jours_realises', $projet->jours_realises) }}" required readonly>
+                min="0" value="{{ old('jours_realises', $projet->jours_realises) }}" readonly>
             <div class="auto-tag"><i class="bi bi-calculator"></i> = Σ Jours d'intervention — Section C</div>
             <div class="mini-prog">
                 <div class="mini-prog-row"><span>Consommation</span><span id="consoLabel">—</span></div>
                 <div class="mini-prog-bar"><div class="mini-prog-fill fill-blue" id="consoBar" style="width:0%"></div></div>
             </div>
         </div>
-
         <div class="col-md-4">
             <label class="form-label">
                 Avancement %
                 <span class="badge-auto purple"><i class="bi bi-lock-fill" style="font-size:.58rem;"></i> Auto</span>
             </label>
             <input type="number" class="form-control auto-purple" name="avancement_percent" id="avancement_percent"
-                min="0" max="100" value="{{ old('avancement_percent', $projet->avancement_percent) }}" required readonly>
+                min="0" max="100" value="{{ old('avancement_percent', $projet->avancement_percent) }}" readonly>
             <div class="auto-tag"><i class="bi bi-bar-chart"></i> = Moyenne Av. % chapitres — Section C</div>
             <div class="mini-prog">
                 <div class="mini-prog-row"><span>Avancement global</span><span id="avLabel">—</span></div>
                 <div class="mini-prog-bar"><div class="mini-prog-fill fill-purple" id="avBar" style="width:0%"></div></div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -334,10 +356,10 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <input type="number" class="form-control form-control-sm" name="consultants[{{ $aff->consultant_id }}][jours_alloues]" min="0" step="0.1" value="{{ $aff->jours_alloues }}" placeholder="Alloués">
+                    <input type="number" class="form-control form-control-sm" name="consultants[{{ $aff->consultant_id }}][jours_alloues]" min="0" step="0.1" value="{{ $aff->jours_alloues }}">
                 </div>
                 <div class="col-md-2">
-                    <input type="number" class="form-control form-control-sm" name="consultants[{{ $aff->consultant_id }}][jours_realises]" min="0" step="0.1" value="{{ $aff->jours_realises }}" placeholder="Réalisés">
+                    <input type="number" class="form-control form-control-sm" name="consultants[{{ $aff->consultant_id }}][jours_realises]" min="0" step="0.1" value="{{ $aff->jours_realises }}">
                 </div>
                 <div class="col-md-1 text-center"><span class="badge bg-info">{{ $charge }}%</span></div>
                 <div class="col-md-2 text-center">
@@ -368,10 +390,10 @@
             <div class="col-md-2">
                 <label class="form-label">Rôle</label>
                 <select class="form-select" id="existingConsultantRole">
-                    <option value="Chef de Projet">Chef de Projet</option>
-                    <option value="Consultant" selected>Consultant</option>
-                    <option value="Consultant Ext.">Consultant Ext.</option>
-                    <option value="Expert">Expert</option>
+                    <option>Chef de Projet</option>
+                    <option selected>Consultant</option>
+                    <option>Consultant Ext.</option>
+                    <option>Expert</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -391,7 +413,7 @@
     </div>
 </div>
 
-{{-- C — CHAPITRES SMI --}}
+{{-- C — CHAPITRES SMI + LIVRABLES --}}
 <div class="form-card">
     <div class="section-title">
         <i class="bi bi-journal-check"></i> C — Planification par chapitre SMI
@@ -403,20 +425,16 @@
             <span style="color:var(--accent2); font-weight:600;">Av. %</span> → Avancement global
         </span>
     </div>
+
     <div class="table-responsive">
-        <table class="table-smi" style="min-width:1150px;">
+        <table class="table-smi" style="min-width:900px;">
             <thead>
                 <tr>
-                    <th style="width:12%;">Chapitre</th>
-                    <th style="width:18%;">Exigences Clés</th>
-                    <th style="width:18%;">Livrables</th>
-                    <th class="th-av" style="width:7%;">
-                        <i class="bi bi-bar-chart-fill me-1"></i>Av. %
-                    </th>
-                    <th style="width:11%;">Phase</th>
-                    <th class="th-jours" style="width:8%;">
-                        <i class="bi bi-clock-fill me-1"></i>J. Interv.
-                    </th>
+                    <th style="width:14%;">Chapitre</th>
+                    <th style="width:22%;">Exigences Clés</th>
+                    <th class="th-av" style="width:7%;"><i class="bi bi-bar-chart-fill me-1"></i>Av. %</th>
+                    <th style="width:13%;">Phase</th>
+                    <th class="th-jours" style="width:8%;"><i class="bi bi-clock-fill me-1"></i>J. Interv.</th>
                     <th>Observations</th>
                 </tr>
             </thead>
@@ -430,10 +448,7 @@
                         <input type="hidden" name="chapitres[{{ $index }}][chapitre_id]" value="{{ $chap->chapitre_id }}">
                     </td>
                     <td>
-                        <textarea class="form-control form-control-sm" name="chapitres[{{ $index }}][exigences_cles]" rows="3" readonly>{{ $chap->chapitre->exigences_cles }}</textarea>
-                    </td>
-                    <td>
-                        <textarea class="form-control form-control-sm" name="chapitres[{{ $index }}][livrables]" rows="3">{{ $chap->statut_livrables }}</textarea>
+                        <textarea class="form-control form-control-sm" rows="3" readonly>{{ $chap->chapitre->exigences_cles }}</textarea>
                     </td>
                     <td class="col-av">
                         <input type="number" class="form-control smi-num smi-av"
@@ -462,8 +477,8 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3" style="text-align:right; color:var(--muted); font-size:.77rem; font-weight:500;">
-                        <i class="bi bi-calculator me-1"></i> Résultats calculés →
+                    <td colspan="2" style="text-align:right; color:var(--muted); font-size:.77rem; font-weight:500;">
+                        <i class="bi bi-calculator me-1"></i> Résultats →
                     </td>
                     <td class="foot-purple col-av">
                         <span id="footAvancement">{{ $projet->avancement_percent }}</span>%
@@ -479,7 +494,78 @@
             </tfoot>
         </table>
     </div>
-</div>
+
+    {{-- ══ LIVRABLES SMI ══ --}}
+    @if(count($livrablesByChap))
+    <div class="liv-section">
+        <div class="liv-section-title">
+            <i class="bi bi-list-check" style="color:var(--accent);"></i>
+            Livrables SMI
+            @php
+                $totalLiv    = collect($livrablesByChap)->sum('total');
+                $terminesLiv = collect($livrablesByChap)->sum('termines');
+                $pctLiv      = $totalLiv > 0 ? round(($terminesLiv / $totalLiv) * 100) : 0;
+            @endphp
+            <span style="margin-left:auto; font-size:.72rem; color:var(--muted); display:flex; align-items:center; gap:.5rem;">
+                <span style="color:#10b981; font-weight:700;">{{ $terminesLiv }}</span> / {{ $totalLiv }} terminés
+                <span style="background:rgba(16,185,129,.12); color:#10b981; padding:.12rem .55rem; border-radius:50px; font-weight:700; font-size:.7rem;">{{ $pctLiv }}%</span>
+            </span>
+        </div>
+
+        @foreach($chapOrder as $chapCode)
+        @if(isset($livrablesByChap[$chapCode]))
+        @php
+            $chapData   = $livrablesByChap[$chapCode];
+            $pct        = $chapData['total'] > 0 ? round(($chapData['termines'] / $chapData['total']) * 100) : 0;
+            $badgeClass = $pct === 100 ? 'done' : ($pct > 0 ? 'partial' : 'none');
+            $badgeLabel = $pct === 100 ? '✅ Terminé' : ($pct > 0 ? '🔄 En cours' : '⬜ Planifié');
+            $accId      = 'eacc-' . str_replace(['§',' '],['s','-'], $chapCode);
+        @endphp
+        <div class="liv-accordion">
+            <div class="liv-header" onclick="toggleAcc('{{ $accId }}')" id="hdr-{{ $accId }}">
+                <span class="liv-chap-code">{{ $chapCode }}</span>
+                <span class="liv-chap-titre">{{ $chapTitres[$chapCode] ?? $chapCode }}</span>
+                <span class="liv-counter">
+                    <i class="bi bi-file-earmark-check"></i>
+                    {{ $chapData['termines'] }} / {{ $chapData['total'] }}
+                </span>
+                <div class="liv-prog-wrap">
+                    <div class="liv-prog-bg">
+                        <div class="liv-prog-fill" style="width:{{ $pct }}%"></div>
+                    </div>
+                </div>
+                <span class="liv-badge-statut {{ $badgeClass }}">{{ $badgeLabel }}</span>
+                <i class="bi bi-chevron-down liv-arrow"></i>
+            </div>
+            <div class="liv-body" id="{{ $accId }}">
+                @foreach($chapData['items'] as $liv)
+                @php
+                    $selClass = match($liv->statut) {
+                        'Terminé'     => 's-ok',
+                        'En cours'    => 's-ec',
+                        default       => 's-nc',
+                    };
+                @endphp
+                <div class="liv-row">
+                    <span class="liv-clause">{{ $liv->clause ?: '—' }}</span>
+                    <span class="liv-libelle">{{ $liv->libelle }}</span>
+                    <select class="liv-statut-select {{ $selClass }}"
+                            name="livrables[{{ $liv->id }}]"
+                            onchange="onLivChange(this, '{{ $accId }}')">
+                        <option value="Non commencé" {{ $liv->statut === 'Non commencé' ? 'selected' : '' }}>⬜ Non commencé</option>
+                        <option value="En cours"     {{ $liv->statut === 'En cours'     ? 'selected' : '' }}>🔄 En cours</option>
+                        <option value="Terminé"      {{ $liv->statut === 'Terminé'      ? 'selected' : '' }}>✅ Terminé</option>
+                    </select>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+        @endforeach
+    </div>
+    @endif
+
+</div>{{-- fin Section C --}}
 
 {{-- D — FORMATIONS --}}
 <div class="form-card">
@@ -547,7 +633,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* ─── Theme ─── */
+/* ── Theme ── */
 (function() {
     const t = localStorage.getItem('lmc-theme') || 'light';
     document.documentElement.setAttribute('data-theme', t);
@@ -560,43 +646,66 @@ document.getElementById('themeToggle').addEventListener('click', () => {
     document.getElementById('themeIcon').className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
 });
 
-/* ══════════════════════════════════════════════════════
-   RECALC — Jours réalisés = Σ J.Interv  |  Av% = AVG
-   ══════════════════════════════════════════════════════ */
+/* ── Recalc ── */
 function recalcAll() {
     const jp = parseFloat(document.getElementById('jours_prevus').value) || 0;
-
-    /* Jours réalisés */
     let totalJ = 0;
-    document.querySelectorAll('input[name^="chapitres"][name$="[jours]"]').forEach(i => {
-        totalJ += parseFloat(i.value) || 0;
-    });
+    document.querySelectorAll('input[name^="chapitres"][name$="[jours]"]').forEach(i => { totalJ += parseFloat(i.value) || 0; });
     totalJ = Math.round(totalJ * 10) / 10;
-    document.getElementById('jours_realises').value = totalJ;
-    document.getElementById('footJours').textContent  = totalJ;
+    document.getElementById('jours_realises').value    = totalJ;
+    document.getElementById('footJours').textContent   = totalJ;
     const conso = jp > 0 ? Math.round((totalJ / jp) * 100) : 0;
-    document.getElementById('consoLabel').textContent = conso + '%';
-    document.getElementById('consoBar').style.width   = Math.min(conso, 100) + '%';
+    document.getElementById('consoLabel').textContent  = conso + '%';
+    document.getElementById('consoBar').style.width    = Math.min(conso, 100) + '%';
 
-    /* Avancement % */
     const avInputs = document.querySelectorAll('input[name^="chapitres"][name$="[avancement]"]');
     let sumAv = 0, countAv = 0;
     avInputs.forEach(i => { const v = parseFloat(i.value); if (!isNaN(v)) { sumAv += v; countAv++; } });
     const avgAv = countAv > 0 ? Math.round(sumAv / countAv) : 0;
-    document.getElementById('avancement_percent').value = avgAv;
+    document.getElementById('avancement_percent').value  = avgAv;
     document.getElementById('footAvancement').textContent = avgAv;
     document.getElementById('avLabel').textContent = avgAv + '%';
     document.getElementById('avBar').style.width   = avgAv + '%';
 }
-
 document.addEventListener('DOMContentLoaded', recalcAll);
 
-/* ─── Consultants ─── */
+/* ── Accordion ── */
+function toggleAcc(id) {
+    document.getElementById(id).classList.toggle('open');
+    document.getElementById('hdr-' + id).classList.toggle('open');
+}
+
+/* ── Livrable change ── */
+function onLivChange(select, accId) {
+    select.className = 'liv-statut-select ' + ({'Terminé':'s-ok','En cours':'s-ec','Non commencé':'s-nc'}[select.value] || 's-nc');
+    updateChapCounter(accId);
+}
+
+function updateChapCounter(accId) {
+    const body = document.getElementById(accId);
+    if (!body) return;
+    const selects = body.querySelectorAll('.liv-statut-select');
+    let total = selects.length, termines = 0;
+    selects.forEach(s => { if (s.value === 'Terminé') termines++; });
+    const pct = total > 0 ? Math.round((termines / total) * 100) : 0;
+    const hdr = document.getElementById('hdr-' + accId);
+    const fill = hdr.querySelector('.liv-prog-fill');
+    if (fill) fill.style.width = pct + '%';
+    const counter = hdr.querySelector('.liv-counter');
+    if (counter) counter.innerHTML = `<i class="bi bi-file-earmark-check"></i> ${termines} / ${total}`;
+    const badge = hdr.querySelector('.liv-badge-statut');
+    if (badge) {
+        badge.className = 'liv-badge-statut ' + (pct === 100 ? 'done' : pct > 0 ? 'partial' : 'none');
+        badge.textContent = pct === 100 ? '✅ Terminé' : pct > 0 ? '🔄 En cours' : '⬜ Planifié';
+    }
+}
+
+/* ── Consultants ── */
 function addExistingConsultant() {
     const select = document.getElementById('existingConsultantSelect');
     const consId = select.value;
     const consNom = select.options[select.selectedIndex]?.getAttribute('data-nom') || '';
-    const role  = document.getElementById('existingConsultantRole').value;
+    const role   = document.getElementById('existingConsultantRole').value;
     const joursA = parseFloat(document.getElementById('existingConsultantJoursAlloues').value) || 0;
     const joursR = parseFloat(document.getElementById('existingConsultantJoursRealises').value) || 0;
     if (!consId) { alert('Veuillez sélectionner un consultant'); return; }

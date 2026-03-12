@@ -8,285 +8,195 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ══ THEME VARIABLES ══ */
         [data-theme="light"] {
-            --bg:        #f1f5f9;
-            --surface:   #ffffff;
-            --surface2:  #f8fafc;
-            --border:    #e2e8f0;
-            --text:      #0f172a;
-            --text2:     #475569;
-            --muted:     #94a3b8;
-            --accent:    #3b82f6;
-            --input-bg:  #ffffff;
-            --input-border: #e2e8f0;
-            --input-focus-border: #3b82f6;
-            --thead-bg:  #f1f5f9;
-            --thead-text:#475569;
-            --tr-hover:  #f8fafc;
-            --section-border: #3b82f6;
-            --shadow:    0 2px 12px rgba(0,0,0,0.06);
-            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
-            --btn-primary-bg: #0f172a;
-            --btn-primary-hover: #1e293b;
-            --add-section-bg: #f8fafc;
+            --bg:#f1f5f9; --surface:#ffffff; --surface2:#f8fafc; --border:#e2e8f0;
+            --text:#0f172a; --text2:#475569; --muted:#94a3b8;
+            --accent:#3b82f6; --accent2:#8b5cf6;
+            --input-bg:#ffffff; --input-border:#e2e8f0;
+            --thead-bg:#f1f5f9; --thead-text:#475569;
+            --shadow:0 2px 12px rgba(0,0,0,.06);
+            --btn-primary-bg:#0f172a; --btn-primary-hover:#1e293b;
+            --add-section-bg:#f8fafc;
         }
-
         [data-theme="dark"] {
-            --bg:        #0f172a;
-            --surface:   #1e293b;
-            --surface2:  #162032;
-            --border:    #334155;
-            --text:      #e2e8f0;
-            --text2:     #94a3b8;
-            --muted:     #64748b;
-            --accent:    #3b82f6;
-            --input-bg:  #162032;
-            --input-border: #334155;
-            --input-focus-border: #3b82f6;
-            --thead-bg:  #162032;
-            --thead-text:#94a3b8;
-            --tr-hover:  #1e3a5f22;
-            --section-border: #3b82f6;
-            --shadow:    0 2px 12px rgba(0,0,0,0.3);
-            --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
-            --btn-primary-bg: #3b82f6;
-            --btn-primary-hover: #2563eb;
-            --add-section-bg: #162032;
+            --bg:#0f172a; --surface:#1e293b; --surface2:#162032; --border:#334155;
+            --text:#e2e8f0; --text2:#94a3b8; --muted:#64748b;
+            --accent:#3b82f6; --accent2:#a78bfa;
+            --input-bg:#162032; --input-border:#334155;
+            --thead-bg:#162032; --thead-text:#64748b;
+            --shadow:0 2px 12px rgba(0,0,0,.3);
+            --btn-primary-bg:#3b82f6; --btn-primary-hover:#2563eb;
+            --add-section-bg:#162032;
         }
 
         * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); transition:background .3s,color .3s; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            transition: background .3s, color .3s;
-        }
-
-        /* ══ HEADER ══ */
-        .site-header {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            padding: 1rem 0;
-            border-bottom: 3px solid #3b82f6;
-        }
-
+        /* ── Header ── */
+        .site-header { background:linear-gradient(135deg,#0f172a,#1e293b); padding:1rem 0; border-bottom:3px solid #3b82f6; }
         .logo { font-size:1.3rem; font-weight:700; color:white; }
         .logo-sub { font-size:.73rem; color:rgba(255,255,255,.4); margin-top:.1rem; }
-
-        .meta-pill {
-            background:rgba(255,255,255,.08);
-            border:1px solid rgba(255,255,255,.1);
-            color:rgba(255,255,255,.5);
-            padding:.28rem .8rem; border-radius:50px; font-size:.73rem;
-        }
-
-        .theme-btn {
-            width:34px; height:34px; border-radius:50%;
-            border:1px solid rgba(255,255,255,.15);
-            background:rgba(255,255,255,.08);
-            color:rgba(255,255,255,.65);
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; transition:all .2s;
-        }
+        .meta-pill { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.5); padding:.28rem .8rem; border-radius:50px; font-size:.73rem; }
+        .theme-btn { width:34px; height:34px; border-radius:50%; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.08); color:rgba(255,255,255,.65); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s; }
         .theme-btn:hover { background:rgba(255,255,255,.15); color:white; }
-
-        /* ══ NAV ══ */
-        .nav-wrap {
-            display:flex; gap:.3rem;
-            background:rgba(255,255,255,.1);
-            border:1px solid rgba(255,255,255,.08);
-            padding:.38rem; border-radius:50px;
-            margin-top:.85rem; width:fit-content;
-        }
-        .nav-item {
-            padding:.48rem 1.15rem; border-radius:50px;
-            font-size:.82rem; font-weight:500;
-            color:rgba(255,255,255,.55); text-decoration:none;
-            transition:all .2s; display:inline-flex; align-items:center; gap:.35rem;
-        }
+        .nav-wrap { display:flex; gap:.3rem; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.08); padding:.38rem; border-radius:50px; margin-top:.85rem; width:fit-content; }
+        .nav-item { padding:.48rem 1.15rem; border-radius:50px; font-size:.82rem; font-weight:500; color:rgba(255,255,255,.55); text-decoration:none; transition:all .2s; display:inline-flex; align-items:center; gap:.35rem; }
         .nav-item:hover { background:rgba(255,255,255,.08); color:white; }
         .nav-item.active { background:white; color:#0f172a; font-weight:600; }
 
-        /* ══ FORM CARD ══ */
-        .form-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 1.8rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 1.5rem;
-            transition: background .3s, border-color .3s;
-        }
+        /* ── Cards ── */
+        .form-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:1.8rem; box-shadow:var(--shadow); margin-bottom:1.5rem; transition:background .3s; }
+        .section-title { font-size:1rem; font-weight:700; color:var(--text); margin-bottom:1.3rem; padding-bottom:.6rem; border-bottom:2px solid var(--accent); display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+        .section-title i { color:var(--accent); }
+        .section-hint { margin-left:auto; font-size:.71rem; font-weight:400; color:var(--muted); display:flex; align-items:center; gap:.4rem; }
 
-        .section-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 1.4rem;
-            padding-bottom: .6rem;
-            border-bottom: 2px solid var(--section-border);
-            display: flex; align-items: center; gap: .5rem;
-            letter-spacing: -.01em;
-        }
-        .section-title i { color: var(--accent); }
+        /* ── Inputs ── */
+        .form-label { font-size:.82rem; font-weight:600; color:var(--text2); margin-bottom:.35rem; display:flex; align-items:center; gap:.4rem; }
+        .form-control, .form-select { background:var(--input-bg) !important; border:1.5px solid var(--input-border) !important; border-radius:10px !important; padding:.6rem .9rem !important; font-size:.88rem !important; color:var(--text) !important; font-family:'Inter',sans-serif !important; transition:border-color .2s !important; }
+        .form-control:focus, .form-select:focus { border-color:var(--accent) !important; box-shadow:0 0 0 3px rgba(59,130,246,.12) !important; outline:none !important; }
+        .form-control::placeholder { color:var(--muted) !important; }
+        textarea.form-control { resize:vertical; min-height:75px; }
+        textarea[readonly] { background:var(--surface2) !important; color:var(--muted) !important; }
+        [data-theme="dark"] option { background:#1e293b; color:#e2e8f0; }
+        input[type="number"] { -moz-appearance:textfield; }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance:none; }
 
-        /* ══ INPUTS ══ */
-        .form-label {
-            font-size: .82rem;
-            font-weight: 600;
-            color: var(--text2);
-            margin-bottom: .35rem;
-            display: block;
-            letter-spacing: .01em;
-        }
+        /* ── Auto fields ── */
+        .form-control.auto-blue { background:rgba(59,130,246,.06) !important; border:1.5px dashed #3b82f6 !important; color:#3b82f6 !important; font-weight:700 !important; cursor:not-allowed !important; }
+        .form-control.auto-purple { background:rgba(139,92,246,.06) !important; border:1.5px dashed #8b5cf6 !important; color:var(--accent2) !important; font-weight:700 !important; cursor:not-allowed !important; }
+        .badge-auto { display:inline-flex; align-items:center; gap:.25rem; font-size:.67rem; font-weight:600; padding:.12rem .5rem; border-radius:50px; }
+        .badge-auto.blue   { background:rgba(59,130,246,.1);  color:#3b82f6; }
+        .badge-auto.purple { background:rgba(139,92,246,.1); color:var(--accent2); }
+        .auto-tag { display:inline-flex; align-items:center; gap:.28rem; font-size:.7rem; font-weight:500; color:var(--muted); margin-top:.3rem; }
+        .mini-prog { margin-top:.6rem; }
+        .mini-prog-row { display:flex; justify-content:space-between; font-size:.71rem; color:var(--muted); margin-bottom:.3rem; }
+        .mini-prog-bar { height:4px; background:var(--border); border-radius:50px; overflow:hidden; }
+        .mini-prog-fill { height:100%; border-radius:50px; transition:width .35s ease; }
+        .fill-blue   { background:linear-gradient(90deg,#3b82f6,#60a5fa); }
+        .fill-purple { background:linear-gradient(90deg,#8b5cf6,#a78bfa); }
 
-        .form-control, .form-select {
-            background: var(--input-bg) !important;
-            border: 1.5px solid var(--input-border) !important;
-            border-radius: 10px !important;
-            padding: .6rem .9rem !important;
-            font-size: .88rem !important;
-            color: var(--text) !important;
-            transition: border-color .2s, box-shadow .2s !important;
-            font-family: 'Inter', sans-serif !important;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: var(--input-focus-border) !important;
-            box-shadow: 0 0 0 3px rgba(59,130,246,.12) !important;
-            outline: none !important;
-        }
-        .form-control::placeholder { color: var(--muted) !important; }
+        /* ── Buttons ── */
+        .btn-main { background:var(--btn-primary-bg); color:white; border:none; border-radius:11px; padding:.7rem 1.8rem; font-weight:600; font-size:.88rem; cursor:pointer; transition:all .2s; display:inline-flex; align-items:center; gap:.4rem; }
+        .btn-main:hover { background:var(--btn-primary-hover); transform:translateY(-1px); }
+        .btn-cancel { background:var(--surface); color:var(--text2); border:1.5px solid var(--border); border-radius:11px; padding:.7rem 1.8rem; font-weight:600; font-size:.88rem; text-decoration:none; transition:all .2s; display:inline-flex; align-items:center; gap:.4rem; }
+        .btn-cancel:hover { background:var(--surface2); color:var(--text); }
 
-        textarea.form-control { resize: vertical; min-height: 80px; }
+        /* ── Consultants ── */
+        .cons-row { background:var(--surface2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:12px; padding:1rem; margin-bottom:.7rem; }
+        .chef-badge { background:#fbbf24; color:#78350f; font-size:.65rem; padding:.15rem .5rem; border-radius:50px; font-weight:700; }
+        .add-section { background:var(--add-section-bg); border:1px dashed var(--border); border-radius:14px; padding:1.2rem; margin-top:1.2rem; }
+        .add-section h6 { color:var(--text2); font-size:.85rem; font-weight:600; margin-bottom:.9rem; }
 
-        /* ══ TABLE ══ */
-        .table-pro { width:100%; border-collapse:collapse; font-size:.85rem; }
-        .table-pro thead th {
-            background: var(--thead-bg);
-            color: var(--thead-text);
-            padding: .7rem .75rem;
-            font-weight: 600; font-size: .75rem;
-            text-transform: uppercase; letter-spacing: .05em;
-            border-bottom: 2px solid var(--border);
-        }
-        .table-pro tbody td {
-            padding: .65rem .75rem;
-            border-bottom: 1px solid var(--border);
-            color: var(--text);
-            vertical-align: middle;
-        }
-        .table-pro tbody tr:hover td { background: var(--tr-hover); }
+        /* ── SMI Table ── */
+        .table-smi { width:100%; border-collapse:collapse; font-size:.82rem; }
+        .table-smi thead th { padding:.65rem .8rem; font-size:.71rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; background:var(--surface2); color:var(--muted); border-bottom:2px solid var(--border); border-right:1px solid var(--border); }
+        .table-smi thead th:last-child { border-right:none; }
+        .table-smi tbody td { padding:.55rem .75rem; border-bottom:1px solid var(--border); border-right:1px solid var(--border); vertical-align:middle; }
+        .table-smi tbody td:last-child { border-right:none; }
+        .table-smi tbody tr:hover td { background:rgba(59,130,246,.02); }
+        .table-smi tfoot td { padding:.65rem .75rem; font-weight:700; border-top:2px solid var(--border); border-right:1px solid var(--border); background:var(--surface2); }
+        .table-smi tfoot td:last-child { border-right:none; }
+        .th-jours { background:rgba(59,130,246,.08) !important; color:#3b82f6 !important; }
+        .th-av    { background:rgba(139,92,246,.08) !important; color:var(--accent2) !important; }
+        .col-jours { background:rgba(59,130,246,.03); }
+        .col-av    { background:rgba(139,92,246,.03); }
+        .smi-num { border-radius:8px !important; padding:.35rem .5rem !important; text-align:center; font-size:.82rem; }
+        [data-theme="light"] .smi-jours { border-color:rgba(59,130,246,.3) !important; }
+        [data-theme="light"] .smi-av    { border-color:rgba(139,92,246,.3) !important; }
+        [data-theme="dark"]  .smi-jours { border-color:rgba(59,130,246,.4) !important; }
+        [data-theme="dark"]  .smi-av    { border-color:rgba(139,92,246,.4) !important; }
+        .foot-blue   { color:#3b82f6; text-align:center; font-size:.95rem; }
+        .foot-purple { color:var(--accent2); text-align:center; font-size:.95rem; }
+        .foot-sub { font-size:.63rem; color:var(--muted); font-weight:400; margin-top:.15rem; }
 
-        /* checkbox normes */
-        .form-check-label { color: var(--text2); font-size:.85rem; }
-        .form-check-input:checked { background-color: var(--accent); border-color: var(--accent); }
+        /* ══ LIVRABLES ══ */
+        .liv-section { margin-top:1.4rem; padding-top:1.2rem; border-top:2px dashed var(--border); }
+        .liv-section-title { font-size:.85rem; font-weight:700; color:var(--text2); margin-bottom:.9rem; display:flex; align-items:center; gap:.5rem; }
+        .liv-accordion { border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:.6rem; }
+        .liv-header { display:flex; align-items:center; gap:.75rem; padding:.75rem 1rem; cursor:pointer; background:var(--surface2); border-bottom:1px solid transparent; transition:background .2s; user-select:none; }
+        .liv-header:hover { background:rgba(59,130,246,.05); }
+        .liv-header.open { border-bottom:1px solid var(--border); background:var(--surface); }
+        .liv-chap-code  { font-size:.88rem; font-weight:700; color:var(--accent); min-width:38px; }
+        .liv-chap-titre { font-size:.8rem; font-weight:600; color:var(--text); flex:1; }
+        .liv-counter    { font-size:.72rem; color:var(--muted); display:flex; align-items:center; gap:.35rem; }
+        .liv-prog-wrap  { width:90px; }
+        .liv-prog-bg    { height:4px; background:var(--border); border-radius:50px; overflow:hidden; }
+        .liv-prog-fill  { height:100%; border-radius:50px; background:linear-gradient(90deg,#10b981,#34d399); transition:width .35s; }
+        .liv-badge-statut { font-size:.68rem; font-weight:600; padding:.18rem .6rem; border-radius:50px; }
+        .liv-badge-statut.done    { background:rgba(16,185,129,.15); color:#10b981; }
+        .liv-badge-statut.partial { background:rgba(251,191,36,.15);  color:#f59e0b; }
+        .liv-badge-statut.none    { background:rgba(148,163,184,.15); color:#94a3b8; }
+        .liv-arrow { color:var(--muted); font-size:.75rem; transition:transform .25s; }
+        .liv-header.open .liv-arrow { transform:rotate(180deg); }
+        .liv-body { display:none; }
+        .liv-body.open { display:block; }
+        .liv-row { display:grid; grid-template-columns:65px 1fr 165px; align-items:center; gap:.7rem; padding:.55rem 1rem; border-bottom:1px solid var(--border); transition:background .15s; }
+        .liv-row:last-child { border-bottom:none; }
+        .liv-row:hover { background:rgba(59,130,246,.03); }
+        .liv-clause  { font-size:.72rem; font-weight:600; color:var(--accent); }
+        .liv-libelle { font-size:.8rem; color:var(--text2); line-height:1.4; }
+        .liv-statut-select { font-size:.75rem; font-weight:600; padding:.3rem .75rem; border-radius:50px; border:1.5px solid var(--border); background:var(--surface2); color:var(--text); cursor:pointer; outline:none; transition:border-color .2s,background .2s; width:100%; }
+        .liv-statut-select.s-nc { border-color:rgba(148,163,184,.4); color:#94a3b8; }
+        .liv-statut-select.s-ec { border-color:rgba(251,191,36,.5);  color:#f59e0b; background:rgba(251,191,36,.06) !important; }
+        .liv-statut-select.s-ok { border-color:rgba(16,185,129,.5);  color:#10b981; background:rgba(16,185,129,.06) !important; }
 
-        /* ══ ADD SECTION ══ */
-        .add-section {
-            background: var(--add-section-bg);
-            border: 1px dashed var(--border);
-            border-radius: 14px;
-            padding: 1.2rem;
-            margin-top: 1.2rem;
-        }
-        .add-section h6 { color: var(--text2); font-size:.85rem; font-weight:600; margin-bottom:.9rem; }
-
-        /* ══ BUTTONS ══ */
-        .btn-main {
-            background: var(--btn-primary-bg);
-            color: white;
-            border: none;
-            border-radius: 11px;
-            padding: .7rem 1.8rem;
-            font-weight: 600;
-            font-size: .88rem;
-            transition: all .2s;
-            cursor: pointer;
-        }
-        .btn-main:hover {
-            background: var(--btn-primary-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,.15);
-        }
-
-        .btn-cancel {
-            background: var(--surface);
-            color: var(--text2);
-            border: 1.5px solid var(--border);
-            border-radius: 11px;
-            padding: .7rem 1.8rem;
-            font-weight: 600;
-            font-size: .88rem;
-            text-decoration: none;
-            transition: all .2s;
-        }
-        .btn-cancel:hover { background: var(--surface2); color: var(--text); }
-
-        /* ══ CHEF BADGE ══ */
-        .chef-badge {
-            background: #fbbf24;
-            color: #78350f;
-            font-size: .65rem;
-            padding: .15rem .5rem;
-            border-radius: 50px;
-            font-weight: 700;
-        }
-
-        /* ══ ALERT FLOAT ══ */
-        .alert-float {
-            position: fixed; top: 20px; right: 20px;
-            z-index: 9999; border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,.15);
-            min-width: 300px; font-size: .88rem;
-        }
-
-        /* ══ READONLY ══ */
-        textarea[readonly] {
-            background: var(--surface2) !important;
-            color: var(--muted) !important;
-            cursor: default;
-        }
-
-        /* ══ SELECT OPTION dark fix ══ */
-        [data-theme="dark"] option { background: #1e293b; color: #e2e8f0; }
-
-        /* ══ Bootstrap table override in dark ══ */
-        [data-theme="dark"] .table-light th { background: var(--thead-bg) !important; color: var(--thead-text) !important; }
-        [data-theme="dark"] .table-bordered { border-color: var(--border) !important; }
-        [data-theme="dark"] .table-bordered td, [data-theme="dark"] .table-bordered th { border-color: var(--border) !important; }
-        [data-theme="dark"] .bg-light { background: var(--surface2) !important; }
-
-        input[type="number"] { -moz-appearance: textfield; }
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+        /* ── Other ── */
+        .table-bordered { border-color:var(--border) !important; }
+        .table-bordered td, .table-bordered th { border-color:var(--border) !important; color:var(--text); }
+        .form-check-input:checked { background-color:var(--accent); border-color:var(--accent); }
+        .form-check-label { color:var(--text2); font-size:.85rem; }
+        .alert-float { position:fixed; top:20px; right:20px; z-index:9999; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,.15); min-width:300px; font-size:.88rem; }
     </style>
 </head>
 <body>
 
-{{-- Flash --}}
 @if(session('success'))
 <div class="alert alert-success alert-float alert-dismissible fade show">
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    {{ session('success') }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 @endif
 @if(session('error'))
 <div class="alert alert-danger alert-float alert-dismissible fade show">
-    {{ session('error') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    {{ session('error') }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 @endif
 @if($errors->any())
 <div class="alert alert-danger alert-float alert-dismissible fade show">
-    <ul class="mb-0">
-        @foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach
-    </ul>
+    <ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 @endif
 
-<!-- HEADER -->
+@php
+// Livrables — tous à "Non commencé" par défaut
+$livrableRows = \Illuminate\Support\Facades\DB::select("
+    SELECT id, chapitre_code, clause, libelle, ordre
+    FROM livrables_smi
+    ORDER BY ordre ASC
+");
+$livrablesByChap = [];
+foreach ($livrableRows as $lrow) {
+    $chap = $lrow->chapitre_code;
+    if (!isset($livrablesByChap[$chap])) {
+        $livrablesByChap[$chap] = ['items' => [], 'total' => 0];
+    }
+    $livrablesByChap[$chap]['items'][] = $lrow;
+    $livrablesByChap[$chap]['total']++;
+}
+$chapOrder  = ['§4','§5','§6','§7','§8','§9','§10','Transversal'];
+$chapTitres = [
+    '§4'          => 'Contexte',
+    '§5'          => 'Leadership',
+    '§6'          => 'Planification',
+    '§7'          => 'Support',
+    '§8'          => 'Réalisation',
+    '§9'          => 'Évaluation',
+    '§10'         => 'Amélioration',
+    'Transversal' => 'Transversaux',
+];
+@endphp
+
 <div class="site-header">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
@@ -296,9 +206,7 @@
             </div>
             <div class="d-flex align-items-center gap-2">
                 <span class="meta-pill"><i class="bi bi-clock me-1"></i>{{ now()->format('d/m/Y') }}</span>
-                <button class="theme-btn" id="themeToggle" title="Changer thème">
-                    <i class="bi bi-moon-fill" id="themeIcon"></i>
-                </button>
+                <button class="theme-btn" id="themeToggle"><i class="bi bi-moon-fill" id="themeIcon"></i></button>
             </div>
         </div>
         <div class="nav-wrap">
@@ -310,12 +218,11 @@
     </div>
 </div>
 
-<!-- CONTENT -->
 <div class="container py-4">
 <form action="{{ route('projets.store') }}" method="POST">
 @csrf
 
-<!-- A - Informations Générales -->
+{{-- A — INFOS --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-info-circle"></i> A — Informations Générales</div>
     <div class="row g-3">
@@ -333,7 +240,7 @@
             <label class="form-label">Statut <span class="text-danger">*</span></label>
             <select class="form-select" name="statut" required>
                 @foreach(['Planifié','En cours','En retard','Finalisé'] as $s)
-                <option value="{{ $s }}" {{ old('statut') == $s ? 'selected' : '' }}>{{ $s }}</option>
+                <option value="{{ $s }}" {{ old('statut', 'Planifié') == $s ? 'selected' : '' }}>{{ $s }}</option>
                 @endforeach
             </select>
         </div>
@@ -350,7 +257,7 @@
     </div>
 </div>
 
-<!-- Dates -->
+{{-- DATES --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-calendar"></i> Dates</div>
     <div class="row g-3">
@@ -369,26 +276,52 @@
     </div>
 </div>
 
-<!-- Indicateurs -->
+{{-- INDICATEURS --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-graph-up"></i> Indicateurs</div>
-    <div class="row g-3">
+    <div class="row g-3 align-items-start">
+
+        {{-- Jours prévus — Manuel --}}
         <div class="col-md-4">
             <label class="form-label">Jours prévus</label>
-            <input type="number" class="form-control" name="jours_prevus" min="0" value="{{ old('jours_prevus', 0) }}" required>
+            <input type="number" class="form-control" name="jours_prevus" id="jours_prevus"
+                min="0" value="{{ old('jours_prevus', 0) }}" required oninput="recalcAll()">
         </div>
+
+        {{-- Jours réalisés — AUTO Σ J.Interv --}}
         <div class="col-md-4">
-            <label class="form-label">Jours réalisés</label>
-            <input type="number" class="form-control" name="jours_realises" min="0" value="{{ old('jours_realises', 0) }}" required>
+            <label class="form-label">
+                Jours réalisés
+                <span class="badge-auto blue"><i class="bi bi-lock-fill" style="font-size:.58rem;"></i> Auto</span>
+            </label>
+            <input type="number" class="form-control auto-blue" name="jours_realises" id="jours_realises"
+                min="0" value="0" readonly>
+            <div class="auto-tag"><i class="bi bi-calculator"></i> = Σ Jours d'intervention — Section C</div>
+            <div class="mini-prog">
+                <div class="mini-prog-row"><span>Consommation</span><span id="consoLabel">0%</span></div>
+                <div class="mini-prog-bar"><div class="mini-prog-fill fill-blue" id="consoBar" style="width:0%"></div></div>
+            </div>
         </div>
+
+        {{-- Avancement % — AUTO AVG --}}
         <div class="col-md-4">
-            <label class="form-label">Avancement %</label>
-            <input type="number" class="form-control" name="avancement_percent" min="0" max="100" value="{{ old('avancement_percent', 0) }}" required>
+            <label class="form-label">
+                Avancement %
+                <span class="badge-auto purple"><i class="bi bi-lock-fill" style="font-size:.58rem;"></i> Auto</span>
+            </label>
+            <input type="number" class="form-control auto-purple" name="avancement_percent" id="avancement_percent"
+                min="0" max="100" value="0" readonly>
+            <div class="auto-tag"><i class="bi bi-bar-chart"></i> = Moyenne Av. % chapitres — Section C</div>
+            <div class="mini-prog">
+                <div class="mini-prog-row"><span>Avancement global</span><span id="avLabel">0%</span></div>
+                <div class="mini-prog-bar"><div class="mini-prog-fill fill-purple" id="avBar" style="width:0%"></div></div>
+            </div>
         </div>
+
     </div>
 </div>
 
-<!-- Normes -->
+{{-- NORMES --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-check-square"></i> Normes</div>
     @php $defaultNormes = ['ISO 9001:2015', 'ISO 14001:2015', 'ISO 45001:2018']; @endphp
@@ -396,13 +329,10 @@
         @foreach($normes as $norme)
         <div class="col-md-4 col-lg-3">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox"
-                    name="normes[]" value="{{ $norme->id }}"
+                <input class="form-check-input" type="checkbox" name="normes[]" value="{{ $norme->id }}"
                     id="norme{{ $norme->id }}"
                     {{ in_array($norme->code_norme, $defaultNormes) ? 'checked' : '' }}>
-                <label class="form-check-label fw-500" for="norme{{ $norme->id }}">
-                    {{ $norme->code_norme }}
-                </label>
+                <label class="form-check-label" for="norme{{ $norme->id }}">{{ $norme->code_norme }}</label>
             </div>
         </div>
         @endforeach
@@ -412,14 +342,12 @@
     </div>
 </div>
 
-<!-- B - Consultants -->
+{{-- B — CONSULTANTS --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-people"></i> B — Charge de travail par consultant</div>
-
     <input type="hidden" name="chef_projet_id" id="chefProjetIdInput" value="">
-
     <div class="table-responsive">
-        <table class="table-pro">
+        <table class="table-smi">
             <thead>
                 <tr>
                     <th style="width:6%;">Chef ?</th>
@@ -437,7 +365,6 @@
             <i class="bi bi-people me-1"></i> Aucun consultant ajouté
         </div>
     </div>
-
     <div class="add-section">
         <h6><i class="bi bi-plus-circle me-1"></i> Ajouter un consultant</h6>
         <div class="row g-3 align-items-end">
@@ -446,19 +373,17 @@
                 <select class="form-select" id="existingConsultantSelect">
                     <option value="">-- Sélectionner --</option>
                     @foreach($consultants as $cons)
-                    <option value="{{ $cons->id }}" data-nom="{{ $cons->nom_complet }}">
-                        {{ $cons->nom_complet }}
-                    </option>
+                    <option value="{{ $cons->id }}" data-nom="{{ $cons->nom_complet }}">{{ $cons->nom_complet }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-2">
                 <label class="form-label">Rôle</label>
                 <select class="form-select" id="existingConsultantRole">
-                    <option value="Chef de Projet">Chef de Projet</option>
-                    <option value="Consultant" selected>Consultant</option>
-                    <option value="Consultant Ext.">Consultant Ext.</option>
-                    <option value="Expert">Expert</option>
+                    <option>Chef de Projet</option>
+                    <option selected>Consultant</option>
+                    <option>Consultant Ext.</option>
+                    <option>Expert</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -481,40 +406,47 @@
     </div>
 </div>
 
-<!-- C - Chapitres SMI -->
+{{-- C — CHAPITRES SMI + LIVRABLES --}}
 <div class="form-card">
-    <div class="section-title"><i class="bi bi-journal-check"></i> C — Planification par chapitre SMI</div>
+    <div class="section-title">
+        <i class="bi bi-journal-check"></i> C — Planification par chapitre SMI
+        <span class="section-hint">
+            <i class="bi bi-arrow-up" style="color:#3b82f6;"></i>
+            <span style="color:#3b82f6; font-weight:600;">J. Interv.</span> → Jours réalisés
+            &nbsp;·&nbsp;
+            <i class="bi bi-arrow-up" style="color:var(--accent2);"></i>
+            <span style="color:var(--accent2); font-weight:600;">Av. %</span> → Avancement global
+        </span>
+    </div>
+
     <div class="table-responsive">
-        <table class="table table-bordered" style="min-width:1200px; font-size:.83rem;">
+        <table class="table-smi" style="min-width:900px;">
             <thead>
-                <tr style="background:var(--thead-bg);">
-                    <th style="color:var(--thead-text); width:15%;">Chapitre</th>
-                    <th style="color:var(--thead-text); width:22%;">Exigences Clés</th>
-                    <th style="color:var(--thead-text); width:20%;">Livrables</th>
-                    <th style="color:var(--thead-text); width:7%;">Av. %</th>
-                    <th style="color:var(--thead-text); width:12%;">Phase</th>
-                    <th style="color:var(--thead-text); width:7%;">J. Interv.</th>
-                    <th style="color:var(--thead-text);">Observations</th>
+                <tr>
+                    <th style="width:14%;">Chapitre</th>
+                    <th style="width:22%;">Exigences Clés</th>
+                    <th class="th-av" style="width:7%;"><i class="bi bi-bar-chart-fill me-1"></i>Av. %</th>
+                    <th style="width:13%;">Phase</th>
+                    <th class="th-jours" style="width:8%;"><i class="bi bi-clock-fill me-1"></i>J. Interv.</th>
+                    <th>Observations</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($chapitres as $index => $chap)
                 <tr>
-                    <td style="color:var(--text);"><strong>{{ $chap->code_chapitre }}</strong><br>
-                        <small style="color:var(--muted);">{{ $chap->titre_chapitre }}</small></td>
                     <td>
-                        <textarea class="form-control form-control-sm"
-                            name="chapitres[{{ $index }}][exigences]"
-                            rows="2" readonly>{{ $chap->exigences_cles }}</textarea>
+                        <strong style="color:var(--accent);">{{ $chap->code_chapitre }}</strong><br>
+                        <small style="color:var(--muted); display:block; margin-top:.2rem; line-height:1.3;">{{ $chap->titre_chapitre }}</small>
+                        <input type="hidden" name="chapitres[{{ $index }}][chapitre_id]" value="{{ $chap->id }}">
                     </td>
                     <td>
-                        <textarea class="form-control form-control-sm"
-                            name="chapitres[{{ $index }}][livrables]" rows="2">✓ À définir</textarea>
+                        <textarea class="form-control form-control-sm" rows="3" readonly>{{ $chap->exigences_cles }}</textarea>
                     </td>
-                    <td>
-                        <input type="number" class="form-control form-control-sm"
+                    <td class="col-av">
+                        <input type="number" class="form-control smi-num smi-av"
                             name="chapitres[{{ $index }}][avancement]"
-                            min="0" max="100" value="0" style="width:65px; text-align:center;">
+                            min="0" max="100" value="0"
+                            style="width:70px;" oninput="recalcAll()">
                     </td>
                     <td>
                         <select class="form-select form-select-sm" name="chapitres[{{ $index }}][phase]">
@@ -524,24 +456,98 @@
                             <option value="✅ Terminé">✅ Terminé</option>
                         </select>
                     </td>
-                    <td>
-                        <input type="number" class="form-control form-control-sm"
+                    <td class="col-jours">
+                        <input type="number" class="form-control smi-num smi-jours"
                             name="chapitres[{{ $index }}][jours]"
-                            min="0" value="0" style="width:65px; text-align:center;">
+                            min="0" value="0"
+                            style="width:70px;" oninput="recalcAll()">
                     </td>
                     <td>
                         <input type="text" class="form-control form-control-sm"
                             name="chapitres[{{ $index }}][observations]" placeholder="—">
                     </td>
                 </tr>
-                <input type="hidden" name="chapitres[{{ $index }}][chapitre_id]" value="{{ $chap->id }}">
                 @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" style="text-align:right; color:var(--muted); font-size:.77rem; font-weight:500;">
+                        <i class="bi bi-calculator me-1"></i> Résultats →
+                    </td>
+                    <td class="foot-purple col-av">
+                        <span id="footAvancement">0</span>%
+                        <div class="foot-sub">moyenne</div>
+                    </td>
+                    <td style="background:var(--surface2);"></td>
+                    <td class="foot-blue col-jours">
+                        <span id="footJours">0</span>
+                        <div class="foot-sub">total j.</div>
+                    </td>
+                    <td style="background:var(--surface2);"></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
-</div>
 
-<!-- D - Formations -->
+    {{-- ══ LIVRABLES SMI ══ --}}
+    @if(count($livrablesByChap))
+    <div class="liv-section">
+        <div class="liv-section-title">
+            <i class="bi bi-list-check" style="color:var(--accent);"></i>
+            Livrables SMI
+            <span style="margin-left:auto; font-size:.72rem; color:var(--muted);">
+                {{ collect($livrablesByChap)->sum('total') }} livrables — tous à
+                <span style="background:rgba(148,163,184,.15); color:#94a3b8; padding:.1rem .5rem; border-radius:50px; font-size:.7rem; font-weight:600;">⬜ Non commencé</span>
+                par défaut
+            </span>
+        </div>
+
+        @foreach($chapOrder as $chapCode)
+        @if(isset($livrablesByChap[$chapCode]))
+        @php
+            $chapData = $livrablesByChap[$chapCode];
+            $accId    = 'nacc-' . str_replace(['§',' '],['s','-'], $chapCode);
+        @endphp
+        <div class="liv-accordion">
+            <div class="liv-header" onclick="toggleAcc('{{ $accId }}')" id="hdr-{{ $accId }}">
+                <span class="liv-chap-code">{{ $chapCode }}</span>
+                <span class="liv-chap-titre">{{ $chapTitres[$chapCode] ?? $chapCode }}</span>
+                <span class="liv-counter">
+                    <i class="bi bi-file-earmark-check"></i>
+                    {{ $chapData['total'] }} livrables
+                </span>
+                <div class="liv-prog-wrap">
+                    <div class="liv-prog-bg">
+                        <div class="liv-prog-fill" id="prog-{{ $accId }}" style="width:0%"></div>
+                    </div>
+                </div>
+                <span class="liv-badge-statut none" id="badge-{{ $accId }}">⬜ Planifié</span>
+                <i class="bi bi-chevron-down liv-arrow"></i>
+            </div>
+            <div class="liv-body" id="{{ $accId }}">
+                @foreach($chapData['items'] as $liv)
+                <div class="liv-row">
+                    <span class="liv-clause">{{ $liv->clause ?: '—' }}</span>
+                    <span class="liv-libelle">{{ $liv->libelle }}</span>
+                    <select class="liv-statut-select s-nc"
+                            name="livrables[{{ $liv->id }}]"
+                            onchange="onLivChange(this, '{{ $accId }}')">
+                        <option value="Non commencé" selected>⬜ Non commencé</option>
+                        <option value="En cours">🔄 En cours</option>
+                        <option value="Terminé">✅ Terminé</option>
+                    </select>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+        @endforeach
+    </div>
+    @endif
+
+</div>{{-- fin Section C --}}
+
+{{-- D — FORMATIONS --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-mortarboard"></i> D — Plan de formation</div>
     <div class="table-responsive">
@@ -579,28 +585,26 @@
     </div>
 </div>
 
-<!-- E - Contraintes -->
+{{-- E — CONTRAINTES --}}
 <div class="form-card">
     <div class="section-title"><i class="bi bi-exclamation-triangle"></i> E — Contraintes & Points de vigilance</div>
     <div class="row g-3">
         <div class="col-md-6">
             <label class="form-label">Blocage</label>
-            <textarea class="form-control" name="blocage" rows="3"
-                placeholder="Décrivez les blocages éventuels...">{{ old('blocage') }}</textarea>
+            <textarea class="form-control" name="blocage" rows="3" placeholder="Décrivez les blocages éventuels...">{{ old('blocage') }}</textarea>
         </div>
         <div class="col-md-6">
             <label class="form-label">Commentaire</label>
-            <textarea class="form-control" name="commentaire" rows="3"
-                placeholder="Commentaires généraux...">{{ old('commentaire') }}</textarea>
+            <textarea class="form-control" name="commentaire" rows="3" placeholder="Commentaires généraux...">{{ old('commentaire') }}</textarea>
         </div>
     </div>
 </div>
 
-<!-- BOUTONS -->
+{{-- BOUTONS --}}
 <div class="d-flex justify-content-end gap-3 mb-5">
-    <a href="/" class="btn-cancel">Annuler</a>
+    <a href="/" class="btn-cancel"><i class="bi bi-x-circle"></i> Annuler</a>
     <button type="submit" class="btn-main px-5">
-        <i class="bi bi-check-circle me-2"></i> Créer le projet
+        <i class="bi bi-check-circle"></i> Créer le projet
     </button>
 </div>
 
@@ -609,13 +613,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// ── Theme sync ──
+/* ── Theme ── */
 (function() {
     const t = localStorage.getItem('lmc-theme') || 'light';
     document.documentElement.setAttribute('data-theme', t);
     document.getElementById('themeIcon').className = t === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
 })();
-
 document.getElementById('themeToggle').addEventListener('click', () => {
     const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', next);
@@ -623,7 +626,70 @@ document.getElementById('themeToggle').addEventListener('click', () => {
     document.getElementById('themeIcon').className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
 });
 
-// ── Consultants logic ──
+/* ── Recalc auto ── */
+function recalcAll() {
+    const jp = parseFloat(document.getElementById('jours_prevus').value) || 0;
+
+    let totalJ = 0;
+    document.querySelectorAll('input[name^="chapitres"][name$="[jours]"]').forEach(i => {
+        totalJ += parseFloat(i.value) || 0;
+    });
+    totalJ = Math.round(totalJ * 10) / 10;
+    document.getElementById('jours_realises').value   = totalJ;
+    document.getElementById('footJours').textContent  = totalJ;
+    const conso = jp > 0 ? Math.round((totalJ / jp) * 100) : 0;
+    document.getElementById('consoLabel').textContent = conso + '%';
+    document.getElementById('consoBar').style.width   = Math.min(conso, 100) + '%';
+
+    const avInputs = document.querySelectorAll('input[name^="chapitres"][name$="[avancement]"]');
+    let sumAv = 0, countAv = 0;
+    avInputs.forEach(i => { const v = parseFloat(i.value); if (!isNaN(v)) { sumAv += v; countAv++; } });
+    const avgAv = countAv > 0 ? Math.round(sumAv / countAv) : 0;
+    document.getElementById('avancement_percent').value   = avgAv;
+    document.getElementById('footAvancement').textContent = avgAv;
+    document.getElementById('avLabel').textContent        = avgAv + '%';
+    document.getElementById('avBar').style.width          = avgAv + '%';
+}
+
+/* ── Accordion ── */
+function toggleAcc(id) {
+    document.getElementById(id).classList.toggle('open');
+    document.getElementById('hdr-' + id).classList.toggle('open');
+}
+
+/* ── Livrable change ── */
+function onLivChange(select, accId) {
+    select.className = 'liv-statut-select ' + ({
+        'Terminé':      's-ok',
+        'En cours':     's-ec',
+        'Non commencé': 's-nc',
+    }[select.value] || 's-nc');
+    updateChapCounter(accId);
+}
+
+function updateChapCounter(accId) {
+    const body = document.getElementById(accId);
+    if (!body) return;
+    const selects  = body.querySelectorAll('.liv-statut-select');
+    let total = selects.length, termines = 0;
+    selects.forEach(s => { if (s.value === 'Terminé') termines++; });
+    const pct = total > 0 ? Math.round((termines / total) * 100) : 0;
+    const hdr = document.getElementById('hdr-' + accId);
+
+    const fill = document.getElementById('prog-' + accId);
+    if (fill) fill.style.width = pct + '%';
+
+    const counter = hdr.querySelector('.liv-counter');
+    if (counter) counter.innerHTML = `<i class="bi bi-file-earmark-check"></i> ${termines} / ${total} livrables`;
+
+    const badge = document.getElementById('badge-' + accId);
+    if (badge) {
+        badge.className = 'liv-badge-statut ' + (pct === 100 ? 'done' : pct > 0 ? 'partial' : 'none');
+        badge.textContent = pct === 100 ? '✅ Terminé' : pct > 0 ? '🔄 En cours' : '⬜ Planifié';
+    }
+}
+
+/* ── Consultants ── */
 let consultantIndex = 0;
 
 function setChefDeProjet(consultantId) {
@@ -636,20 +702,17 @@ function setChefDeProjet(consultantId) {
 }
 
 function addConsultant() {
-    const select = document.getElementById('existingConsultantSelect');
-    const consId = select.value;
+    const select  = document.getElementById('existingConsultantSelect');
+    const consId  = select.value;
     const consNom = select.options[select.selectedIndex]?.getAttribute('data-nom') || '';
-    const role = document.getElementById('existingConsultantRole').value;
-    const joursA = parseFloat(document.getElementById('existingConsultantJoursAlloues').value) || 0;
-    const joursR = parseFloat(document.getElementById('existingConsultantJoursRealises').value) || 0;
-
+    const role    = document.getElementById('existingConsultantRole').value;
+    const joursA  = parseFloat(document.getElementById('existingConsultantJoursAlloues').value) || 0;
+    const joursR  = parseFloat(document.getElementById('existingConsultantJoursRealises').value) || 0;
     if (!consId) { alert('Veuillez sélectionner un consultant'); return; }
     if (document.getElementById(`consultant-row-${consId}`)) { alert('Ce consultant est déjà dans la liste'); return; }
-
     const charge = joursA > 0 ? Math.round((joursR / joursA) * 100) : 0;
-    const idx = consultantIndex++;
+    const idx    = consultantIndex++;
     document.getElementById('emptyConsultants').style.display = 'none';
-
     document.getElementById('consultantsTableBody').insertAdjacentHTML('beforeend', `
         <tr id="consultant-row-${consId}">
             <td class="text-center">
@@ -664,36 +727,21 @@ function addConsultant() {
             </td>
             <td>
                 <select class="form-select form-select-sm" name="consultants[${idx}][role]" id="role-select-${consId}">
-                    <option value="Chef de Projet" ${role==='Chef de Projet'?'selected':''}>Chef de Projet</option>
-                    <option value="Consultant" ${role==='Consultant'?'selected':''}>Consultant</option>
-                    <option value="Consultant Ext." ${role==='Consultant Ext.'?'selected':''}>Consultant Ext.</option>
-                    <option value="Expert" ${role==='Expert'?'selected':''}>Expert</option>
+                    <option ${role==='Chef de Projet'?'selected':''}>Chef de Projet</option>
+                    <option ${role==='Consultant'?'selected':''}>Consultant</option>
+                    <option ${role==='Consultant Ext.'?'selected':''}>Consultant Ext.</option>
+                    <option ${role==='Expert'?'selected':''}>Expert</option>
                 </select>
             </td>
-            <td>
-                <input type="number" class="form-control form-control-sm"
-                    name="consultants[${idx}][jours_alloues]"
-                    min="0" step="0.1" value="${joursA}" style="width:90px;"
-                    oninput="updateCharge(${consId})">
-            </td>
-            <td>
-                <input type="number" class="form-control form-control-sm"
-                    name="consultants[${idx}][jours_realises]"
-                    min="0" step="0.1" value="${joursR}" style="width:90px;"
-                    oninput="updateCharge(${consId})">
-            </td>
+            <td><input type="number" class="form-control form-control-sm" name="consultants[${idx}][jours_alloues]" min="0" step="0.1" value="${joursA}" style="width:90px;" oninput="updateCharge(${consId})"></td>
+            <td><input type="number" class="form-control form-control-sm" name="consultants[${idx}][jours_realises]" min="0" step="0.1" value="${joursR}" style="width:90px;" oninput="updateCharge(${consId})"></td>
+            <td class="text-center"><span class="badge bg-info" id="charge-badge-${consId}">${charge}%</span></td>
             <td class="text-center">
-                <span class="badge bg-info" id="charge-badge-${consId}">${charge}%</span>
-            </td>
-            <td class="text-center">
-                <button type="button" class="btn btn-sm btn-outline-danger"
-                    onclick="removeConsultant(this, ${consId})">
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeConsultant(this,${consId})">
                     <i class="bi bi-trash"></i>
                 </button>
             </td>
-        </tr>
-    `);
-
+        </tr>`);
     select.value = '';
     document.getElementById('existingConsultantRole').value = 'Consultant';
     document.getElementById('existingConsultantJoursAlloues').value = '0';
@@ -701,10 +749,11 @@ function addConsultant() {
 }
 
 function updateCharge(consId) {
-    const row = document.getElementById(`consultant-row-${consId}`);
+    const row    = document.getElementById(`consultant-row-${consId}`);
     const joursA = parseFloat(row.querySelector('[name*="jours_alloues"]').value) || 0;
     const joursR = parseFloat(row.querySelector('[name*="jours_realises"]').value) || 0;
-    document.getElementById(`charge-badge-${consId}`).textContent = (joursA > 0 ? Math.round((joursR/joursA)*100) : 0) + '%';
+    document.getElementById(`charge-badge-${consId}`).textContent =
+        (joursA > 0 ? Math.round((joursR / joursA) * 100) : 0) + '%';
 }
 
 function removeConsultant(button, consId) {

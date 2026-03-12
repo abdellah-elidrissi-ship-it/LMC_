@@ -6,6 +6,7 @@ use App\Http\Controllers\ConsultantController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\GanttController;
+use App\Http\Controllers\LivrablesController;
 use Illuminate\Support\Facades\Route;
 
 // ── AUTH ──
@@ -77,3 +78,12 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/admin/users/{id}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
     });
 });
+
+Route::post('/projet/{id}/livrables', [LivrablesController::class, 'save'])
+    ->name('projet.livrables.save')
+    ->middleware('permission:modifier_projets');
+ 
+// Sauvegarde AJAX d'un seul livrable (depuis details — dropdown change)
+Route::post('/projet/{id}/livrables/single', [LivrablesController::class, 'saveSingle'])
+    ->name('projet.livrables.single')
+    ->middleware('permission:modifier_projets');

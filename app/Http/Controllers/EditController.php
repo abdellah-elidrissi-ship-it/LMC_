@@ -165,6 +165,29 @@ class EditController extends Controller
                 }
             }
 
+            // ── Livrables SMI ──────────────────────────────────────
+            if ($request->has('livrables')) {
+                $now     = now();
+                $upserts = [];
+                foreach ($request->livrables as $livrableId => $statut) {
+                    if (!in_array($statut, ['Non commencé', 'En cours', 'Terminé'])) continue;
+                    $upserts[] = [
+                        'projet_id'   => $projet->id,
+                        'livrable_id' => (int) $livrableId,
+                        'statut'      => $statut,
+                        'created_at'  => $now,
+                        'updated_at'  => $now,
+                    ];
+                }
+                if (!empty($upserts)) {
+                    DB::table('projet_livrables')->upsert(
+                        $upserts,
+                        ['projet_id', 'livrable_id'],
+                        ['statut', 'updated_at']
+                    );
+                }
+            }
+
             DB::commit();
 
             return redirect()->route('projet.details', $id)
@@ -186,6 +209,7 @@ class EditController extends Controller
         DB::table('projet_normes')->where('projet_id', $id)->delete();
         DB::table('suivi_chapitres')->where('projet_id', $id)->delete();
         DB::table('projet_formations')->where('projet_id', $id)->delete();
+        DB::table('projet_livrables')->where('projet_id', $id)->delete();
 
         $projet->delete();
 
