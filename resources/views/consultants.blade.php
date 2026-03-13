@@ -115,22 +115,72 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <div class="logo">LMC CONSEIL</div>
-                <div class="logo-sub">Gestion des Consultants</div>
+                <div class="logo">{{ $navTitle ?? 'LMC CONSEIL' }}</div>
+                <div class="logo-sub">{{ $navSubtitle ?? 'Campagne 2025 — 2026' }}</div>
             </div>
             <div class="d-flex align-items-center gap-2">
+                <span class="meta-pill"><i class="bi bi-database me-1"></i>v2.0</span>
                 <span class="meta-pill"><i class="bi bi-clock me-1"></i>{{ now()->format('d/m/Y') }}</span>
-                <button class="theme-btn" id="themeToggle"><i class="bi bi-moon-fill" id="themeIcon"></i></button>
+                <button class="theme-btn" id="themeToggle" title="Changer thème">
+                    <i class="bi bi-moon-fill" id="themeIcon"></i>
+                </button>
+                @isset($navBackUrl)
+                <a href="{{ $navBackUrl }}" class="btn-retour">
+                    <i class="bi bi-arrow-left"></i> {{ $navBackLabel ?? 'Retour' }}
+                </a>
+                @endisset
+                @unless(isset($navBackUrl))
+                <form method="POST" action="/logout" style="margin:0">
+                    @csrf
+                    <button type="button" class="theme-btn" title="Déconnexion"
+                        onclick="this.closest('form').submit()">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </form>
+                @endunless
             </div>
         </div>
+
         <div class="nav-wrap">
-            <a href="/" class="nav-item {{ request()->is('/') ? 'active' : '' }}"><i class="bi bi-table"></i> Données</a>
-            <a href="/tableau-de-bord" class="nav-item {{ request()->is('tableau-de-bord') ? 'active' : '' }}"><i class="bi bi-bar-chart"></i> Tableau de Bord</a>
-            <a href="/consultants" class="nav-item active"><i class="bi bi-people"></i> Consultants</a>
-            <a href="/nouveau-projet" class="nav-item"><i class="bi bi-plus-circle"></i> Nouveau Projet</a>
+            <a href="/" class="nav-item {{ ($navActive ?? '') === 'donnees' ? 'active' : '' }}">
+                <i class="bi bi-table"></i> Données
+            </a>
+            <a href="/tableau-de-bord" class="nav-item {{ ($navActive ?? '') === 'tableau' ? 'active' : '' }}">
+                <i class="bi bi-bar-chart"></i> Tableau de Bord
+            </a>
+            <a href="/consultants" class="nav-item {{ ($navActive ?? '') === 'consultants' ? 'active' : '' }}">
+                <i class="bi bi-people"></i> Consultants
+            </a>
+            <a href="/nouveau-projet" class="nav-item {{ ($navActive ?? '') === 'nouveau' ? 'active' : '' }}">
+                <i class="bi bi-plus-circle"></i> Nouveau Projet
+            </a>
+            @isset($navExtra)
+                {!! $navExtra !!}
+            @endisset
+            @if(auth()->check() && auth()->user()->isSuperAdmin())
+            <a href="/admin/users" class="nav-item {{ ($navActive ?? '') === 'admin' ? 'active' : '' }}">
+                <i class="bi bi-shield-lock"></i> Accès
+            </a>
+            @endif
         </div>
     </div>
 </div>
+
+<script>
+(function() {
+    const saved = localStorage.getItem('lmc-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.className = saved === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+})();
+document.getElementById('themeToggle')?.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('lmc-theme', next);
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+});
+</script>
 
 <div class="container py-4">
 

@@ -13,20 +13,19 @@
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;}
 
-        .site-header{background:#0f172a;padding:18px 32px 0;border-bottom:2px solid #1e3a5f;}
-        .header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
-        .logo{font-size:20px;font-weight:700;color:#fff;letter-spacing:-.3px;}
-        .logo-sub{font-size:12px;color:#64748b;margin-top:2px;}
-        .header-right{display:flex;align-items:center;gap:8px;}
-        .meta-pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:5px 12px;font-size:12px;color:#94a3b8;}
-        .meta-pill i{color:#ef4444;}
-        .hbtn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;width:34px;height:34px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;}
-        .hbtn:hover{background:rgba(255,255,255,.12);color:#fff;}
-        .nav-wrap{display:flex;gap:4px;}
-        .nav-item{padding:9px 18px;border-radius:8px 8px 0 0;font-size:13px;font-weight:500;color:#64748b;text-decoration:none;display:flex;align-items:center;gap:7px;transition:all .2s;border:1px solid transparent;border-bottom:none;}
-        .nav-item:hover{color:#cbd5e1;background:rgba(255,255,255,.04);}
-        .nav-item.active{background:var(--bg);color:var(--text);border-color:#334155;border-bottom-color:var(--bg);}
+        /* ══ NAVBAR — même style que toutes les pages ══ */
+        .site-header{background:linear-gradient(135deg,#0f172a,#1e293b);padding:1rem 1.5rem;border-bottom:3px solid #3b82f6;}
+        .logo{font-size:1.3rem;font-weight:700;color:white;}
+        .logo-sub{font-size:.73rem;color:rgba(255,255,255,.4);margin-top:.1rem;}
+        .meta-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);padding:.28rem .8rem;border-radius:50px;font-size:.73rem;display:inline-flex;align-items:center;gap:.35rem;}
+        .theme-btn{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:rgba(255,255,255,.65);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;}
+        .theme-btn:hover{background:rgba(255,255,255,.15);color:white;}
+        .nav-wrap{display:flex;gap:.3rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08);padding:.38rem;border-radius:50px;margin-top:.85rem;width:fit-content;}
+        .nav-item{padding:.48rem 1.15rem;border-radius:50px;font-size:.82rem;font-weight:500;color:rgba(255,255,255,.5);text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:.35rem;}
+        .nav-item:hover{background:rgba(255,255,255,.08);color:white;}
+        .nav-item.active{background:white;color:#0f172a;font-weight:600;}
 
+        /* ══ PAGE ══ */
         .page{max-width:1280px;margin:0 auto;padding:28px 32px;}
         .page-title{font-size:20px;font-weight:700;margin-bottom:4px;}
         .page-desc{font-size:13px;color:var(--text2);margin-bottom:24px;}
@@ -73,7 +72,6 @@
         .rdot{width:7px;height:7px;border-radius:50%;}
         .rdot.a{background:#ef4444;}.rdot.c{background:#eab308;}.rdot.cn{background:#22c55e;}
 
-        /* PERMISSIONS BOX */
         .perms-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:15px;}
         .perms-hd{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:11px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:5px;}
         .perm-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);}
@@ -88,7 +86,6 @@
         .perm-name{font-size:12px;font-weight:500;color:var(--text);}
         .perm-desc{font-size:10px;color:var(--muted);margin-top:1px;}
 
-        /* Toggle OUI/NON */
         .toggle-wrap{display:flex;align-items:center;gap:6px;}
         .toggle-lbl{font-size:11px;font-weight:600;color:var(--muted);min-width:28px;text-align:right;}
         .toggle{position:relative;width:40px;height:22px;flex-shrink:0;}
@@ -124,33 +121,24 @@
         .rbadge.admin{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.2);}
         .rbadge.chef{background:rgba(234,179,8,.1);color:#ca8a04;border:1px solid rgba(234,179,8,.2);}
         .rbadge.cons{background:rgba(34,197,94,.1);color:#16a34a;border:1px solid rgba(34,197,94,.2);}
-        .sb{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);}
-        .sdot{width:6px;height:6px;border-radius:50%;}
-        .sdot.on{background:#22c55e;}
         .ab{display:flex;gap:6px;}
         .ib{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:all .18s;}
         .ib:hover{border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.06);}
         .ib.del:hover{border-color:#ef4444;color:#ef4444;background:rgba(239,68,68,.06);}
-
-        /* perm tags in table */
         .ptags{display:flex;gap:3px;flex-wrap:wrap;}
         .ptag{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;}
         .ptag.y{background:rgba(34,197,94,.12);color:#16a34a;}
         .ptag.n{background:rgba(239,68,68,.08);color:#ef4444;}
-
         .srch{position:relative;}
         .srch i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;}
         .si{background:var(--input-bg);border:1px solid var(--input-border);border-radius:8px;padding:7px 10px 7px 30px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;width:200px;transition:border-color .2s;}
         .si:focus{border-color:var(--accent);}
         .si::placeholder{color:var(--muted);}
-
         .alert{border-radius:10px;padding:11px 15px;font-size:13px;display:flex;align-items:center;gap:8px;margin-bottom:20px;}
         .alert-s{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:#16a34a;}
         .alert-e{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444;}
-
         .empty{text-align:center;padding:48px 24px;color:var(--muted);}
         .empty i{font-size:32px;opacity:.3;display:block;margin-bottom:8px;}
-
         .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;}
         .ov.open{display:flex;}
         .modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:100%;max-width:500px;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:mIn .22s ease both;max-height:90vh;overflow-y:auto;}
@@ -158,36 +146,72 @@
         .modal-title{font-size:15px;font-weight:700;margin-bottom:4px;}
         .modal-sub{font-size:12px;color:var(--text2);margin-bottom:20px;}
         .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
-
         .admin-note{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:9px;padding:10px 13px;font-size:12px;color:#ef4444;display:flex;align-items:center;gap:7px;margin-bottom:15px;}
     </style>
 </head>
 <body>
 <script>(function(){const t=localStorage.getItem('lmc-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
 
-<header class="site-header">
-    <div class="header-top">
-        <div>
-            <div class="logo">LMC CONSEIL</div>
-            <div class="logo-sub">Gestion des accès & utilisateurs</div>
+{{-- ══ NAVBAR — même style que toutes les pages ══ --}}
+<div class="site-header">
+    <div style="max-width:1280px;margin:0 auto;padding:0 1rem;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+                <div class="logo">LMC CONSEIL</div>
+                <div class="logo-sub">Gestion des accès & utilisateurs</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.5rem;padding-top:.25rem;">
+                <span class="meta-pill"><i class="bi bi-shield-fill"></i> {{ auth()->user()->name }}</span>
+                <span class="meta-pill"><i class="bi bi-clock"></i> {{ now()->format('d/m/Y') }}</span>
+                <button class="theme-btn" id="themeToggle" title="Changer thème">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                <form method="POST" action="/logout" style="margin:0">
+                    @csrf
+                    <button type="button" class="theme-btn" title="Déconnexion"
+                        onclick="this.closest('form').submit()">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-        <div class="header-right">
-            <span class="meta-pill"><i class="bi bi-shield-fill"></i> {{ auth()->user()->name }}</span>
-            <form method="POST" action="/logout" style="margin:0">
-                @csrf
-                <button type="submit" class="hbtn" title="Déconnexion"><i class="bi bi-box-arrow-right"></i></button>
-            </form>
-            <button class="hbtn" id="themeToggle"><i class="bi bi-sun-fill" id="themeIcon"></i></button>
+        <div class="nav-wrap">
+            <a href="/"                class="nav-item {{ request()->is('/') ? 'active' : '' }}">
+                <i class="bi bi-table"></i> Données
+            </a>
+            <a href="/tableau-de-bord" class="nav-item {{ request()->is('tableau-de-bord') ? 'active' : '' }}">
+                <i class="bi bi-bar-chart"></i> Tableau de Bord
+            </a>
+            <a href="/consultants"     class="nav-item {{ request()->is('consultants') ? 'active' : '' }}">
+                <i class="bi bi-people"></i> Consultants
+            </a>
+            <a href="/nouveau-projet"  class="nav-item {{ request()->is('nouveau-projet') ? 'active' : '' }}">
+                <i class="bi bi-plus-circle"></i> Nouveau Projet
+            </a>
+            @if(auth()->check() && auth()->user()->isSuperAdmin())
+            <a href="/admin/users" class="nav-item {{ request()->is('admin/users') ? 'active' : '' }}">
+                <i class="bi bi-shield-lock"></i> Accès
+            </a>
+            @endif
         </div>
     </div>
-    <nav class="nav-wrap">
-        <a href="/"                class="nav-item {{ request()->is('/') ? 'active' : '' }}"><i class="bi bi-grid-fill"></i> Données</a>
-        <a href="/tableau-de-bord" class="nav-item {{ request()->is('tableau-de-bord') ? 'active' : '' }}"><i class="bi bi-bar-chart-fill"></i> Tableau de Bord</a>
-        <a href="/consultants"     class="nav-item {{ request()->is('consultants') ? 'active' : '' }}"><i class="bi bi-people-fill"></i> Consultants</a>
-        <a href="/nouveau-projet"  class="nav-item {{ request()->is('nouveau-projet') ? 'active' : '' }}"><i class="bi bi-plus-circle"></i> Nouveau Projet</a>
-        <a href="/admin/users"     class="nav-item {{ request()->is('admin/users') ? 'active' : '' }}"><i class="bi bi-person-gear"></i> Accès</a>
-    </nav>
-</header>
+</div>
+
+<script>
+(function(){
+    const t = localStorage.getItem('lmc-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.className = t === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+})();
+document.getElementById('themeToggle')?.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('lmc-theme', next);
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.className = next === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+});
+</script>
 
 <div class="page">
 
@@ -264,7 +288,6 @@
                         </div>
                     </div>
 
-                    {{-- PERMISSIONS --}}
                     <div id="createPermsWrap"></div>
 
                     <button type="submit" class="btn btn-primary btn-full">
@@ -421,113 +444,79 @@
 </div>
 
 <script>
-// Theme
-const ti=document.getElementById('themeIcon');
-function applyTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('lmc-theme',t);ti.className=t==='dark'?'bi bi-sun-fill':'bi bi-moon-fill';}
-applyTheme(localStorage.getItem('lmc-theme')||'dark');
-document.getElementById('themeToggle').addEventListener('click',()=>applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'));
-
-// Permissions definition — 5 seulement, par défaut NON
 const PERMS_DEF = [
-    { key:'voir_details',      label:'Voir les détails',    desc:'Accéder à la fiche complète du projet', icon:'bi-eye-fill', color:'blue' },
-    { key:'creer_projets',     label:'Créer un projet',     desc:'Ajouter de nouveaux projets',           icon:'bi-plus-circle-fill', color:'green' },
-    { key:'modifier_projets',  label:'Modifier un projet',  desc:'Éditer les informations du projet',     icon:'bi-pencil-fill', color:'yellow' },
-    { key:'supprimer_projets', label:'Supprimer un projet', desc:'Supprimer définitivement un projet',    icon:'bi-trash-fill', color:'red' },
-    { key:'voir_consultants',  label:'Voir les consultants',desc:'Accéder à la page consultants',         icon:'bi-people-fill', color:'purple' },
+    { key:'voir_details',      label:'Voir les détails',    desc:'Accéder à la fiche complète du projet', icon:'bi-eye-fill',         color:'blue'   },
+    { key:'creer_projets',     label:'Créer un projet',     desc:'Ajouter de nouveaux projets',           icon:'bi-plus-circle-fill', color:'green'  },
+    { key:'modifier_projets',  label:'Modifier un projet',  desc:'Éditer les informations du projet',     icon:'bi-pencil-fill',      color:'yellow' },
+    { key:'supprimer_projets', label:'Supprimer un projet', desc:'Supprimer définitivement un projet',    icon:'bi-trash-fill',       color:'red'    },
+    { key:'voir_consultants',  label:'Voir les consultants',desc:'Accéder à la page consultants',         icon:'bi-people-fill',      color:'purple' },
 ];
-
-let createPerms = {};
-let editPerms   = {};
+let createPerms = {}, editPerms = {};
 
 function renderPerms(containerId, permsState, prefix, role) {
     const wrap = document.getElementById(containerId);
-
-    // Super admin — pas besoin de permissions (tout autorisé)
     if (role === 'super_admin') {
         wrap.innerHTML = `<div class="admin-note"><i class="bi bi-shield-fill"></i> Super Admin a accès à tout — aucune restriction possible.</div>`;
         return;
     }
-
     const rows = PERMS_DEF.map(p => {
         const isOn = (permsState[p.key] ?? 'no') === 'yes';
         return `<div class="perm-row">
             <div class="perm-info">
                 <div class="perm-icon ${p.color}"><i class="bi ${p.icon}"></i></div>
-                <div>
-                    <div class="perm-name">${p.label}</div>
-                    <div class="perm-desc">${p.desc}</div>
-                </div>
+                <div><div class="perm-name">${p.label}</div><div class="perm-desc">${p.desc}</div></div>
             </div>
             <div class="toggle-wrap">
                 <span class="toggle-lbl ${isOn?'on':'off'}" id="lbl_${prefix}_${p.key}">${isOn?'OUI':'NON'}</span>
                 <label class="toggle">
-                    <input type="checkbox" ${isOn?'checked':''}
-                        onchange="togglePerm('${p.key}','${prefix}',this.checked)">
+                    <input type="checkbox" ${isOn?'checked':''} onchange="togglePerm('${p.key}','${prefix}',this.checked)">
                     <span class="toggle-slider"></span>
                 </label>
             </div>
             <input type="hidden" name="permissions[${p.key}]" id="hid_${prefix}_${p.key}" value="${isOn?'yes':'no'}">
         </div>`;
     }).join('');
-
-    wrap.innerHTML = `<div class="perms-box">
-        <div class="perms-hd"><i class="bi bi-key-fill"></i> Permissions — par défaut tout est NON</div>
-        ${rows}
-    </div>`;
+    wrap.innerHTML = `<div class="perms-box"><div class="perms-hd"><i class="bi bi-key-fill"></i> Permissions — par défaut tout est NON</div>${rows}</div>`;
 }
 
 function togglePerm(key, prefix, checked) {
     const val = checked ? 'yes' : 'no';
     if (prefix === 'create') createPerms[key] = val;
     else editPerms[key] = val;
-
-    // Update hidden input
     document.getElementById(`hid_${prefix}_${key}`).value = val;
-    // Update label
     const lbl = document.getElementById(`lbl_${prefix}_${key}`);
     lbl.textContent = checked ? 'OUI' : 'NON';
     lbl.className = `toggle-lbl ${checked?'on':'off'}`;
 }
 
 function onRoleChange(role, prefix) {
-    if (prefix === 'create') {
-        createPerms = {};
-        renderPerms('createPermsWrap', createPerms, 'create', role);
-    } else {
-        editPerms = {};
-        renderPerms('editPermsWrap', editPerms, 'edit', role);
-    }
+    if (prefix === 'create') { createPerms = {}; renderPerms('createPermsWrap', createPerms, 'create', role); }
+    else { editPerms = {}; renderPerms('editPermsWrap', editPerms, 'edit', role); }
 }
 
-// Init create form
 const checked = document.querySelector('.rr:checked');
 renderPerms('createPermsWrap', {}, 'create', checked ? checked.value : 'chef_projet');
 
-// Helpers
 function fillName(sel) {
-    const opt=sel.options[sel.selectedIndex];
-    if(opt.value) document.getElementById('nameInp').value=opt.dataset.nom||'';
+    const opt = sel.options[sel.selectedIndex];
+    if (opt.value) document.getElementById('nameInp').value = opt.dataset.nom || '';
 }
-function togglePw(inp,ico) {
-    const i=document.getElementById(inp);
-    document.getElementById(ico).className=(i.type=i.type==='password'?'text':'password')==='text'?'bi bi-eye-slash':'bi bi-eye';
+function togglePw(inp, ico) {
+    const i = document.getElementById(inp);
+    document.getElementById(ico).className = (i.type = i.type === 'password' ? 'text' : 'password') === 'text' ? 'bi bi-eye-slash' : 'bi bi-eye';
 }
 function filterUsers(q) {
-    q=q.toLowerCase();
-    document.querySelectorAll('.urow').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?'':'none');
+    q = q.toLowerCase();
+    document.querySelectorAll('.urow').forEach(r => r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none');
 }
 
-// Modals
 function openEdit(id, name, email, role, perms) {
     document.getElementById('eName').value  = name;
     document.getElementById('eEmail').value = email;
     document.getElementById('eRole').value  = role;
     document.getElementById('editForm').action = `/admin/users/${id}`;
-
-    // Refresh CSRF
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     document.querySelector('#editForm input[name="_token"]').value = token;
-
     editPerms = perms && typeof perms === 'object' ? {...perms} : {};
     renderPerms('editPermsWrap', editPerms, 'edit', role);
     document.getElementById('editOv').classList.add('open');
@@ -536,16 +525,13 @@ function openEdit(id, name, email, role, perms) {
 function openDelete(id, name) {
     document.getElementById('delSub').textContent = `Supprimer "${name}" ? Cette action est irréversible.`;
     document.getElementById('delForm').action = `/admin/users/${id}`;
-
-    // Refresh CSRF
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     document.querySelector('#delForm input[name="_token"]').value = token;
-
     document.getElementById('delOv').classList.add('open');
 }
 
-function closeOv(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function closeOv(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.ov').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
 </script>
 </body>
 </html>
