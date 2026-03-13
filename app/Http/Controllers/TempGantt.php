@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class GanttController extends Controller
 {
-    // ── Afficher le Gantt d'un projet ──────────────────────────────────
+    // ── Afficher le Gantt d'un projet  ────────────────────────────────
     public function show($id)
     {
         $projet = DB::selectOne("
