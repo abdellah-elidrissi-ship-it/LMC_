@@ -683,6 +683,18 @@
             font-size: 0.75rem;
         }
 
+        /* Auto-calculated indicator */
+        .auto-badge {
+            display: inline-block;
+            font-size: 0.6rem;
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 0.1rem 0.4rem;
+            border-radius: 100px;
+            margin-left: 0.3rem;
+            font-weight: 500;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .info-grid {
@@ -764,6 +776,9 @@ $livrableRows = DB::select("
 ", [$id]);
 
 $livrablesByChap = [];
+$totalLivrablesGlobal = 0;
+$terminesLivrablesGlobal = 0;
+
 foreach ($livrableRows as $lrow) {
     $chap = $lrow->chapitre_code;
     if (!isset($livrablesByChap[$chap])) {
@@ -771,14 +786,29 @@ foreach ($livrableRows as $lrow) {
     }
     $livrablesByChap[$chap]['items'][] = $lrow;
     $livrablesByChap[$chap]['total']++;
-    if ($lrow->statut === 'Terminé') $livrablesByChap[$chap]['termines']++;
+    $totalLivrablesGlobal++;
+    
+    if ($lrow->statut === 'Terminé') {
+        $livrablesByChap[$chap]['termines']++;
+        $terminesLivrablesGlobal++;
+    }
 }
+
+// Calculer l'avancement par chapitre basé sur les livrables
+$avancementParChapitre = [];
+foreach ($livrablesByChap as $chapCode => $chapData) {
+    $avancementParChapitre[$chapCode] = $chapData['total'] > 0 
+        ? round(($chapData['termines'] / $chapData['total']) * 100) 
+        : 0;
+}
+
+// Avancement global basé sur les livrables
+$avancementGlobalLivrables = $totalLivrablesGlobal > 0 ? round(($terminesLivrablesGlobal / $totalLivrablesGlobal) * 100) : 0;
 
 $chapCodeById = DB::table('chapitres_smis')->pluck('code_chapitre', 'id')->toArray();
 
 $chapsColl = collect($chapitres);
 $joursRealisesCalc = $chapsColl->sum('jours_intervention');
-$avancementCalc = $chapsColl->count() > 0 ? round($chapsColl->avg('avancement_percent')) : 0;
 $totalChap = $chapsColl->count();
 $doneChap = $chapsColl->where('phase', 'Terminé')->count();
 @endphp
@@ -914,11 +944,14 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
         </div>
         <div class="mt-3">
             <div class="d-flex justify-content-between mb-1">
-                <span style="font-size:0.8rem; color:var(--text-secondary);">Avancement global</span>
-                <span style="font-weight:600; color:var(--text-primary);">{{ $avancementCalc }}%</span>
+                <span style="font-size:0.8rem; color:var(--text-secondary);">Avancement global (livrables)</span>
+                <span style="font-weight:600; color:var(--text-primary);">{{ $avancementGlobalLivrables }}%</span>
             </div>
             <div class="progress-container">
-                <div class="progress-fill" style="width: {{ $avancementCalc }}%;"></div>
+                <div class="progress-fill" style="width: {{ $avancementGlobalLivrables }}%;"></div>
+            </div>
+            <div style="font-size:0.7rem; color:var(--text-muted); text-align:right; margin-top:0.3rem;">
+                {{ $terminesLivrablesGlobal }}/{{ $totalLivrablesGlobal }} livrables terminés
             </div>
         </div>
     </div>
@@ -954,6 +987,7 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
         <div class="section-title">
             <i class="bi bi-journal-check"></i>
             Suivi des chapitres SMI
+            <span class="auto-badge">automatique</span>
         </div>
         <div class="table-responsive">
             <table class="table-pro">
@@ -983,6 +1017,10 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
                         $livTotal = $chapLiv['total'] ?? 0;
                         $livDone = $chapLiv['termines'] ?? 0;
                         $livPct = $livTotal > 0 ? round(($livDone / $livTotal) * 100) : 0;
+                        
+                        // Avancement basé sur les livrables (utilisé pour affichage)
+                        $avancementReel = $chapCode && isset($avancementParChapitre[$chapCode]) ? $avancementParChapitre[$chapCode] : $chap->avancement_percent;
+                        
                         $collapseId = 'liv-chap-' . $chap->chapitre_id;
                         $chapLivrables = $chapLiv['items'] ?? [];
                     @endphp
@@ -992,7 +1030,7 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
                                 "code" => $chap->code_chapitre,
                                 "titre" => $chap->titre_chapitre,
                                 "phase" => $chap->phase,
-                                "avancement" => $chap->avancement_percent,
+                                "avancement" => $avancementReel,
                                 "jours" => $chap->jours_intervention,
                                 "observations" => $chap->observations,
                                 "exigences" => $chap->exigences_cles,
@@ -1025,7 +1063,12 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
                                 <span style="color: var(--text-muted);">Aucun livrable</span>
                             @endif
                         </td>
-                        <td class="text-center">{{ $chap->avancement_percent }}%</td>
+                        <td class="text-center">
+                            <strong style="color: var(--accent);">{{ $avancementReel }}%</strong>
+                            @if($avancementReel != $chap->avancement_percent)
+                                <div style="font-size: 0.6rem; color: var(--text-muted);">(basé sur livrables)</div>
+                            @endif
+                        </td>
                         <td><span class="phase-badge {{ $phaseClass }}">{{ $chap->phase }}</span></td>
                         <td class="text-center">{{ $chap->jours_intervention }}</td>
                         <td style="color: var(--text-muted); max-width: 200px;">
@@ -1290,7 +1333,7 @@ function showPrintDocument(chapData) {
                         <span class="print-info-value">${chapData.phase}</span>
                     </div>
                     <div class="print-info-row">
-                        <span class="print-info-label">Avancement</span>
+                        <span class="print-info-label">Avancement (basé sur livrables)</span>
                         <span class="print-info-value">${chapData.avancement}%</span>
                     </div>
                     <div class="print-info-row">

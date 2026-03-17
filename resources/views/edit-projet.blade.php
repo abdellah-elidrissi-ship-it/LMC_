@@ -382,7 +382,7 @@
         /* Colonne Exigences Clés - élargie */
         .col-exigences {
             min-width: 380px;
-            width: 38%;
+            width: 35%;
         }
 
         .col-exigences textarea {
@@ -423,7 +423,7 @@
         }
 
         .input-num.avancement {
-            border-color: var(--info) !important;
+            border-color: var(--accent) !important;
         }
 
         .input-num.jours {
@@ -441,185 +441,87 @@
             width: 140px;
         }
 
-        /* Livrables Accordion */
-        .livrables-section {
-            margin-top: 1.5rem;
-            padding-top: 1rem;
-            border-top: 2px dashed var(--border);
-        }
-
-        .livrables-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.2rem;
-        }
-
-        .livrables-header h5 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .livrables-stats {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .livrables-stats span {
-            background: var(--surface-hover);
-            padding: 0.3rem 0.8rem;
-            border-radius: 100px;
-        }
-
-        .liv-accordion {
+        /* Livrables Toggle Button */
+        .livrables-toggle {
             border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-
-        .liv-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.8rem 1rem;
-            cursor: pointer;
             background: var(--surface-hover);
-            border-bottom: 1px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .liv-header:hover {
-            background: var(--accent-soft);
-        }
-
-        .liv-header.open {
-            border-bottom: 1px solid var(--border);
-            background: var(--surface);
-        }
-
-        .liv-chap-code {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--accent);
-            min-width: 45px;
-        }
-
-        .liv-chap-titre {
-            font-size: 0.85rem;
+            color: var(--text-secondary);
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+            border-radius: var(--radius-sm);
             font-weight: 500;
-            color: var(--text-primary);
-            flex: 1;
+            transition: all 0.2s;
+            white-space: nowrap;
         }
 
-        .liv-progress {
-            width: 120px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .livrables-toggle:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
         }
 
-        .liv-progress-bar {
-            flex: 1;
-            height: 6px;
-            background: var(--border);
-            border-radius: 100px;
+        .livrables-count {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            white-space: nowrap;
+        }
+
+        /* Livrables Inline Table */
+        .livrables-inline-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            background: var(--surface);
+            border-radius: var(--radius-sm);
             overflow: hidden;
         }
 
-        .liv-progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--success), #34d399);
-            border-radius: 100px;
-            transition: width 0.3s;
-        }
-
-        .liv-count {
-            font-size: 0.7rem;
-            font-weight: 600;
+        .livrables-inline-table thead th {
+            background: var(--surface-hover);
             color: var(--text-muted);
-        }
-
-        .liv-badge {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
-            padding: 0.2rem 0.8rem;
-            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.5rem 0.6rem;
+            border: 1px solid var(--border);
         }
 
-        .liv-badge.done {
+        .livrables-inline-table td {
+            padding: 0.45rem 0.6rem;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .livrable-status {
+            display: inline-block;
+            border-radius: 100px;
+            padding: 0.1rem 0.7rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .livrable-status.completed {
             background: var(--success-light);
             color: var(--success);
         }
 
-        .liv-badge.partial {
+        .livrable-status.in-progress {
             background: var(--warning-light);
             color: var(--warning);
         }
 
-        .liv-badge.none {
+        .livrable-status.pending {
             background: var(--surface-hover);
             color: var(--text-muted);
         }
 
-        .liv-arrow {
-            color: var(--text-muted);
-            transition: transform 0.3s;
-        }
-
-        .liv-header.open .liv-arrow {
-            transform: rotate(180deg);
-        }
-
-        .liv-body {
-            display: none;
-            background: var(--surface);
-        }
-
-        .liv-body.open {
-            display: block;
-        }
-
-        .liv-row {
-            display: grid;
-            grid-template-columns: 80px 1fr 180px;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.6rem 1rem;
-            border-bottom: 1px solid var(--border);
-            transition: background 0.2s;
-        }
-
-        .liv-row:last-child {
-            border-bottom: none;
-        }
-
-        .liv-row:hover {
-            background: var(--surface-hover);
-        }
-
-        .liv-clause {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .liv-libelle {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
+        /* Livrables Statut Select */
         .liv-statut-select {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 500;
-            padding: 0.3rem 0.8rem;
+            padding: 0.2rem 0.6rem;
             border-radius: 100px;
             border: 1.5px solid var(--border);
             background: var(--input-bg);
@@ -627,6 +529,7 @@
             cursor: pointer;
             outline: none;
             transition: all 0.2s;
+            width: 130px;
         }
 
         .liv-statut-select.s-nc {
@@ -784,6 +687,18 @@
             font-size: 0.85rem;
         }
 
+        /* Auto-badge */
+        .auto-badge {
+            display: inline-block;
+            font-size: 0.6rem;
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 0.1rem 0.4rem;
+            border-radius: 100px;
+            margin-left: 0.3rem;
+            font-weight: 500;
+        }
+
         /* Responsive */
         @media (max-width: 1200px) {
             .col-exigences {
@@ -819,35 +734,65 @@
 
     @php
     use Illuminate\Support\Facades\DB;
-    $livrableRows = DB::select("
-    SELECT ls.id, ls.chapitre_code, ls.clause, ls.libelle, ls.ordre,
-    COALESCE(pl.statut, 'Non commencé') as statut
-    FROM livrables_smi ls
-    LEFT JOIN projet_livrables pl ON pl.livrable_id = ls.id AND pl.projet_id = ?
-    ORDER BY ls.ordre ASC
-    ", [$projet->id]);
+    use Illuminate\Support\Str;
 
+    $id = $projet->id;
+
+    // Récupérer tous les livrables avec leurs statuts pour ce projet
+    $livrableRows = DB::select("
+        SELECT ls.id, ls.chapitre_code, ls.clause, ls.libelle, ls.ordre,
+               COALESCE(pl.statut, 'Non commencé') as statut
+        FROM livrables_smi ls
+        LEFT JOIN projet_livrables pl ON pl.livrable_id = ls.id AND pl.projet_id = ?
+        ORDER BY ls.ordre ASC
+    ", [$id]);
+
+    // Organiser les livrables par chapitre
     $livrablesByChap = [];
+    $totalLivrablesGlobal = 0;
+    $terminesLivrablesGlobal = 0;
+
     foreach ($livrableRows as $lrow) {
-    $chap = $lrow->chapitre_code;
-    if (!isset($livrablesByChap[$chap])) {
-    $livrablesByChap[$chap] = ['items' => [], 'total' => 0, 'termines' => 0];
+        $chap = $lrow->chapitre_code;
+        if (!isset($livrablesByChap[$chap])) {
+            $livrablesByChap[$chap] = ['items' => [], 'total' => 0, 'termines' => 0];
+        }
+        $livrablesByChap[$chap]['items'][] = $lrow;
+        $livrablesByChap[$chap]['total']++;
+        $totalLivrablesGlobal++;
+        
+        if ($lrow->statut === 'Terminé') {
+            $livrablesByChap[$chap]['termines']++;
+            $terminesLivrablesGlobal++;
+        }
     }
-    $livrablesByChap[$chap]['items'][] = $lrow;
-    $livrablesByChap[$chap]['total']++;
-    if ($lrow->statut === 'Terminé') $livrablesByChap[$chap]['termines']++;
+    
+    // Calculer l'avancement par chapitre (basé sur les livrables)
+    $avancementParChapitre = [];
+    foreach ($livrablesByChap as $chapCode => $chapData) {
+        $avancementParChapitre[$chapCode] = $chapData['total'] > 0 
+            ? round(($chapData['termines'] / $chapData['total']) * 100) 
+            : 0;
     }
+    
+    // Calcul de l'avancement global basé sur tous les livrables
+    $avancementGlobal = $totalLivrablesGlobal > 0 ? round(($terminesLivrablesGlobal / $totalLivrablesGlobal) * 100) : 0;
+    
     $chapOrder = ['§4','§5','§6','§7','§8','§9','§10','Transversal'];
     $chapTitres = [
-    '§4' => 'Contexte de l\'organisme',
-    '§5' => 'Leadership',
-    '§6' => 'Planification',
-    '§7' => 'Support',
-    '§8' => 'Réalisation des activités',
-    '§9' => 'Évaluation des performances',
-    '§10' => 'Amélioration',
-    'Transversal' => 'Exigences transversales',
+        '§4' => 'Contexte de l\'organisme',
+        '§5' => 'Leadership',
+        '§6' => 'Planification',
+        '§7' => 'Support',
+        '§8' => 'Réalisation des activités',
+        '§9' => 'Évaluation des performances',
+        '§10' => 'Amélioration',
+        'Transversal' => 'Exigences transversales',
     ];
+
+    // Récupérer les consultants pour les sélecteurs
+    $consultants = DB::table('consultants')->where('actif', 1)->get();
+    $normes = DB::table('normes')->get();
     @endphp
 
     <!-- Header -->
@@ -885,7 +830,7 @@
 
     <!-- Main Content -->
     <div class="container py-4">
-        <form action="{{ route('projets.update', $projet->id) }}" method="POST">
+        <form action="{{ route('projets.update', $projet->id) }}" method="POST" id="mainForm">
             @csrf
             @method('PUT')
 
@@ -950,7 +895,7 @@
                 <div class="normes-section">
                     <div class="normes-grid">
                         @foreach($normes as $norme)
-                        @php $checked = $projet->normes->contains('id', $norme->id); @endphp
+                        @php $checked = DB::table('projet_normes')->where('projet_id', $projet->id)->where('norme_id', $norme->id)->exists(); @endphp
                         <div class="norme-check">
                             <input type="checkbox" name="normes[]" value="{{ $norme->id }}"
                                 id="norme{{ $norme->id }}" {{ $checked ? 'checked' : '' }}>
@@ -1000,7 +945,7 @@
                         <label class="form-label">Jours prévus</label>
                         <input type="number" class="form-control" name="jours_prevus" id="jours_prevus"
                             min="0" value="{{ old('jours_prevus', $projet->jours_prevus) }}"
-                            required oninput="recalcAll()">
+                            required oninput="recalcJours()">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">
@@ -1016,25 +961,23 @@
                     <div class="col-md-4">
                         <label class="form-label">
                             Avancement global
-                            <span class="badge-auto"><i class="bi bi-lock-fill"></i> Auto</span>
+                            <span class="badge-auto"><i class="bi bi-lock-fill"></i> Auto (livrables)</span>
                         </label>
                         <input type="number" class="form-control auto-calc" name="avancement_percent"
-                            id="avancement_percent" value="{{ old('avancement_percent', $projet->avancement_percent) }}" readonly>
+                            id="avancement_percent" value="{{ $avancementGlobal }}" readonly>
                         <div class="auto-tag">
-                            <i class="bi bi-arrow-right"></i> Moyenne des avancements
+                            <i class="bi bi-arrow-right"></i> {{ $terminesLivrablesGlobal }}/{{ $totalLivrablesGlobal }} livrables terminés
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Section E - Chapitres SMI (avec Exigences Clés élargies) -->
+            <!-- Section E - Suivi des chapitres SMI avec livrables intégrés (comme page détails) -->
             <div class="form-card">
                 <div class="section-title">
                     <i class="bi bi-journal-check"></i>
                     E - Suivi des chapitres SMI
-                    <span class="section-hint">
-                        <i class="bi bi-pencil-square"></i> Exigences clés modifiables
-                    </span>
+                    <span class="auto-badge">Avancement automatique</span>
                 </div>
 
                 <div class="table-smi-container">
@@ -1042,21 +985,42 @@
                         <thead>
                             <tr>
                                 <th style="width:10%;">Chapitre</th>
+                                <th style="width:15%;">Livrables</th>
                                 <th class="col-exigences">Exigences clés</th>
                                 <th style="width:7%;">Av. %</th>
-                                <th style="width:12%;">Phase</th>
+                                <th style="width:10%;">Phase</th>
                                 <th style="width:7%;">J. Interv.</th>
-                                <th style="width:20%;">Observations</th>
+                                <th style="width:12%;">Observations</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($projet->suiviChapitres as $index => $chap)
+                            @php
+                                $codeChapitre = $chap->chapitre->code_chapitre;
+                                $avancementCalcule = $avancementParChapitre[$codeChapitre] ?? 0;
+                                $chapLiv = $livrablesByChap[$codeChapitre] ?? null;
+                                $livTotal = $chapLiv['total'] ?? 0;
+                                $livDone = $chapLiv['termines'] ?? 0;
+                                $livPct = $livTotal > 0 ? round(($livDone / $livTotal) * 100) : 0;
+                                $collapseId = 'liv-chap-' . $chap->chapitre_id;
+                            @endphp
                             <tr>
                                 <td>
-                                    <span class="chapitre-code">{{ $chap->chapitre->code_chapitre }}</span>
+                                    <span class="chapitre-code">{{ $codeChapitre }}</span>
                                     <span class="chapitre-titre">{{ $chap->chapitre->titre_chapitre }}</span>
                                     <input type="hidden" name="chapitres[{{ $index }}][id]" value="{{ $chap->id }}">
                                     <input type="hidden" name="chapitres[{{ $index }}][chapitre_id]" value="{{ $chap->chapitre_id }}">
+                                </td>
+                                <td>
+                                    @if($livTotal > 0)
+                                        <button class="livrables-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#{{ $collapseId }}">
+                                            <i class="bi bi-list-ul me-1"></i>
+                                            Voir
+                                        </button>
+                                        <div class="livrables-count">{{ $livDone }}/{{ $livTotal }} ({{ $livPct }}%)</div>
+                                    @else
+                                        <span style="color: var(--text-muted);">—</span>
+                                    @endif
                                 </td>
                                 <td class="col-exigences">
                                     <textarea name="chapitres[{{ $index }}][exigences_cles]"
@@ -1065,8 +1029,12 @@
                                 <td>
                                     <input type="number" class="form-control input-num avancement"
                                         name="chapitres[{{ $index }}][avancement]"
-                                        min="0" max="100" value="{{ $chap->avancement_percent }}"
-                                        oninput="recalcAll()">
+                                        id="avancement-{{ $codeChapitre }}"
+                                        min="0" max="100" value="{{ $avancementCalcule }}"
+                                        readonly>
+                                    <small style="font-size: 0.6rem; color: var(--text-muted); display: block; text-align: center;">
+                                        auto
+                                    </small>
                                 </td>
                                 <td>
                                     <select class="phase-select" name="chapitres[{{ $index }}][phase]">
@@ -1080,8 +1048,9 @@
                                 <td>
                                     <input type="number" class="form-control input-num jours"
                                         name="chapitres[{{ $index }}][jours]"
+                                        id="jours-{{ $codeChapitre }}"
                                         min="0" value="{{ $chap->jours_intervention }}"
-                                        oninput="recalcAll()">
+                                        oninput="recalcJours()">
                                 </td>
                                 <td>
                                     <input type="text" class="form-control"
@@ -1089,6 +1058,46 @@
                                         value="{{ $chap->observations }}" placeholder="Observations...">
                                 </td>
                             </tr>
+
+                            @if($livTotal > 0)
+                            <tr class="collapse" id="{{ $collapseId }}">
+                                <td colspan="7" style="background: var(--surface-hover); padding: 1rem;">
+                                    <table class="livrables-inline-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:95px;">Clause</th>
+                                                <th>Libellé</th>
+                                                <th style="width:150px;">Statut</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($chapLiv['items'] as $liv)
+                                            @php
+                                                $selClass = match($liv->statut) {
+                                                    'Terminé' => 's-ok',
+                                                    'En cours' => 's-ec',
+                                                    default => 's-nc',
+                                                };
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $liv->clause ?: '—' }}</td>
+                                                <td>{{ $liv->libelle }}</td>
+                                                <td>
+                                                    <select class="liv-statut-select {{ $selClass }}"
+                                                        name="livrables[{{ $liv->id }}]"
+                                                        onchange="updateLivrableStatus(this, '{{ $codeChapitre }}', '{{ $collapseId }}')">
+                                                        <option value="Non commencé" {{ $liv->statut === 'Non commencé' ? 'selected' : '' }}>⬜ Non commencé</option>
+                                                        <option value="En cours" {{ $liv->statut === 'En cours' ? 'selected' : '' }}>🔄 En cours</option>
+                                                        <option value="Terminé" {{ $liv->statut === 'Terminé' ? 'selected' : '' }}>✅ Terminé</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -1099,80 +1108,11 @@
                             <span class="footer-value" id="footJours">{{ $projet->suiviChapitres->sum('jours_intervention') }}</span>
                         </span>
                         <span>
-                            Avancement moyen :
-                            <span class="footer-value" id="footAvancement">{{ $projet->avancement_percent }}</span>%
+                            Avancement global :
+                            <span class="footer-value" id="footAvancement">{{ $avancementGlobal }}</span>%
                         </span>
                     </div>
                 </div>
-
-                <!-- Livrables SMI - Section complète -->
-                @if(count($livrablesByChap))
-                <div class="livrables-section">
-                    <div class="livrables-header">
-                        <h5>
-                            <i class="bi bi-list-check" style="color:var(--accent);"></i>
-                            Livrables SMI par chapitre
-                        </h5>
-                        <div class="livrables-stats">
-                            @php
-                            $totalLiv = collect($livrablesByChap)->sum('total');
-                            $terminesLiv = collect($livrablesByChap)->sum('termines');
-                            $pctLiv = $totalLiv > 0 ? round(($terminesLiv / $totalLiv) * 100) : 0;
-                            @endphp
-                            <span><i class="bi bi-check-circle" style="color:var(--success);"></i> {{ $terminesLiv }}/{{ $totalLiv }} terminés</span>
-                            <span style="background:var(--success-light); color:var(--success);">{{ $pctLiv }}%</span>
-                        </div>
-                    </div>
-
-                    @foreach($chapOrder as $chapCode)
-                    @if(isset($livrablesByChap[$chapCode]))
-                    @php
-                    $chapData = $livrablesByChap[$chapCode];
-                    $pct = $chapData['total'] > 0 ? round(($chapData['termines'] / $chapData['total']) * 100) : 0;
-                    $badgeClass = $pct === 100 ? 'done' : ($pct > 0 ? 'partial' : 'none');
-                    $badgeLabel = $pct === 100 ? 'Terminé' : ($pct > 0 ? 'En cours' : 'Planifié');
-                    $accId = 'liv-' . str_replace(['§',' '],['','-'], $chapCode);
-                    @endphp
-                    <div class="liv-accordion">
-                        <div class="liv-header" onclick="toggleAccordion('{{ $accId }}')" id="hdr-{{ $accId }}">
-                            <span class="liv-chap-code">{{ $chapCode }}</span>
-                            <span class="liv-chap-titre">{{ $chapTitres[$chapCode] ?? $chapCode }}</span>
-                            <div class="liv-progress">
-                                <div class="liv-progress-bar">
-                                    <div class="liv-progress-fill" style="width:{{ $pct }}%"></div>
-                                </div>
-                                <span class="liv-count">{{ $chapData['termines'] }}/{{ $chapData['total'] }}</span>
-                            </div>
-                            <span class="liv-badge {{ $badgeClass }}">{{ $badgeLabel }}</span>
-                            <i class="bi bi-chevron-down liv-arrow"></i>
-                        </div>
-                        <div class="liv-body" id="{{ $accId }}">
-                            @foreach($chapData['items'] as $liv)
-                            @php
-                            $selClass = match($liv->statut) {
-                            'Terminé' => 's-ok',
-                            'En cours' => 's-ec',
-                            default => 's-nc',
-                            };
-                            @endphp
-                            <div class="liv-row">
-                                <span class="liv-clause">{{ $liv->clause ?: '—' }}</span>
-                                <span class="liv-libelle">{{ $liv->libelle }}</span>
-                                <select class="liv-statut-select {{ $selClass }}"
-                                    name="livrables[{{ $liv->id }}]"
-                                    onchange="updateLivrableStatus(this, '{{ $accId }}')">
-                                    <option value="Non commencé" {{ $liv->statut === 'Non commencé' ? 'selected' : '' }}>⬜ Non commencé</option>
-                                    <option value="En cours" {{ $liv->statut === 'En cours' ? 'selected' : '' }}>🔄 En cours</option>
-                                    <option value="Terminé" {{ $liv->statut === 'Terminé' ? 'selected' : '' }}>✅ Terminé</option>
-                                </select>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif
-                    @endforeach
-                </div>
-                @endif
             </div>
 
             <!-- Section F - Consultants -->
@@ -1357,6 +1297,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Variables pour stocker les données
+        let avancementParChapitre = @json($avancementParChapitre);
+        let livrablesParChapitre = @json($livrablesByChap);
+
         // Theme toggle
         (function() {
             const savedTheme = localStorage.getItem('lmc-theme') || 'light';
@@ -1378,11 +1322,8 @@
             }
         });
 
-        // Recalcul des totaux
-        function recalcAll() {
-            const jp = parseFloat(document.getElementById('jours_prevus').value) || 0;
-
-            // Total des jours
+        // Recalcul des jours uniquement
+        function recalcJours() {
             let totalJ = 0;
             document.querySelectorAll('input[name^="chapitres"][name$="[jours]"]').forEach(i => {
                 totalJ += parseFloat(i.value) || 0;
@@ -1390,41 +1331,18 @@
             totalJ = Math.round(totalJ * 10) / 10;
             document.getElementById('jours_realises').value = totalJ;
             document.getElementById('footJours').textContent = totalJ;
-
-            // Moyenne des avancements
-            const avInputs = document.querySelectorAll('input[name^="chapitres"][name$="[avancement]"]');
-            let sumAv = 0,
-                countAv = 0;
-            avInputs.forEach(i => {
-                const v = parseFloat(i.value);
-                if (!isNaN(v)) {
-                    sumAv += v;
-                    countAv++;
-                }
-            });
-            const avgAv = countAv > 0 ? Math.round(sumAv / countAv) : 0;
-            document.getElementById('avancement_percent').value = avgAv;
-            document.getElementById('footAvancement').textContent = avgAv;
         }
 
-        // Accordéon livrables
-        function toggleAccordion(id) {
-            const element = document.getElementById(id);
-            const header = document.getElementById('hdr-' + id);
-            element.classList.toggle('open');
-            header.classList.toggle('open');
-        }
-
-        // Mise à jour statut livrable
-        function updateLivrableStatus(select, accId) {
+        // Mise à jour du statut d'un livrable
+        function updateLivrableStatus(select, chapCode, collapseId) {
             // Mise à jour de la classe du select
             select.className = 'liv-statut-select ' +
                 (select.value === 'Terminé' ? 's-ok' :
                     select.value === 'En cours' ? 's-ec' : 's-nc');
 
             // Recalcul des stats du chapitre
-            const body = document.getElementById(accId);
-            const selects = body.querySelectorAll('.liv-statut-select');
+            const row = document.getElementById(collapseId);
+            const selects = row.querySelectorAll('.liv-statut-select');
             let total = selects.length;
             let termines = 0;
             selects.forEach(s => {
@@ -1433,20 +1351,59 @@
 
             const pct = Math.round((termines / total) * 100);
 
-            // Mise à jour de la barre de progression
-            const header = document.getElementById('hdr-' + accId);
-            const fill = header.querySelector('.liv-progress-fill');
-            if (fill) fill.style.width = pct + '%';
+            // Mettre à jour l'avancement du chapitre dans le tableau
+            const avancementField = document.getElementById('avancement-' + chapCode);
+            if (avancementField) {
+                avancementField.value = pct;
+            }
 
-            const count = header.querySelector('.liv-count');
-            if (count) count.textContent = termines + '/' + total;
+            // Mettre à jour le compteur dans la cellule livrables
+            const parentRow = row.previousElementSibling;
+            if (parentRow) {
+                const countDiv = parentRow.querySelector('.livrables-count');
+                if (countDiv) {
+                    countDiv.innerHTML = `${termines}/${total} (${pct}%)`;
+                }
+            }
 
-            // Mise à jour du badge
-            const badge = header.querySelector('.liv-badge');
-            if (badge) {
-                badge.className = 'liv-badge ' +
-                    (pct === 100 ? 'done' : pct > 0 ? 'partial' : 'none');
-                badge.textContent = pct === 100 ? 'Terminé' : pct > 0 ? 'En cours' : 'Planifié';
+            // Mettre à jour l'avancement global
+            updateGlobalProgress();
+        }
+
+        // Calculer et mettre à jour l'avancement global
+        function updateGlobalProgress() {
+            let totalGlobal = 0;
+            let terminesGlobal = 0;
+            
+            // Parcourir tous les chapitres
+            document.querySelectorAll('[id^="liv-chap-"]').forEach(body => {
+                const selects = body.querySelectorAll('.liv-statut-select');
+                if (selects.length > 0) {
+                    totalGlobal += selects.length;
+                    selects.forEach(s => {
+                        if (s.value === 'Terminé') terminesGlobal++;
+                    });
+                }
+            });
+            
+            const pctGlobal = totalGlobal > 0 ? Math.round((terminesGlobal / totalGlobal) * 100) : 0;
+            
+            // Mettre à jour le champ d'avancement global
+            const avancementGlobalField = document.getElementById('avancement_percent');
+            if (avancementGlobalField) {
+                avancementGlobalField.value = pctGlobal;
+            }
+            
+            // Mettre à jour le footer
+            const footAvancement = document.getElementById('footAvancement');
+            if (footAvancement) {
+                footAvancement.textContent = pctGlobal;
+            }
+            
+            // Mettre à jour le texte d'information
+            const autoTag = document.querySelectorAll('.auto-tag');
+            if (autoTag.length >= 2) {
+                autoTag[1].innerHTML = `<i class="bi bi-arrow-right"></i> ${terminesGlobal}/${totalGlobal} livrables terminés`;
             }
         }
 
@@ -1472,43 +1429,43 @@
             const charge = joursA > 0 ? Math.round((joursR / joursA) * 100) : 0;
 
             document.getElementById('newConsultantsContainer').insertAdjacentHTML('beforeend', `
-        <div class="consultant-row" id="consultant-row-${consId}">
-            <div class="row align-items-center g-3">
-                <div class="col-md-3">
-                    <div style="font-weight:600;">
-                        <i class="bi bi-person-plus-fill me-1" style="color:var(--success);"></i>
-                        ${consNom}
+                <div class="consultant-row" id="consultant-row-${consId}">
+                    <div class="row align-items-center g-3">
+                        <div class="col-md-3">
+                            <div style="font-weight:600;">
+                                <i class="bi bi-person-plus-fill me-1" style="color:var(--success);"></i>
+                                ${consNom}
+                            </div>
+                            <input type="hidden" name="consultants[${consId}][id]" value="${consId}">
+                            <span class="badge bg-success" style="font-size:0.6rem;">Nouveau</span>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" name="consultants[${consId}][role]">
+                                <option ${role === 'Chef de Projet' ? 'selected' : ''}>Chef de Projet</option>
+                                <option ${role === 'Consultant' ? 'selected' : ''}>Consultant</option>
+                                <option ${role === 'Consultant Ext.' ? 'selected' : ''}>Consultant Ext.</option>
+                                <option ${role === 'Expert' ? 'selected' : ''}>Expert</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" class="form-control" name="consultants[${consId}][jours_alloues]" 
+                                   min="0" step="0.1" value="${joursA}">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" class="form-control" name="consultants[${consId}][jours_realises]" 
+                                   min="0" step="0.1" value="${joursR}">
+                        </div>
+                        <div class="col-md-1">
+                            <span class="badge bg-info">${charge}%</span>
+                        </div>
+                        <div class="col-md-1 text-center">
+                            <button type="button" class="btn-remove" onclick="removeConsultant(this, ${consId})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
                     </div>
-                    <input type="hidden" name="consultants[${consId}][id]" value="${consId}">
-                    <span class="badge bg-success" style="font-size:0.6rem;">Nouveau</span>
                 </div>
-                <div class="col-md-3">
-                    <select class="form-select" name="consultants[${consId}][role]">
-                        <option ${role === 'Chef de Projet' ? 'selected' : ''}>Chef de Projet</option>
-                        <option ${role === 'Consultant' ? 'selected' : ''}>Consultant</option>
-                        <option ${role === 'Consultant Ext.' ? 'selected' : ''}>Consultant Ext.</option>
-                        <option ${role === 'Expert' ? 'selected' : ''}>Expert</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <input type="number" class="form-control" name="consultants[${consId}][jours_alloues]" 
-                           min="0" step="0.1" value="${joursA}">
-                </div>
-                <div class="col-md-2">
-                    <input type="number" class="form-control" name="consultants[${consId}][jours_realises]" 
-                           min="0" step="0.1" value="${joursR}">
-                </div>
-                <div class="col-md-1">
-                    <span class="badge bg-info">${charge}%</span>
-                </div>
-                <div class="col-md-1 text-center">
-                    <button type="button" class="btn-remove" onclick="removeConsultant(this, ${consId})">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    `);
+            `);
 
             select.value = '';
             document.getElementById('existingConsultantRole').value = 'Consultant';
@@ -1531,7 +1488,10 @@
         }, 5000);
 
         // Initial recalc
-        document.addEventListener('DOMContentLoaded', recalcAll);
+        document.addEventListener('DOMContentLoaded', () => {
+            recalcJours();
+            updateGlobalProgress();
+        });
     </script>
 </body>
 
