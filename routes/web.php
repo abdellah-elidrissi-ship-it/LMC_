@@ -29,10 +29,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/projet/{id}/gantt', [GanttController::class, 'show'])->name('gantt.show');
 
     Route::middleware(['permission:modifier_projets'])->group(function () {
-        Route::post('/projet/{id}/gantt/upload',                    [GanttController::class, 'upload'])->name('gantt.upload');
         Route::post('/projet/{id}/gantt/tache',                     [GanttController::class, 'storeTache'])->name('gantt.tache.store');
         Route::put('/projet/{id}/gantt/tache/{tacheId}/update',     [GanttController::class, 'updateTache'])->name('gantt.tache.update'); // ← NOUVEAU
         Route::delete('/projet/{id}/gantt/tache/{tacheId}',         [GanttController::class, 'destroyTache'])->name('gantt.tache.destroy');
+        Route::post('/projet/{id}/gantt/upload', [GanttController::class, 'upload'])->name('gantt.upload');
     });
 
     // Créer
