@@ -4,264 +4,781 @@
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMC Conseil - Données</title>
+    <title>LMC Conseil - Tableau de bord</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
         [data-theme="light"] {
-            --bg:         #f1f5f9;
-            --surface:    #ffffff;
-            --surface2:   #f8fafc;
-            --border:     #e2e8f0;
-            --text:       #0f172a;
-            --text2:      #475569;
-            --muted:      #94a3b8;
-            --accent:     #3b82f6;
-            --header-bg:  linear-gradient(135deg, #0f172a, #1e293b);
-            --nav-bg:     rgba(255,255,255,0.1);
-            --shadow:     0 2px 12px rgba(0,0,0,0.06);
-            --shadow-md:  0 4px 20px rgba(0,0,0,0.08);
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-hover: #f1f5f9;
+            --border: #e2e8f0;
+            --border-dark: #cbd5e1;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --accent: #2563eb;
+            --accent-light: #3b82f6;
+            --accent-soft: #dbeafe;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --info: #6366f1;
+            --info-light: #e0e7ff;
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --radius-full: 9999px;
         }
 
         [data-theme="dark"] {
-            --bg:         #0f172a;
-            --surface:    #1e293b;
-            --surface2:   #162032;
-            --border:     #334155;
-            --text:       #e2e8f0;
-            --text2:      #94a3b8;
-            --muted:      #64748b;
-            --accent:     #3b82f6;
-            --header-bg:  linear-gradient(135deg, #020817, #0f172a);
-            --nav-bg:     rgba(255,255,255,0.05);
-            --shadow:     0 2px 12px rgba(0,0,0,0.3);
-            --shadow-md:  0 4px 20px rgba(0,0,0,0.4);
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-hover: #263445;
+            --border: #334155;
+            --border-dark: #475569;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+            --accent-soft: #1e3a5f;
+            --success: #10b981;
+            --success-light: #064e3b;
+            --warning: #f59e0b;
+            --warning-light: #78350f;
+            --danger: #ef4444;
+            --danger-light: #7f1d1d;
+            --info: #6366f1;
+            --info-light: #312e81;
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.6);
         }
 
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg);
-            color: var(--text);
-            transition: background .3s, color .3s;
+            color: var(--text-primary);
+            transition: background-color 0.2s, color 0.2s;
+            line-height: 1.5;
+            font-size: 14px;
         }
 
+        /* HEADER PREMIUM */
         .site-header {
-            background: var(--header-bg);
-            padding: 1rem 0;
-            border-bottom: 3px solid #3b82f6;
+            background: linear-gradient(135deg, #0a1120, #172032);
+            padding: 1rem 2rem;
+            border-bottom: 3px solid var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: var(--shadow-lg);
         }
 
-        .logo { font-size:1.3rem; font-weight:700; color:white; }
-        .logo-sub { font-size:.73rem; color:rgba(255,255,255,.4); margin-top:.1rem; }
+        .header-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-image {
+            height: 45px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            transition: filter 0.2s;
+        }
+
+        [data-theme="dark"] .logo-image {
+            filter: none;
+        }
+
+        .logo-divider {
+            width: 1px;
+            height: 30px;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-sub {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 0.1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
 
         .meta-pill {
-            background:rgba(255,255,255,.08);
-            border:1px solid rgba(255,255,255,.1);
-            color:rgba(255,255,255,.5);
-            padding:.28rem .8rem; border-radius:50px; font-size:.73rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #cbd5e1;
+            padding: 0.35rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .theme-btn {
-            width:34px; height:34px; border-radius:50%;
-            border:1px solid rgba(255,255,255,.15);
-            background:rgba(255,255,255,.08);
-            color:rgba(255,255,255,.65);
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; transition:all .2s;
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .theme-btn:hover { background:rgba(255,255,255,.15); color:white; }
+
+        .theme-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* NAVIGATION */
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
 
         .nav-wrap {
-            display:flex; gap:.3rem;
-            background:var(--nav-bg);
-            border:1px solid rgba(255,255,255,.08);
-            padding:.38rem; border-radius:50px;
-            margin-top:.85rem; width:fit-content;
+            display: flex;
+            gap: 0.25rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.4rem;
+            border-radius: var(--radius-full);
+            margin-top: 0.75rem;
+            width: fit-content;
         }
 
         .nav-item {
-            padding:.48rem 1.15rem; border-radius:50px;
-            font-size:.82rem; font-weight:500;
-            color:rgba(255,255,255,.5); text-decoration:none;
-            transition:all .2s; display:inline-flex; align-items:center; gap:.35rem;
+            padding: 0.45rem 1.25rem;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
         }
-        .nav-item:hover { background:rgba(255,255,255,.08); color:white; }
-        .nav-item.active { background:white; color:#0f172a; font-weight:600; }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: white;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        /* PAGE */
+        .page {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* WELCOME BANNER */
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--surface), var(--surface-hover));
+            border: 1px solid var(--border);
+            border-radius: var(--radius-2xl);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+        }
+
+        .welcome-content h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .welcome-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .welcome-stats {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .welcome-stat {
+            text-align: center;
+        }
+
+        .welcome-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .welcome-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* STATS CARDS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
 
         .stat-card {
-            background:var(--surface); border:1px solid var(--border);
-            border-radius:16px; padding:1.25rem 1.4rem;
-            box-shadow:var(--shadow); transition:transform .2s, box-shadow .2s;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
         }
-        .stat-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
 
         .stat-icon {
-            width:38px; height:38px; border-radius:11px;
-            display:flex; align-items:center; justify-content:center;
-            font-size:1.15rem; margin-bottom:.85rem;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
+
+        .stat-icon.blue {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--accent);
+        }
+
+        .stat-icon.green {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .stat-icon.red {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .stat-icon.yellow {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
         .stat-label {
-            font-size:.7rem; font-weight:600; text-transform:uppercase;
-            letter-spacing:.07em; color:var(--muted); margin-bottom:.2rem;
-        }
-        .stat-value { font-size:1.85rem; font-weight:700; color:var(--text); line-height:1; }
-        .stat-sub   { font-size:.78rem; color:var(--muted); margin-top:.3rem; }
-
-        .search-wrap {
-            background:var(--surface); border:1px solid var(--border);
-            border-radius:12px; padding:.48rem 1rem;
-            display:flex; align-items:center; gap:.65rem;
-            box-shadow:var(--shadow); transition:border-color .2s;
-        }
-        .search-wrap:focus-within { border-color:var(--accent); }
-        .search-wrap i  { color:var(--muted); }
-        .search-wrap input {
-            border:none; outline:none; background:transparent;
-            color:var(--text); font-size:.88rem; width:100%;
-            font-family:'Inter',sans-serif;
-        }
-        .search-wrap input::placeholder { color:var(--muted); }
-
-        .proj-card {
-            background:var(--surface); border:1px solid var(--border);
-            border-radius:18px; overflow:hidden;
-            box-shadow:var(--shadow); transition:transform .2s, box-shadow .2s, border-color .2s;
-            display:flex; flex-direction:column; height:100%;
-        }
-        .proj-card:hover {
-            transform:translateY(-3px);
-            box-shadow:var(--shadow-md);
-            border-color:var(--accent);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
         }
 
-        .top-bar { height:4px; }
-        .proj-card.finalise .top-bar { background:linear-gradient(90deg,#10b981,#34d399); }
-        .proj-card.retard   .top-bar { background:linear-gradient(90deg,#ef4444,#f87171); }
-        .proj-card.cours    .top-bar { background:linear-gradient(90deg,#f97316,#fbbf24); }
-        .proj-card.planifie .top-bar { background:linear-gradient(90deg,#6366f1,#818cf8); }
-
-        .proj-body { padding:1.25rem; flex:1; display:flex; flex-direction:column; }
-
-        .proj-header {
-            display:flex; justify-content:space-between;
-            align-items:center; margin-bottom:.95rem;
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
         }
 
-        .proj-ref {
-            font-size:.7rem; font-weight:600; letter-spacing:.06em;
-            text-transform:uppercase; color:var(--muted);
-            background:var(--surface2); padding:.22rem .7rem;
-            border-radius:50px; border:1px solid var(--border);
+        .stat-sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
         }
 
-        .proj-badge {
-            font-size:.7rem; font-weight:600;
-            padding:.24rem .78rem; border-radius:50px;
-        }
-        [data-theme="light"] .proj-badge.finalise { background:#dcfce7; color:#166534; }
-        [data-theme="light"] .proj-badge.retard   { background:#fee2e2; color:#991b1b; }
-        [data-theme="light"] .proj-badge.cours    { background:#ffedd5; color:#9a3412; }
-        [data-theme="light"] .proj-badge.planifie { background:#ede9fe; color:#4c1d95; }
-        [data-theme="dark"]  .proj-badge.finalise { background:rgba(16,185,129,.15); color:#34d399; }
-        [data-theme="dark"]  .proj-badge.retard   { background:rgba(239,68,68,.15);  color:#f87171; }
-        [data-theme="dark"]  .proj-badge.cours    { background:rgba(249,115,22,.15); color:#fb923c; }
-        [data-theme="dark"]  .proj-badge.planifie { background:rgba(99,102,241,.15); color:#a5b4fc; }
-
-        .proj-client {
-            font-size:1.12rem; font-weight:700; color:var(--text);
-            margin-bottom:.2rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-        }
-        .proj-sector {
-            font-size:.78rem; color:var(--muted);
-            display:flex; align-items:center; gap:.3rem; margin-bottom:.85rem;
+        /* SEARCH BAR */
+        .search-section {
+            margin-bottom: 2rem;
         }
 
-        .normes-row {
-            display:flex; flex-wrap:wrap; gap:.3rem;
-            padding:.7rem 0; border-top:1px solid var(--border);
-            border-bottom:1px solid var(--border); margin-bottom:.85rem;
-        }
-        .norme-pill {
-            font-size:.68rem; font-weight:500;
-            padding:.2rem .6rem; border-radius:50px;
-            background:var(--surface2); border:1px solid var(--border); color:var(--text2);
-        }
-
-        .proj-chef {
-            display:flex; align-items:center; gap:.45rem; margin-bottom:.85rem;
-        }
-        .chef-av {
-            width:25px; height:25px; border-radius:50%;
-            background:linear-gradient(135deg,#3b82f6,#8b5cf6);
-            display:flex; align-items:center; justify-content:center;
-            font-size:.62rem; font-weight:700; color:white; flex-shrink:0;
-        }
-        .chef-name { font-size:.82rem; color:var(--text2); font-weight:500; }
-
-        .jours-row {
-            display:flex; justify-content:space-between;
-            font-size:.76rem; color:var(--muted); margin-bottom:.4rem;
-        }
-        .jours-pct { font-weight:600; color:var(--text); }
-
-        .prog-bg {
-            height:5px; background:var(--border);
-            border-radius:50px; overflow:hidden; margin-bottom:.85rem;
-        }
-        .prog-fill {
-            height:100%; border-radius:50px;
-            background:linear-gradient(90deg,#3b82f6,#8b5cf6); transition:width .5s;
-        }
-        .prog-fill.finalise { background:linear-gradient(90deg,#10b981,#34d399); }
-        .prog-fill.retard   { background:linear-gradient(90deg,#ef4444,#f87171); }
-        .prog-fill.cours    { background:linear-gradient(90deg,#f97316,#fbbf24); }
-
-        .blocage-tag {
-            display:inline-flex; align-items:center; gap:.32rem;
-            font-size:.7rem; font-weight:500;
-            padding:.22rem .65rem; border-radius:50px; margin-bottom:.65rem;
-        }
-        [data-theme="light"] .blocage-tag { background:#fef2f2; border:1px solid #fecaca; color:#b91c1c; }
-        [data-theme="dark"]  .blocage-tag { background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.2); color:#f87171; }
-
-        .proj-footer {
-            display:flex; justify-content:flex-end; gap:.4rem;
-            padding-top:.8rem; border-top:1px solid var(--border); margin-top:auto;
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-full);
+            padding: 0.5rem 1rem 0.5rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
         }
 
-        .act-btn {
-            width:31px; height:31px; border-radius:9px;
-            border:1px solid var(--border); background:var(--surface2);
-            color:var(--muted); display:inline-flex; align-items:center;
-            justify-content:center; text-decoration:none;
-            font-size:.8rem; cursor:pointer; transition:all .18s;
+        .search-wrapper:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
         }
-        .act-btn:hover          { background:var(--accent); color:white; border-color:var(--accent); }
-        .act-btn.del:hover      { background:#ef4444; border-color:#ef4444; color:white; }
-        .act-btn.edit-b:hover   { background:#8b5cf6; border-color:#8b5cf6; color:white; }
-        .act-btn.gantt-b:hover  { background:#10b981; border-color:#10b981; color:white; }
 
-        [data-theme="dark"] .si-blue   { background:rgba(59,130,246,.15)  !important; color:#60a5fa !important; }
-        [data-theme="dark"] .si-green  { background:rgba(16,185,129,.15)  !important; color:#34d399 !important; }
-        [data-theme="dark"] .si-red    { background:rgba(239,68,68,.15)   !important; color:#f87171 !important; }
-        [data-theme="dark"] .si-yellow { background:rgba(217,119,6,.15)   !important; color:#fbbf24 !important; }
+        .search-wrapper i {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
 
+        .search-wrapper input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            padding: 0.5rem 0;
+            outline: none;
+        }
+
+        .search-wrapper input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-filters {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-left: 1rem;
+            border-left: 1px solid var(--border);
+        }
+
+        .filter-chip {
+            padding: 0.3rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 500;
+            background: var(--surface-hover);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-chip:hover,
+        .filter-chip.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* PROJECT GRID */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-2xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent);
+        }
+
+        .project-status-bar {
+            height: 6px;
+            width: 100%;
+        }
+
+        .project-status-bar.finalised { background: linear-gradient(90deg, #10b981, #34d399); }
+        .project-status-bar.in-progress { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .project-status-bar.delayed { background: linear-gradient(90deg, #ef4444, #f87171); }
+        .project-status-bar.planned { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+
+        .project-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .project-ref {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--surface-hover);
+            padding: 0.2rem 0.8rem;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border);
+        }
+
+        .project-badge {
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 0.2rem 0.8rem;
+            border-radius: var(--radius-full);
+        }
+
+        .project-badge.finalised {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .project-badge.in-progress {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .project-badge.delayed {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .project-badge.planned {
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+        }
+
+        .project-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .project-client {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-client i {
+            font-size: 0.7rem;
+        }
+
+        .project-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .project-chef {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .chef-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .project-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-days {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .project-days strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .project-percent {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--border);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+        }
+
+        .progress-fill.finalised { background: linear-gradient(90deg, #10b981, #34d399); }
+        .progress-fill.in-progress { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .progress-fill.delayed { background: linear-gradient(90deg, #ef4444, #f87171); }
+        .progress-fill.planned { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+
+        .project-normes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .norme-tag {
+            font-size: 0.65rem;
+            font-weight: 500;
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius-full);
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .project-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: var(--surface-hover);
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .action-btn.delete:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .action-btn.gantt:hover {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .action-btn.edit:hover {
+            background: var(--info);
+            border-color: var(--info);
+            color: white;
+        }
+
+        /* EMPTY STATE */
         .empty-state {
-            text-align:center; padding:4rem 2rem;
-            background:var(--surface); border-radius:16px;
-            border:2px dashed var(--border);
+            text-align: center;
+            padding: 5rem 2rem;
+            background: var(--surface);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-2xl);
+            color: var(--text-muted);
         }
-        .empty-state i { font-size:2.5rem; color:var(--muted); display:block; margin-bottom:.8rem; }
 
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--border);
+        }
+
+        .empty-state h5 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+
+        /* PAGE FOOTER */
         .page-footer {
-            display:flex; justify-content:space-between;
-            margin-top:2rem; padding-top:1rem;
-            border-top:1px solid var(--border);
-            font-size:.78rem; color:var(--muted);
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5rem 0;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-banner {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .search-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-filters {
+                border-left: none;
+                border-top: 1px solid var(--border);
+                padding-left: 0;
+                padding-top: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -269,6 +786,7 @@
 
 @php
 use Illuminate\Support\Facades\DB;
+
 try {
     $projets = DB::select("
         SELECT p.*, c.nom_client, c.secteur_activite,
@@ -283,313 +801,371 @@ try {
     ");
     $db_error = null;
 } catch (\Exception $e) {
-    $projets = []; $db_error = $e->getMessage();
+    $projets = [];
+    $db_error = $e->getMessage();
 }
+
 $totalProjets = count($projets);
 $finalises = $enRetard = $enCours = $planifies = 0;
 $totalJoursPrevus = $totalJoursRealises = 0;
+
 foreach($projets as $p) {
-    $totalJoursPrevus  += $p->jours_prevus;
+    $totalJoursPrevus += $p->jours_prevus;
     $totalJoursRealises += $p->jours_realises;
+    
     match($p->statut) {
-        'Finalisé'  => $finalises++,
+        'Finalisé' => $finalises++,
         'En retard' => $enRetard++,
-        'En cours'  => $enCours++,
-        default     => $planifies++,
+        'En cours' => $enCours++,
+        default => $planifies++,
     };
 }
+
+// Calculer l'avancement global
+$avancementGlobal = $totalJoursPrevus > 0 
+    ? round(($totalJoursRealises / $totalJoursPrevus) * 100) 
+    : 0;
+
+// Récupérer l'utilisateur connecté
+$user = auth()->user();
 @endphp
 
-<!-- HEADER -->
- 
+<!-- HEADER PREMIUM -->
 <div class="site-header">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <div class="logo">{{ $navTitle ?? 'LMC CONSEIL' }}</div>
-                <div class="logo-sub">{{ $navSubtitle ?? 'Campagne 2025 — 2026' }}</div>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-                <span class="meta-pill"><i class="bi bi-database me-1"></i>v2.0</span>
-                <span class="meta-pill"><i class="bi bi-clock me-1"></i>{{ now()->format('d/m/Y') }}</span>
-                <button class="theme-btn" id="themeToggle" title="Changer thème">
-                    <i class="bi bi-moon-fill" id="themeIcon"></i>
-                </button>
-                @isset($navBackUrl)
-                <a href="{{ $navBackUrl }}" class="btn-retour">
-                    <i class="bi bi-arrow-left"></i> {{ $navBackLabel ?? 'Retour' }}
-                </a>
-                @endisset
-                @unless(isset($navBackUrl))
-                <form method="POST" action="/logout" style="margin:0">
-                    @csrf
-                    <button type="button" class="theme-btn" title="Déconnexion"
-                        onclick="this.closest('form').submit()">
-                        <i class="bi bi-box-arrow-right"></i>
-                    </button>
-                </form>
-                @endunless
+    <div class="header-container">
+        <div class="logo-wrapper">
+            <div class="logo-container">
+                <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png" 
+                     alt="LMC Conseil" 
+                     class="logo-image"
+                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%2240%22%20viewBox%3D%220%200%20120%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
+                <div class="logo-divider"></div>
+                <div class="logo-text">
+                    <span class="logo-main">LEAD MANAGEMENT CONSULTING</span>
+                    <span class="logo-sub">EXCELLENCE & CERTIFICATION</span>
+                </div>
             </div>
         </div>
+        
+        <div class="header-actions">
+            <span class="meta-pill">
+                <i class="bi bi-calendar-check"></i>
+                {{ now()->format('d/m/Y') }}
+            </span>
+            <span class="meta-pill">
+                <i class="bi bi-person-circle"></i>
+                {{ $user->name }}
+            </span>
+            <button class="theme-btn" id="themeToggle">
+                <i class="bi bi-moon-fill" id="themeIcon"></i>
+            </button>
+            <form method="POST" action="/logout" style="margin:0">
+                @csrf
+                <button type="button" class="theme-btn" title="Déconnexion"
+                    onclick="this.closest('form').submit()">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
 
+    <div class="nav-container">
         <div class="nav-wrap">
-            <a href="/" class="nav-item {{ ($navActive ?? '') === 'donnees' ? 'active' : '' }}">
-                <i class="bi bi-table"></i> Données
+            <a href="/" class="nav-item active">
+                <i class="bi bi-grid"></i> Tableau de bord
             </a>
-            <a href="/tableau-de-bord" class="nav-item {{ ($navActive ?? '') === 'tableau' ? 'active' : '' }}">
-                <i class="bi bi-bar-chart"></i> Tableau de Bord
+            <a href="/projets" class="nav-item">
+                <i class="bi bi-folder"></i> Projets
             </a>
-            <a href="/consultants" class="nav-item {{ ($navActive ?? '') === 'consultants' ? 'active' : '' }}">
+            <a href="/consultants" class="nav-item">
                 <i class="bi bi-people"></i> Consultants
             </a>
-            <a href="/nouveau-projet" class="nav-item {{ ($navActive ?? '') === 'nouveau' ? 'active' : '' }}">
-                <i class="bi bi-plus-circle"></i> Nouveau Projet
+            <a href="/gantt" class="nav-item">
+                <i class="bi bi-bar-chart-steps"></i> Planning
             </a>
-            @isset($navExtra)
-                {!! $navExtra !!}
-            @endisset
-            @if(auth()->check() && auth()->user()->isSuperAdmin())
-            <a href="/admin/users" class="nav-item {{ ($navActive ?? '') === 'admin' ? 'active' : '' }}">
-                <i class="bi bi-shield-lock"></i> Accès
+            @if($user->isSuperAdmin())
+            <a href="/admin/users" class="nav-item">
+                <i class="bi bi-shield-lock"></i> Administration
             </a>
             @endif
         </div>
     </div>
 </div>
 
-<script>
-(function() {
-    const saved = localStorage.getItem('lmc-theme') || 'light';
-    document.documentElement.setAttribute('data-theme', saved);
-    const icon = document.getElementById('themeIcon');
-    if (icon) icon.className = saved === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
-})();
-document.getElementById('themeToggle')?.addEventListener('click', () => {
-    const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('lmc-theme', next);
-    const icon = document.getElementById('themeIcon');
-    if (icon) icon.className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
-});
-</script>
-
-<!-- CONTENT -->
-<div class="container py-4">
+<!-- MAIN CONTENT -->
+<div class="page">
 
     @if(isset($db_error) && $db_error)
         <div class="alert alert-danger">{{ $db_error }}</div>
     @else
 
-    <!-- Stats -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-3 col-6">
-            <div class="stat-card">
-                <div class="stat-icon si-blue" style="background:#eff6ff; color:#3b82f6;">
-                    <i class="bi bi-folder2"></i>
-                </div>
-                <div class="stat-label">Total Projets</div>
-                <div class="stat-value">{{ $totalProjets }}</div>
-                <div class="stat-sub">Portefeuille complet</div>
-            </div>
+    <!-- WELCOME BANNER -->
+    <div class="welcome-banner">
+        <div class="welcome-content">
+            <h1>Bonjour, {{ $user->name }} 👋</h1>
+            <p>
+                <i class="bi bi-calendar-week"></i> Semaine du {{ now()->startOfWeek()->format('d/m') }} au {{ now()->endOfWeek()->format('d/m/Y') }}
+                <i class="bi bi-database ms-3"></i> {{ $totalProjets }} projets actifs
+            </p>
         </div>
-        <div class="col-md-3 col-6">
-            <div class="stat-card">
-                <div class="stat-icon si-green" style="background:#f0fdf4; color:#16a34a;">
-                    <i class="bi bi-check-circle"></i>
-                </div>
-                <div class="stat-label">Finalisés</div>
-                <div class="stat-value">{{ $finalises }}</div>
-                <div class="stat-sub">Certifications obtenues</div>
+        <div class="welcome-stats">
+            <div class="welcome-stat">
+                <div class="welcome-stat-value">{{ $avancementGlobal }}%</div>
+                <div class="welcome-stat-label">Avancement global</div>
             </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="stat-card">
-                <div class="stat-icon si-red" style="background:#fff1f2; color:#e11d48;">
-                    <i class="bi bi-exclamation-triangle"></i>
-                </div>
-                <div class="stat-label">En retard</div>
-                <div class="stat-value">{{ $enRetard }}</div>
-                <div class="stat-sub">Attention requise</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="stat-card">
-                <div class="stat-icon si-yellow" style="background:#fffbeb; color:#d97706;">
-                    <i class="bi bi-calendar-check"></i>
-                </div>
-                <div class="stat-label">Jours réalisés</div>
-                <div class="stat-value">{{ $totalJoursRealises }}</div>
-                <div class="stat-sub">/ {{ $totalJoursPrevus }} prévus</div>
+            <div class="welcome-stat">
+                <div class="welcome-stat-value">{{ $totalJoursRealises }}</div>
+                <div class="welcome-stat-label">Jours réalisés</div>
             </div>
         </div>
     </div>
 
-    <!-- Search -->
-    <div class="search-wrap mb-4">
-        <i class="bi bi-search"></i>
-        <input type="text" id="searchInput"
-               placeholder="Rechercher un projet, client, chef de projet...">
+    <!-- STATS CARDS -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="bi bi-folder2"></i>
+            </div>
+            <div class="stat-label">Total projets</div>
+            <div class="stat-value">{{ $totalProjets }}</div>
+            <div class="stat-sub">Portefeuille complet</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <i class="bi bi-check-circle"></i>
+            </div>
+            <div class="stat-label">Finalisés</div>
+            <div class="stat-value">{{ $finalises }}</div>
+            <div class="stat-sub">Certifications obtenues</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon yellow">
+                <i class="bi bi-clock"></i>
+            </div>
+            <div class="stat-label">En cours</div>
+            <div class="stat-value">{{ $enCours }}</div>
+            <div class="stat-sub">Projets actifs</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon red">
+                <i class="bi bi-exclamation-triangle"></i>
+            </div>
+            <div class="stat-label">En retard</div>
+            <div class="stat-value">{{ $enRetard }}</div>
+            <div class="stat-sub">Attention requise</div>
+        </div>
     </div>
 
-    <!-- Cards -->
-    <div class="row g-3" id="projectsContainer">
+    <!-- SEARCH SECTION -->
+    <div class="search-section">
+        <div class="search-wrapper">
+            <i class="bi bi-search"></i>
+            <input type="text" id="searchInput" placeholder="Rechercher un projet, un client, un chef de projet...">
+            <div class="search-filters">
+                <span class="filter-chip active" data-filter="all">Tous</span>
+                <span class="filter-chip" data-filter="finalised">Finalisés</span>
+                <span class="filter-chip" data-filter="in-progress">En cours</span>
+                <span class="filter-chip" data-filter="delayed">En retard</span>
+                <span class="filter-chip" data-filter="planned">Planifiés</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROJECTS GRID -->
+    <div class="projects-grid" id="projectsGrid">
         @forelse($projets as $projet)
         @php
-            $sc = match($projet->statut) {
-                'Finalisé'  => 'finalise',
-                'En retard' => 'retard',
-                'En cours'  => 'cours',
-                default     => 'planifie',
+            $statusClass = match($projet->statut) {
+                'Finalisé' => 'finalised',
+                'En retard' => 'delayed',
+                'En cours' => 'in-progress',
+                default => 'planned',
             };
-            $normes   = array_filter(explode('||', $projet->normes_list ?? ''));
+            
+            $normes = array_filter(explode('||', $projet->normes_list ?? ''));
             $initials = collect(explode(' ', $projet->chef_nom ?? '??'))
-                ->map(fn($w) => strtoupper(substr($w,0,1)))->take(2)->implode('');
+                ->map(fn($w) => strtoupper(substr($w,0,1)))
+                ->take(2)
+                ->implode('');
+                
+            $ganttCount = DB::table('gantt_taches')
+                ->where('projet_id', $projet->id)
+                ->count();
         @endphp
 
-        <div class="col-xl-4 col-md-6 project-item">
-            <div class="proj-card {{ $sc }}">
-                <div class="top-bar"></div>
-                <div class="proj-body">
-
-                    <div class="proj-header">
-                        <span class="proj-ref">{{ $projet->reference_projet }}</span>
-                        <span class="proj-badge {{ $sc }}">{{ $projet->statut }}</span>
+        <div class="project-card" data-status="{{ $statusClass }}" data-search="{{ strtolower($projet->nom_client . ' ' . $projet->reference_projet . ' ' . ($projet->chef_nom ?? '')) }}">
+            <div class="project-status-bar {{ $statusClass }}"></div>
+            
+            <div class="project-content">
+                <div class="project-header">
+                    <span class="project-ref">{{ $projet->reference_projet }}</span>
+                    <span class="project-badge {{ $statusClass }}">{{ $projet->statut }}</span>
+                </div>
+                
+                <h3 class="project-title">{{ $projet->nom_client }}</h3>
+                
+                <div class="project-client">
+                    <i class="bi bi-building"></i>
+                    {{ $projet->secteur_activite ?? 'Secteur non spécifié' }}
+                </div>
+                
+                <div class="project-meta">
+                    <div class="project-chef">
+                        <div class="chef-avatar">{{ $initials }}</div>
+                        <span>{{ $projet->chef_nom ?? 'Non assigné' }}</span>
                     </div>
-
-                    <div class="proj-client" title="{{ $projet->nom_client }}">{{ $projet->nom_client }}</div>
-                    <div class="proj-sector">
-                        <i class="bi bi-building"></i>
-                        {{ $projet->secteur_activite ?? 'Non spécifié' }}
-                    </div>
-
-                    @if(count($normes))
-                    <div class="normes-row">
-                        @foreach(array_slice($normes,0,3) as $n)
-                            <span class="norme-pill">{{ $n }}</span>
-                        @endforeach
-                        @if(count($normes)>3)
-                            <span class="norme-pill">+{{ count($normes)-3 }}</span>
-                        @endif
-                    </div>
+                </div>
+                
+                <div class="project-stats">
+                    <span class="project-days">
+                        <i class="bi bi-clock"></i>
+                        <strong>{{ $projet->jours_realises }}</strong> / {{ $projet->jours_prevus }} jours
+                    </span>
+                    <span class="project-percent">{{ $projet->avancement_percent }}%</span>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill {{ $statusClass }}" style="width: {{ $projet->avancement_percent }}%;"></div>
+                </div>
+                
+                @if(count($normes))
+                <div class="project-normes">
+                    @foreach(array_slice($normes, 0, 3) as $norme)
+                        <span class="norme-tag">{{ $norme }}</span>
+                    @endforeach
+                    @if(count($normes) > 3)
+                        <span class="norme-tag">+{{ count($normes) - 3 }}</span>
                     @endif
-
-                    <div class="proj-chef">
-                        <div class="chef-av">{{ $initials }}</div>
-                        <div class="chef-name">{{ $projet->chef_nom ?? '—' }}</div>
-                    </div>
-
-                    <div class="jours-row">
-                        <span><i class="bi bi-clock me-1"></i>{{ $projet->jours_realises }} / {{ $projet->jours_prevus }} j</span>
-                        <span class="jours-pct">{{ $projet->avancement_percent }}%</span>
-                    </div>
-                    <div class="prog-bg">
-                        <div class="prog-fill {{ $sc }}" style="width:{{ $projet->avancement_percent }}%"></div>
-                    </div>
-
-                    @php
-                        $chapitres = \Illuminate\Support\Facades\DB::table('suivi_chapitres')
-                            ->where('projet_id', $projet->id)
-                            ->get();
-                        $avgChap = $chapitres->count() > 0
-                            ? round($chapitres->avg('avancement_percent'))
-                            : null;
-                    @endphp
-                    @if($avgChap !== null)
-                    <div style="display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:var(--muted);margin-bottom:.3rem;margin-top:.4rem;">
-                        <span><i class="bi bi-list-check me-1"></i>Chapitres SMI</span>
-                        <span style="font-weight:600;color:var(--text2)">moy. {{ $avgChap }}%</span>
-                    </div>
-                    <div class="prog-bg">
-                        <div class="prog-fill" style="width:{{ $avgChap }}%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div>
-                    </div>
+                </div>
+                @endif
+                
+                <div class="project-footer">
+                    @if($user->hasPermission('voir_details'))
+                    <a href="/projet/{{ $projet->id }}" class="action-btn" title="Voir détails">
+                        <i class="bi bi-eye"></i>
+                    </a>
                     @endif
-
-                    @if($projet->blocage && $projet->blocage !== 'RAS')
-                    <div>
-                        <span class="blocage-tag">
-                            <i class="bi bi-exclamation-triangle-fill"></i> Blocage signalé
+                    
+                    @if($user->hasPermission('voir_gantt'))
+                    <a href="/projet/{{ $projet->id }}/gantt" class="action-btn gantt" title="Planning Gantt">
+                        <i class="bi bi-bar-chart-steps"></i>
+                        @if($ganttCount > 0)
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style="font-size:0.5rem;">
+                            {{ $ganttCount }}
                         </span>
-                    </div>
+                        @endif
+                    </a>
                     @endif
-
-                    {{-- ════ FOOTER BOUTONS ════ --}}
-                    <div class="proj-footer">
-
-                        @if(auth()->user()->hasPermission('voir_details'))
-                        <a href="/projet/{{ $projet->id }}" class="act-btn" title="Voir détails">
-                            <i class="bi bi-eye"></i>
-                        </a>
-                        @endif
-
-                        {{-- BOUTON GANTT — NOUVEAU --}}
-                        <a href="/projet/{{ $projet->id }}/gantt" class="act-btn gantt-b" title="Planning Gantt">
-                            <i class="bi bi-bar-chart-steps"></i>
-                        </a>
-
-                        @if(auth()->user()->hasPermission('modifier_projets'))
-                        <a href="/projet/{{ $projet->id }}/edit" class="act-btn edit-b" title="Modifier">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                        @endif
-
-                        @if(auth()->user()->hasPermission('supprimer_projets'))
-                        <button class="act-btn del" onclick="confirmDelete({{ $projet->id }})" title="Supprimer">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                        @endif
-
-                    </div>
+                    
+                    @if($user->hasPermission('modifier_projets'))
+                    <a href="/projet/{{ $projet->id }}/edit" class="action-btn edit" title="Modifier">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    @endif
+                    
+                    @if($user->hasPermission('supprimer_projets'))
+                    <button class="action-btn delete" onclick="confirmDelete({{ $projet->id }})" title="Supprimer">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    @endif
                 </div>
             </div>
         </div>
         @empty
         <div class="col-12">
             <div class="empty-state">
-                <i class="bi bi-inbox"></i>
-                <h5 style="color:var(--text);">Aucun projet trouvé</h5>
-                <p style="color:var(--muted);font-size:.88rem;">
-                    Créez votre premier projet via <strong>Nouveau Projet</strong>
-                </p>
+                <i class="bi bi-folder2-open"></i>
+                <h5>Aucun projet trouvé</h5>
+                <p>Commencez par créer votre premier projet</p>
+                <a href="/nouveau-projet" class="btn btn-primary mt-3">Nouveau projet</a>
             </div>
         </div>
         @endforelse
     </div>
 
+    <!-- PAGE FOOTER -->
     <div class="page-footer">
-        <span><i class="bi bi-layers me-1"></i>{{ $totalProjets }} projet(s)</span>
-        <span><i class="bi bi-calendar-week me-1"></i>{{ $totalJoursRealises }} / {{ $totalJoursPrevus }} jours</span>
+        <span>
+            <i class="bi bi-layers me-1"></i>
+            {{ $totalProjets }} projet(s) au total
+        </span>
+        <span>
+            <i class="bi bi-calendar-check me-1"></i>
+            {{ $totalJoursRealises }} / {{ $totalJoursPrevus }} jours réalisés
+        </span>
+        <span>
+            <i class="bi bi-graph-up me-1"></i>
+            Avancement global {{ $avancementGlobal }}%
+        </span>
     </div>
 
     @endif
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-document.getElementById('searchInput')?.addEventListener('keyup', function() {
-    const t = this.value.toLowerCase();
-    document.querySelectorAll('.project-item').forEach(el => {
-        el.style.display = el.textContent.toLowerCase().includes(t) ? '' : 'none';
+// Theme toggle
+(function() {
+    const saved = localStorage.getItem('lmc-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.className = saved === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+})();
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('lmc-theme', next);
+    const icon = document.getElementById('themeIcon');
+    icon.className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+});
+
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+const projects = document.querySelectorAll('.project-card');
+
+searchInput.addEventListener('keyup', function() {
+    const searchTerm = this.value.toLowerCase();
+    
+    projects.forEach(project => {
+        const searchData = project.dataset.search.toLowerCase();
+        if (searchData.includes(searchTerm)) {
+            project.style.display = '';
+        } else {
+            project.style.display = 'none';
+        }
     });
 });
 
-const html = document.documentElement;
-const icon = document.getElementById('themeIcon');
-const saved = localStorage.getItem('lmc-theme') || 'light';
-applyTheme(saved);
+// Filter chips
+const filterChips = document.querySelectorAll('.filter-chip');
 
-document.getElementById('themeToggle').addEventListener('click', () => {
-    const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    localStorage.setItem('lmc-theme', next);
-    applyTheme(next);
+filterChips.forEach(chip => {
+    chip.addEventListener('click', function() {
+        // Remove active class from all chips
+        filterChips.forEach(c => c.classList.remove('active'));
+        
+        // Add active class to clicked chip
+        this.classList.add('active');
+        
+        const filter = this.dataset.filter;
+        
+        projects.forEach(project => {
+            if (filter === 'all' || project.dataset.status === filter) {
+                project.style.display = '';
+            } else {
+                project.style.display = 'none';
+            }
+        });
+    });
 });
 
-function applyTheme(t) {
-    html.setAttribute('data-theme', t);
-    icon.className = t === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
-}
-
+// Delete confirmation
 function confirmDelete(id) {
-    if(confirm('Supprimer ce projet définitivement ?')) {
+    if (confirm('Supprimer ce projet définitivement ?')) {
         fetch(`/projets/${id}`, {
             method: 'DELETE',
             headers: {
@@ -600,5 +1176,7 @@ function confirmDelete(id) {
     }
 }
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

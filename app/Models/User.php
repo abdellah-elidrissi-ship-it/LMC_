@@ -25,7 +25,7 @@ class User extends Authenticatable
         return $this->belongsTo(Consultant::class);
     }
 
-    // ── Role helpers ──
+    // ── Vérifications de rôle ──
     public function isSuperAdmin(): bool
     {
         return $this->role === 'super_admin';
@@ -41,12 +41,15 @@ class User extends Authenticatable
         return $this->role === 'consultant';
     }
 
-    // ── Permission check ──
+    // ── Vérification de permission (la seule méthode vraiment nécessaire) ──
     public function hasPermission(string $permission): bool
     {
-        // Super admin — tout autorisé
-        if ($this->role === 'super_admin') return true;
+        // Super Admin a tout
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
 
+        // Pour les autres, vérifier dans le tableau permissions
         $perms = $this->permissions ?? [];
         return ($perms[$permission] ?? 'no') === 'yes';
     }

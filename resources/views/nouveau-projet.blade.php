@@ -1371,16 +1371,19 @@
             </div>
 
             <!-- Boutons d'action -->
-            <div class="d-flex justify-content-end gap-3 mb-5">
-                <a href="{{ route('projets.index') }}" class="btn-secondary">
-                    <i class="bi bi-x-circle"></i>
-                    Annuler
-                </a>
-                <button type="submit" class="btn-primary" onclick="this.classList.add('loading')">
-                    <i class="bi bi-check-circle"></i>
-                    Créer le projet
-                </button>
-            </div>
+<div class="d-flex justify-content-end gap-3 mb-5">
+    <a href="{{ route('projets.index') }}" class="btn-secondary">
+        <i class="bi bi-x-circle"></i>
+        Annuler
+    </a>
+    
+    <!-- Pas de bouton Gantt ici car le projet n'est pas encore créé -->
+    
+    <button type="submit" class="btn-primary" onclick="this.classList.add('loading')">
+        <i class="bi bi-check-circle"></i>
+        Créer le projet
+    </button>
+</div>
         </form>
     </div>
 

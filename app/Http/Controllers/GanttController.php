@@ -9,9 +9,14 @@ use Carbon\Carbon;
 
 class GanttController extends Controller
 {
-    // ── Afficher le Gantt d'un projet  ────────────────────────────────
+    // ── Afficher le Gantt d'un projet ────────────────────────────────
     public function show($id)
     {
+        // Vérifier la permission
+        if (!auth()->user()->hasPermission('voir_gantt')) {
+            abort(403, 'Accès non autorisé à la page Gantt');
+        }
+        
         $projet = DB::selectOne("
             SELECT p.*, c.nom_client, cons.nom_complet AS chef_nom
             FROM projets p
@@ -33,6 +38,11 @@ class GanttController extends Controller
     // ── Ajouter une tâche manuellement ────────────────────────────────
     public function storeTache(Request $request, $id)
     {
+        // Vérifier la permission
+        if (!auth()->user()->hasPermission('modifier_projets')) {
+            abort(403, 'Action non autorisée');
+        }
+        
         $request->validate(['designation' => 'required|string|max:255']);
 
         $dernier = DB::table('gantt_taches')->where('projet_id', $id)->max('numero') ?? 0;
@@ -64,6 +74,11 @@ class GanttController extends Controller
     // ── Modifier une tâche ────────────────────────────────────────────
     public function updateTache(Request $request, $id, $tacheId)
     {
+        // Vérifier la permission
+        if (!auth()->user()->hasPermission('modifier_projets')) {
+            abort(403, 'Action non autorisée');
+        }
+        
         $request->validate(['designation' => 'required|string|max:255']);
 
         $delai = max((int)($request->delai_jours ?? 1), 1);
@@ -93,6 +108,11 @@ class GanttController extends Controller
     // ── Supprimer une tâche ───────────────────────────────────────────
     public function destroyTache($id, $tacheId)
     {
+        // Vérifier la permission
+        if (!auth()->user()->hasPermission('modifier_projets')) {
+            abort(403, 'Action non autorisée');
+        }
+        
         DB::table('gantt_taches')
             ->where('id', $tacheId)
             ->where('projet_id', $id)

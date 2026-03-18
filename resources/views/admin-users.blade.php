@@ -83,6 +83,7 @@
         .perm-icon.yellow{background:rgba(234,179,8,.1);color:#eab308;}
         .perm-icon.red{background:rgba(239,68,68,.1);color:#ef4444;}
         .perm-icon.purple{background:rgba(139,92,246,.1);color:#8b5cf6;}
+        .perm-icon.pink{background:rgba(236,72,153,.1);color:#ec4899;}
         .perm-name{font-size:12px;font-weight:500;color:var(--text);}
         .perm-desc{font-size:10px;color:var(--muted);margin-top:1px;}
 
@@ -327,7 +328,7 @@ document.getElementById('themeToggle')?.addEventListener('click', () => {
                             $col=$cols[abs(crc32($user->name))%count($cols)];
                             $ini=collect(explode(' ',$user->name))->take(2)->map(fn($w)=>strtoupper($w[0]??''))->join('');
                             $perms=$user->permissions ?? [];
-                            $permLabels=['voir_details'=>'Détails','creer_projets'=>'Créer','modifier_projets'=>'Modifier','supprimer_projets'=>'Supprimer','voir_consultants'=>'Consultants'];
+                            $permLabels=['voir_details'=>'Détails','creer_projets'=>'Créer','modifier_projets'=>'Modifier','supprimer_projets'=>'Supprimer','voir_consultants'=>'Consultants','voir_gantt'=>'Gantt'];
                         @endphp
                         <tr class="urow">
                             <td>
@@ -385,22 +386,26 @@ document.getElementById('themeToggle')?.addEventListener('click', () => {
     </div>
 </div>
 
-{{-- EDIT MODAL --}}
+<!-- EDIT MODAL -->
 <div class="ov" id="editOv">
     <div class="modal">
         <div class="modal-title">Modifier l'utilisateur</div>
         <div class="modal-sub">Mettez à jour le rôle et les permissions</div>
+        
         <form method="POST" id="editForm">
             @csrf
             @method('PUT')
+            
             <div class="fg">
                 <label class="fl">Nom</label>
                 <input type="text" name="name" id="eName" class="fc" required>
             </div>
+            
             <div class="fg">
                 <label class="fl">Email</label>
                 <input type="email" name="email" id="eEmail" class="fc" required>
             </div>
+            
             <div class="fg">
                 <label class="fl">Rôle</label>
                 <div class="sw">
@@ -411,17 +416,17 @@ document.getElementById('themeToggle')?.addEventListener('click', () => {
                     </select>
                 </div>
             </div>
+            
             <div class="fg">
-                <label class="fl">Nouveau mot de passe <span style="color:var(--muted);font-weight:400">(vide = inchangé)</span></label>
-                <div class="pww">
-                    <input type="password" name="password" id="ePw" class="fc" placeholder="••••••••" minlength="8">
-                    <button type="button" class="pwe" onclick="togglePw('ePw','ePwI')"><i class="bi bi-eye" id="ePwI"></i></button>
-                </div>
+                <label class="fl">Nouveau mot de passe</label>
+                <input type="password" name="password" id="ePw" class="fc" placeholder="Laisser vide pour ne pas changer">
             </div>
+            
             <div id="editPermsWrap"></div>
+            
             <div class="modal-actions">
                 <button type="button" class="btn btn-ghost btn-sm" onclick="closeOv('editOv')">Annuler</button>
-                <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-lg"></i> Enregistrer</button>
+                <button type="submit" class="btn btn-primary btn-sm">Enregistrer</button>
             </div>
         </form>
     </div>
@@ -450,6 +455,7 @@ const PERMS_DEF = [
     { key:'modifier_projets',  label:'Modifier un projet',  desc:'Éditer les informations du projet',     icon:'bi-pencil-fill',      color:'yellow' },
     { key:'supprimer_projets', label:'Supprimer un projet', desc:'Supprimer définitivement un projet',    icon:'bi-trash-fill',       color:'red'    },
     { key:'voir_consultants',  label:'Voir les consultants',desc:'Accéder à la page consultants',         icon:'bi-people-fill',      color:'purple' },
+    { key:'voir_gantt',        label:'Voir le Gantt',       desc:'Accéder au planning Gantt',             icon:'bi-bar-chart-steps',  color:'pink'   },
 ];
 let createPerms = {}, editPerms = {};
 
@@ -511,14 +517,20 @@ function filterUsers(q) {
 }
 
 function openEdit(id, name, email, role, perms) {
-    document.getElementById('eName').value  = name;
+    // Mettre à jour l'action du formulaire
+    document.getElementById('editForm').action = '/admin/users/' + id;
+    
+    // Remplir les champs
+    document.getElementById('eName').value = name;
     document.getElementById('eEmail').value = email;
-    document.getElementById('eRole').value  = role;
-    document.getElementById('editForm').action = `/admin/users/${id}`;
-    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    document.querySelector('#editForm input[name="_token"]').value = token;
+    document.getElementById('eRole').value = role;
+    document.getElementById('ePw').value = '';
+    
+    // Gérer les permissions
     editPerms = perms && typeof perms === 'object' ? {...perms} : {};
     renderPerms('editPermsWrap', editPerms, 'edit', role);
+    
+    // Ouvrir le modal
     document.getElementById('editOv').classList.add('open');
 }
 

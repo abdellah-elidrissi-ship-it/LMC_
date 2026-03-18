@@ -1231,14 +1231,18 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
         <i class="bi bi-arrow-left me-1"></i>
         Retour
     </a>
+    
+    @if(auth()->user()->hasPermission('voir_gantt'))
     <a href="/projet/{{ $projet->id }}/gantt" class="btn btn-outline-success" style="border-radius: 100px; padding: 0.6rem 1.8rem;">
         <i class="bi bi-bar-chart-steps me-1"></i>
         Planning Gantt
-        @if($ganttCount > 0)
+        @if(isset($ganttCount) && $ganttCount > 0)
         <span class="badge bg-success text-white ms-1">{{ $ganttCount }}</span>
         @endif
     </a>
-    @if(auth()->check() && auth()->user()->hasPermission('modifier_projets'))
+    @endif
+    
+    @if(auth()->user()->hasPermission('modifier_projets'))
     <a href="{{ route('projet.edit', $projet->id) }}" class="btn btn-primary" style="border-radius: 100px; padding: 0.6rem 1.8rem; background: var(--accent); border-color: var(--accent);">
         <i class="bi bi-pencil-square me-1"></i>
         Modifier

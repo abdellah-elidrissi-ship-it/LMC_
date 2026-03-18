@@ -1282,16 +1282,27 @@
             </div>
 
             <!-- Boutons d'action -->
-            <div class="d-flex justify-content-end gap-3 mb-5">
-                <a href="{{ route('projet.details', $projet->id) }}" class="btn-secondary">
-                    <i class="bi bi-x-circle"></i>
-                    Annuler
-                </a>
-                <button type="submit" class="btn-primary">
-                    <i class="bi bi-check-circle"></i>
-                    Enregistrer les modifications
-                </button>
-            </div>
+<div class="d-flex justify-content-end gap-3 mb-5">
+    <a href="{{ route('projet.details', $projet->id) }}" class="btn-secondary">
+        <i class="bi bi-x-circle"></i>
+        Annuler
+    </a>
+    
+    @if(auth()->user()->hasPermission('voir_gantt'))
+    <a href="/projet/{{ $projet->id }}/gantt" class="btn btn-outline-success" style="border-radius: 100px; padding: 0.6rem 1.8rem;">
+        <i class="bi bi-bar-chart-steps me-1"></i>
+        Planning Gantt
+        @if(isset($ganttCount) && $ganttCount > 0)
+        <span class="badge bg-success text-white ms-1">{{ $ganttCount }}</span>
+        @endif
+    </a>
+    @endif
+    
+    <button type="submit" class="btn-primary">
+        <i class="bi bi-check-circle"></i>
+        Enregistrer les modifications
+    </button>
+</div>
         </form>
     </div>
 
