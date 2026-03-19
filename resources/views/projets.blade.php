@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMC Conseil - Tableau de bord</title>
+    <title>LMC Conseil - Données</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         [data-theme="light"] {
             --bg: #f8fafc;
@@ -67,35 +68,29 @@
             --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.6);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text-primary);
-            transition: background-color 0.2s, color 0.2s;
-            line-height: 1.5;
-            font-size: 14px;
+            transition: background .3s, color .3s;
         }
 
-        /* HEADER PREMIUM */
+        /* ===== NAVBAR STYLES ===== */
         .site-header {
-            background: linear-gradient(135deg, #0a1120, #172032);
-            padding: 1rem 2rem;
-            border-bottom: 3px solid var(--accent);
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            padding: 1rem 0;
+            border-bottom: 3px solid #3b82f6;
             position: sticky;
             top: 0;
             z-index: 50;
-            box-shadow: var(--shadow-lg);
         }
 
         .header-container {
             max-width: 1600px;
             margin: 0 auto;
+            padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -104,17 +99,11 @@
         .logo-wrapper {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
             gap: 1rem;
         }
 
         .logo-image {
-            height: 45px;
+            height: 40px;
             width: auto;
             filter: brightness(0) invert(1);
             transition: filter 0.2s;
@@ -124,44 +113,52 @@
             filter: none;
         }
 
-        .logo-divider {
-            width: 1px;
-            height: 30px;
-            background: rgba(255,255,255,0.2);
-        }
-
         .logo-text {
             display: flex;
             flex-direction: column;
         }
 
         .logo-main {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.2rem;
+            font-weight: 700;
             color: white;
-            letter-spacing: 0.5px;
+            letter-spacing: -0.02em;
         }
 
         .logo-sub {
             font-size: 0.7rem;
             color: rgba(255,255,255,0.5);
-            margin-top: 0.1rem;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            background: rgba(255,255,255,0.08);
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .user-name {
+            font-size: 0.85rem;
+            font-weight: 500;
         }
 
         .meta-pill {
             background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            color: #cbd5e1;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
             padding: 0.35rem 1rem;
-            border-radius: var(--radius-full);
-            font-size: 0.7rem;
-            font-weight: 500;
+            border-radius: 9999px;
+            font-size: 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -170,10 +167,10 @@
         .theme-btn {
             width: 36px;
             height: 36px;
-            border-radius: var(--radius-full);
+            border-radius: 9999px;
             border: 1px solid rgba(255,255,255,0.15);
             background: rgba(255,255,255,0.08);
-            color: #cbd5e1;
+            color: rgba(255,255,255,0.7);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -182,12 +179,11 @@
         }
 
         .theme-btn:hover {
-            background: var(--accent);
+            background: #3b82f6;
             color: white;
-            border-color: var(--accent);
+            border-color: #3b82f6;
         }
 
-        /* NAVIGATION */
         .nav-container {
             max-width: 1600px;
             margin: 0 auto;
@@ -197,20 +193,20 @@
         .nav-wrap {
             display: flex;
             gap: 0.25rem;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.08);
             padding: 0.4rem;
-            border-radius: var(--radius-full);
+            border-radius: 9999px;
             margin-top: 0.75rem;
             width: fit-content;
         }
 
         .nav-item {
             padding: 0.45rem 1.25rem;
-            border-radius: var(--radius-full);
+            border-radius: 9999px;
             font-size: 0.8rem;
             font-weight: 500;
-            color: #94a3b8;
+            color: rgba(255,255,255,0.6);
             text-decoration: none;
             transition: all 0.2s;
             display: inline-flex;
@@ -229,14 +225,13 @@
             font-weight: 600;
         }
 
-        /* PAGE */
+        /* ===== PAGE STYLES ===== */
         .page {
             max-width: 1600px;
             margin: 0 auto;
             padding: 2rem;
         }
 
-        /* WELCOME BANNER */
         .welcome-banner {
             background: linear-gradient(135deg, var(--surface), var(--surface-hover));
             border: 1px solid var(--border);
@@ -265,7 +260,7 @@
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
         }
 
         .welcome-content p {
@@ -273,13 +268,13 @@
             color: var(--text-muted);
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .welcome-stats {
             display: flex;
             align-items: center;
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
         .welcome-stat {
@@ -300,7 +295,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* STATS CARDS */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -389,12 +383,11 @@
         }
 
         .stat-sub {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             margin-top: 0.25rem;
         }
 
-        /* SEARCH BAR */
         .search-section {
             margin-bottom: 2rem;
         }
@@ -444,9 +437,9 @@
         }
 
         .filter-chip {
-            padding: 0.3rem 1rem;
+            padding: 0.35rem 1.2rem;
             border-radius: var(--radius-full);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 500;
             background: var(--surface-hover);
             color: var(--text-secondary);
@@ -462,7 +455,6 @@
             border-color: var(--accent);
         }
 
-        /* PROJECT GRID */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -520,7 +512,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             background: var(--surface-hover);
-            padding: 0.2rem 0.8rem;
+            padding: 0.25rem 0.9rem;
             border-radius: var(--radius-full);
             border: 1px solid var(--border);
         }
@@ -528,28 +520,30 @@
         .project-badge {
             font-size: 0.65rem;
             font-weight: 600;
-            padding: 0.2rem 0.8rem;
+            padding: 0.25rem 0.9rem;
             border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         .project-badge.finalised {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
+            background: var(--success-light);
+            color: var(--success);
         }
 
         .project-badge.in-progress {
-            background: rgba(59, 130, 246, 0.1);
-            color: #3b82f6;
+            background: var(--info-light);
+            color: var(--info);
         }
 
         .project-badge.delayed {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
+            background: var(--danger-light);
+            color: var(--danger);
         }
 
         .project-badge.planned {
-            background: rgba(99, 102, 241, 0.1);
-            color: #6366f1;
+            background: var(--warning-light);
+            color: var(--warning);
         }
 
         .project-title {
@@ -684,6 +678,7 @@
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.2s;
+            position: relative;
         }
 
         .action-btn:hover {
@@ -695,22 +690,34 @@
         .action-btn.delete:hover {
             background: var(--danger);
             border-color: var(--danger);
-            color: white;
         }
 
         .action-btn.gantt:hover {
             background: var(--success);
             border-color: var(--success);
-            color: white;
         }
 
         .action-btn.edit:hover {
             background: var(--info);
             border-color: var(--info);
-            color: white;
         }
 
-        /* EMPTY STATE */
+        .badge-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
         .empty-state {
             text-align: center;
             padding: 5rem 2rem;
@@ -736,7 +743,6 @@
             font-size: 0.9rem;
         }
 
-        /* PAGE FOOTER */
         .page-footer {
             display: flex;
             justify-content: space-between;
@@ -746,7 +752,6 @@
             font-size: 0.8rem;
         }
 
-        /* RESPONSIVE */
         @media (max-width: 1200px) {
             .projects-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -821,40 +826,37 @@ foreach($projets as $p) {
     };
 }
 
-// Calculer l'avancement global
 $avancementGlobal = $totalJoursPrevus > 0 
     ? round(($totalJoursRealises / $totalJoursPrevus) * 100) 
     : 0;
 
-// Récupérer l'utilisateur connecté
 $user = auth()->user();
+$debutSemaine = now()->startOfWeek()->format('d/m');
+$finSemaine = now()->endOfWeek()->format('d/m/Y');
 @endphp
 
-<!-- HEADER PREMIUM -->
+<!-- HEADER -->
 <div class="site-header">
     <div class="header-container">
         <div class="logo-wrapper">
-            <div class="logo-container">
-                <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png" 
-                     alt="LMC Conseil" 
-                     class="logo-image"
-                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%2240%22%20viewBox%3D%220%200%20120%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
-                <div class="logo-divider"></div>
-                <div class="logo-text">
-                    <span class="logo-main">LEAD MANAGEMENT CONSULTING</span>
-                    <span class="logo-sub">EXCELLENCE & CERTIFICATION</span>
-                </div>
+            <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png" 
+                 alt="LMC Conseil" 
+                 class="logo-image"
+                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
+            <div class="logo-text">
+                <span class="logo-main">LMC CONSEIL</span>
+                <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
             </div>
         </div>
         
         <div class="header-actions">
+            <div class="user-info">
+                <i class="bi bi-person-circle"></i>
+                <span class="user-name">{{ $user->name ?? 'Utilisateur' }}</span>
+            </div>
             <span class="meta-pill">
                 <i class="bi bi-calendar-check"></i>
                 {{ now()->format('d/m/Y') }}
-            </span>
-            <span class="meta-pill">
-                <i class="bi bi-person-circle"></i>
-                {{ $user->name }}
             </span>
             <button class="theme-btn" id="themeToggle">
                 <i class="bi bi-moon-fill" id="themeIcon"></i>
@@ -872,20 +874,20 @@ $user = auth()->user();
     <div class="nav-container">
         <div class="nav-wrap">
             <a href="/" class="nav-item active">
-                <i class="bi bi-grid"></i> Tableau de bord
+                <i class="bi bi-table"></i> Données
             </a>
-            <a href="/projets" class="nav-item">
-                <i class="bi bi-folder"></i> Projets
+            <a href="/tableau-de-bord" class="nav-item">
+                <i class="bi bi-bar-chart"></i> Tableau de Bord
             </a>
             <a href="/consultants" class="nav-item">
                 <i class="bi bi-people"></i> Consultants
             </a>
-            <a href="/gantt" class="nav-item">
-                <i class="bi bi-bar-chart-steps"></i> Planning
+            <a href="/nouveau-projet" class="nav-item">
+                <i class="bi bi-plus-circle"></i> Nouveau Projet
             </a>
-            @if($user->isSuperAdmin())
+            @if($user && $user->isSuperAdmin())
             <a href="/admin/users" class="nav-item">
-                <i class="bi bi-shield-lock"></i> Administration
+                <i class="bi bi-shield-lock"></i> Accès
             </a>
             @endif
         </div>
@@ -904,18 +906,18 @@ $user = auth()->user();
         <div class="welcome-content">
             <h1>Bonjour, {{ $user->name }} 👋</h1>
             <p>
-                <i class="bi bi-calendar-week"></i> Semaine du {{ now()->startOfWeek()->format('d/m') }} au {{ now()->endOfWeek()->format('d/m/Y') }}
+                <i class="bi bi-calendar-week"></i> Semaine du {{ $debutSemaine }} au {{ $finSemaine }}
                 <i class="bi bi-database ms-3"></i> {{ $totalProjets }} projets actifs
             </p>
         </div>
         <div class="welcome-stats">
             <div class="welcome-stat">
                 <div class="welcome-stat-value">{{ $avancementGlobal }}%</div>
-                <div class="welcome-stat-label">Avancement global</div>
+                <div class="welcome-stat-label">AVANCEMENT GLOBAL</div>
             </div>
             <div class="welcome-stat">
                 <div class="welcome-stat-value">{{ $totalJoursRealises }}</div>
-                <div class="welcome-stat-label">Jours réalisés</div>
+                <div class="welcome-stat-label">JOURS RÉALISÉS</div>
             </div>
         </div>
     </div>
@@ -926,7 +928,7 @@ $user = auth()->user();
             <div class="stat-icon blue">
                 <i class="bi bi-folder2"></i>
             </div>
-            <div class="stat-label">Total projets</div>
+            <div class="stat-label">TOTAL PROJETS</div>
             <div class="stat-value">{{ $totalProjets }}</div>
             <div class="stat-sub">Portefeuille complet</div>
         </div>
@@ -935,7 +937,7 @@ $user = auth()->user();
             <div class="stat-icon green">
                 <i class="bi bi-check-circle"></i>
             </div>
-            <div class="stat-label">Finalisés</div>
+            <div class="stat-label">FINALISÉS</div>
             <div class="stat-value">{{ $finalises }}</div>
             <div class="stat-sub">Certifications obtenues</div>
         </div>
@@ -944,7 +946,7 @@ $user = auth()->user();
             <div class="stat-icon yellow">
                 <i class="bi bi-clock"></i>
             </div>
-            <div class="stat-label">En cours</div>
+            <div class="stat-label">EN COURS</div>
             <div class="stat-value">{{ $enCours }}</div>
             <div class="stat-sub">Projets actifs</div>
         </div>
@@ -953,7 +955,7 @@ $user = auth()->user();
             <div class="stat-icon red">
                 <i class="bi bi-exclamation-triangle"></i>
             </div>
-            <div class="stat-label">En retard</div>
+            <div class="stat-label">EN RETARD</div>
             <div class="stat-value">{{ $enRetard }}</div>
             <div class="stat-sub">Attention requise</div>
         </div>
@@ -1053,9 +1055,7 @@ $user = auth()->user();
                     <a href="/projet/{{ $projet->id }}/gantt" class="action-btn gantt" title="Planning Gantt">
                         <i class="bi bi-bar-chart-steps"></i>
                         @if($ganttCount > 0)
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style="font-size:0.5rem;">
-                            {{ $ganttCount }}
-                        </span>
+                        <span class="badge-count">{{ $ganttCount }}</span>
                         @endif
                     </a>
                     @endif
@@ -1090,15 +1090,11 @@ $user = auth()->user();
     <div class="page-footer">
         <span>
             <i class="bi bi-layers me-1"></i>
-            {{ $totalProjets }} projet(s) au total
+            {{ $totalProjets }} projet(s)
         </span>
         <span>
-            <i class="bi bi-calendar-check me-1"></i>
-            {{ $totalJoursRealises }} / {{ $totalJoursPrevus }} jours réalisés
-        </span>
-        <span>
-            <i class="bi bi-graph-up me-1"></i>
-            Avancement global {{ $avancementGlobal }}%
+            <i class="bi bi-calendar-week me-1"></i>
+            {{ $totalJoursRealises }} / {{ $totalJoursPrevus }} jours
         </span>
     </div>
 
@@ -1127,28 +1123,27 @@ document.getElementById('themeToggle').addEventListener('click', () => {
 const searchInput = document.getElementById('searchInput');
 const projects = document.querySelectorAll('.project-card');
 
-searchInput.addEventListener('keyup', function() {
-    const searchTerm = this.value.toLowerCase();
-    
-    projects.forEach(project => {
-        const searchData = project.dataset.search.toLowerCase();
-        if (searchData.includes(searchTerm)) {
-            project.style.display = '';
-        } else {
-            project.style.display = 'none';
-        }
+if (searchInput) {
+    searchInput.addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        
+        projects.forEach(project => {
+            const searchData = project.dataset.search.toLowerCase();
+            if (searchData.includes(searchTerm)) {
+                project.style.display = '';
+            } else {
+                project.style.display = 'none';
+            }
+        });
     });
-});
+}
 
 // Filter chips
 const filterChips = document.querySelectorAll('.filter-chip');
 
 filterChips.forEach(chip => {
     chip.addEventListener('click', function() {
-        // Remove active class from all chips
         filterChips.forEach(c => c.classList.remove('active'));
-        
-        // Add active class to clicked chip
         this.classList.add('active');
         
         const filter = this.dataset.filter;

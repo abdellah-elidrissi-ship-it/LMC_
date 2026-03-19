@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Api\ProjetController;
 use App\Http\Controllers\EditController;
 use App\Http\Controllers\NouveauProjetController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\GanttController;
 use App\Http\Controllers\LivrablesController;
+use App\Http\Controllers\PreuveController;
 use Illuminate\Support\Facades\Route;
 
 // ── AUTH ──
@@ -82,8 +84,17 @@ Route::middleware(['auth'])->group(function () {
 Route::post('/projet/{id}/livrables', [LivrablesController::class, 'save'])
     ->name('projet.livrables.save')
     ->middleware('permission:modifier_projets');
- 
+
 // Sauvegarde AJAX d'un seul livrable (depuis details — dropdown change)
 Route::post('/projet/{id}/livrables/single', [LivrablesController::class, 'saveSingle'])
     ->name('projet.livrables.single')
     ->middleware('permission:modifier_projets');
+
+
+//PREUVE 
+
+Route::post('/preuves/upload', [App\Http\Controllers\PreuveController::class, 'upload'])->name('preuves.upload');
+Route::delete('/preuves/{id}', [App\Http\Controllers\PreuveController::class, 'destroy'])->name('preuves.destroy');
+
+Route::post('/preuves-projet/upload', [App\Http\Controllers\ProjetPreuveController::class, 'upload'])->name('preuves-projet.upload');
+Route::delete('/preuves-projet/{id}', [App\Http\Controllers\ProjetPreuveController::class, 'destroy'])->name('preuves-projet.destroy');

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
+        [data-theme="light"] {
             --bg-primary: #f8fafc;
             --surface: #ffffff;
             --surface-hover: #f1f5f9;
@@ -69,15 +69,49 @@
             line-height: 1.5;
         }
 
-        /* Header */
+        /* ===== NAVBAR STYLES ===== */
         .site-header {
-            background: linear-gradient(135deg, #0a1120, #172032);
-            padding: 1.25rem 0;
-            border-bottom: 3px solid var(--accent);
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            padding: 1rem 0;
+            border-bottom: 3px solid #3b82f6;
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
 
-        .logo {
-            font-size: 1.35rem;
+        .header-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-image {
+            height: 40px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            transition: filter 0.2s;
+        }
+
+        [data-theme="dark"] .logo-image {
+            filter: none;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-size: 1.2rem;
             font-weight: 700;
             color: white;
             letter-spacing: -0.02em;
@@ -85,27 +119,50 @@
 
         .logo-sub {
             font-size: 0.7rem;
-            color: #94a3b8;
-            margin-top: 0.15rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            background: rgba(255,255,255,0.08);
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .user-name {
+            font-size: 0.85rem;
+            font-weight: 500;
         }
 
         .meta-pill {
             background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            color: #cbd5e1;
-            padding: 0.3rem 0.9rem;
-            border-radius: 100px;
-            font-size: 0.7rem;
-            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .theme-btn {
             width: 36px;
             height: 36px;
-            border-radius: 50%;
+            border-radius: 9999px;
             border: 1px solid rgba(255,255,255,0.15);
             background: rgba(255,255,255,0.08);
-            color: #cbd5e1;
+            color: rgba(255,255,255,0.7);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -114,53 +171,39 @@
         }
 
         .theme-btn:hover {
-            background: rgba(255,255,255,0.15);
+            background: #3b82f6;
             color: white;
+            border-color: #3b82f6;
         }
 
-        .btn-retour {
-            background: rgba(255,255,255,0.08);
-            border: 1.5px solid rgba(255,255,255,0.15);
-            color: white;
-            padding: 0.55rem 1.4rem;
-            border-radius: 100px;
-            font-weight: 500;
-            font-size: 0.8rem;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            transition: all 0.2s;
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
-        .btn-retour:hover {
-            background: white;
-            color: #0f172a;
-        }
-
-        /* Navigation */
         .nav-wrap {
             display: flex;
             gap: 0.25rem;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.08);
             padding: 0.4rem;
-            border-radius: 100px;
-            margin-top: 1rem;
+            border-radius: 9999px;
+            margin-top: 0.75rem;
             width: fit-content;
         }
 
         .nav-item {
-            padding: 0.45rem 1.2rem;
-            border-radius: 100px;
+            padding: 0.45rem 1.25rem;
+            border-radius: 9999px;
             font-size: 0.8rem;
             font-weight: 500;
-            color: #94a3b8;
+            color: rgba(255,255,255,0.6);
             text-decoration: none;
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
+            gap: 0.4rem;
         }
 
         .nav-item:hover {
@@ -171,6 +214,7 @@
         .nav-item.active {
             background: white;
             color: #0f172a;
+            font-weight: 600;
         }
 
         /* Cards */
@@ -502,6 +546,367 @@
             color: var(--text-muted);
         }
 
+        /* ===== STYLES POUR PREUVES ===== */
+        .btn-preuve-voir {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--accent);
+            background: var(--accent-soft);
+            color: var(--accent);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.8rem;
+        }
+
+        .btn-preuve-voir:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .preuve-count-badge {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.1rem 0.4rem;
+            border-radius: 100px;
+            background: var(--accent);
+            color: white;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .preuve-count-badge.zero {
+            background: var(--surface-hover);
+            color: var(--text-muted);
+        }
+
+        /* Viewer modal */
+        .preuve-viewer-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 11000;
+        }
+
+        .preuve-viewer-modal.active {
+            display: flex;
+        }
+
+        .preuve-viewer-content {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preuve-viewer-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .preuve-viewer-header h5 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .btn-close-viewer {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .btn-close-viewer:hover {
+            color: var(--danger);
+        }
+
+        .preuve-viewer-body {
+            flex: 1;
+            overflow: auto;
+            padding: 1.5rem;
+        }
+
+        .preuve-viewer-body img {
+            max-width: 100%;
+            max-height: 70vh;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .preuve-viewer-body .pdf-embed {
+            width: 100%;
+            height: 70vh;
+            border: none;
+        }
+
+        .preuve-viewer-body .file-preview {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .btn-download {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-download:hover {
+            background: var(--accent-light);
+        }
+
+        /* Preuve list */
+        .preuve-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .preuve-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+        }
+
+        .preuve-item:hover {
+            border-color: var(--accent);
+        }
+
+        .preuve-thumb {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+
+        .preuve-thumb-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            background: var(--accent-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .preuve-info {
+            flex: 1;
+        }
+
+        .preuve-info h6 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 0.2rem;
+        }
+
+        .preuve-info p {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        /* ===== FIN STYLES PREUVES ===== */
+
+        /* ===== STYLES POUR FICHIERS D'INTERVENTION ===== */
+        .intervention-section {
+            margin-top: 2rem;
+        }
+
+        .intervention-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .intervention-header h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .intervention-header h4 i {
+            color: var(--accent);
+        }
+
+        .intervention-count {
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 0.25rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .intervention-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .intervention-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .intervention-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent);
+        }
+
+        .intervention-thumb {
+            height: 150px;
+            background: linear-gradient(135deg, var(--surface-hover), var(--surface));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .intervention-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .intervention-thumb i {
+            font-size: 3.5rem;
+            color: var(--accent);
+        }
+
+        .intervention-body {
+            padding: 1rem;
+        }
+
+        .intervention-body h5 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .intervention-meta {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .intervention-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .intervention-meta i {
+            font-size: 0.65rem;
+            color: var(--accent);
+        }
+
+        .intervention-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            border-top: 1px solid var(--border);
+            padding-top: 0.75rem;
+        }
+
+        .intervention-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--surface-hover);
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .intervention-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .intervention-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            background: var(--surface-hover);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-lg);
+            color: var(--text-muted);
+        }
+
+        .intervention-empty i {
+            font-size: 3rem;
+            color: var(--border);
+            margin-bottom: 0.5rem;
+        }
+
+        .intervention-empty p {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .intervention-empty small {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        /* ===== FIN STYLES FICHIERS D'INTERVENTION ===== */
+
         /* Modal Styles */
         .print-modal {
             position: fixed;
@@ -683,18 +1088,6 @@
             font-size: 0.75rem;
         }
 
-        /* Auto-calculated indicator */
-        .auto-badge {
-            display: inline-block;
-            font-size: 0.6rem;
-            background: var(--accent-soft);
-            color: var(--accent);
-            padding: 0.1rem 0.4rem;
-            border-radius: 100px;
-            margin-left: 0.3rem;
-            font-weight: 500;
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
             .info-grid {
@@ -706,13 +1099,18 @@
                 border-radius: var(--radius-md);
                 width: 100%;
             }
+            
+            .intervention-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Print Styles */
         @media print {
             .site-header, .nav-wrap, .btn-retour, .theme-btn, 
             .btn-print-chapter, .livrables-toggle, .btn-print-action,
-            .modal-close, .d-flex.justify-content-end {
+            .modal-close, .d-flex.justify-content-end, .btn-preuve-voir,
+            .intervention-btn, .intervention-section {
                 display: none !important;
             }
             
@@ -728,9 +1126,21 @@
                 page-break-inside: avoid;
             }
             
-            .print-modal {
-                display: none;
+            .print-modal, .preuve-viewer-modal {
+                display: none !important;
             }
+        }
+
+        /* Auto-badge */
+        .auto-badge {
+            display: inline-block;
+            font-size: 0.6rem;
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 0.1rem 0.4rem;
+            border-radius: 100px;
+            margin-left: 0.3rem;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -775,6 +1185,26 @@ $livrableRows = DB::select("
     ORDER BY ls.ordre ASC
 ", [$id]);
 
+// Récupérer les preuves par livrable
+$preuvesParLivrable = [];
+$preuveRows = DB::table('livrable_preuves')
+    ->where('projet_id', $id)
+    ->orderBy('created_at', 'desc')
+    ->get();
+foreach ($preuveRows as $pr) {
+    $pr->url = asset('storage/preuves/' . $pr->fichier_path);
+    $preuvesParLivrable[$pr->livrable_id][] = $pr;
+}
+
+// Récupérer les fichiers d'intervention (preuves projet)
+$fichiersIntervention = DB::table('projet_preuves')
+    ->where('projet_id', $id)
+    ->orderBy('created_at', 'desc')
+    ->get();
+foreach ($fichiersIntervention as $fi) {
+    $fi->url = asset('storage/preuves_projet/' . $fi->fichier_path);
+}
+
 $livrablesByChap = [];
 $totalLivrablesGlobal = 0;
 $terminesLivrablesGlobal = 0;
@@ -811,6 +1241,8 @@ $chapsColl = collect($chapitres);
 $joursRealisesCalc = $chapsColl->sum('jours_intervention');
 $totalChap = $chapsColl->count();
 $doneChap = $chapsColl->where('phase', 'Terminé')->count();
+
+$user = auth()->user();
 @endphp
 
 <!-- Print Modal -->
@@ -829,31 +1261,76 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
     </div>
 </div>
 
-<!-- Header -->
+<!-- Preuve Viewer Modal -->
+<div class="preuve-viewer-modal" id="preuveViewerModal">
+    <div class="preuve-viewer-content">
+        <div class="preuve-viewer-header">
+            <h5 id="preuveViewerTitle">Preuve</h5>
+            <button class="btn-close-viewer" onclick="closePreuveViewer()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="preuve-viewer-body" id="preuveViewerBody">
+            <!-- Contenu injecté par JS -->
+        </div>
+    </div>
+</div>
+
+<!-- HEADER -->
 <div class="site-header">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <div class="logo">LMC CONSEIL</div>
-                <div class="logo-sub">Management & Certification</div>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-                <span class="meta-pill"><i class="bi bi-database me-1"></i>v2.1</span>
-                <span class="meta-pill"><i class="bi bi-calendar me-1"></i>{{ now()->format('d/m/Y') }}</span>
-                <button class="theme-btn" id="themeToggle">
-                    <i class="bi bi-moon-fill" id="themeIcon"></i>
-                </button>
-                <a href="{{ url('/') }}" class="btn-retour">
-                    <i class="bi bi-arrow-left"></i> Retour
-                </a>
+    <div class="header-container">
+        <div class="logo-wrapper">
+            <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png" 
+                 alt="LMC Conseil" 
+                 class="logo-image"
+                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
+            <div class="logo-text">
+                <span class="logo-main">LMC CONSEIL</span>
+                <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
             </div>
         </div>
+        
+        <div class="header-actions">
+            <div class="user-info">
+                <i class="bi bi-person-circle"></i>
+                <span class="user-name">{{ $user->name ?? 'Utilisateur' }}</span>
+            </div>
+            <span class="meta-pill">
+                <i class="bi bi-calendar-check"></i>
+                {{ now()->format('d/m/Y') }}
+            </span>
+            <button class="theme-btn" id="themeToggle">
+                <i class="bi bi-moon-fill" id="themeIcon"></i>
+            </button>
+            <form method="POST" action="/logout" style="margin:0">
+                @csrf
+                <button type="button" class="theme-btn" title="Déconnexion"
+                    onclick="this.closest('form').submit()">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
 
+    <div class="nav-container">
         <div class="nav-wrap">
-            <a href="/" class="nav-item"><i class="bi bi-table"></i> Projets</a>
-            <a href="/tableau-de-bord" class="nav-item"><i class="bi bi-bar-chart"></i> Tableau de bord</a>
-            <a href="/consultants" class="nav-item"><i class="bi bi-people"></i> Consultants</a>
-            <a href="/normes" class="nav-item"><i class="bi bi-book"></i> Normes</a>
+            <a href="/" class="nav-item">
+                <i class="bi bi-table"></i> Données
+            </a>
+            <a href="/tableau-de-bord" class="nav-item">
+                <i class="bi bi-bar-chart"></i> Tableau de Bord
+            </a>
+            <a href="/consultants" class="nav-item">
+                <i class="bi bi-people"></i> Consultants
+            </a>
+            <a href="/nouveau-projet" class="nav-item">
+                <i class="bi bi-plus-circle"></i> Nouveau Projet
+            </a>
+            @if($user && $user->isSuperAdmin())
+            <a href="/admin/users" class="nav-item">
+                <i class="bi bi-shield-lock"></i> Accès
+            </a>
+            @endif
         </div>
     </div>
 </div>
@@ -1018,7 +1495,7 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
                         $livDone = $chapLiv['termines'] ?? 0;
                         $livPct = $livTotal > 0 ? round(($livDone / $livTotal) * 100) : 0;
                         
-                        // Avancement basé sur les livrables (utilisé pour affichage)
+                        // Avancement basé sur les livrables
                         $avancementReel = $chapCode && isset($avancementParChapitre[$chapCode]) ? $avancementParChapitre[$chapCode] : $chap->avancement_percent;
                         
                         $collapseId = 'liv-chap-' . $chap->chapitre_id;
@@ -1085,6 +1562,7 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
                                         <th>Clause</th>
                                         <th>Libellé</th>
                                         <th>Statut</th>
+                                        <th style="text-align:center;">Preuves</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1095,6 +1573,8 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
                                             'En cours' => 'in-progress',
                                             default => 'pending'
                                         };
+                                        $livPreuves = $preuvesParLivrable[$liv->id] ?? [];
+                                        $preuveCount = count($livPreuves);
                                     @endphp
                                     <tr>
                                         <td>{{ $liv->clause ?: '—' }}</td>
@@ -1103,6 +1583,33 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
                                             <span class="livrable-status {{ $statusClass }}">
                                                 {{ $liv->statut }}
                                             </span>
+                                        </td>
+                                        <td style="text-align:center; vertical-align:middle;">
+                                            <div style="display:flex; align-items:center; justify-content:center; gap:0.5rem;">
+                                                <button class="btn-preuve-voir" 
+                                                        onclick="showPreuves({{ $liv->id }}, '{{ addslashes($liv->libelle) }}')"
+                                                        title="Voir les preuves">
+                                                    <i class="bi bi-eye-fill"></i>
+                                                </button>
+                                                <span class="preuve-count-badge {{ $preuveCount == 0 ? 'zero' : '' }}">
+                                                    {{ $preuveCount }}
+                                                </span>
+                                            </div>
+                                            
+                                            <!-- Hidden preuves data -->
+                                            <div id="preuves-{{ $liv->id }}" style="display:none;">
+                                                @foreach($livPreuves as $pr)
+                                                <div class="preuve-data" 
+                                                     data-id="{{ $pr->id }}"
+                                                     data-label="{{ $pr->label }}"
+                                                     data-nom="{{ $pr->fichier_nom }}"
+                                                     data-mime="{{ $pr->mime_type }}"
+                                                     data-url="{{ $pr->url }}"
+                                                     data-taille="{{ $pr->taille_kb }}"
+                                                     data-date="{{ \Carbon\Carbon::parse($pr->created_at)->format('d/m/Y H:i') }}">
+                                                </div>
+                                                @endforeach
+                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -1225,38 +1732,252 @@ $doneChap = $chapsColl->where('phase', 'Terminé')->count();
     </div>
     @endif
 
-    <!-- Actions -->
-<div class="d-flex justify-content-end gap-3 mb-5">
-    <a href="{{ url('/') }}" class="btn btn-outline-secondary" style="border-radius: 100px; padding: 0.6rem 1.8rem;">
-        <i class="bi bi-arrow-left me-1"></i>
-        Retour
-    </a>
-    
-    @if(auth()->user()->hasPermission('voir_gantt'))
-    <a href="/projet/{{ $projet->id }}/gantt" class="btn btn-outline-success" style="border-radius: 100px; padding: 0.6rem 1.8rem;">
-        <i class="bi bi-bar-chart-steps me-1"></i>
-        Planning Gantt
-        @if(isset($ganttCount) && $ganttCount > 0)
-        <span class="badge bg-success text-white ms-1">{{ $ganttCount }}</span>
+    <!-- ===== SECTION FICHIERS D'INTERVENTION ===== -->
+    <div class="detail-card intervention-section">
+        <div class="section-title">
+            <i class="bi bi-folder-fill"></i>
+            Fichiers d'intervention du projet
+        </div>
+
+        <div class="intervention-header">
+            <h4>
+                <i class="bi bi-file-earmark"></i>
+                Documents et preuves du projet
+            </h4>
+            <span class="intervention-count">{{ count($fichiersIntervention) }} document(s)</span>
+        </div>
+
+        @if(count($fichiersIntervention) > 0)
+        <div class="intervention-grid">
+            @foreach($fichiersIntervention as $doc)
+            @php
+                $isImage = Str::startsWith($doc->mime_type, 'image/');
+                $isPdf = $doc->mime_type === 'application/pdf';
+                $fileIcon = $isPdf ? 'bi-file-earmark-pdf-fill' : 
+                           ($isImage ? 'bi-file-earmark-image-fill' : 
+                           (Str::contains($doc->mime_type, 'word') ? 'bi-file-earmark-word-fill' :
+                           (Str::contains($doc->mime_type, 'excel') ? 'bi-file-earmark-excel-fill' :
+                           'bi-file-earmark-fill')));
+                $fileColor = $isPdf ? '#ef4444' : 
+                            ($isImage ? '#3b82f6' : 
+                            (Str::contains($doc->mime_type, 'word') ? '#2563eb' :
+                            (Str::contains($doc->mime_type, 'excel') ? '#10b981' : '#6b7280')));
+            @endphp
+            <div class="intervention-card">
+                <div class="intervention-thumb">
+                    @if($isImage)
+                    <img src="{{ $doc->url }}" alt="{{ $doc->label ?: $doc->fichier_nom }}">
+                    @else
+                    <i class="bi {{ $fileIcon }}" style="color: {{ $fileColor }};"></i>
+                    @endif
+                </div>
+                <div class="intervention-body">
+                    <h5 title="{{ $doc->label ?: $doc->fichier_nom }}">
+                        {{ Str::limit($doc->label ?: $doc->fichier_nom, 30) }}
+                    </h5>
+                    <div class="intervention-meta">
+                        <span><i class="bi bi-file-earmark"></i> {{ strtoupper(pathinfo($doc->fichier_nom, PATHINFO_EXTENSION)) }}</span>
+                        <span><i class="bi bi-hdd"></i> {{ $doc->taille_kb }} Ko</span>
+                        <span><i class="bi bi-calendar"></i> {{ \Carbon\Carbon::parse($doc->created_at)->format('d/m/Y') }}</span>
+                    </div>
+                    <div class="intervention-actions">
+                        <button class="intervention-btn" onclick="viewDocument('{{ $doc->url }}', '{{ $doc->mime_type }}', '{{ addslashes($doc->label ?: $doc->fichier_nom) }}')" title="Voir le document">
+                            <i class="bi bi-eye-fill"></i>
+                        </button>
+                        <button class="intervention-btn" onclick="printDocumentUrl('{{ $doc->url }}', '{{ addslashes($doc->label ?: $doc->fichier_nom) }}')" title="Imprimer">
+                            <i class="bi bi-printer-fill"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @else
+        <div class="intervention-empty">
+            <i class="bi bi-folder2-open"></i>
+            <p>Aucun fichier d'intervention</p>
+            <small>Ce projet n'a pas encore de documents attachés</small>
+        </div>
         @endif
-    </a>
-    @endif
-    
-    @if(auth()->user()->hasPermission('modifier_projets'))
-    <a href="{{ route('projet.edit', $projet->id) }}" class="btn btn-primary" style="border-radius: 100px; padding: 0.6rem 1.8rem; background: var(--accent); border-color: var(--accent);">
-        <i class="bi bi-pencil-square me-1"></i>
-        Modifier
-    </a>
-    @endif
-</div>
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex justify-content-end gap-3 mb-5">
+        <a href="{{ url('/') }}" class="btn btn-outline-secondary" style="border-radius: 100px; padding: 0.6rem 1.8rem;">
+            <i class="bi bi-arrow-left me-1"></i>
+            Retour
+        </a>
+        
+        @if($user->hasPermission('voir_gantt'))
+        <a href="/projet/{{ $projet->id }}/gantt" class="btn btn-outline-success" style="border-radius: 100px; padding: 0.6rem 1.8rem;">
+            <i class="bi bi-bar-chart-steps me-1"></i>
+            Planning Gantt
+            @if($ganttCount > 0)
+            <span class="badge bg-success text-white ms-1">{{ $ganttCount }}</span>
+            @endif
+        </a>
+        @endif
+        
+        @if($user->hasPermission('modifier_projets'))
+        <a href="{{ route('projet.edit', $projet->id) }}" class="btn btn-primary" style="border-radius: 100px; padding: 0.6rem 1.8rem; background: var(--accent); border-color: var(--accent);">
+            <i class="bi bi-pencil-square me-1"></i>
+            Modifier
+        </a>
+        @endif
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // Variables globales
 let currentChapterData = null;
+let currentPreuves = {};
 
-// Fonction pour afficher le document imprimable
+// Fonction pour afficher les preuves
+function showPreuves(livId, libelle) {
+    const preuvesDiv = document.getElementById('preuves-' + livId);
+    if (!preuvesDiv) return;
+    
+    const preuveItems = preuvesDiv.querySelectorAll('.preuve-data');
+    if (preuveItems.length === 0) {
+        alert('Aucune preuve pour ce livrable');
+        return;
+    }
+    
+    // Construire la liste des preuves
+    let html = '<div class="preuve-list">';
+    
+    preuveItems.forEach(item => {
+        const id = item.dataset.id;
+        const label = item.dataset.label || item.dataset.nom;
+        const nom = item.dataset.nom;
+        const mime = item.dataset.mime;
+        const url = item.dataset.url;
+        const taille = item.dataset.taille;
+        const date = item.dataset.date;
+        
+        const isImage = mime && mime.startsWith('image/');
+        const isPdf = mime === 'application/pdf';
+        const icon = isPdf ? 'bi-file-earmark-pdf-fill' : 
+                     (isImage ? 'bi-file-earmark-image-fill' : 'bi-file-earmark-fill');
+        
+        html += `
+            <div class="preuve-item" onclick="viewPreuve('${url}', '${mime}', '${label || nom}')">
+                ${isImage 
+                    ? `<img src="${url}" class="preuve-thumb">`
+                    : `<div class="preuve-thumb-icon"><i class="bi ${icon}"></i></div>`
+                }
+                <div class="preuve-info">
+                    <h6>${label || nom}</h6>
+                    <p>${taille} Ko • ${date}</p>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    
+    document.getElementById('preuveViewerTitle').textContent = `Preuves - ${libelle}`;
+    document.getElementById('preuveViewerBody').innerHTML = html;
+    document.getElementById('preuveViewerModal').classList.add('active');
+}
+
+// Fonction pour voir une preuve en grand
+function viewPreuve(url, mime, title) {
+    const body = document.getElementById('preuveViewerBody');
+    const isImage = mime && mime.startsWith('image/');
+    const isPdf = mime === 'application/pdf';
+    
+    if (isImage) {
+        body.innerHTML = `<img src="${url}" alt="${title}">`;
+    } else if (isPdf) {
+        body.innerHTML = `<iframe src="${url}" class="pdf-embed"></iframe>`;
+    } else {
+        body.innerHTML = `
+            <div class="file-preview">
+                <i class="bi bi-file-earmark" style="font-size:4rem; color:var(--text-muted);"></i>
+                <p style="margin:1rem 0;">${title}</p>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Aperçu non disponible</p>
+                <a href="${url}" download class="btn-download">
+                    <i class="bi bi-download"></i> Télécharger
+                </a>
+            </div>
+        `;
+    }
+    
+    document.getElementById('preuveViewerTitle').textContent = title;
+}
+
+// Fonction pour voir un document (fichier d'intervention)
+function viewDocument(url, mime, title) {
+    const body = document.getElementById('preuveViewerBody');
+    const isImage = mime && mime.startsWith('image/');
+    const isPdf = mime === 'application/pdf';
+    
+    if (isImage) {
+        body.innerHTML = `<img src="${url}" alt="${title}">`;
+    } else if (isPdf) {
+        body.innerHTML = `<iframe src="${url}" class="pdf-embed"></iframe>`;
+    } else {
+        body.innerHTML = `
+            <div class="file-preview">
+                <i class="bi bi-file-earmark" style="font-size:4rem; color:var(--text-muted);"></i>
+                <p style="margin:1rem 0;">${title}</p>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Aperçu non disponible</p>
+                <a href="${url}" download class="btn-download">
+                    <i class="bi bi-download"></i> Télécharger
+                </a>
+            </div>
+        `;
+    }
+    
+    document.getElementById('preuveViewerTitle').textContent = title;
+    document.getElementById('preuveViewerModal').classList.add('active');
+}
+
+// Fonction pour imprimer un document
+function printDocumentUrl(url, title) {
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Impression - ${title}</title>
+            <style>
+                body { margin: 0; font-family: Arial, sans-serif; }
+                .header { text-align: center; padding: 10px; background: #f5f5f5; border-bottom: 1px solid #ddd; }
+                iframe { width: 100%; height: 95vh; border: none; }
+            </style>
+        </head>
+        <body>
+            <div class="header">${title}</div>
+            <iframe src="${url}" onload="setTimeout(() => this.contentWindow.print(), 500);"></iframe>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+}
+
+// Fermer le viewer
+function closePreuveViewer() {
+    document.getElementById('preuveViewerModal').classList.remove('active');
+}
+
+// Fermer avec Echap
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closePreuveViewer();
+        closePrintModal();
+    }
+});
+
+// Fermer en cliquant en dehors
+document.getElementById('preuveViewerModal')?.addEventListener('click', (e) => {
+    if (e.target === document.getElementById('preuveViewerModal')) {
+        closePreuveViewer();
+    }
+});
+
+// Fonction pour afficher le document imprimable (chapitre)
 function showPrintDocument(chapData) {
     currentChapterData = chapData;
     
@@ -1383,7 +2104,7 @@ function closePrintModal() {
     document.getElementById('printModal').classList.remove('active');
 }
 
-// Imprimer le document
+// Imprimer le document (chapitre)
 function printDocument() {
     const printContent = document.getElementById('printDocument').innerHTML;
     
@@ -1561,20 +2282,6 @@ document.getElementById('themeToggle')?.addEventListener('click', () => {
     const icon = document.getElementById('themeIcon');
     if (icon) {
         icon.className = newTheme === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
-    }
-});
-
-// Fermer le modal avec Echap
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closePrintModal();
-    }
-});
-
-// Fermer le modal en cliquant en dehors
-document.getElementById('printModal')?.addEventListener('click', (e) => {
-    if (e.target === document.getElementById('printModal')) {
-        closePrintModal();
     }
 });
 </script>
