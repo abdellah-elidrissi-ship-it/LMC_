@@ -1,10 +1,9 @@
 <?php
-// app/Http/Controllers/PreuveController.php
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class PreuveController extends Controller
 {
@@ -12,55 +11,82 @@ class PreuveController extends Controller
     {
         $request->validate([
             'livrable_id' => 'required|integer',
-            'projet_id' => 'required|integer',
-            'fichier' => 'required|file|max:10240',
-            'label' => 'nullable|string|max:255'
+            'projet_id'   => 'required|integer',
+            'fichier'     => 'required|file|max:10240',
+            'label'       => 'nullable|string|max:255'
         ]);
 
-        $file = $request->file('fichier');
-        $originalName = $file->getClientOriginalName();
-        $mimeType = $file->getMimeType();
-        $sizeKb = round($file->getSize() / 1024);
+        try {
+            $file         = $request->file('fichier');
+            $originalName = $file->getClientOriginalName();
+            $mimeType     = $file->getMimeType();
+            $sizeKb       = round($file->getSize() / 1024);
+            $filename     = time() . '_' . uniqid();
 
-        $extension = $file->getClientOriginalExtension();
-        $filename = time() . '_' . uniqid() . '.' . $extension;
-        $path = $file->storeAs('preuves', $filename, 'public');
+            $uploadedFile = Cloudinary::uploadApi()->upload(
+    $file->getRealPath(),
+    [
+        'folder' => 'lmc/preuves',
+        'public_id' => $filename,
+        'resource_type' => 'auto',
+    ]
+);
 
-        $id = DB::table('livrable_preuves')->insertGetId([
-            'projet_id' => $request->projet_id,
-            'livrable_id' => $request->livrable_id,
-            'label' => $request->label,
-            'fichier_nom' => $originalName,
-            'fichier_path' => $filename,
-            'mime_type' => $mimeType,
-            'taille_kb' => $sizeKb,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+$cloudinaryUrl = $uploadedFile['secure_url'];
+$cloudinaryPublicId = $uploadedFile['public_id'];
 
-        return response()->json([
-            'success' => true,
-            'preuve' => [
-                'id' => $id,
-                'label' => $request->label,
-                'fichier_nom' => $originalName,
-                'mime_type' => $mimeType,
-                'taille_kb' => $sizeKb,
-                'url' => asset('storage/preuves/' . $filename)
-            ]
-        ]);
+            $id = DB::table('livrable_preuves')->insertGetId([
+                'projet_id'    => $request->projet_id,
+                'livrable_id'  => $request->livrable_id,
+                'label'        => $request->label,
+                'fichier_nom'  => $originalName,
+                
+                'fichier_path' => $cloudinaryUrl,
+                'mime_type'    => $mimeType,
+                'taille_kb'    => $sizeKb,
+                'created_at'   => now(),
+                'updated_at'   => now()
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'preuve'  => [
+                    'id'          => $id,
+                    'label'       => $request->label,
+                    'fichier_nom' => $originalName,
+                    'mime_type'   => $mimeType,
+                    'taille_kb'   => $sizeKb,
+                    'url'         => $cloudinaryUrl
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+    return response()->json([
+        'success' => false, 
+        'message' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine()
+    ], 500);
+}
     }
 
     public function destroy($id)
     {
-        $preuve = DB::table('livrable_preuves')->where('id', $id)->first();
-        if (!$preuve) {
-            return response()->json(['success' => false, 'message' => 'Preuve non trouvée'], 404);
+        try {
+            $preuve = DB::table('livrable_preuves')->where('id', $id)->first();
+            if (!$preuve) {
+                return response()->json(['success' => false, 'message' => 'Preuve non trouvée'], 404);
+            }
+
+            if (str_starts_with($preuve->fichier_path, 'lmc/')) {
+                Cloudinary::destroy($preuve->fichier_path, ['resource_type' => 'auto']);
+            }
+
+            DB::table('livrable_preuves')->where('id', $id)->delete();
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
-
-        Storage::disk('public')->delete('preuves/' . $preuve->fichier_path);
-        DB::table('livrable_preuves')->where('id', $id)->delete();
-
-        return response()->json(['success' => true]);
     }
 }

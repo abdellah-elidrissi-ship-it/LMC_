@@ -1789,7 +1789,7 @@
         ->orderBy('created_at', 'desc')
         ->get();
     foreach ($preuveRows as $pr) {
-        $pr->url = asset('storage/preuves/' . $pr->fichier_path);
+        $pr->url = $pr->fichier_path;
         $preuvesParLivrable[$pr->livrable_id][] = $pr;
     }
 
@@ -1799,7 +1799,7 @@
         ->orderBy('created_at', 'desc')
         ->get();
     foreach ($preuvesProjet as $pr) {
-        $pr->url = asset('storage/preuves_projet/' . $pr->fichier_path);
+        $pr->url = $pr->fichier_path;
     }
 
     // Organiser les livrables par chapitre

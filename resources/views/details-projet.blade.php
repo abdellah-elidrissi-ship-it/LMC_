@@ -1192,7 +1192,9 @@ $preuveRows = DB::table('livrable_preuves')
     ->orderBy('created_at', 'desc')
     ->get();
 foreach ($preuveRows as $pr) {
-    $pr->url = asset('storage/preuves/' . $pr->fichier_path);
+    $pr->url = str_starts_with($pr->fichier_path, 'http') 
+    ? $pr->fichier_path 
+    : asset('storage/preuves/' . $pr->fichier_path);
     $preuvesParLivrable[$pr->livrable_id][] = $pr;
 }
 
@@ -1202,7 +1204,9 @@ $fichiersIntervention = DB::table('projet_preuves')
     ->orderBy('created_at', 'desc')
     ->get();
 foreach ($fichiersIntervention as $fi) {
-    $fi->url = asset('storage/preuves_projet/' . $fi->fichier_path);
+    $pr->url = str_starts_with($pr->fichier_path, 'http') 
+    ? $pr->fichier_path 
+    : asset('storage/preuves_projet/' . $pr->fichier_path);
 }
 
 $livrablesByChap = [];

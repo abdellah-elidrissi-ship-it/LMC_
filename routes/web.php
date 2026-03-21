@@ -98,3 +98,23 @@ Route::delete('/preuves/{id}', [App\Http\Controllers\PreuveController::class, 'd
 
 Route::post('/preuves-projet/upload', [App\Http\Controllers\ProjetPreuveController::class, 'upload'])->name('preuves-projet.upload');
 Route::delete('/preuves-projet/{id}', [App\Http\Controllers\ProjetPreuveController::class, 'destroy'])->name('preuves-projet.destroy');
+
+
+Route::get('/test-cloudinary', function() {
+    try {
+        $cloudName = config('cloudinary.cloud_name');
+        $apiKey = config('cloudinary.api_key');
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Cloudinary configuré',
+            'cloud_name' => $cloudName,
+            'api_key' => substr($apiKey, 0, 5) . '...'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur Cloudinary: ' . $e->getMessage()
+        ], 500);
+    }
+});
