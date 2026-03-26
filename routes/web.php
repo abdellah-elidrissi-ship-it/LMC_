@@ -91,13 +91,16 @@ Route::post('/projet/{id}/livrables/single', [LivrablesController::class, 'saveS
     ->middleware('permission:modifier_projets');
 
 
-//PREUVE 
+// Routes pour les preuves des livrables
 
 Route::post('/preuves/upload', [App\Http\Controllers\PreuveController::class, 'upload'])->name('preuves.upload');
 Route::delete('/preuves/{id}', [App\Http\Controllers\PreuveController::class, 'destroy'])->name('preuves.destroy');
 
+// Routes pour les preuves projet
+
 Route::post('/preuves-projet/upload', [App\Http\Controllers\ProjetPreuveController::class, 'upload'])->name('preuves-projet.upload');
 Route::delete('/preuves-projet/{id}', [App\Http\Controllers\ProjetPreuveController::class, 'destroy'])->name('preuves-projet.destroy');
+Route::get('/preuves-projet/{projetId}', [App\Http\Controllers\ProjetPreuveController::class, 'index'])->name('preuves-projet.index');
 
 
 Route::get('/test-cloudinary', function() {
@@ -118,3 +121,34 @@ Route::get('/test-cloudinary', function() {
         ], 500);
     }
 });
+
+Route::get('/download-file', function (\Illuminate\Http\Request $request) {
+    $url = $request->query('url');
+    $name = $request->query('name', 'document');
+
+    if (!$url) {
+        abort(404);
+    }
+
+    return response()->streamDownload(function () use ($url) {
+        echo file_get_contents($url);
+    }, $name);
+})->middleware('auth')->name('file.download');
+
+
+Route::get('/view-file', function (\Illuminate\Http\Request $request) {
+    $url = $request->query('url');
+
+    if (!$url) {
+        abort(404);
+    }
+
+    $content = file_get_contents($url);
+
+    return response($content, 200)
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'inline; filename="document.pdf"');
+})->middleware('auth')->name('file.view');
+
+
+

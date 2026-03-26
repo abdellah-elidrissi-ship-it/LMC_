@@ -5,38 +5,44 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProjetPreuveController extends Controller
 {
     public function upload(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'projet_id' => 'required|integer|exists:projets,id',
-            'fichier'   => 'required|file|max:10240',
-            'label'     => 'nullable|string|max:255'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
         try {
-            $file         = $request->file('fichier');
+            Log::info('Upload projet preuve - début', $request->all());
+
+            $validator = Validator::make($request->all(), [
+                'projet_id' => 'required|integer|exists:projets,id',
+                'fichier'   => 'required|file|max:10240',
+                'label'     => 'nullable|string|max:255',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors'  => $validator->errors(),
+                ], 422);
+            }
+
+            $file = $request->file('fichier');
             $originalName = $file->getClientOriginalName();
-            $mimeType     = $file->getMimeType();
-            $sizeKb       = round($file->getSize() / 1024);
-            $filename     = time() . '_' . uniqid();
+            $sizeKb = round($file->getSize() / 1024, 2);
+            $mimeType = $file->getMimeType();
+
+            $fileName = time() . '_' . uniqid();
+
+            $resourceType = $mimeType === 'application/pdf' ? 'raw' : 'auto';
 
             $uploadedFile = Cloudinary::uploadApi()->upload(
                 $file->getRealPath(),
                 [
                     'folder' => 'lmc/preuves_projet',
-                    'public_id' => $filename,
-                    'resource_type' => 'auto'
+                    'public_id' => $fileName,
+                    'resource_type' => $resourceType,
                 ]
             );
 
@@ -44,31 +50,38 @@ class ProjetPreuveController extends Controller
 
             $id = DB::table('projet_preuves')->insertGetId([
                 'projet_id'    => $request->projet_id,
-                'label'        => $request->label,
+                'label'        => $request->label ?? '',
                 'fichier_nom'  => $originalName,
                 'fichier_path' => $cloudinaryUrl,
                 'mime_type'    => $mimeType,
                 'taille_kb'    => $sizeKb,
                 'created_at'   => now(),
-                'updated_at'   => now()
+                'updated_at'   => now(),
             ]);
+
+            Log::info('Upload projet preuve - succès', ['id' => $id]);
 
             return response()->json([
                 'success' => true,
                 'preuve'  => [
                     'id'          => $id,
-                    'label'       => $request->label,
+                    'label'       => $request->label ?? '',
                     'fichier_nom' => $originalName,
                     'mime_type'   => $mimeType,
                     'taille_kb'   => $sizeKb,
-                    'url'         => $cloudinaryUrl
-                ]
+                    'url'         => $cloudinaryUrl,
+                ],
             ]);
 
         } catch (\Exception $e) {
+            Log::error('Upload projet preuve - erreur', [
+                'message' => $e->getMessage(),
+                'trace'   => $e->getTraceAsString(),
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Erreur serveur: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -81,20 +94,22 @@ class ProjetPreuveController extends Controller
             if (!$preuve) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Preuve non trouvée'
+                    'message' => 'Preuve non trouvée',
                 ], 404);
             }
 
             DB::table('projet_preuves')->where('id', $id)->delete();
 
-            return response()->json([
-                'success' => true
-            ]);
+            return response()->json(['success' => true]);
 
         } catch (\Exception $e) {
+            Log::error('Delete projet preuve - erreur', [
+                'message' => $e->getMessage()
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -113,13 +128,17 @@ class ProjetPreuveController extends Controller
 
             return response()->json([
                 'success' => true,
-                'preuves' => $preuves
+                'preuves' => $preuves,
             ]);
 
         } catch (\Exception $e) {
+            Log::error('Index projet preuve - erreur', [
+                'message' => $e->getMessage()
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }

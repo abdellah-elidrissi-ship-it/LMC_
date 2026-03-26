@@ -42,6 +42,7 @@ return [
             'url' => env('CLOUDINARY_URL'),
         ],
 
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

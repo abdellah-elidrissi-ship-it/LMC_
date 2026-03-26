@@ -22,7 +22,7 @@
             --primary-700: #4338ca;
             --primary-800: #3730a3;
             --primary-900: #312e81;
-            
+
             --success-50: #f0fdf4;
             --success-100: #dcfce7;
             --success-500: #22c55e;
@@ -39,7 +39,7 @@
             --info-100: #dbeafe;
             --info-500: #3b82f6;
             --info-600: #2563eb;
-            
+
             --gray-50: #f9fafb;
             --gray-100: #f3f4f6;
             --gray-200: #e5e7eb;
@@ -50,14 +50,14 @@
             --gray-700: #374151;
             --gray-800: #1f2937;
             --gray-900: #111827;
-            
+
             --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
             --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
             --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-            
+
             --radius-xs: 0.25rem;
             --radius-sm: 0.375rem;
             --radius-md: 0.5rem;
@@ -66,7 +66,7 @@
             --radius-2xl: 1.5rem;
             --radius-3xl: 2rem;
             --radius-full: 9999px;
-            
+
             --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
             --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
             --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -84,7 +84,7 @@
             --primary-700: #c7d2fe;
             --primary-800: #e0e7ff;
             --primary-900: #eef2ff;
-            
+
             --gray-50: #111827;
             --gray-100: #1f2937;
             --gray-200: #374151;
@@ -163,7 +163,7 @@
 
         .logo-sub {
             font-size: 0.7rem;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .header-actions {
@@ -177,10 +177,10 @@
             align-items: center;
             gap: 0.5rem;
             color: white;
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             padding: 0.35rem 1rem;
             border-radius: var(--radius-full);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(8px);
         }
 
@@ -190,9 +190,9 @@
         }
 
         .meta-pill {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.7);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
             padding: 0.35rem 1rem;
             border-radius: var(--radius-full);
             font-size: 0.75rem;
@@ -206,9 +206,9 @@
             width: 36px;
             height: 36px;
             border-radius: var(--radius-full);
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.08);
-            color: rgba(255,255,255,0.7);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -233,8 +233,8 @@
         .nav-wrap {
             display: flex;
             gap: 0.25rem;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 0.4rem;
             border-radius: var(--radius-full);
             margin-top: 0.75rem;
@@ -247,7 +247,7 @@
             border-radius: var(--radius-full);
             font-size: 0.8rem;
             font-weight: 500;
-            color: rgba(255,255,255,0.6);
+            color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
             transition: all var(--transition-fast);
             display: inline-flex;
@@ -256,7 +256,7 @@
         }
 
         .nav-item:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
         }
 
@@ -366,7 +366,8 @@
             gap: 0.4rem;
         }
 
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             background: white !important;
             border: 2px solid var(--gray-200) !important;
             border-radius: var(--radius-lg) !important;
@@ -378,7 +379,8 @@
             box-shadow: var(--shadow-xs);
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: var(--primary-500) !important;
             box-shadow: 0 0 0 4px var(--primary-100) !important;
             outline: none !important;
@@ -967,7 +969,8 @@
             margin-bottom: 0.5rem;
         }
 
-        .preuve-drop-zone:hover, .preuve-drop-zone.dragover {
+        .preuve-drop-zone:hover,
+        .preuve-drop-zone.dragover {
             border-color: var(--success-500);
             background: linear-gradient(135deg, var(--success-50), white);
             transform: scale(1.01);
@@ -1096,7 +1099,7 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(12px);
             z-index: 9999;
             align-items: center;
@@ -1109,8 +1112,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .preuve-fullscreen-box {
@@ -1127,8 +1135,15 @@
         }
 
         @keyframes scaleIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .preuve-fullscreen-header {
@@ -1438,6 +1453,7 @@
                 transform: translateX(100%);
                 opacity: 0;
             }
+
             to {
                 transform: translateX(0);
                 opacity: 1;
@@ -1483,34 +1499,6 @@
             opacity: 1;
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1200px) {
-            .col-exigences {
-                min-width: 280px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .nav-wrap {
-                flex-wrap: wrap;
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .table-smi {
-                font-size: 0.75rem;
-            }
-            
-            .preuve-fullscreen-box {
-                width: 95%;
-            }
-        }
-
         /* ===== PREUVES PROJET SECTION ===== */
         .preuves-projet-section {
             margin-top: 2rem;
@@ -1545,7 +1533,6 @@
             font-weight: 600;
         }
 
-        /* Upload button */
         .btn-upload-projet {
             background: linear-gradient(135deg, var(--success-500), var(--success-600));
             color: white;
@@ -1568,11 +1555,6 @@
             box-shadow: var(--shadow-lg);
         }
 
-        .btn-upload-projet i {
-            font-size: 1rem;
-        }
-
-        /* Upload panel */
         .upload-panel {
             background: linear-gradient(135deg, var(--success-50), white);
             border: 2px solid var(--success-200);
@@ -1608,7 +1590,8 @@
             margin-bottom: 1rem;
         }
 
-        .projet-upload-zone:hover, .projet-upload-zone.dragover {
+        .projet-upload-zone:hover,
+        .projet-upload-zone.dragover {
             border-color: var(--success-500);
             background: linear-gradient(135deg, var(--success-50), white);
             transform: scale(1.01);
@@ -1633,7 +1616,6 @@
             color: var(--gray-500);
         }
 
-        /* Preuves grid */
         .preuves-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1762,6 +1744,293 @@
             font-size: 0.75rem;
             color: var(--gray-400);
         }
+
+        @media (max-width: 1200px) {
+            .col-exigences {
+                min-width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-wrap {
+                flex-wrap: wrap;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .table-smi {
+                font-size: 0.75rem;
+            }
+
+            .preuve-fullscreen-box {
+                width: 95%;
+            }
+        }
+
+        /* ===== FULLSCREEN PREUVE MODAL ===== */
+.fs-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.68);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding: 24px;
+}
+
+.fs-overlay.active {
+    display: flex;
+}
+
+.fs-modal-card {
+    width: min(760px, 94vw);
+    max-height: 92vh;
+    background: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    animation: fsFadeUp 0.18s ease;
+}
+
+@keyframes fsFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.fs-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.fs-modal-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.2;
+    max-width: 70%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fs-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-print {
+    border: none;
+    border-radius: 999px;
+    padding: 11px 18px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.22);
+}
+
+.btn-print:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.fs-close-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #6b7280;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.fs-close-btn:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.fs-modal-body {
+    padding: 28px;
+    min-height: 430px;
+    max-height: calc(92vh - 88px);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+}
+
+/* PDF / iframe / embed */
+.pdf-embed,
+.fs-modal-body iframe,
+.fs-modal-body embed {
+    width: 100%;
+    height: 72vh;
+    min-height: 520px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* image preview */
+.fs-modal-body img {
+    max-width: 100%;
+    max-height: 72vh;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    object-fit: contain;
+    background: #fff;
+}
+
+/* generic files preview */
+.file-preview-generic {
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.file-preview-generic i {
+    font-size: 82px;
+    color: #4f46e5;
+    margin-bottom: 14px;
+    display: inline-block;
+}
+
+.file-preview-generic p:first-of-type {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 8px;
+    word-break: break-word;
+}
+
+.file-preview-generic p:last-of-type {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0 0 24px;
+}
+
+.btn-dl {
+    border: none;
+    border-radius: 14px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 12px 30px rgba(79, 70, 229, 0.25);
+    transition: all 0.2s ease;
+}
+
+.btn-dl:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 35px rgba(79, 70, 229, 0.32);
+}
+
+@media (max-width: 768px) {
+    .fs-overlay {
+        padding: 14px;
+    }
+
+    .fs-modal-card {
+        width: 100%;
+        max-height: 94vh;
+        border-radius: 18px;
+    }
+
+    .fs-modal-header {
+        padding: 14px 16px;
+    }
+
+    .fs-modal-title {
+        font-size: 17px;
+        max-width: 55%;
+    }
+
+    .btn-print {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .fs-modal-body {
+        padding: 16px;
+        min-height: 320px;
+    }
+
+    .pdf-embed,
+    .fs-modal-body iframe,
+    .fs-modal-body embed {
+        min-height: 420px;
+        height: 60vh;
+    }
+
+    .file-preview-generic i {
+        font-size: 64px;
+    }
+}
+
+.file-actions {
+    margin-top: 10px;
+}
+
+.btn-download-clean {
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #111827;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-download-clean:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
     </style>
 </head>
 
@@ -1775,31 +2044,31 @@
 
     // Récupérer les livrables avec leurs statuts
     $livrableRows = DB::select("
-        SELECT ls.id, ls.chapitre_code, ls.clause, ls.libelle, ls.ordre,
-               COALESCE(pl.statut, 'Non commencé') as statut
-        FROM livrables_smi ls
-        LEFT JOIN projet_livrables pl ON pl.livrable_id = ls.id AND pl.projet_id = ?
-        ORDER BY ls.ordre ASC
+    SELECT ls.id, ls.chapitre_code, ls.clause, ls.libelle, ls.ordre,
+    COALESCE(pl.statut, 'Non commencé') as statut
+    FROM livrables_smi ls
+    LEFT JOIN projet_livrables pl ON pl.livrable_id = ls.id AND pl.projet_id = ?
+    ORDER BY ls.ordre ASC
     ", [$id]);
 
     // Récupérer les preuves par livrable
     $preuvesParLivrable = [];
     $preuveRows = DB::table('livrable_preuves')
-        ->where('projet_id', $id)
-        ->orderBy('created_at', 'desc')
-        ->get();
+    ->where('projet_id', $id)
+    ->orderBy('created_at', 'desc')
+    ->get();
     foreach ($preuveRows as $pr) {
-        $pr->url = $pr->fichier_path;
-        $preuvesParLivrable[$pr->livrable_id][] = $pr;
+    $pr->url = $pr->fichier_path;
+    $preuvesParLivrable[$pr->livrable_id][] = $pr;
     }
 
     // Récupérer les preuves projet (fichiers d'intervention généraux)
     $preuvesProjet = DB::table('projet_preuves')
-        ->where('projet_id', $id)
-        ->orderBy('created_at', 'desc')
-        ->get();
+    ->where('projet_id', $id)
+    ->orderBy('created_at', 'desc')
+    ->get();
     foreach ($preuvesProjet as $pr) {
-        $pr->url = $pr->fichier_path;
+    $pr->url = $pr->fichier_path;
     }
 
     // Organiser les livrables par chapitre
@@ -1808,39 +2077,39 @@
     $terminesLivrablesGlobal = 0;
 
     foreach ($livrableRows as $lrow) {
-        $chap = $lrow->chapitre_code;
-        if (!isset($livrablesByChap[$chap])) {
-            $livrablesByChap[$chap] = ['items' => [], 'total' => 0, 'termines' => 0];
-        }
-        $livrablesByChap[$chap]['items'][] = $lrow;
-        $livrablesByChap[$chap]['total']++;
-        $totalLivrablesGlobal++;
-        if ($lrow->statut === 'Terminé') {
-            $livrablesByChap[$chap]['termines']++;
-            $terminesLivrablesGlobal++;
-        }
+    $chap = $lrow->chapitre_code;
+    if (!isset($livrablesByChap[$chap])) {
+    $livrablesByChap[$chap] = ['items' => [], 'total' => 0, 'termines' => 0];
+    }
+    $livrablesByChap[$chap]['items'][] = $lrow;
+    $livrablesByChap[$chap]['total']++;
+    $totalLivrablesGlobal++;
+    if ($lrow->statut === 'Terminé') {
+    $livrablesByChap[$chap]['termines']++;
+    $terminesLivrablesGlobal++;
+    }
     }
 
     // Calculer l'avancement par chapitre
     $avancementParChapitre = [];
     foreach ($livrablesByChap as $chapCode => $chapData) {
-        $avancementParChapitre[$chapCode] = $chapData['total'] > 0
-            ? round(($chapData['termines'] / $chapData['total']) * 100) : 0;
+    $avancementParChapitre[$chapCode] = $chapData['total'] > 0
+    ? round(($chapData['termines'] / $chapData['total']) * 100) : 0;
     }
 
     $avancementGlobal = $totalLivrablesGlobal > 0
-        ? round(($terminesLivrablesGlobal / $totalLivrablesGlobal) * 100) : 0;
+    ? round(($terminesLivrablesGlobal / $totalLivrablesGlobal) * 100) : 0;
 
     $chapOrder = ['§4','§5','§6','§7','§8','§9','§10','Transversal'];
     $chapTitres = [
-        '§4' => 'Contexte de l\'organisme',
-        '§5' => 'Leadership',
-        '§6' => 'Planification',
-        '§7' => 'Support',
-        '§8' => 'Réalisation des activités',
-        '§9' => 'Évaluation des performances',
-        '§10' => 'Amélioration',
-        'Transversal' => 'Exigences transversales',
+    '§4' => 'Contexte de l\'organisme',
+    '§5' => 'Leadership',
+    '§6' => 'Planification',
+    '§7' => 'Support',
+    '§8' => 'Réalisation des activités',
+    '§9' => 'Évaluation des performances',
+    '§10' => 'Amélioration',
+    'Transversal' => 'Exigences transversales',
     ];
 
     $consultants = DB::table('consultants')->where('actif', 1)->get();
@@ -1849,35 +2118,36 @@
     @endphp
 
     <!-- ===== FULLSCREEN PREUVE VIEWER ===== -->
-    <div class="preuve-fullscreen-overlay" id="preuveFullscreenOverlay">
-        <div class="preuve-fullscreen-box">
-            <div class="preuve-fullscreen-header">
-                <h5 id="fsPreuveTitle">Preuve</h5>
-                <div class="preuve-fullscreen-actions">
-                    <button type="button" class="btn-fs-print" onclick="printCurrentPreuve()">
-                        <i class="bi bi-printer-fill"></i> Imprimer
-                    </button>
-                    <button type="button" class="btn-fs-delete" onclick="deleteCurrentPreuve()">
-                        <i class="bi bi-trash-fill"></i> Supprimer
-                    </button>
-                    <button type="button" class="btn-fs-close" onclick="closeFullscreen()">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="preuve-fullscreen-body" id="fsPreuveBody">
-                <!-- Content injected by JS -->
+    <div id="preuveFullscreenOverlay" class="fs-overlay" onclick="closeFullscreenOnBackdrop(event)">
+    <div class="fs-modal-card">
+        <div class="fs-modal-header">
+            <h3 class="fs-modal-title" id="fsPreuveTitle">Document</h3>
+
+            <div class="fs-modal-actions">
+                <button type="button" class="btn-print" onclick="printCurrentPreuve()">
+                    <i class="bi bi-printer-fill"></i>
+                    Imprimer
+                </button>
+
+                <button type="button" class="fs-close-btn" onclick="closeFullscreen()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
             </div>
         </div>
+
+        <div class="fs-modal-body" id="fsPreuveBody">
+            <!-- contenu injecté par JS -->
+        </div>
     </div>
+</div>
 
     <!-- Header -->
     <div class="site-header">
         <div class="header-container">
             <div class="logo-wrapper">
                 <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png"
-                     alt="LMC Conseil" class="logo-image"
-                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
+                    alt="LMC Conseil" class="logo-image"
+                    onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
                 <div class="logo-text">
                     <span class="logo-main">LMC CONSEIL</span>
                     <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
@@ -2042,7 +2312,7 @@
                             <span class="badge-auto"><i class="bi bi-lock-fill"></i> Auto</span>
                         </label>
                         <input type="number" class="form-control auto-calc" name="jours_realises"
-                            id="jours_realises" value="{{ old('jours_realises', $projet->jours_realises) }}" readonly>
+                            id="jours_realises" value="{{ old('jours_realises', $projet->suiviChapitres->sum('jours_intervention')) }}" readonly>
                         <div class="auto-tag">
                             <i class="bi bi-arrow-right-circle-fill"></i> Somme des jours d'intervention
                         </div>
@@ -2086,13 +2356,13 @@
                         <tbody>
                             @foreach($projet->suiviChapitres as $index => $chap)
                             @php
-                                $codeChapitre = $chap->chapitre->code_chapitre;
-                                $avancementCalcule = $avancementParChapitre[$codeChapitre] ?? 0;
-                                $chapLiv = $livrablesByChap[$codeChapitre] ?? null;
-                                $livTotal = $chapLiv['total'] ?? 0;
-                                $livDone = $chapLiv['termines'] ?? 0;
-                                $livPct = $livTotal > 0 ? round(($livDone / $livTotal) * 100) : 0;
-                                $collapseId = 'liv-chap-' . $chap->chapitre_id;
+                            $codeChapitre = $chap->chapitre->code_chapitre;
+                            $avancementCalcule = $avancementParChapitre[$codeChapitre] ?? 0;
+                            $chapLiv = $livrablesByChap[$codeChapitre] ?? null;
+                            $livTotal = $chapLiv['total'] ?? 0;
+                            $livDone = $chapLiv['termines'] ?? 0;
+                            $livPct = $livTotal > 0 ? round(($livDone / $livTotal) * 100) : 0;
+                            $collapseId = 'liv-chap-' . $chap->chapitre_id;
                             @endphp
                             <tr>
                                 <td>
@@ -2155,7 +2425,6 @@
                                                 <th style="width:90px;">Clause</th>
                                                 <th>Libellé</th>
                                                 <th style="width:140px;">Statut</th>
-                                                <!-- ===== NOUVELLE COLONNE PREUVES ===== -->
                                                 <th style="width:120px; text-align:center;">
                                                     <i class="bi bi-paperclip"></i> Preuves
                                                 </th>
@@ -2164,13 +2433,13 @@
                                         <tbody>
                                             @foreach($chapLiv['items'] as $liv)
                                             @php
-                                                $selClass = match($liv->statut) {
-                                                    'Terminé' => 's-ok',
-                                                    'En cours' => 's-ec',
-                                                    default => 's-nc',
-                                                };
-                                                $livPreuves = $preuvesParLivrable[$liv->id] ?? [];
-                                                $preuveCount = count($livPreuves);
+                                            $selClass = match($liv->statut) {
+                                            'Terminé' => 's-ok',
+                                            'En cours' => 's-ec',
+                                            default => 's-nc',
+                                            };
+                                            $livPreuves = $preuvesParLivrable[$liv->id] ?? [];
+                                            $preuveCount = count($livPreuves);
                                             @endphp
                                             <tr>
                                                 <td>{{ $liv->clause ?: '—' }}</td>
@@ -2185,19 +2454,15 @@
                                                     </select>
                                                 </td>
 
-                                                <!-- ===== CELLULE PREUVES ===== -->
                                                 <td style="text-align:center; vertical-align:middle;">
                                                     <div class="preuve-actions">
                                                         <div class="preuve-btn-group">
-                                                            <!-- Voir Preuves (eye) -->
                                                             <button type="button"
                                                                 class="btn-preuve-voir"
                                                                 data-tooltip="Voir les preuves"
                                                                 onclick="toggleViewer({{ $liv->id }})">
                                                                 <i class="bi bi-eye-fill"></i>
                                                             </button>
-
-                                                            <!-- Ajouter Preuve -->
                                                             <button type="button"
                                                                 class="btn-preuve-add"
                                                                 data-tooltip="Ajouter une preuve"
@@ -2205,84 +2470,82 @@
                                                                 <i class="bi bi-paperclip"></i>
                                                             </button>
                                                         </div>
-                                                        <!-- Count badge -->
                                                         <span class="preuve-count-badge {{ $preuveCount == 0 ? 'zero' : '' }}"
-                                                              id="preuve-count-{{ $liv->id }}">
+                                                            id="preuve-count-{{ $liv->id }}">
                                                             {{ $preuveCount }}
                                                         </span>
                                                     </div>
                                                 </td>
                                             </tr>
 
-                                            <!-- ===== VIEWER ROW ===== -->
+                                            <!-- VIEWER ROW -->
                                             <tr id="viewer-row-{{ $liv->id }}" style="display:none;">
                                                 <td colspan="4" style="padding:0.75rem 1rem; background:white;">
                                                     <div class="preuve-viewer-panel">
                                                         <div class="preuve-viewer-header">
-                                                            <span>
-                                                                <i class="bi bi-eye-fill me-1" style="color:var(--primary-500);"></i>
-                                                                Preuves — {{ Str::limit($liv->libelle, 50) }}
-                                                            </span>
-                                                            <small style="color:var(--gray-500); font-size:0.65rem;">
-                                                                {{ $preuveCount }} preuve(s)
-                                                            </small>
-                                                        </div>
-                                                        <div class="preuve-list" id="preuve-list-{{ $liv->id }}">
-                                                            @if($preuveCount === 0)
-                                                            <div class="preuve-empty" id="preuve-empty-{{ $liv->id }}">
-                                                                <i class="bi bi-inbox"></i>
-                                                                Aucune preuve attachée
-                                                            </div>
-                                                            @else
-                                                            @foreach($livPreuves as $pr)
-                                                            @php
-                                                                $isImage = Str::startsWith($pr->mime_type, 'image/');
-                                                                $isPdf = $pr->mime_type === 'application/pdf';
-                                                                $fileIcon = $isPdf ? 'bi-file-earmark-pdf-fill' : 
-                                                                    (Str::contains($pr->mime_type, 'word') ? 'bi-file-earmark-word-fill' :
-                                                                    (Str::contains($pr->mime_type, 'excel') || Str::contains($pr->mime_type, 'spreadsheet') ? 'bi-file-earmark-excel-fill' :
-                                                                    'bi-file-earmark-fill'));
-                                                                $iconColor = $isPdf ? '#ef4444' : 
-                                                                    (Str::contains($pr->mime_type, 'word') ? '#2563eb' : 
-                                                                    (Str::contains($pr->mime_type, 'excel') ? '#10b981' : '#6b7280'));
-                                                            @endphp
-                                                            <div class="preuve-item" id="preuve-item-{{ $pr->id }}">
-                                                                @if($isImage)
-                                                                <img src="{{ $pr->url }}" alt="{{ $pr->label }}" class="preuve-thumb">
-                                                                @else
-                                                                <div class="preuve-thumb-icon">
-                                                                    <i class="bi {{ $fileIcon }}" style="color: {{ $iconColor }}"></i>
-                                                                </div>
-                                                                @endif
-                                                                <div class="preuve-info">
-                                                                    <div class="preuve-name">{{ $pr->label ?: $pr->fichier_nom }}</div>
-                                                                    <div class="preuve-meta">
-                                                                        {{ strtoupper(pathinfo($pr->fichier_nom, PATHINFO_EXTENSION)) }} •
-                                                                        {{ number_format($pr->taille_kb, 0) }} Ko •
-                                                                        {{ \Carbon\Carbon::parse($pr->created_at)->format('d/m/Y H:i') }}
-                                                                    </div>
-                                                                </div>
-                                                                <div class="preuve-item-actions">
-                                                                    <button type="button" class="btn-preuve-print"
-                                                                        data-tooltip="Imprimer / Afficher"
-                                                                        onclick="openFullscreen({{ $pr->id }}, '{{ addslashes($pr->label ?: $pr->fichier_nom) }}', '{{ $pr->mime_type }}', '{{ $pr->url }}')">
-                                                                        <i class="bi bi-printer-fill"></i>
-                                                                    </button>
-                                                                    <button type="button" class="btn-preuve-delete"
-                                                                        data-tooltip="Supprimer"
-                                                                        onclick="deletePreuve({{ $pr->id }}, {{ $liv->id }})">
-                                                                        <i class="bi bi-trash-fill"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endforeach
-                                                            @endif
-                                                        </div>
+    <span>
+        <i class="bi bi-eye-fill me-1" style="color:var(--primary-500);"></i>
+        Preuves — {{ Str::limit($liv->libelle, 50) }}
+    </span>
+    <small style="color:var(--gray-500); font-size:0.65rem;">
+        {{ $preuveCount }} preuve(s)
+    </small>
+</div>
+<div class="preuve-list" id="preuve-list-{{ $liv->id }}">
+    @if($preuveCount === 0)
+        <div class="preuve-empty" id="preuve-empty-{{ $liv->id }}">
+            <i class="bi bi-inbox"></i>
+            Aucune preuve attachée
+        </div>
+    @else
+        @foreach($livPreuves as $pr)
+            @php
+                $isImage = Str::startsWith($pr->mime_type, 'image/');
+                $isPdf = $pr->mime_type === 'application/pdf';
+                $fileIcon = $isPdf ? 'bi-file-earmark-pdf-fill' : 
+                    (Str::contains($pr->mime_type, 'word') ? 'bi-file-earmark-word-fill' :
+                    (Str::contains($pr->mime_type, 'excel') ? 'bi-file-earmark-excel-fill' :
+                    'bi-file-earmark-fill'));
+                $iconColor = $isPdf ? '#ef4444' : 
+                    (Str::contains($pr->mime_type, 'word') ? '#2563eb' : 
+                    (Str::contains($pr->mime_type, 'excel') ? '#10b981' : '#6b7280'));
+            @endphp
+            <div class="preuve-item" id="preuve-item-{{ $pr->id }}">
+                @if($isImage)
+                    <img src="{{ $pr->url }}" alt="{{ $pr->label }}" class="preuve-thumb">
+                @else
+                    <div class="preuve-thumb-icon">
+                        <i class="bi {{ $fileIcon }}" style="color: {{ $iconColor }}"></i>
+                    </div>
+                @endif
+                <div class="preuve-info">
+                    <div class="preuve-name">{{ $pr->label ?: $pr->fichier_nom }}</div>
+                    <div class="preuve-meta">
+                        {{ strtoupper(pathinfo($pr->fichier_nom, PATHINFO_EXTENSION)) }} •
+                        {{ number_format($pr->taille_kb, 0) }} Ko •
+                        {{ \Carbon\Carbon::parse($pr->created_at)->format('d/m/Y H:i') }}
+                    </div>
+                </div>
+                <div class="preuve-item-actions">
+                    <button type="button" class="btn-preuve-print"
+                        data-tooltip="Imprimer / Afficher"
+                        onclick="openFullscreen({{ $pr->id }}, '{{ addslashes($pr->label ?: $pr->fichier_nom) }}', '{{ $pr->mime_type }}', '{{ $pr->url }}', '{{ addslashes($pr->fichier_nom) }}')"                        <i class="bi bi-printer-fill"></i>
+                    </button>
+                    <button type="button" class="btn-preuve-delete"
+                        data-tooltip="Supprimer"
+                        onclick="deletePreuve({{ $pr->id }}, {{ $liv->id }})">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </div>
+            </div>
+        @endforeach
+    @endif
+</div>
                                                     </div>
                                                 </td>
                                             </tr>
 
-                                            <!-- ===== UPLOAD ROW ===== -->
+                                            <!-- UPLOAD ROW -->
                                             <tr id="upload-row-{{ $liv->id }}" style="display:none;">
                                                 <td colspan="4" style="padding:0.75rem 1rem; background:white;">
                                                     <div class="preuve-upload-panel">
@@ -2293,48 +2556,32 @@
                                                                 {{ Str::limit($liv->libelle, 40) }}
                                                             </small>
                                                         </h6>
-
-                                                        <!-- Label -->
                                                         <div class="mb-2">
-                                                            <input type="text" class="form-control preuve-label-input"
-                                                                id="label-{{ $liv->id }}"
-                                                                placeholder="Libellé / description (optionnel)">
+                                                            <input type="text" class="form-control" id="label-{{ $liv->id }}" placeholder="Libellé / description (optionnel)">
                                                         </div>
-
-                                                        <!-- Drop zone -->
-                                                        <div class="preuve-drop-zone"
-                                                             id="dropzone-{{ $liv->id }}"
-                                                             onclick="document.getElementById('file-input-{{ $liv->id }}').click()"
-                                                             ondragover="handleDragOver(event, {{ $liv->id }})"
-                                                             ondragleave="handleDragLeave({{ $liv->id }})"
-                                                             ondrop="handleDrop(event, {{ $liv->id }})">
+                                                        <div class="preuve-drop-zone" id="dropzone-{{ $liv->id }}"
+                                                            onclick="document.getElementById('file-input-{{ $liv->id }}').click()"
+                                                            ondragover="handleDragOver(event, {{ $liv->id }})"
+                                                            ondragleave="handleDragLeave({{ $liv->id }})"
+                                                            ondrop="handleDrop(event, {{ $liv->id }})">
                                                             <i class="bi bi-cloud-arrow-up-fill"></i>
                                                             <strong style="display:block; font-size:0.8rem; color:var(--gray-900); margin-top:0.3rem;">
                                                                 Cliquer ou glisser un fichier ici
                                                             </strong>
                                                             <p>PDF, Image, Word, Excel — max 10 MB</p>
                                                         </div>
-                                                        <input type="file" class="preuve-file-input"
-                                                            id="file-input-{{ $liv->id }}"
+                                                        <input type="file" class="preuve-file-input" id="file-input-{{ $liv->id }}"
                                                             accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.doc,.docx,.xls,.xlsx"
                                                             onchange="handleFileSelect(event, {{ $liv->id }})">
-
-                                                        <!-- Preview selected file -->
                                                         <div id="file-preview-{{ $liv->id }}" class="upload-preview-grid"></div>
-
-                                                        <!-- Actions -->
                                                         <div style="display:flex; gap:0.5rem; margin-top:0.75rem; align-items:center;">
-                                                            <button type="button" class="btn-upload-confirm"
-                                                                onclick="uploadPreuve({{ $liv->id }}, {{ $projet->id }})">
-                                                                <i class="bi bi-check-circle-fill"></i>
-                                                                Enregistrer
+                                                            <button type="button" class="btn-upload-confirm" onclick="uploadPreuve({{ $liv->id }}, {{ $projet->id }})">
+                                                                <i class="bi bi-check-circle-fill"></i> Enregistrer
                                                             </button>
-                                                            <button type="button" class="btn-upload-cancel"
-                                                                onclick="cancelUpload({{ $liv->id }})">
+                                                            <button type="button" class="btn-upload-cancel" onclick="cancelUpload({{ $liv->id }})">
                                                                 Annuler
                                                             </button>
-                                                            <span id="upload-status-{{ $liv->id }}"
-                                                                style="font-size:0.75rem; color:var(--gray-500); margin-left:0.5rem;"></span>
+                                                            <span id="upload-status-{{ $liv->id }}" style="font-size:0.75rem; color:var(--gray-500); margin-left:0.5rem;"></span>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -2519,10 +2766,27 @@
                 </div>
             </div>
 
-            
+            <!-- Boutons -->
+            <div class="d-flex justify-content-end gap-3 mb-5">
+                <a href="{{ route('projet.details', $projet->id) }}" class="btn-secondary">
+                    <i class="bi bi-x-circle"></i> Annuler
+                </a>
+                @if($user->hasPermission('voir_gantt'))
+                <a href="/projet/{{ $projet->id }}/gantt" class="btn-primary" style="background:linear-gradient(135deg, var(--success-500), var(--success-600));">
+                    <i class="bi bi-bar-chart-steps-fill"></i> Planning Gantt
+                    @php $ganttCount = DB::table('gantt_taches')->where('projet_id', $projet->id)->count(); @endphp
+                    @if($ganttCount > 0)
+                    <span class="badge bg-white text-success ms-1" style="font-size:0.7rem;">{{ $ganttCount }}</span>
+                    @endif
+                </a>
+                @endif
+                <button type="submit" class="btn-primary">
+                    <i class="bi bi-check-circle-fill"></i> Enregistrer les modifications
+                </button>
+            </div>
         </form>
 
-        <!-- ===== SECTION I - FICHIERS D'INTERVENTION (HORS FORMULAIRE) ===== -->
+        <!-- SECTION I - FICHIERS D'INTERVENTION -->
         <div class="form-card preuves-projet-section">
             <div class="section-title">
                 <i class="bi bi-folder-fill"></i>
@@ -2537,40 +2801,36 @@
                 <span class="preuves-count">{{ count($preuvesProjet) }} document(s)</span>
             </div>
 
-            <!-- Bouton d'ajout -->
             <button type="button" class="btn-upload-projet" onclick="toggleProjetUploadPanel()">
                 <i class="bi bi-cloud-upload-fill"></i>
                 Ajouter un document
             </button>
 
-            <!-- Panel d'upload -->
             <div class="upload-panel" id="projetUploadPanel">
                 <h6><i class="bi bi-cloud-upload-fill"></i> Nouveau document d'intervention</h6>
-                
+
                 <div class="mb-3">
                     <label class="form-label">Libellé / description</label>
-                    <input type="text" class="form-control" id="projetLabel" placeholder="Ex: Rapport d'intervention, Compte-rendu, Photos chantier...">
+                    <input type="text" class="form-control" id="projetLabel" placeholder="Ex: Rapport d'intervention, Compte-rendu...">
                 </div>
 
                 <div class="projet-upload-zone"
-                     id="projetDropzone"
-                     onclick="document.getElementById('projetFileInput').click()"
-                     ondragover="handleProjetDragOver(event)"
-                     ondragleave="handleProjetDragLeave()"
-                     ondrop="handleProjetDrop(event)">
+                    id="projetDropzone"
+                    onclick="document.getElementById('projetFileInput').click()"
+                    ondragover="handleProjetDragOver(event)"
+                    ondragleave="handleProjetDragLeave()"
+                    ondrop="handleProjetDrop(event)">
                     <i class="bi bi-cloud-arrow-up-fill"></i>
                     <h6>Cliquez ou glissez un fichier ici</h6>
                     <p>PDF, Images, Word, Excel — max 10 MB</p>
                 </div>
 
                 <input type="file" class="preuve-file-input" id="projetFileInput"
-                       accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.doc,.docx,.xls,.xlsx"
-                       onchange="handleProjetFileSelect(event)">
+                    accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.doc,.docx,.xls,.xlsx"
+                    onchange="handleProjetFileSelect(event)">
 
-                <!-- Preview du fichier sélectionné -->
                 <div id="projetFilePreview" class="upload-preview-grid"></div>
 
-                <!-- Actions -->
                 <div style="display:flex; gap:0.5rem; margin-top:1rem;">
                     <button type="button" class="btn-upload-confirm" onclick="uploadProjetPreuve({{ $projet->id }})">
                         <i class="bi bi-check-circle-fill"></i> Enregistrer
@@ -2582,17 +2842,16 @@
                 </div>
             </div>
 
-            <!-- Grille des preuves -->
             <div class="preuves-grid" id="projetPreuvesGrid">
                 @forelse($preuvesProjet as $preuve)
                 @php
-                    $isImage = Str::startsWith($preuve->mime_type, 'image/');
-                    $isPdf = $preuve->mime_type === 'application/pdf';
-                    $fileIcon = $isPdf ? 'bi-file-earmark-pdf-fill' : 
-                               ($isImage ? 'bi-file-earmark-image-fill' : 
-                               (Str::contains($preuve->mime_type, 'word') ? 'bi-file-earmark-word-fill' :
-                               (Str::contains($preuve->mime_type, 'excel') ? 'bi-file-earmark-excel-fill' :
-                               'bi-file-earmark-fill')));
+                $isImage = Str::startsWith($preuve->mime_type, 'image/');
+                $isPdf = $preuve->mime_type === 'application/pdf';
+                $fileIcon = $isPdf ? 'bi-file-earmark-pdf-fill' :
+                ($isImage ? 'bi-file-earmark-image-fill' :
+                (Str::contains($preuve->mime_type, 'word') ? 'bi-file-earmark-word-fill' :
+                (Str::contains($preuve->mime_type, 'excel') ? 'bi-file-earmark-excel-fill' :
+                'bi-file-earmark-fill')));
                 @endphp
                 <div class="preuve-card" id="projet-preuve-{{ $preuve->id }}">
                     <div class="preuve-thumb-large">
@@ -2612,19 +2871,18 @@
                             <span>{{ \Carbon\Carbon::parse($preuve->created_at)->format('d/m/Y') }}</span>
                         </div>
                         <div class="preuve-actions">
-                            <button type="button" class="preuve-action-btn" 
-                                    onclick="openFullscreenProjet({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $preuve->fichier_nom) }}', '{{ $preuve->mime_type }}', '{{ $preuve->url }}')"
-                                    title="Afficher">
+                            <button type="button" class="preuve-action-btn"
+                               onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $preuve->fichier_nom) }}', '{{ $preuve->mime_type }}', '{{ $preuve->url }}', '{{ addslashes($preuve->fichier_nom) }}')"
+                                title="Afficher">
                                 <i class="bi bi-eye-fill"></i>
                             </button>
-                            <button type="button" class="preuve-action-btn print" 
-                                    onclick="printProjetPreuve('{{ $preuve->url }}', '{{ addslashes($preuve->label ?: $preuve->fichier_nom) }}')"
-                                    title="Imprimer">
+                            <button type="button" class="preuve-action-btn print"
+onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $preuve->fichier_nom) }}', '{{ $preuve->mime_type }}', '{{ $preuve->url }}', '{{ addslashes($preuve->fichier_nom) }}'); setTimeout(() => printCurrentPreuve(), 200);"                                title="Imprimer">
                                 <i class="bi bi-printer-fill"></i>
                             </button>
-                            <button type="button" class="preuve-action-btn delete" 
-                                    onclick="deleteProjetPreuve({{ $preuve->id }})"
-                                    title="Supprimer">
+                            <button type="button" class="preuve-action-btn delete"
+                                onclick="deleteProjetPreuve({{ $preuve->id }})"
+                                title="Supprimer">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
                         </div>
@@ -2639,44 +2897,17 @@
                 @endforelse
             </div>
         </div>
-
-        <form action="{{ route('projets.update', $projet->id) }}" method="POST" id="mainForm">
-            @csrf
-            @method('PUT')
-            <!-- Boutons -->
-            <div class="d-flex justify-content-end gap-3 mb-5">
-                <a href="{{ route('projet.details', $projet->id) }}" class="btn-secondary">
-                    <i class="bi bi-x-circle"></i> Annuler
-                </a>
-                @if($user->hasPermission('voir_gantt'))
-                <a href="/projet/{{ $projet->id }}/gantt" class="btn-primary" style="background:linear-gradient(135deg, var(--success-500), var(--success-600));">
-                    <i class="bi bi-bar-chart-steps-fill"></i> Planning Gantt
-                    @php $ganttCount = DB::table('gantt_taches')->where('projet_id', $projet->id)->count(); @endphp
-                    @if($ganttCount > 0)
-                    <span class="badge bg-white text-success ms-1" style="font-size:0.7rem;">{{ $ganttCount }}</span>
-                    @endif
-                </a>
-                @endif
-                <button type="submit" class="btn-primary">
-                    <i class="bi bi-check-circle-fill"></i> Enregistrer les modifications
-                </button>
-            </div>
-
-
-        </form>
-
-
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // ===== STATE =====
-        let pendingFiles = {}; // livrable_id => File object
+        let pendingFiles = {};
         let projetPendingFile = null;
         let currentFsPreuveId = null;
         let currentFsPreuveUrl = null;
         let currentFsPreuveMime = null;
+        let currentFsPreuveFileName = null;
 
         // ===== THEME =====
         (function() {
@@ -2710,50 +2941,56 @@
         function updateLivrableStatus(select, chapCode, collapseId) {
             select.className = 'liv-statut-select ' +
                 (select.value === 'Terminé' ? 's-ok' : select.value === 'En cours' ? 's-ec' : 's-nc');
-            
+
             const row = document.getElementById(collapseId);
             const selects = row.querySelectorAll('.liv-statut-select');
-            let total = selects.length, termines = 0;
-            selects.forEach(s => { if (s.value === 'Terminé') termines++; });
+            let total = selects.length,
+                termines = 0;
+            selects.forEach(s => {
+                if (s.value === 'Terminé') termines++;
+            });
             const pct = Math.round((termines / total) * 100);
-            
+
             const af = document.getElementById('avancement-' + chapCode);
             if (af) af.value = pct;
-            
+
             const pr = row.previousElementSibling;
             if (pr) {
                 const cd = pr.querySelector('.livrables-count');
                 if (cd) cd.innerHTML = `${termines}/${total} (${pct}%)`;
             }
-            
+
             updateGlobalProgress();
         }
 
         function updateGlobalProgress() {
-            let totalGlobal = 0, terminesGlobal = 0;
+            let totalGlobal = 0,
+                terminesGlobal = 0;
             document.querySelectorAll('[id^="liv-chap-"]').forEach(body => {
                 const selects = body.querySelectorAll('.liv-statut-select');
                 if (selects.length > 0) {
                     totalGlobal += selects.length;
-                    selects.forEach(s => { if (s.value === 'Terminé') terminesGlobal++; });
+                    selects.forEach(s => {
+                        if (s.value === 'Terminé') terminesGlobal++;
+                    });
                 }
             });
-            
+
             const pctGlobal = totalGlobal > 0 ? Math.round((terminesGlobal / totalGlobal) * 100) : 0;
-            
+
             const ag = document.getElementById('avancement_percent');
             if (ag) ag.value = pctGlobal;
-            
+
             const fa = document.getElementById('footAvancement');
             if (fa) fa.textContent = pctGlobal;
-            
+
             const autoTags = document.querySelectorAll('.auto-tag');
             if (autoTags.length >= 2) {
                 autoTags[1].innerHTML = `<i class="bi bi-arrow-right-circle-fill"></i> ${terminesGlobal}/${totalGlobal} livrables terminés`;
             }
         }
 
-        // ===== PREUVES LIVRABLES (simplifiées) =====
+        // ===== PREUVES FUNCTIONS =====
         function toggleViewer(livId) {
             const vRow = document.getElementById(`viewer-row-${livId}`);
             const uRow = document.getElementById(`upload-row-${livId}`);
@@ -2767,6 +3004,13 @@
             if (vRow) vRow.style.display = 'none';
             if (uRow) uRow.style.display = uRow.style.display === 'none' ? 'table-row' : 'none';
         }
+
+        function closeFullscreenOnBackdrop(event) {
+    const overlay = document.getElementById('preuveFullscreenOverlay');
+    if (event.target === overlay) {
+        closeFullscreen();
+    }
+}
 
         function cancelUpload(livId) {
             const uRow = document.getElementById(`upload-row-${livId}`);
@@ -2812,7 +3056,7 @@
                 return;
             }
             pendingFiles[livId] = file;
-            
+
             const previewContainer = document.getElementById(`file-preview-${livId}`);
             if (!previewContainer) return;
             previewContainer.innerHTML = '';
@@ -2825,21 +3069,21 @@
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     item.innerHTML = `
-                        <img src="${ev.target.result}" alt="${file.name}">
-                        <button class="remove-preview" onclick="clearFile(${livId})" type="button">
-                            <i class="bi bi-x"></i>
-                        </button>`;
+                <img src="${ev.target.result}" alt="${file.name}">
+                <button class="remove-preview" onclick="clearFile(${livId})" type="button">
+                    <i class="bi bi-x"></i>
+                </button>`;
                 };
                 reader.readAsDataURL(file);
             } else {
                 const icon = file.type === 'application/pdf' ? 'bi-file-earmark-pdf-fill' :
                     (file.name.match(/\.docx?$/i) ? 'bi-file-earmark-word-fill' :
-                    (file.name.match(/\.xlsx?$/i) ? 'bi-file-earmark-excel-fill' : 'bi-file-earmark-fill'));
+                        (file.name.match(/\.xlsx?$/i) ? 'bi-file-earmark-excel-fill' : 'bi-file-earmark-fill'));
                 item.innerHTML = `
-                    <div class="file-icon-preview"><i class="bi ${icon}"></i></div>
-                    <button class="remove-preview" onclick="clearFile(${livId})" type="button">
-                        <i class="bi bi-x"></i>
-                    </button>`;
+            <div class="file-icon-preview"><i class="bi ${icon}"></i></div>
+            <button class="remove-preview" onclick="clearFile(${livId})" type="button">
+                <i class="bi bi-x"></i>
+            </button>`;
             }
             previewContainer.appendChild(item);
 
@@ -2884,8 +3128,8 @@
                 const res = await fetch('/preuves/upload', {
                     method: 'POST',
                     body: formData,
-                    headers: { 
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}' 
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
                     }
                 });
 
@@ -2914,7 +3158,7 @@
             if (!el) return;
             el.textContent = msg;
             el.style.color = type === 'success' ? 'var(--success-600)' :
-                             type === 'danger' ? 'var(--danger-600)' : 'var(--gray-500)';
+                type === 'danger' ? 'var(--danger-600)' : 'var(--gray-500)';
         }
 
         function addPreuveToViewer(livId, pr) {
@@ -2928,43 +3172,43 @@
             const isPdf = pr.mime_type === 'application/pdf';
             const icon = isPdf ? 'bi-file-earmark-pdf-fill' :
                 (pr.mime_type && pr.mime_type.includes('word') ? 'bi-file-earmark-word-fill' :
-                (pr.mime_type && (pr.mime_type.includes('excel') || pr.mime_type.includes('spreadsheet')) ? 'bi-file-earmark-excel-fill' :
-                'bi-file-earmark-fill'));
-            const iconColor = isPdf ? '#ef4444' : 
-                (pr.mime_type && pr.mime_type.includes('word') ? '#2563eb' : 
-                (pr.mime_type && (pr.mime_type.includes('excel') || pr.mime_type.includes('spreadsheet')) ? '#10b981' : '#6b7280'));
+                    (pr.mime_type && (pr.mime_type.includes('excel') || pr.mime_type.includes('spreadsheet')) ? 'bi-file-earmark-excel-fill' :
+                        'bi-file-earmark-fill'));
+            const iconColor = isPdf ? '#ef4444' :
+                (pr.mime_type && pr.mime_type.includes('word') ? '#2563eb' :
+                    (pr.mime_type && (pr.mime_type.includes('excel') || pr.mime_type.includes('spreadsheet')) ? '#10b981' : '#6b7280'));
 
             const item = document.createElement('div');
             item.className = 'preuve-item';
             item.id = `preuve-item-${pr.id}`;
             item.innerHTML = `
-                ${isImage
-                    ? `<img src="${pr.url}" alt="${pr.label || pr.fichier_nom}" class="preuve-thumb">`
-                    : `<div class="preuve-thumb-icon"><i class="bi ${icon}" style="color:${iconColor}"></i></div>`
-                }
-                <div class="preuve-info">
-                    <div class="preuve-name">${pr.label || pr.fichier_nom}</div>
-                    <div class="preuve-meta">
-                        ${pr.fichier_nom.split('.').pop().toUpperCase()} •
-                        ${Math.round(pr.taille_kb)} Ko • Maintenant
-                    </div>
-                </div>
-                <div class="preuve-item-actions">
-                    <button type="button" class="btn-preuve-print" data-tooltip="Imprimer / Afficher"
-                        onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}')">
-                        <i class="bi bi-printer-fill"></i>
-                    </button>
-                    <button type="button" class="btn-preuve-delete" data-tooltip="Supprimer"
-                        onclick="deletePreuve(${pr.id}, ${livId})">
-                        <i class="bi bi-trash-fill"></i>
-                    </button>
-                </div>`;
+        ${isImage
+            ? `<img src="${pr.url}" alt="${pr.label || pr.fichier_nom}" class="preuve-thumb">`
+            : `<div class="preuve-thumb-icon"><i class="bi ${icon}" style="color:${iconColor}"></i></div>`
+        }
+        <div class="preuve-info">
+            <div class="preuve-name">${pr.label || pr.fichier_nom}</div>
+            <div class="preuve-meta">
+                ${pr.fichier_nom.split('.').pop().toUpperCase()} •
+                ${Math.round(pr.taille_kb)} Ko • Maintenant
+            </div>
+        </div>
+        <div class="preuve-item-actions">
+            <button type="button" class="btn-preuve-print" data-tooltip="Imprimer / Afficher"
+                onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}', '${pr.fichier_nom.replace(/'/g,"\\'")}')"
+                <i class="bi bi-printer-fill"></i>
+            </button>
+            <button type="button" class="btn-preuve-delete" data-tooltip="Supprimer"
+                onclick="deletePreuve(${pr.id}, ${livId})">
+                <i class="bi bi-trash-fill"></i>
+            </button>
+        </div>`;
             list.appendChild(item);
         }
 
         async function deletePreuve(preuveId, livId) {
             if (!confirm('Supprimer cette preuve définitivement ?')) return;
-            
+
             try {
                 const res = await fetch(`/preuves/${preuveId}`, {
                     method: 'DELETE',
@@ -2973,7 +3217,7 @@
                         'Content-Type': 'application/json'
                     }
                 });
-                
+
                 if (!res.ok) throw new Error('Erreur serveur');
 
                 const item = document.getElementById(`preuve-item-${preuveId}`);
@@ -2989,7 +3233,7 @@
                 const list = document.getElementById(`preuve-list-${livId}`);
                 if (list && list.querySelectorAll('.preuve-item').length === 0) {
                     list.innerHTML = `<div class="preuve-empty" id="preuve-empty-${livId}">
-                        <i class="bi bi-inbox"></i>Aucune preuve attachée</div>`;
+                <i class="bi bi-inbox"></i>Aucune preuve attachée</div>`;
                 }
 
                 closeFullscreen();
@@ -3032,7 +3276,7 @@
                 return;
             }
             projetPendingFile = file;
-            
+
             const preview = document.getElementById('projetFilePreview');
             preview.innerHTML = '';
 
@@ -3044,21 +3288,21 @@
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     item.innerHTML = `
-                        <img src="${ev.target.result}" alt="${file.name}">
-                        <button class="remove-preview" onclick="clearProjetFile()" type="button">
-                            <i class="bi bi-x"></i>
-                        </button>`;
+                <img src="${ev.target.result}" alt="${file.name}">
+                <button class="remove-preview" onclick="clearProjetFile()" type="button">
+                    <i class="bi bi-x"></i>
+                </button>`;
                 };
                 reader.readAsDataURL(file);
             } else {
                 const icon = file.type === 'application/pdf' ? 'bi-file-earmark-pdf-fill' :
                     (file.name.match(/\.docx?$/i) ? 'bi-file-earmark-word-fill' :
-                    (file.name.match(/\.xlsx?$/i) ? 'bi-file-earmark-excel-fill' : 'bi-file-earmark-fill'));
+                        (file.name.match(/\.xlsx?$/i) ? 'bi-file-earmark-excel-fill' : 'bi-file-earmark-fill'));
                 item.innerHTML = `
-                    <div class="file-icon-preview"><i class="bi ${icon}"></i></div>
-                    <button class="remove-preview" onclick="clearProjetFile()" type="button">
-                        <i class="bi bi-x"></i>
-                    </button>`;
+            <div class="file-icon-preview"><i class="bi ${icon}"></i></div>
+            <button class="remove-preview" onclick="clearProjetFile()" type="button">
+                <i class="bi bi-x"></i>
+            </button>`;
             }
             preview.appendChild(item);
 
@@ -3089,7 +3333,7 @@
                 document.getElementById('projetUploadStatus').textContent = 'Veuillez sélectionner un fichier';
                 return;
             }
-            
+
             const label = document.getElementById('projetLabel').value || '';
 
             const formData = new FormData();
@@ -3110,9 +3354,9 @@
                 const data = await res.json();
 
                 document.getElementById('projetUploadStatus').textContent = '✅ Document ajouté !';
-                
+
                 addProjetPreuveToGrid(data.preuve);
-                
+
                 setTimeout(() => {
                     cancelProjetUpload();
                     document.getElementById('projetUploadStatus').textContent = '';
@@ -3125,57 +3369,56 @@
 
         function addProjetPreuveToGrid(pr) {
             const grid = document.getElementById('projetPreuvesGrid');
-            
+
             const emptyDiv = grid.querySelector('.empty-preuves');
             if (emptyDiv) emptyDiv.remove();
 
             const isImage = pr.mime_type && pr.mime_type.startsWith('image/');
             const isPdf = pr.mime_type === 'application/pdf';
-            const fileIcon = isPdf ? 'bi-file-earmark-pdf-fill' : 
-                           (isImage ? 'bi-file-earmark-image-fill' : 
-                           (pr.mime_type && pr.mime_type.includes('word') ? 'bi-file-earmark-word-fill' :
-                           (pr.mime_type && pr.mime_type.includes('excel') ? 'bi-file-earmark-excel-fill' :
-                           'bi-file-earmark-fill')));
+            const fileIcon = isPdf ? 'bi-file-earmark-pdf-fill' :
+                (isImage ? 'bi-file-earmark-image-fill' :
+                    (pr.mime_type && pr.mime_type.includes('word') ? 'bi-file-earmark-word-fill' :
+                        (pr.mime_type && pr.mime_type.includes('excel') ? 'bi-file-earmark-excel-fill' :
+                            'bi-file-earmark-fill')));
 
             const card = document.createElement('div');
             card.className = 'preuve-card';
             card.id = `projet-preuve-${pr.id}`;
             card.innerHTML = `
-                <div class="preuve-thumb-large">
-                    ${isImage 
-                        ? `<img src="${pr.url}" alt="${pr.label || pr.fichier_nom}">`
-                        : `<i class="bi ${fileIcon}"></i>`
-                    }
-                </div>
-                <div class="preuve-body">
-                    <h6 title="${pr.label || pr.fichier_nom}">${pr.label || pr.fichier_nom}</h6>
-                    <div class="preuve-meta">
-                        <span>${pr.fichier_nom.split('.').pop().toUpperCase()}</span>
-                        <span>${Math.round(pr.taille_kb)} Ko</span>
-                        <span>Maintenant</span>
-                    </div>
-                    <div class="preuve-actions">
-                        <button type="button" class="preuve-action-btn" 
-                                onclick="openFullscreenProjet(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}')"
-                                title="Afficher">
-                            <i class="bi bi-eye-fill"></i>
-                        </button>
-                        <button type="button" class="preuve-action-btn print" 
-                                onclick="printProjetPreuve('${pr.url}', '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}')"
-                                title="Imprimer">
-                            <i class="bi bi-printer-fill"></i>
-                        </button>
-                        <button type="button" class="preuve-action-btn delete" 
-                                onclick="deleteProjetPreuve(${pr.id})"
-                                title="Supprimer">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            
+        <div class="preuve-thumb-large">
+            ${isImage 
+                ? `<img src="${pr.url}" alt="${pr.label || pr.fichier_nom}">`
+                : `<i class="bi ${fileIcon}"></i>`
+            }
+        </div>
+        <div class="preuve-body">
+            <h6 title="${pr.label || pr.fichier_nom}">${pr.label || pr.fichier_nom}</h6>
+            <div class="preuve-meta">
+                <span>${pr.fichier_nom.split('.').pop().toUpperCase()}</span>
+                <span>${Math.round(pr.taille_kb)} Ko</span>
+                <span>Maintenant</span>
+            </div>
+            <div class="preuve-actions">
+                <button type="button" class="preuve-action-btn" 
+                       onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}', '${pr.fichier_nom.replace(/'/g,"\\'")}')"
+                        title="Afficher">
+                    <i class="bi bi-eye-fill"></i>
+                </button>
+                <button type="button" class="preuve-action-btn print" 
+onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}', '${pr.fichier_nom.replace(/'/g,"\\'")}'); setTimeout(() => printCurrentPreuve(), 200);"                        title="Imprimer">
+                    <i class="bi bi-printer-fill"></i>
+                </button>
+                <button type="button" class="preuve-action-btn delete" 
+                        onclick="deleteProjetPreuve(${pr.id})"
+                        title="Supprimer">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+            </div>
+        </div>
+    `;
+
             grid.appendChild(card);
-            
+
             const countSpan = document.querySelector('.preuves-count');
             if (countSpan) {
                 const current = parseInt(countSpan.textContent) || 0;
@@ -3183,146 +3426,178 @@
             }
         }
 
-        async function deleteProjetPreuve(preuveId) {
-            if (!confirm('Supprimer ce document définitivement ?')) return;
-            
-            try {
-                const res = await fetch(`/preuves-projet/${preuveId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
-                    }
-                });
-                
-                if (!res.ok) throw new Error('Erreur serveur');
+       async function deleteProjetPreuve(preuveId) {
+    if (!confirm('Supprimer ce document définitivement ?')) return;
 
-                const card = document.getElementById(`projet-preuve-${preuveId}`);
-                if (card) card.remove();
-
-                const countSpan = document.querySelector('.preuves-count');
-                if (countSpan) {
-                    const current = parseInt(countSpan.textContent) || 0;
-                    countSpan.textContent = (current - 1) + ' document(s)';
-                }
-
-                const grid = document.getElementById('projetPreuvesGrid');
-                if (grid.children.length === 0) {
-                    grid.innerHTML = `
-                        <div class="empty-preuves">
-                            <i class="bi bi-folder2-open"></i>
-                            <p>Aucun document</p>
-                            <small>Cliquez sur "Ajouter un document" pour joindre des fichiers</small>
-                        </div>
-                    `;
-                }
-
-                closeFullscreen();
-
-            } catch (err) {
-                alert('Erreur lors de la suppression : ' + err.message);
+    try {
+        const res = await fetch(`/preuves-projet/${preuveId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
             }
+        });
+
+        if (!res.ok) throw new Error('Erreur serveur');
+
+        // حذف الكارت
+        const card = document.getElementById(`projet-preuve-${preuveId}`);
+        if (card) card.remove();
+
+        // تحديث العدد
+        const countSpan = document.querySelector('.preuves-count');
+        if (countSpan) {
+            const current = parseInt(countSpan.textContent) || 0;
+            countSpan.textContent = Math.max(0, current - 1) + ' document(s)';
         }
+
+        // إلا ما بقا حتى ملف
+        const grid = document.getElementById('projetPreuvesGrid');
+        if (grid && grid.children.length === 0) {
+            grid.innerHTML = `
+                <div class="empty-preuves">
+                    <i class="bi bi-folder2-open"></i>
+                    <p>Aucun document</p>
+                    <small>Cliquez sur "Ajouter un document" pour joindre des fichiers</small>
+                </div>
+            `;
+        }
+
+        // مهم: نسدو fullscreen غير إلا كان نفس الملف محلول
+        if (currentFsPreuveId == preuveId) {
+            closeFullscreen();
+        }
+
+    } catch (err) {
+        alert('Erreur lors de la suppression : ' + err.message);
+    }
+}
+
+        function downloadFile(url, filename) {
+    const a = document.createElement('a');
+    a.href = '/download-file?url=' + encodeURIComponent(url) + '&name=' + encodeURIComponent(filename);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
 
         // ===== FULLSCREEN VIEWER =====
-        function openFullscreen(preuveId, title, mimeType, url) {
-            currentFsPreuveId = preuveId;
-            currentFsPreuveUrl = url;
-            currentFsPreuveMime = mimeType;
+        function openFullscreen(preuveId, title, mimeType, url, fileName = null) {
 
-            document.getElementById('fsPreuveTitle').textContent = title;
+        console.log('PDF URL:', url);
+    currentFsPreuveId = preuveId;
+    currentFsPreuveUrl = url;
+    currentFsPreuveMime = mimeType;
+    currentFsPreuveFileName = fileName || title;
 
-            const body = document.getElementById('fsPreuveBody');
-            const isImage = mimeType && mimeType.startsWith('image/');
-            const isPdf = mimeType === 'application/pdf';
+    document.getElementById('fsPreuveTitle').textContent = title;
 
-            if (isImage) {
-                body.innerHTML = `<img src="${url}" alt="${title}">`;
-            } else if (isPdf) {
-                body.innerHTML = `<iframe src="${url}" class="pdf-embed" title="${title}"></iframe>`;
-            } else {
-                const icon = mimeType && mimeType.includes('word') ? 'bi-file-earmark-word-fill' :
-                    (mimeType && (mimeType.includes('excel') || mimeType.includes('spreadsheet')) ? 'bi-file-earmark-excel-fill' :
-                    'bi-file-earmark-fill');
-                body.innerHTML = `
-                    <div class="file-preview-generic">
-                        <i class="bi ${icon}"></i>
-                        <p style="font-size:1rem; margin:0.5rem 0;">${title}</p>
-                        <p style="font-size:0.8rem; color:var(--gray-500);">Aperçu non disponible</p>
-                        <a href="${url}" download class="btn-dl">
-                            <i class="bi bi-download"></i> Télécharger
-                        </a>
-                    </div>`;
-            }
+    const body = document.getElementById('fsPreuveBody');
+    const isImage = mimeType && mimeType.startsWith('image/');
+    const isPdf = mimeType === 'application/pdf';
 
-            document.getElementById('preuveFullscreenOverlay').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+    if (isImage) {
+        body.innerHTML = `<img src="${url}" alt="${title}">`;
+    } else if (isPdf) {
+    const viewerUrl = '/view-file?url=' + encodeURIComponent(url);
+    body.innerHTML = `<iframe src="${viewerUrl}" class="pdf-embed"></iframe>`;
+    } else {
+        const icon = mimeType && mimeType.includes('word') ? 'bi-file-earmark-word-fill' :
+            (mimeType && (mimeType.includes('excel') || mimeType.includes('spreadsheet')) ? 'bi-file-earmark-excel-fill' :
+                'bi-file-earmark-fill');
 
-        function openFullscreenProjet(preuveId, title, mimeType, url) {
-            openFullscreen(preuveId, title, mimeType, url);
-            currentFsPreuveId = preuveId;
-        }
+        body.innerHTML = `
+    <div class="file-preview-generic">
+        <i class="bi bi-file-earmark-excel"></i>
+        <p>${title}</p>
+        <p>Aperçu non disponible</p>
+
+        <div class="file-actions">
+            <button class="btn-download-clean"
+                onclick="window.location.href='/download-file?url=${encodeURIComponent(currentFsPreuveUrl)}&name=${encodeURIComponent(currentFsPreuveFileName || title)}'">
+                <i class="bi bi-download"></i>
+                Télécharger
+            </button>
+        </div>
+    </div>
+`;
+    }
+
+    document.getElementById('preuveFullscreenOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
 
         function closeFullscreen() {
-            document.getElementById('preuveFullscreenOverlay').classList.remove('active');
-            document.body.style.overflow = '';
-            currentFsPreuveId = null;
-            currentFsPreuveUrl = null;
-            currentFsPreuveMime = null;
-        }
+    document.getElementById('preuveFullscreenOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
 
-        function printCurrentPreuve() {
-            if (!currentFsPreuveUrl) return;
-            
-            const isImage = currentFsPreuveMime && currentFsPreuveMime.startsWith('image/');
-            const isPdf = currentFsPreuveMime === 'application/pdf';
-            const title = document.getElementById('fsPreuveTitle').textContent;
+       function printCurrentPreuve() {
+    if (!currentFsPreuveUrl) return;
 
-            const printWindow = window.open('', '_blank');
-            if (isImage) {
-                printWindow.document.write(`
-                    <html><head><title>Impression - ${title}</title>
-                    <style>
-                        body { margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; background: white; }
-                        img { max-width: 100%; max-height: 95vh; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-                        .header { text-align: center; padding: 10px; font-family: Arial, sans-serif; color: #333; }
-                    </style></head>
-                    <body>
-                        <div style="text-align: center; width: 100%;">
-                            <div class="header">${title}</div>
-                            <img src="${currentFsPreuveUrl}" onload="window.print(); setTimeout(() => window.close(), 1000);">
-                        </div>
-                    </body></html>`);
-            } else if (isPdf) {
-                printWindow.document.write(`
-                    <html><head><title>Impression - ${title}</title>
-                    <style>
-                        body { margin: 0; font-family: Arial, sans-serif; }
-                        .header { text-align: center; padding: 10px; background: #f5f5f5; border-bottom: 1px solid #ddd; }
-                    </style></head>
-                    <body>
-                        <div class="header">${title}</div>
-                        <iframe src="${currentFsPreuveUrl}" style="width:100%;height:95vh;border:none;" onload="setTimeout(() => this.contentWindow.print(), 500);"></iframe>
-                    </body></html>`);
-            } else {
-                printWindow.location.href = currentFsPreuveUrl;
-            }
-            printWindow.document.close();
-        }
+    const isImage = currentFsPreuveMime && currentFsPreuveMime.startsWith('image/');
+    const isPdf = currentFsPreuveMime === 'application/pdf';
+    const title = document.getElementById('fsPreuveTitle').textContent;
+
+    if (isImage) {
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+            <html><head><title>Impression - ${title}</title>
+            <style>
+                body { margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; background: white; }
+                img { max-width: 100%; max-height: 95vh; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                .header { text-align: center; padding: 10px; font-family: Arial, sans-serif; color: #333; }
+            </style></head>
+            <body>
+                <div style="text-align: center; width: 100%;">
+                    <div class="header">${title}</div>
+                    <img src="${currentFsPreuveUrl}" onload="window.print(); setTimeout(() => window.close(), 1000);">
+                </div>
+            </body></html>`);
+        printWindow.document.close();
+
+    } else if (isPdf) {
+        const viewerUrl = '/view-file?url=' + encodeURIComponent(currentFsPreuveUrl);
+
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'fixed';
+        iframe.style.right = '0';
+        iframe.style.bottom = '0';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = '0';
+        iframe.src = viewerUrl;
+
+        document.body.appendChild(iframe);
+
+        iframe.onload = function () {
+            setTimeout(() => {
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                }, 1000);
+            }, 500);
+        };
+
+    } else {
+        window.location.href = '/download-file?url=' + encodeURIComponent(currentFsPreuveUrl) + '&name=' + encodeURIComponent(currentFsPreuveFileName || title);
+    }
+}
 
         function printProjetPreuve(url, title) {
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
-                <html><head><title>Impression - ${title}</title>
-                <style>
-                    body { margin: 0; font-family: Arial, sans-serif; }
-                    .header { text-align: center; padding: 10px; background: #f5f5f5; border-bottom: 1px solid #ddd; }
-                    iframe { width: 100%; height: 95vh; border: none; }
-                </style></head>
-                <body>
-                    <div class="header">${title}</div>
-                    <iframe src="${url}" onload="setTimeout(() => this.contentWindow.print(), 500);"></iframe>
-                </body></html>`);
+        <html><head><title>Impression - ${title}</title>
+        <style>
+            body { margin: 0; font-family: Arial, sans-serif; }
+            .header { text-align: center; padding: 10px; background: #f5f5f5; border-bottom: 1px solid #ddd; }
+            iframe { width: 100%; height: 95vh; border: none; }
+        </style></head>
+        <body>
+            <div class="header">${title}</div>
+            <iframe src="${url}" onload="setTimeout(() => this.contentWindow.print(), 500);"></iframe>
+        </body></html>`);
             printWindow.document.close();
         }
 
@@ -3351,57 +3626,57 @@
             const role = document.getElementById('existingConsultantRole').value;
             const joursA = parseFloat(document.getElementById('existingConsultantJoursAlloues').value) || 0;
             const joursR = parseFloat(document.getElementById('existingConsultantJoursRealises').value) || 0;
-            
-            if (!consId) { 
-                alert('Veuillez sélectionner un consultant'); 
-                return; 
+
+            if (!consId) {
+                alert('Veuillez sélectionner un consultant');
+                return;
             }
-            
-            if (document.getElementById(`consultant-row-${consId}`)) { 
-                alert('Ce consultant est déjà affecté'); 
-                return; 
+
+            if (document.getElementById(`consultant-row-${consId}`)) {
+                alert('Ce consultant est déjà affecté');
+                return;
             }
-            
+
             const charge = joursA > 0 ? Math.round((joursR / joursA) * 100) : 0;
-            
+
             document.getElementById('newConsultantsContainer').insertAdjacentHTML('beforeend', `
-                <div class="consultant-row" id="consultant-row-${consId}">
-                    <div class="row align-items-center g-3">
-                        <div class="col-md-3">
-                            <div style="font-weight:600;">
-                                <i class="bi bi-person-plus-fill me-1" style="color:var(--success-500);"></i>
-                                ${consNom}
-                            </div>
-                            <input type="hidden" name="consultants[${consId}][id]" value="${consId}">
-                            <span class="badge" style="background:linear-gradient(135deg, var(--success-500), var(--success-600)); color:white; font-size:0.6rem; margin-left:0.5rem;">Nouveau</span>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-select" name="consultants[${consId}][role]">
-                                <option ${role==='Chef de Projet'?'selected':''}>Chef de Projet</option>
-                                <option ${role==='Consultant'?'selected':''}>Consultant</option>
-                                <option ${role==='Consultant Ext.'?'selected':''}>Consultant Ext.</option>
-                                <option ${role==='Expert'?'selected':''}>Expert</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" class="form-control" name="consultants[${consId}][jours_alloues]" min="0" step="0.1" value="${joursA}">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" class="form-control" name="consultants[${consId}][jours_realises]" min="0" step="0.1" value="${joursR}">
-                        </div>
-                        <div class="col-md-1">
-                            <span class="badge" style="background:linear-gradient(135deg, var(--primary-500), var(--primary-600)); color:white; padding:0.3rem 0.6rem; border-radius:var(--radius-full);">
-                                ${charge}%
-                            </span>
-                        </div>
-                        <div class="col-md-1 text-center">
-                            <button type="button" class="btn-remove" onclick="removeConsultant(this, ${consId})">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
+        <div class="consultant-row" id="consultant-row-${consId}">
+            <div class="row align-items-center g-3">
+                <div class="col-md-3">
+                    <div style="font-weight:600;">
+                        <i class="bi bi-person-plus-fill me-1" style="color:var(--success-500);"></i>
+                        ${consNom}
                     </div>
-                </div>`);
-            
+                    <input type="hidden" name="consultants[${consId}][id]" value="${consId}">
+                    <span class="badge" style="background:linear-gradient(135deg, var(--success-500), var(--success-600)); color:white; font-size:0.6rem; margin-left:0.5rem;">Nouveau</span>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" name="consultants[${consId}][role]">
+                        <option ${role==='Chef de Projet'?'selected':''}>Chef de Projet</option>
+                        <option ${role==='Consultant'?'selected':''}>Consultant</option>
+                        <option ${role==='Consultant Ext.'?'selected':''}>Consultant Ext.</option>
+                        <option ${role==='Expert'?'selected':''}>Expert</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" class="form-control" name="consultants[${consId}][jours_alloues]" min="0" step="0.1" value="${joursA}">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" class="form-control" name="consultants[${consId}][jours_realises]" min="0" step="0.1" value="${joursR}">
+                </div>
+                <div class="col-md-1">
+                    <span class="badge" style="background:linear-gradient(135deg, var(--primary-500), var(--primary-600)); color:white; padding:0.3rem 0.6rem; border-radius:var(--radius-full);">
+                        ${charge}%
+                    </span>
+                </div>
+                <div class="col-md-1 text-center">
+                    <button type="button" class="btn-remove" onclick="removeConsultant(this, ${consId})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>`);
+
             select.value = '';
             document.getElementById('existingConsultantRole').value = 'Consultant';
             document.getElementById('existingConsultantJoursAlloues').value = '0';
@@ -3417,8 +3692,8 @@
         }
 
         // Auto-hide alerts
-        setTimeout(() => { 
-            document.querySelectorAll('.alert-float').forEach(a => a.remove()); 
+        setTimeout(() => {
+            document.querySelectorAll('.alert-float').forEach(a => a.remove());
         }, 5000);
 
         // Init
@@ -3426,6 +3701,14 @@
             recalcJours();
             updateGlobalProgress();
         });
+
+        const isExcel = mimeType.includes('sheet');
+const isWord = mimeType.includes('word');
+
+let icon = 'bi-file-earmark';
+
+if (isExcel) icon = 'bi-file-earmark-excel';
+if (isWord) icon = 'bi-file-earmark-word';
     </script>
 </body>
 </html>

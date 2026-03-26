@@ -1,349 +1,198 @@
 <!DOCTYPE html>
 <html lang="fr" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMC Conseil - Tableau de Bord</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LMC Conseil — Tableau de Bord PMO</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
+:root {
+    --blue:#2563EB;--lblue:#60A5FA;--green:#10B981;--orange:#F59E0B;
+    --red:#EF4444;--purple:#8B5CF6;--teal:#06B6D4;
+    --bg:#EEF2FF;--card:#FFFFFF;--text:#1F2937;--muted:#6B7280;
+    --border:#E5EAF4;--shadow:0 2px 16px rgba(37,99,235,0.07);
+}
+[data-theme="dark"] {
+    --bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;
+    --border:#334155;--shadow:0 2px 16px rgba(0,0,0,0.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter','Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:11px;}
+[data-theme="light"] body{background:linear-gradient(135deg,#EEF2FF 0%,#F0F9FF 50%,#F5F3FF 100%);}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f1f5f9;
-            color: #0f172a;
-        }
+/* NAVBAR */
+.site-header{background:linear-gradient(135deg,#0f172a,#1e293b);padding:.85rem 0;border-bottom:3px solid #3b82f6;position:sticky;top:0;z-index:999;}
+.hdr-wrap{max-width:1600px;margin:0 auto;padding:0 1.5rem;display:flex;justify-content:space-between;align-items:center;}
+.logo-wrap{display:flex;align-items:center;gap:.7rem;}
+.logo-img{height:34px;filter:brightness(0) invert(1);}
+[data-theme="dark"] .logo-img{filter:none;}
+.logo-main{font-size:1rem;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.logo-sub{font-size:.6rem;color:rgba(255,255,255,.4);}
+.hdr-actions{display:flex;align-items:center;gap:.65rem;}
+.user-pill{display:flex;align-items:center;gap:.35rem;color:#fff;background:rgba(255,255,255,.08);padding:.28rem .85rem;border-radius:50px;border:1px solid rgba(255,255,255,.1);font-size:.75rem;font-weight:500;}
+.meta-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);padding:.28rem .85rem;border-radius:50px;font-size:.68rem;display:flex;align-items:center;gap:.35rem;}
+.icon-btn{width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:.8rem;}
+.icon-btn:hover{background:#3b82f6;color:#fff;border-color:#3b82f6;}
+.nav-wrap-outer{max-width:1600px;margin:0 auto;padding:0 1.5rem;}
+.nav-wrap{display:flex;gap:.2rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08);padding:.3rem;border-radius:50px;margin-top:.55rem;width:fit-content;}
+.nav-item{padding:.35rem 1rem;border-radius:50px;font-size:.72rem;font-weight:500;color:rgba(255,255,255,.58);text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:.3rem;}
+.nav-item:hover{background:rgba(255,255,255,.1);color:#fff;}
+.nav-item.active{background:#fff;color:#0f172a;font-weight:700;}
 
-        /* ===== NOUVELLE NAVBAR AVEC LOGO ===== */
-        .site-header {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            padding: 1rem 0;
-            border-bottom: 3px solid #3b82f6;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
+/* APP */
+#app{padding:16px 18px;max-width:1600px;margin:0 auto;}
 
-        .header-container {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* PMO BANNER */
+.pmo-banner{background:linear-gradient(135deg,#1E3A8A 0%,#2563EB 60%,#7C3AED 100%);border-radius:16px;padding:16px 26px;color:#fff;box-shadow:0 8px 32px rgba(37,99,235,.28);display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;}
+.banner-left{display:flex;align-items:center;gap:13px;}
+.banner-icon{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.banner-title{font-size:17px;font-weight:800;letter-spacing:-.3px;}
+.banner-sub{font-size:10px;opacity:.7;margin-top:2px;}
+.banner-right{display:flex;align-items:center;gap:20px;}
+.bstat{text-align:center;}
+.bstat-val{font-size:21px;font-weight:900;}
+.bstat-lbl{font-size:9px;opacity:.65;text-transform:uppercase;letter-spacing:.5px;}
+.banner-date{font-size:10px;opacity:.6;border-left:1px solid rgba(255,255,255,.2);padding-left:16px;line-height:1.85;}
 
-        .logo-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+/* FILTERS */
+.filters-bar{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:12px;background:var(--card);border-radius:12px;padding:8px 14px;box-shadow:var(--shadow);border:1px solid var(--border);}
+.filter-lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 3px;}
+.filters-bar select{height:26px;padding:0 8px;border-radius:7px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:10px;font-family:'Inter',sans-serif;cursor:pointer;outline:none;transition:border-color .2s;}
+.filters-bar select:hover{border-color:var(--blue);}
+.btn-reset{height:26px;padding:0 12px;border-radius:7px;border:1px solid var(--border);background:var(--card);color:var(--blue);font-size:10px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
+.btn-reset:hover{background:var(--blue);color:#fff;}
 
-        .logo-image {
-            height: 40px;
-            width: auto;
-            filter: brightness(0) invert(1);
-            transition: filter 0.2s;
-        }
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-bottom:12px;}
+.kpi{background:var(--card);border-radius:13px;padding:12px 11px 10px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s;cursor:default;}
+.kpi:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(37,99,235,.12);}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:13px 13px 0 0;}
+.kpi.c-blue::before{background:linear-gradient(90deg,#2563EB,#60A5FA);}
+.kpi.c-green::before{background:linear-gradient(90deg,#10B981,#34D399);}
+.kpi.c-orange::before{background:linear-gradient(90deg,#F59E0B,#FCD34D);}
+.kpi.c-red::before{background:linear-gradient(90deg,#EF4444,#F87171);}
+.kpi.c-purple::before{background:linear-gradient(90deg,#8B5CF6,#C4B5FD);}
+.kpi.c-lblue::before{background:linear-gradient(90deg,#60A5FA,#BAE6FD);}
+.kpi.c-teal::before{background:linear-gradient(90deg,#06B6D4,#67E8F9);}
+.kpi-icon{width:25px;height:25px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;margin-bottom:6px;}
+.kpi.c-blue .kpi-icon{background:#DBEAFE;}.kpi.c-green .kpi-icon{background:#D1FAE5;}.kpi.c-orange .kpi-icon{background:#FEF3C7;}.kpi.c-red .kpi-icon{background:#FEE2E2;}.kpi.c-purple .kpi-icon{background:#EDE9FE;}.kpi.c-lblue .kpi-icon{background:#DBEAFE;}.kpi.c-teal .kpi-icon{background:#CFFAFE;}
+.kpi-lbl{font-size:8.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
+.kpi-val{font-size:21px;font-weight:900;line-height:1;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.kpi.c-blue .kpi-val{background-image:linear-gradient(135deg,#2563EB,#60A5FA);}
+.kpi.c-green .kpi-val{background-image:linear-gradient(135deg,#10B981,#34D399);}
+.kpi.c-orange .kpi-val{background-image:linear-gradient(135deg,#F59E0B,#FCD34D);}
+.kpi.c-red .kpi-val{background-image:linear-gradient(135deg,#EF4444,#F87171);}
+.kpi.c-purple .kpi-val{background-image:linear-gradient(135deg,#8B5CF6,#A78BFA);}
+.kpi.c-lblue .kpi-val{background-image:linear-gradient(135deg,#60A5FA,#38BDF8);}
+.kpi.c-teal .kpi-val{background-image:linear-gradient(135deg,#06B6D4,#22D3EE);}
+.kpi-sub{font-size:8px;color:#CBD5E1;margin-top:2px;font-weight:500;}
+.kpi-trend{display:inline-flex;align-items:center;gap:2px;font-size:8px;font-weight:700;padding:1px 5px;border-radius:4px;margin-top:3px;}
+.trend-up{background:#D1FAE5;color:#065F46;}.trend-down{background:#FEE2E2;color:#991B1B;}.trend-flat{background:#F1F5F9;color:#64748B;}
 
-        [data-theme="dark"] .logo-image {
-            filter: none;
-        }
+/* SECTION LABEL */
+.sl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px;padding-left:4px;display:flex;align-items:center;gap:5px;}
+.sl::before{content:'';display:block;width:3px;height:12px;border-radius:2px;}
+.sl-port::before{background:var(--blue);}
+.sl-res::before{background:var(--purple);}
+.sl-smi::before{background:var(--teal);}
+.sl-table::before{background:var(--green);}
 
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-        }
+/* GRID */
+.row3{display:grid;gap:10px;margin-bottom:11px;}
+.c3a{grid-template-columns:1fr 1.6fr 1.4fr;}
+.c3b{grid-template-columns:1fr 1.5fr 1.5fr;}
+.c3c{grid-template-columns:1.4fr 1.4fr 1fr;}
 
-        .logo-main {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: white;
-            letter-spacing: -0.02em;
-        }
+/* CARD */
+.card{background:var(--card);border-radius:14px;padding:14px;border:1px solid var(--border);box-shadow:var(--shadow);transition:box-shadow .18s;}
+.card:hover{box-shadow:0 8px 24px rgba(37,99,235,.09);}
+.ctitle{font-size:10px;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;text-transform:uppercase;letter-spacing:.4px;}
+.cbadge{font-size:8.5px;font-weight:600;padding:2px 7px;border-radius:20px;background:#EEF2FF;color:var(--blue);text-transform:none;letter-spacing:0;}
 
-        .logo-sub {
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.5);
-        }
+/* DONUT */
+.donut-wrap{display:flex;flex-direction:column;align-items:center;}
+.donut-box{position:relative;width:115px;height:115px;margin:0 auto 8px;}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;}
+.dc-n{font-size:19px;font-weight:900;color:var(--text);line-height:1;}
+.dc-l{font-size:8px;color:var(--muted);font-weight:600;letter-spacing:.3px;}
+.legend{display:flex;flex-direction:column;gap:5px;width:100%;}
+.leg{display:flex;align-items:center;justify-content:space-between;gap:5px;}
+.leg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.leg-lbl{font-size:9px;color:var(--muted);flex:1;}
+.leg-val{font-size:10px;font-weight:700;color:var(--text);}
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+/* H-BARS */
+.bar-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.bar-lbl{width:78px;font-size:9.5px;color:var(--text);text-align:right;flex-shrink:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{flex:1;height:19px;background:#F1F5F9;border-radius:6px;overflow:hidden;}
+[data-theme="dark"] .bar-track{background:#334155;}
+.bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;transition:width .6s cubic-bezier(.4,0,.2,1);min-width:3px;}
+.bar-pct{font-size:8.5px;font-weight:700;color:#fff;}
+.bar-ext{font-size:9.5px;color:var(--muted);font-weight:600;margin-left:4px;min-width:22px;}
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: white;
-            background: rgba(255,255,255,0.08);
-            padding: 0.35rem 1rem;
-            border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
+/* HEATMAP */
+.hm-table{width:100%;border-collapse:collapse;}
+.hm-table th{padding:5px 6px;font-size:8.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--border);text-align:center;background:var(--bg);}
+.hm-table th:first-child{text-align:left;}
+.hm-table td{padding:5px 6px;border-bottom:1px solid var(--border);text-align:center;}
+.hm-table tr:hover td{background:var(--bg);}
+.hm-cell{display:inline-flex;align-items:center;justify-content:center;padding:2px 6px;border-radius:5px;font-size:8px;font-weight:700;white-space:nowrap;}
+.hm-g{background:#D1FAE5;color:#065F46;}.hm-o{background:#FEF3C7;color:#92400E;}.hm-r{background:#FEE2E2;color:#991B1B;}.hm-gr{background:#F1F5F9;color:#94A3B8;}
+.proj-id{font-weight:800;color:var(--blue);font-size:10px;}
+.proj-nm{font-size:8.5px;color:var(--muted);}
 
-        .user-name {
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
+/* DETAIL TABLE */
+.dt-wrap{overflow-x:auto;}
+.dt{width:100%;border-collapse:collapse;font-size:10.5px;}
+.dt thead th{padding:8px 9px;background:linear-gradient(180deg,#F8FAFF,#F1F5FF);font-size:8.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--border);text-align:left;white-space:nowrap;}
+[data-theme="dark"] .dt thead th{background:#162032;}
+.dt tbody td{padding:8px 9px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.dt tbody tr:hover td{background:var(--bg);}
+.dt tbody tr:last-child td{border-bottom:none;}
+.dt tfoot td{padding:8px 9px;font-weight:700;font-size:10px;border-top:2px solid var(--blue);background:#EEF2FF;}
+[data-theme="dark"] .dt tfoot td{background:#162032;}
 
-        .meta-pill {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.7);
-            padding: 0.35rem 1rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+/* BADGES */
+.sbadge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;}
+.s-comp{background:#D1FAE5;color:#065F46;}.s-prog{background:#DBEAFE;color:#1E40AF;}.s-del{background:#FEE2E2;color:#991B1B;}.s-plan{background:#EDE9FE;color:#5B21B6;}.s-pause{background:#F1F5F9;color:#64748B;}
 
-        .theme-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.08);
-            color: rgba(255,255,255,0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+/* PB */
+.pb{display:inline-block;width:58px;height:5px;background:#F1F5F9;border-radius:3px;overflow:hidden;vertical-align:middle;margin-right:4px;}
+[data-theme="dark"] .pb{background:#334155;}
+.pb-f{height:100%;border-radius:3px;}
 
-        .theme-btn:hover {
-            background: #3b82f6;
-            color: white;
-            border-color: #3b82f6;
-        }
+/* NORME TAG */
+.ntag{display:inline-block;padding:1px 5px;background:#EEF2FF;border:1px solid #BFDBFE;border-radius:4px;font-size:8px;font-weight:700;color:#1D4ED8;margin:1px;}
 
-        .nav-container {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+/* PERF DOT */
+.pdot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:3px;vertical-align:middle;}
 
-        .nav-wrap {
-            display: flex;
-            gap: 0.25rem;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.08);
-            padding: 0.4rem;
-            border-radius: 50px;
-            margin-top: 0.75rem;
-            width: fit-content;
-        }
+/* SMI BARS */
+.smi-row{display:flex;align-items:center;gap:6px;margin-bottom:7px;}
+.smi-lbl{width:105px;font-size:9px;font-weight:600;color:var(--text);flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.smi-track{flex:1;height:13px;background:#F1F5F9;border-radius:50px;overflow:hidden;}
+[data-theme="dark"] .smi-track{background:#334155;}
+.smi-fill{height:100%;border-radius:50px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+.smi-pct-ext{font-size:8.5px;font-weight:700;color:var(--muted);min-width:26px;}
 
-        .nav-item {
-            padding: 0.45rem 1.25rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: rgba(255,255,255,0.6);
-            text-decoration: none;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .nav-item:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-
-        .nav-item.active {
-            background: white;
-            color: #0f172a;
-            font-weight: 600;
-        }
-
-        /* ── Dark mode support ── */
-        [data-theme="dark"] body {
-            background: #0f172a !important;
-            color: #e2e8f0 !important;
-        }
-        [data-theme="dark"] .stat-card,
-        [data-theme="dark"] .avan-card,
-        [data-theme="dark"] .chart-card,
-        [data-theme="dark"] .table-card {
-            background: #1e293b !important;
-            border-color: #334155 !important;
-            color: #e2e8f0 !important;
-        }
-        [data-theme="dark"] .stat-label,
-        [data-theme="dark"] .stat-sub { color: #64748b !important; }
-        [data-theme="dark"] .stat-value { color: #e2e8f0 !important; }
-        [data-theme="dark"] .chart-title { color: #94a3b8 !important; border-color: #1e293b !important; }
-        [data-theme="dark"] .table-pro thead th {
-            background: #162032 !important;
-            color: #64748b !important;
-            border-color: #334155 !important;
-        }
-        [data-theme="dark"] .table-pro tbody td {
-            color: #cbd5e1 !important;
-            border-color: #1e293b !important;
-        }
-        [data-theme="dark"] .table-pro tbody tr:hover td { background: #1e293b !important; }
-        [data-theme="dark"] .tfoot-total td { background: #162032 !important; }
-        [data-theme="dark"] .tfoot-ecart td { background: #1e293b !important; }
-        [data-theme="dark"] .mini-prog { background: #334155 !important; }
-        [data-theme="dark"] .badge-finalise { background: rgba(16,185,129,.15) !important; color: #34d399 !important; }
-        [data-theme="dark"] .badge-retard   { background: rgba(239,68,68,.15) !important;  color: #f87171 !important; }
-        [data-theme="dark"] .badge-cours    { background: rgba(249,115,22,.15) !important; color: #fb923c !important; }
-        [data-theme="dark"] .badge-planifie { background: rgba(99,102,241,.15) !important; color: #a5b4fc !important; }
-        [data-theme="dark"] .bs.finalise { background: rgba(16,185,129,.15) !important; color: #34d399 !important; }
-        [data-theme="dark"] .bs.retard   { background: rgba(239,68,68,.15) !important;  color: #f87171 !important; }
-        [data-theme="dark"] .bs.cours    { background: rgba(249,115,22,.15) !important; color: #fb923c !important; }
-        [data-theme="dark"] .bs.planifie { background: rgba(99,102,241,.15) !important; color: #a5b4fc !important; }
-
-        /* ── KPI Cards ── */
-        .stat-card {
-            background:#ffffff; border:1px solid #e2e8f0;
-            border-radius:16px; padding:1.25rem 1.4rem;
-            box-shadow:0 2px 12px rgba(0,0,0,0.06);
-            transition:transform .2s, box-shadow .2s;
-            height:100%;
-        }
-        .stat-card:hover {
-            transform:translateY(-2px);
-            box-shadow:0 4px 20px rgba(0,0,0,0.08);
-        }
-
-        .stat-icon {
-            width:38px; height:38px; border-radius:11px;
-            display:flex; align-items:center; justify-content:center;
-            font-size:1.15rem; margin-bottom:.85rem;
-        }
-        .stat-label {
-            font-size:.7rem; font-weight:600; text-transform:uppercase;
-            letter-spacing:.07em; color:#94a3b8; margin-bottom:.2rem;
-        }
-        .stat-value { font-size:1.85rem; font-weight:700; color:#0f172a; line-height:1; }
-        .stat-sub   { font-size:.78rem; color:#94a3b8; margin-top:.3rem; }
-
-        /* ── Avancement card ── */
-        .avan-card {
-            background:white; border:1px solid #e2e8f0;
-            border-radius:16px; padding:1rem 1.5rem;
-            box-shadow:0 2px 12px rgba(0,0,0,0.06);
-        }
-
-        /* ── Chart cards ── */
-        .chart-card {
-            background:white; border:1px solid #e2e8f0;
-            border-radius:18px; padding:1.2rem;
-            box-shadow:0 2px 12px rgba(0,0,0,0.06);
-            height:100%;
-            transition:transform .2s, box-shadow .2s;
-        }
-        .chart-card:hover {
-            transform:translateY(-2px);
-            box-shadow:0 4px 20px rgba(0,0,0,0.08);
-        }
-
-        .chart-title {
-            font-size:.85rem; font-weight:600; color:#475569;
-            margin-bottom:.9rem; padding-bottom:.6rem;
-            border-bottom:1px solid #f1f5f9;
-            display:flex; align-items:center; gap:.4rem;
-        }
-
-        .chart-container { height:190px; width:100%; position:relative; }
-
-        /* ── Table card ── */
-        .table-card {
-            background:white; border:1px solid #e2e8f0;
-            border-radius:18px; padding:1.3rem;
-            box-shadow:0 2px 12px rgba(0,0,0,0.06);
-        }
-
-        .table-card h6 {
-            font-size:.88rem; font-weight:600; color:#475569;
-            display:flex; align-items:center; gap:.4rem;
-            margin-bottom:1rem;
-        }
-
-        .table-pro {
-            width:100%; border-collapse:collapse; font-size:.83rem;
-        }
-
-        .table-pro thead th {
-            background:#f8fafc; color:#64748b;
-            padding:.65rem .6rem;
-            font-weight:600; font-size:.75rem;
-            text-transform:uppercase; letter-spacing:.04em;
-            border-bottom:2px solid #e2e8f0;
-        }
-
-        .table-pro tbody td {
-            padding:.6rem .6rem;
-            border-bottom:1px solid #f1f5f9;
-            vertical-align:middle; color:#334155;
-        }
-
-        .table-pro tbody tr:hover td { background:#f8fafc; }
-        .table-pro tbody tr:last-child td { border-bottom:none; }
-
-        /* badges */
-        .bs {
-            padding:.22rem .78rem; border-radius:50px;
-            font-weight:600; font-size:.7rem; display:inline-block;
-        }
-        .bs.finalise { background:#dcfce7; color:#166534; }
-        .bs.retard   { background:#fee2e2; color:#991b1b; }
-        .bs.cours    { background:#ffedd5; color:#9a3412; }
-        .bs.planifie { background:#ede9fe; color:#4c1d95; }
-
-        /* mini progress */
-        .mini-prog {
-            width:55px; height:4px; background:#e2e8f0;
-            border-radius:50px; overflow:hidden;
-        }
-        .mini-prog-fill {
-            height:100%; border-radius:50px;
-            background:linear-gradient(90deg,#3b82f6,#8b5cf6);
-        }
-
-        /* tfoot */
-        .table-pro tfoot td {
-            padding:.65rem .6rem; font-size:.82rem;
-        }
-
-        .tfoot-total td {
-            background:#f1f5f9; font-weight:700;
-            border-top:2px solid #3b82f6;
-        }
-
-        .tfoot-ecart td {
-            background:#ffffff;
-            border-top:1px dashed #cbd5e1;
-        }
-
-        /* page footer */
-        .page-footer {
-            display:flex; justify-content:space-between;
-            margin-top:2rem; padding-top:1rem;
-            border-top:1px solid #e2e8f0;
-            font-size:.78rem; color:#94a3b8;
-        }
-    </style>
+/* FOOTER */
+.pmo-footer{margin-top:13px;display:flex;align-items:center;justify-content:space-between;background:var(--card);border-radius:12px;padding:9px 18px;border:1px solid var(--border);font-size:9px;color:var(--muted);}
+.footer-logo{font-size:11px;font-weight:800;color:var(--blue);}
+.ftag{background:#EEF2FF;color:var(--blue);padding:2px 7px;border-radius:6px;font-size:8px;font-weight:600;}
+</style>
 </head>
 <body>
 
 @php
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 $projets = DB::select("
-    SELECT p.*, c.nom_client, cons.nom_complet as chef_nom
+    SELECT p.*, c.nom_client, c.secteur_activite, cons.nom_complet as chef_nom, cons.type_consultant as chef_type
     FROM projets p
     LEFT JOIN clients c ON p.client_id = c.id
     LEFT JOIN consultants cons ON p.chef_projet_id = cons.id
@@ -352,12 +201,11 @@ $projets = DB::select("
 
 $totalProjets = count($projets);
 $finalises = $enRetard = $enCours = $planifies = 0;
-$totalJoursPrevus = $totalJoursRealises = $totalEcart = 0;
+$totalPrevus = $totalRealises = 0;
 
 foreach($projets as $p) {
-    $totalJoursPrevus  += $p->jours_prevus;
-    $totalJoursRealises += $p->jours_realises;
-    $totalEcart        += ($p->jours_realises - $p->jours_prevus);
+    $totalPrevus   += $p->jours_prevus;
+    $totalRealises += $p->jours_realises;
     match($p->statut) {
         'Finalisé'  => $finalises++,
         'En retard' => $enRetard++,
@@ -366,362 +214,684 @@ foreach($projets as $p) {
     };
 }
 
-$avancementMoyen = $totalProjets > 0
-    ? round(array_sum(array_column($projets, 'avancement_percent')) / $totalProjets) : 0;
-$consoGlobale = $totalJoursPrevus > 0
-    ? round(($totalJoursRealises / $totalJoursPrevus) * 100) : 0;
+$avancementMoyen = $totalProjets > 0 ? round(array_sum(array_column($projets, 'avancement_percent')) / $totalProjets) : 0;
+$consoGlobale    = $totalPrevus > 0 ? round(($totalRealises / $totalPrevus) * 100) : 0;
+$chargeRestante  = max(0, $totalPrevus - $totalRealises);
+$totalEcart      = $totalRealises - $totalPrevus;
+
+$consultants = DB::select("
+    SELECT cons.id, cons.nom_complet, cons.type_consultant,
+           COALESCE(SUM(a.jours_realises),0) as total_realises,
+           COALESCE(SUM(a.jours_alloues),0)  as total_alloues,
+           COUNT(DISTINCT a.projet_id) as nb_projets
+    FROM consultants cons
+    LEFT JOIN affectations a ON a.consultant_id = cons.id
+    WHERE cons.actif = 1
+    GROUP BY cons.id, cons.nom_complet, cons.type_consultant
+    ORDER BY total_realises DESC
+");
+
+$joursInternes = collect($consultants)->where('type_consultant','Interne')->sum('total_realises');
+$joursExternes = collect($consultants)->where('type_consultant','!=','Interne')->sum('total_realises');
+$totalJoursConsultants = $joursInternes + $joursExternes;
+$tauxExterne   = $totalJoursConsultants > 0 ? round(($joursExternes / $totalJoursConsultants) * 100) : 0;
+$maxConsultant = collect($consultants)->max('total_realises') ?: 1;
+
+$normesParProjet = [];
+$normeRows = DB::select("SELECT pn.projet_id, n.code_norme FROM projet_normes pn JOIN normes n ON n.id = pn.norme_id");
+foreach($normeRows as $nr) { $normesParProjet[$nr->projet_id][] = $nr->code_norme; }
+
+$chapitres = DB::select("
+    SELECT cs.code_chapitre, cs.titre_chapitre,
+           ROUND(AVG(sc.avancement_percent)) as avg_pct,
+           SUM(sc.jours_intervention) as total_jours
+    FROM suivi_chapitres sc JOIN chapitres_smis cs ON cs.id = sc.chapitre_id
+    GROUP BY cs.id, cs.code_chapitre, cs.titre_chapitre ORDER BY cs.ordre
+");
+
+$livStats = DB::selectOne("
+    SELECT COUNT(*) as total,
+           SUM(CASE WHEN statut='Terminé' THEN 1 ELSE 0 END) as termines,
+           SUM(CASE WHEN statut='En cours' THEN 1 ELSE 0 END) as en_cours
+    FROM projet_livrables
+");
+$livPct = ($livStats->total > 0) ? round(($livStats->termines / $livStats->total) * 100) : 0;
+
+$formations = DB::select("
+    SELECT f.titre_formation,
+           SUM(CASE WHEN pf.statut IN ('Finalisée','Réalisée') THEN 1 ELSE 0 END) as ok,
+           COUNT(*) as total
+    FROM formations f LEFT JOIN projet_formations pf ON pf.formation_id = f.id
+    GROUP BY f.id, f.titre_formation
+");
 
 $user = auth()->user();
 @endphp
 
-<!-- ══ HEADER AVEC LOGO ══ -->
+<!-- NAVBAR -->
 <div class="site-header">
-    <div class="header-container">
-        <div class="logo-wrapper">
-            <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png" 
-                 alt="LMC Conseil" 
-                 class="logo-image"
-                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
-            <div class="logo-text">
-                <span class="logo-main">LMC CONSEIL</span>
-                <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
+    <div class="hdr-wrap">
+        <div class="logo-wrap">
+            <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png" alt="LMC" class="logo-img"
+                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%2260%22 height%3D%2230%22%3E%3Ctext x%3D%220%22 y%3D%2222%22 font-family%3D%22Inter%22 font-size%3D%2218%22 font-weight%3D%22700%22 fill%3D%22%23fff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
+            <div>
+                <div class="logo-main">LMC CONSEIL</div>
+                <div class="logo-sub">LEAD MANAGEMENT CONSULTING</div>
             </div>
         </div>
-        
-        <div class="header-actions">
-            <div class="user-info">
-                <i class="bi bi-person-circle"></i>
-                <span class="user-name">{{ $user->name ?? 'Utilisateur' }}</span>
-            </div>
-            <span class="meta-pill">
-                <i class="bi bi-calendar-check"></i>
-                {{ now()->format('d/m/Y') }}
-            </span>
-            <button class="theme-btn" id="themeToggle">
-                <i class="bi bi-moon-fill" id="themeIcon"></i>
-            </button>
+        <div class="hdr-actions">
+            <div class="user-pill"><i class="bi bi-person-circle"></i> {{ $user->name ?? 'Utilisateur' }}</div>
+            <div class="meta-pill"><i class="bi bi-calendar-check"></i> {{ now()->format('d/m/Y') }}</div>
+            <button class="icon-btn" id="themeToggle"><i class="bi bi-moon-fill" id="themeIcon"></i></button>
             <form method="POST" action="/logout" style="margin:0">
                 @csrf
-                <button type="button" class="theme-btn" title="Déconnexion"
-                    onclick="this.closest('form').submit()">
-                    <i class="bi bi-box-arrow-right"></i>
-                </button>
+                <button type="button" class="icon-btn" onclick="this.closest('form').submit()"><i class="bi bi-box-arrow-right"></i></button>
             </form>
         </div>
     </div>
-
-    <div class="nav-container">
+    <div class="nav-wrap-outer">
         <div class="nav-wrap">
-            <a href="/" class="nav-item">
-                <i class="bi bi-table"></i> Données
-            </a>
-            <a href="/tableau-de-bord" class="nav-item active">
-                <i class="bi bi-bar-chart"></i> Tableau de Bord
-            </a>
-            <a href="/consultants" class="nav-item">
-                <i class="bi bi-people"></i> Consultants
-            </a>
-            <a href="/nouveau-projet" class="nav-item">
-                <i class="bi bi-plus-circle"></i> Nouveau Projet
-            </a>
+            <a href="/" class="nav-item"><i class="bi bi-table"></i> Données</a>
+            <a href="/tableau-de-bord" class="nav-item active"><i class="bi bi-bar-chart"></i> Tableau de Bord</a>
+            <a href="/consultants" class="nav-item"><i class="bi bi-people"></i> Consultants</a>
+            <a href="/nouveau-projet" class="nav-item"><i class="bi bi-plus-circle"></i> Nouveau Projet</a>
             @if($user && $user->isSuperAdmin())
-            <a href="/admin/users" class="nav-item">
-                <i class="bi bi-shield-lock"></i> Accès
-            </a>
+            <a href="/admin/users" class="nav-item"><i class="bi bi-shield-lock"></i> Accès</a>
             @endif
         </div>
     </div>
 </div>
 
 <script>
-(function() {
-    const saved = localStorage.getItem('lmc-theme') || 'light';
-    document.documentElement.setAttribute('data-theme', saved);
-    const icon = document.getElementById('themeIcon');
-    if (icon) icon.className = saved === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+(function(){
+    const t = localStorage.getItem('lmc-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', t);
+    const i = document.getElementById('themeIcon');
+    if(i) i.className = t==='light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
 })();
+</script>
+
+<div id="app">
+
+<!-- PMO BANNER -->
+<div class="pmo-banner">
+    <div class="banner-left">
+        <div class="banner-icon">📊</div>
+        <div>
+            <div class="banner-title">Tableau de Bord — Portefeuille Projets</div>
+            <div class="banner-sub">PMO · Direction Générale · Pilotage Ressources & Risques SMI</div>
+        </div>
+    </div>
+    <div class="banner-right">
+        <div class="bstat"><div class="bstat-val">{{ $totalProjets }}</div><div class="bstat-lbl">Projets</div></div>
+        <div class="bstat"><div class="bstat-val">{{ $avancementMoyen }}%</div><div class="bstat-lbl">Avancement</div></div>
+        <div class="bstat"><div class="bstat-val">{{ $chargeRestante }}j</div><div class="bstat-lbl">Charge restante</div></div>
+        <div class="bstat"><div class="bstat-val">{{ $livPct }}%</div><div class="bstat-lbl">Livrables OK</div></div>
+        <div class="banner-date">📅 {{ now()->format('M Y') }}<br>Confidentiel — COPIL</div>
+    </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+    <span class="filter-lbl">🔍 Filtres</span>
+    <div class="filter-sep"></div>
+    <select id="fStatut" onchange="applyFilters()">
+        <option value="">Tous les statuts</option>
+        <option>Finalisé</option><option>En cours</option><option>En retard</option><option>Planifié</option>
+    </select>
+    <select id="fChef" onchange="applyFilters()">
+        <option value="">Tous les chefs de projet</option>
+        @foreach(collect($projets)->pluck('chef_nom')->unique()->filter() as $chef)
+        <option>{{ $chef }}</option>
+        @endforeach
+    </select>
+    <select id="fSecteur" onchange="applyFilters()">
+        <option value="">Tous les secteurs</option>
+        @foreach(collect($projets)->pluck('secteur_activite')->unique()->filter() as $sec)
+        <option>{{ $sec }}</option>
+        @endforeach
+    </select>
+    <div class="filter-sep"></div>
+    <button class="btn-reset" onclick="resetFilters()">↺ Réinitialiser</button>
+    <span id="filterCount" style="font-size:8.5px;color:var(--muted);margin-left:4px;"></span>
+</div>
+
+<!-- KPI ROW -->
+<div class="kpi-row">
+    <div class="kpi c-blue">
+        <div class="kpi-icon">📁</div><div class="kpi-lbl">Projets totaux</div>
+        <div class="kpi-val">{{ $totalProjets }}</div><div class="kpi-sub">Portefeuille actif</div>
+        <span class="kpi-trend trend-flat">→ Stable</span>
+    </div>
+    <div class="kpi c-lblue">
+        <div class="kpi-icon">📈</div><div class="kpi-lbl">Avancement global</div>
+        <div class="kpi-val">{{ $avancementMoyen }}%</div><div class="kpi-sub">Moyenne pondérée</div>
+        <span class="kpi-trend trend-up">↑ Cumulé</span>
+    </div>
+    <div class="kpi c-red">
+        <div class="kpi-icon">⚠</div><div class="kpi-lbl">En retard</div>
+        <div class="kpi-val">{{ $enRetard }}</div><div class="kpi-sub">Action requise</div>
+        <span class="kpi-trend {{ $enRetard > 0 ? 'trend-down' : 'trend-up' }}">{{ $enRetard > 0 ? '↓ Critique' : '✓ OK' }}</span>
+    </div>
+    <div class="kpi c-orange">
+        <div class="kpi-icon">⏳</div><div class="kpi-lbl">Charge restante</div>
+        <div class="kpi-val">{{ $chargeRestante }}j</div><div class="kpi-sub">Jours à réaliser</div>
+        <span class="kpi-trend trend-flat">→ Portefeuille</span>
+    </div>
+    <div class="kpi c-blue">
+        <div class="kpi-icon">👥</div><div class="kpi-lbl">Jours internes</div>
+        <div class="kpi-val">{{ $joursInternes }}j</div><div class="kpi-sub">Consommés</div>
+        <span class="kpi-trend trend-up">↑ Réalisé</span>
+    </div>
+    <div class="kpi c-purple">
+        <div class="kpi-icon">🤝</div><div class="kpi-lbl">Jours externes</div>
+        <div class="kpi-val">{{ $joursExternes }}j</div><div class="kpi-sub">{{ $tauxExterne }}% du total</div>
+        <span class="kpi-trend trend-flat">→ Ratio ext.</span>
+    </div>
+    <div class="kpi c-teal">
+        <div class="kpi-icon">📋</div><div class="kpi-lbl">Livrables terminés</div>
+        <div class="kpi-val">{{ $livStats->termines ?? 0 }}</div><div class="kpi-sub">/ {{ $livStats->total ?? 0 }} total</div>
+        <span class="kpi-trend trend-up">↑ {{ $livPct }}%</span>
+    </div>
+    <div class="kpi c-green">
+        <div class="kpi-icon">💡</div><div class="kpi-lbl">Taux consommation</div>
+        <div class="kpi-val">{{ $consoGlobale }}%</div><div class="kpi-sub">Réalisés / prévus</div>
+        <span class="kpi-trend {{ $consoGlobale > 100 ? 'trend-down' : 'trend-up' }}">{{ $consoGlobale > 100 ? '↓ Dépassé' : '↑ OK' }}</span>
+    </div>
+</div>
+
+<!-- ROW 2 : PORTEFEUILLE -->
+<div class="sl sl-port">Pilotage Portefeuille</div>
+<div class="row3 c3a">
+    <div class="card">
+        <div class="ctitle">Répartition par Statut <span class="cbadge" id="donutBadge">{{ $totalProjets }} projets</span></div>
+        <div class="donut-wrap">
+            <div class="donut-box">
+                <canvas id="donutStatut"></canvas>
+                <div class="donut-center"><div class="dc-n">{{ $totalProjets }}</div><div class="dc-l">Projets</div></div>
+            </div>
+            <div class="legend">
+                <div class="leg"><span class="leg-dot" style="background:#10B981"></span><span class="leg-lbl">Finalisé</span><span class="leg-val">{{ $finalises }}</span></div>
+                <div class="leg"><span class="leg-dot" style="background:#2563EB"></span><span class="leg-lbl">En cours</span><span class="leg-val">{{ $enCours }}</span></div>
+                <div class="leg"><span class="leg-dot" style="background:#EF4444"></span><span class="leg-lbl">En retard</span><span class="leg-val">{{ $enRetard }}</span></div>
+                <div class="leg"><span class="leg-dot" style="background:#8B5CF6"></span><span class="leg-lbl">Planifié</span><span class="leg-val">{{ $planifies }}</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="ctitle">Avancement par Client <span class="cbadge">% réalisation</span></div>
+        @foreach($projets as $p)
+        @php
+            $bg = $p->statut === 'Finalisé' ? 'linear-gradient(90deg,#10B981,#34D399)' :
+                 ($p->statut === 'En retard' ? 'linear-gradient(90deg,#EF4444,#F87171)' :
+                 ($p->avancement_percent >= 50 ? 'linear-gradient(90deg,#2563EB,#60A5FA)' :
+                  'linear-gradient(90deg,#F59E0B,#FCD34D)'));
+        @endphp
+        <div class="bar-row">
+            <span class="bar-lbl" title="{{ $p->nom_client }}">{{ Str::limit($p->nom_client, 11) }}</span>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:{{ max(1,$p->avancement_percent) }}%;background:{{ $bg }};">
+                    @if($p->avancement_percent >= 15)<span class="bar-pct">{{ $p->avancement_percent }}%</span>@endif
+                </div>
+            </div>
+            @if($p->avancement_percent < 15)<span class="bar-ext">{{ $p->avancement_percent }}%</span>@endif
+        </div>
+        @endforeach
+    </div>
+
+    <div class="card">
+        <div class="ctitle">Jours Prévus vs Réalisés <span class="cbadge">par projet</span></div>
+        <div style="position:relative;height:185px"><canvas id="chartJours"></canvas></div>
+        <div style="display:flex;gap:10px;margin-top:6px;justify-content:center;">
+            <span style="display:flex;align-items:center;gap:4px;font-size:8.5px;color:var(--muted)"><span class="leg-dot-jours" style="width:9px;height:9px;background:#CBD5E1;border-radius:2px;display:inline-block;"></span>Prévu</span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:8.5px;color:var(--muted)"><span class="leg-dot-jours" style="width:9px;height:9px;background:#0EA5E9;border-radius:2px;display:inline-block;"></span>Réalisé</span>
+        </div>
+    </div>
+</div>
+
+<!-- ROW 3 : RESSOURCES -->
+<div class="sl sl-res">Pilotage Ressources</div>
+<div class="row3 c3b">
+    <div class="card">
+        <div class="ctitle">Charge Int. vs Ext. <span class="cbadge">{{ $totalJoursConsultants }}j</span></div>
+        <div class="donut-wrap">
+            <div class="donut-box">
+                <canvas id="donutRessources"></canvas>
+                <div class="donut-center">
+                    <div class="dc-n" style="font-size:13px">{{ 100-$tauxExterne }}/{{ $tauxExterne }}</div>
+                    <div class="dc-l">Int / Ext %</div>
+                </div>
+            </div>
+            <div class="legend">
+                <div class="leg"><span class="leg-dot leg-dot-res" style="background:#0EA5E9"></span><span class="leg-lbl">Interne</span><span class="leg-val">{{ $joursInternes }}j · {{ 100-$tauxExterne }}%</span></div>
+                <div class="leg"><span class="leg-dot leg-dot-res" style="background:#F59E0B"></span><span class="leg-lbl">Externe</span><span class="leg-val">{{ $joursExternes }}j · {{ $tauxExterne }}%</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="ctitle">Jours / Consultant <span class="cbadge">consommés</span></div>
+        @foreach($consultants as $c)
+        @php
+            $pct = $maxConsultant > 0 ? round(($c->total_realises / $maxConsultant) * 100) : 0;
+            $cg = $c->type_consultant !== 'Interne' ? 'linear-gradient(90deg,#8B5CF6,#A78BFA)' : 'linear-gradient(90deg,#2563EB,#60A5FA)';
+        @endphp
+        <div class="bar-row">
+            <span class="bar-lbl" title="{{ $c->nom_complet }}">{{ Str::limit(explode(' ', $c->nom_complet)[0], 11) }}</span>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:{{ max(2,$pct) }}%;background:{{ $cg }};">
+                    @if($c->total_realises > 0)<span class="bar-pct">{{ $c->total_realises }}j</span>@endif
+                </div>
+            </div>
+        </div>
+        @endforeach
+        <div style="display:flex;gap:8px;margin-top:6px;font-size:8px;color:var(--muted);">
+            <span style="color:#0EA5E9;font-weight:700">■</span> Interne &nbsp;
+            <span style="color:#F59E0B;font-weight:700">■</span> Externe
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="ctitle">Charge / Consultant <span class="cbadge">jours réalisés</span></div>
+        <div style="position:relative;height:160px"><canvas id="chartExt"></canvas></div>
+    </div>
+</div>
+
+<!-- ROW 4 : SMI -->
+<div class="sl sl-smi">Pilotage SMI — Livrables & Formations</div>
+<div class="row3 c3c">
+    <div class="card">
+        <div class="ctitle">Avancement Chapitres SMI <span class="cbadge">{{ count($chapitres) }} chapitres</span></div>
+        @foreach($chapitres as $chap)
+        @php
+            $p = $chap->avg_pct;
+            $fc = $p >= 100 ? '#10B981' : ($p >= 50 ? '#2563EB' : ($p > 0 ? '#F59E0B' : '#E2E8F0'));
+        @endphp
+        <div class="smi-row">
+            <span class="smi-lbl" title="{{ $chap->code_chapitre }} — {{ $chap->titre_chapitre }}">{{ $chap->code_chapitre }} — {{ Str::limit($chap->titre_chapitre,18) }}</span>
+            <div class="smi-track">
+                <div class="smi-fill" style="width:{{ max(1,$p) }}%;background:{{ $fc }};">
+                    @if($p >= 18)<span style="font-size:7.5px;font-weight:700;color:#fff;">{{ $p }}%</span>@endif
+                </div>
+            </div>
+            @if($p < 18)<span class="smi-pct-ext">{{ $p }}%</span>@endif
+        </div>
+        @endforeach
+    </div>
+
+    <div class="card">
+        <div class="ctitle">État des Formations <span class="cbadge">{{ count($formations) }} formations</span></div>
+        @foreach($formations as $f)
+        @php
+            $fp = $f->total > 0 ? round(($f->ok / $f->total) * 100) : 0;
+            $fc2 = $fp >= 100 ? '#10B981' : ($fp >= 50 ? '#2563EB' : ($fp > 0 ? '#F59E0B' : '#E2E8F0'));
+        @endphp
+        <div class="smi-row">
+            <span class="smi-lbl" title="{{ $f->titre_formation }}">{{ Str::limit($f->titre_formation, 22) }}</span>
+            <div class="smi-track">
+                <div class="smi-fill" style="width:{{ max(1,$fp) }}%;background:{{ $fc2 }};">
+                    @if($fp >= 18)<span style="font-size:7.5px;font-weight:700;color:#fff;">{{ $f->ok }}/{{ $f->total }}</span>@endif
+                </div>
+            </div>
+            @if($fp < 18)<span class="smi-pct-ext">{{ $f->ok }}/{{ $f->total }}</span>@endif
+        </div>
+        @endforeach
+
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);">
+            <div style="font-size:9px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;">
+                Livrables globaux <span class="cbadge">{{ $livStats->termines }}/{{ $livStats->total }}</span>
+            </div>
+            @php $ecPct = ($livStats->total > 0) ? round(($livStats->en_cours / $livStats->total) * 100) : 0; @endphp
+            <div class="smi-row">
+                <span class="smi-lbl">Terminés</span>
+                <div class="smi-track"><div class="smi-fill" style="width:{{ $livPct }}%;background:#10B981;">
+                    @if($livPct >= 18)<span style="font-size:7.5px;font-weight:700;color:#fff;">{{ $livPct }}%</span>@endif
+                </div></div>
+                @if($livPct < 18)<span class="smi-pct-ext" style="color:#10B981;">{{ $livPct }}%</span>@endif
+            </div>
+            <div class="smi-row">
+                <span class="smi-lbl">En cours</span>
+                <div class="smi-track"><div class="smi-fill" style="width:{{ max(1,$ecPct) }}%;background:#F59E0B;">
+                    @if($ecPct >= 18)<span style="font-size:7.5px;font-weight:700;color:#fff;">{{ $ecPct }}%</span>@endif
+                </div></div>
+                @if($ecPct < 18)<span class="smi-pct-ext" style="color:#F59E0B;">{{ $ecPct }}%</span>@endif
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="ctitle">Santé Projets <span class="cbadge">{{ $totalProjets }} projets</span></div>
+        <table class="hm-table">
+            <thead>
+                <tr><th style="text-align:left">Client</th><th>Planning</th><th>Budget</th><th>Risque</th></tr>
+            </thead>
+            <tbody>
+                @foreach($projets as $p)
+                @php
+                    $ec = $p->jours_realises - $p->jours_prevus;
+                    $planClass  = $p->statut === 'En retard' ? 'hm-r' : ($p->avancement_percent > 0 ? 'hm-g' : 'hm-gr');
+                    $budgClass  = $ec > 5 ? 'hm-r' : ($ec > 0 ? 'hm-o' : 'hm-g');
+                    $riskClass  = $p->statut === 'En retard' ? 'hm-r' : ($p->statut === 'En cours' && $p->avancement_percent < 30 ? 'hm-o' : ($p->statut === 'Planifié' ? 'hm-gr' : 'hm-g'));
+                @endphp
+                <tr>
+                    <td>
+                        <div class="proj-id"><a href="/projet/{{ $p->id }}" style="color:var(--blue);text-decoration:none;">{{ Str::limit($p->nom_client, 10) }}</a></div>
+                        <div class="proj-nm">{{ $p->reference_projet }}</div>
+                    </td>
+                    <td><span class="hm-cell {{ $planClass }}">{{ $p->statut === 'En retard' ? '✗ Retard' : ($p->avancement_percent > 0 ? '✓ OK' : '— N/D') }}</span></td>
+                    <td><span class="hm-cell {{ $budgClass }}">{{ $ec > 5 ? '✗ Dépass.' : ($ec > 0 ? '⚡ Risque' : '✓ OK') }}</span></td>
+                    <td><span class="hm-cell {{ $riskClass }}">{{ $p->statut === 'En retard' ? '✗ Élevé' : ($riskClass === 'hm-o' ? '⚡ Moyen' : ($riskClass === 'hm-gr' ? '— Faible' : '✓ Faible')) }}</span></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ROW 5 : TABLE -->
+<div class="sl sl-table">Tableau Détaillé Portefeuille</div>
+<div class="card">
+    <div class="ctitle">
+        Vue Détaillée — Tous les Projets
+        <span class="cbadge" id="rowCount">{{ $totalProjets }} lignes</span>
+    </div>
+    <div class="dt-wrap">
+        <table class="dt">
+            <thead>
+                <tr>
+                    <th>Client</th><th>Réf.</th><th>Chef de Projet</th><th>Statut</th><th>Normes</th>
+                    <th style="text-align:right">J. Prévus</th><th style="text-align:right">J. Réalisés</th>
+                    <th>Avancement</th><th style="text-align:right">Restants</th><th>Performance</th>
+                </tr>
+            </thead>
+            <tbody id="detailBody">
+                @foreach($projets as $p)
+                @php
+                    $sc = match($p->statut) { 'Finalisé'=>'s-comp','En retard'=>'s-del','En cours'=>'s-prog','En pause'=>'s-pause',default=>'s-plan' };
+                    $restant = max(0, $p->jours_prevus - $p->jours_realises);
+                    $conso   = $p->jours_prevus > 0 ? round(($p->jours_realises / $p->jours_prevus) * 100) : 0;
+                    $perf    = $p->statut === 'Finalisé' ? ['c'=>'#10B981','l'=>'Dans les temps'] :
+                              ($p->statut === 'En retard' ? ['c'=>'#EF4444','l'=>'Critique'] :
+                              ($p->avancement_percent >= 50 ? ['c'=>'#10B981','l'=>'Dans les temps'] :
+                              ($p->avancement_percent > 0 ? ['c'=>'#F59E0B','l'=>'À surveiller'] : ['c'=>'#CBD5E1','l'=>'Non démarré'])));
+                    $normes  = $normesParProjet[$p->id] ?? [];
+                    $pbColor = $p->avancement_percent === 100 ? '#10B981' : ($p->avancement_percent > 25 ? '#2563EB' : '#60A5FA');
+                @endphp
+                <tr data-statut="{{ $p->statut }}" data-chef="{{ $p->chef_nom }}" data-secteur="{{ $p->secteur_activite }}">
+                    <td><a href="/projet/{{ $p->id }}" style="font-weight:700;color:var(--blue);text-decoration:none;font-size:11px;">{{ $p->nom_client }}</a></td>
+                    <td><span style="font-size:8.5px;color:var(--muted);background:var(--bg);padding:1px 6px;border-radius:4px;font-weight:600;">{{ $p->reference_projet }}</span></td>
+                    <td style="font-size:10px;">{{ $p->chef_nom ?? '—' }}</td>
+                    <td><span class="sbadge {{ $sc }}">{{ $p->statut }}</span></td>
+                    <td>@foreach($normes as $n)<span class="ntag">{{ preg_replace('/ISO\s?/','', $n) }}</span>@endforeach</td>
+                    <td style="text-align:right;font-weight:700;">{{ $p->jours_prevus }}</td>
+                    <td style="text-align:right;font-weight:700;color:{{ $conso > 100 ? '#EF4444' : 'inherit' }};">{{ $p->jours_realises }}</td>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:4px;">
+                            <div class="pb"><div class="pb-f" style="width:{{ $p->avancement_percent }}%;background:{{ $pbColor }};"></div></div>
+                            <strong style="font-size:10px;">{{ $p->avancement_percent }}%</strong>
+                        </div>
+                    </td>
+                    <td style="text-align:right;font-weight:700;color:var(--muted);">{{ $restant }}j</td>
+                    <td><span class="pdot" style="background:{{ $perf['c'] }};"></span><span style="font-size:9.5px;">{{ $perf['l'] }}</span></td>
+                </tr>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" style="color:var(--blue);">⊞ TOTAUX PORTEFEUILLE</td>
+                    <td style="text-align:right;">{{ $totalPrevus }}</td>
+                    <td style="text-align:right;color:{{ $totalEcart > 5 ? '#EF4444' : 'inherit' }};">{{ $totalRealises }}</td>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:4px;">
+                            <div class="pb"><div class="pb-f" style="width:{{ $avancementMoyen }}%;background:#2563EB;"></div></div>
+                            <strong>{{ $avancementMoyen }}%</strong>
+                        </div>
+                    </td>
+                    <td style="text-align:right;">{{ $chargeRestante }}j</td>
+                    <td style="color:{{ $totalEcart >= 0 ? '#EF4444' : '#10B981' }};font-size:10px;">Écart: {{ $totalEcart > 0 ? '+' : '' }}{{ $totalEcart }}j</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="pmo-footer">
+    <div class="footer-logo">◆ LMC Conseil — PMO Dashboard</div>
+    <div>Données au {{ now()->format('d M Y') }} · Usage interne confidentiel · Comité de Pilotage</div>
+    <div style="display:flex;gap:5px;"><span class="ftag">SMI</span><span class="ftag">ISO 9001/14001/45001</span><span class="ftag">v3.0</span></div>
+</div>
+
+</div>
+
+<script>
+// ── Theme ──
 document.getElementById('themeToggle')?.addEventListener('click', () => {
     const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('lmc-theme', next);
-    const icon = document.getElementById('themeIcon');
-    if (icon) icon.className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+    document.getElementById('themeIcon').className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+    setTimeout(() => location.reload(), 80);
 });
-</script>
 
-<!-- ══ CONTENT ══ -->
-<div class="container py-4">
+// ── Données projets (pour mise à jour réactive des charts) ──
+const ALL_PROJETS = {!! json_encode(collect($projets)->map(function($p) {
+    return [
+        'client'   => $p->nom_client,
+        'statut'   => $p->statut,
+        'chef'     => $p->chef_nom ?? '',
+        'secteur'  => $p->secteur_activite ?? '',
+        'prevus'   => $p->jours_prevus,
+        'realises' => $p->jours_realises,
+        'avanct'   => $p->avancement_percent,
+    ];
+})->values()) !!};
 
-    <!-- KPI -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-3 col-6">
-            <div class="stat-card">
-                <div class="stat-icon" style="background:#eff6ff; color:#3b82f6;">
-                    <i class="bi bi-folder2"></i>
-                </div>
-                <div class="stat-label">Total Projets</div>
-                <div class="stat-value">{{ $totalProjets }}</div>
-                <div class="stat-sub">Portefeuille complet</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="stat-card">
-                <div class="stat-icon" style="background:#f0fdf4; color:#16a34a;">
-                    <i class="bi bi-check-circle"></i>
-                </div>
-                <div class="stat-label">Finalisés</div>
-                <div class="stat-value">{{ $finalises }}</div>
-                <div class="stat-sub">Certifications obtenues</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="stat-card">
-                <div class="stat-icon" style="background:#fff1f2; color:#e11d48;">
-                    <i class="bi bi-exclamation-triangle"></i>
-                </div>
-                <div class="stat-label">En retard</div>
-                <div class="stat-value">{{ $enRetard }}</div>
-                <div class="stat-sub">Attention requise</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="stat-card">
-                <div class="stat-icon" style="background:#fffbeb; color:#d97706;">
-                    <i class="bi bi-calendar-check"></i>
-                </div>
-                <div class="stat-label">Jours réalisés</div>
-                <div class="stat-value">{{ $totalJoursRealises }}</div>
-                <div class="stat-sub">/ {{ $totalJoursPrevus }} prévus</div>
-            </div>
-        </div>
-    </div>
+// ── Filtrage complet (table + KPIs + charts) ──
+let chartJoursInst = null;
+let chartAvancInst = null;
 
-    <!-- Avancement moyen -->
-    <div class="avan-card mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <span style="font-size:.82rem; font-weight:600; color:#475569;">
-                <i class="bi bi-graph-up me-1 text-primary"></i>Avancement moyen du portefeuille
-            </span>
-            <span style="font-size:1.2rem; font-weight:700; color:#0f172a;">{{ $avancementMoyen }}%</span>
-        </div>
-        <div class="progress" style="height:6px; border-radius:50px;">
-            <div class="progress-bar"
-                 style="width:{{ $avancementMoyen }}%; background:linear-gradient(90deg,#3b82f6,#8b5cf6); border-radius:50px;">
-            </div>
-        </div>
-    </div>
+function applyFilters() {
+    const fS = document.getElementById('fStatut').value;
+    const fC = document.getElementById('fChef').value;
+    const fE = document.getElementById('fSecteur').value;
 
-    <!-- Charts -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <div class="chart-card">
-                <div class="chart-title">
-                    <i class="bi bi-pie-chart text-primary"></i> Répartition par Statut
-                </div>
-                <div class="chart-container">
-                    <canvas id="chartStatut"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="chart-card">
-                <div class="chart-title">
-                    <i class="bi bi-bar-chart text-primary"></i> Avancement par Client
-                </div>
-                <div class="chart-container">
-                    <canvas id="chartAvancement"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="chart-card">
-                <div class="chart-title">
-                    <i class="bi bi-calendar-check text-primary"></i> Jours Prévus vs Réalisés
-                </div>
-                <div class="chart-container">
-                    <canvas id="chartJours"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
+    // 1. Filtrer les données
+    const filtered = ALL_PROJETS.filter(p =>
+        (!fS || p.statut === fS) &&
+        (!fC || p.chef === fC) &&
+        (!fE || p.secteur === fE)
+    );
 
-    <!-- Table -->
-    <div class="table-card">
-        <h6>
-            <i class="bi bi-table text-primary"></i> Détail des projets
-        </h6>
-        <div class="table-responsive">
-            <table class="table-pro">
-                <thead>
-                    <tr>
-                        <th>Référence</th>
-                        <th>Client</th>
-                        <th>Chef de Projet</th>
-                        <th>Statut</th>
-                        <th class="text-center">J. Prévus</th>
-                        <th class="text-center">J. Réalisés</th>
-                        <th class="text-center">% Conso.</th>
-                        <th>Avancement</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($projets as $p)
-                    @php
-                        $sc = match($p->statut) {
-                            'Finalisé'  => 'finalise',
-                            'En retard' => 'retard',
-                            'En cours'  => 'cours',
-                            default     => 'planifie',
-                        };
-                        $conso = $p->jours_prevus > 0
-                            ? round(($p->jours_realises / $p->jours_prevus) * 100) : 0;
-                    @endphp
-                    <tr>
-                        <td><strong style="color:#0f172a;">{{ $p->reference_projet }}</strong></td>
-                        <td>{{ $p->nom_client }}</td>
-                        <td>{{ $p->chef_nom ?? '—' }}</td>
-                        <td><span class="bs {{ $sc }}">{{ $p->statut }}</span></td>
-                        <td class="text-center">{{ $p->jours_prevus }}</td>
-                        <td class="text-center">{{ $p->jours_realises }}</td>
-                        <td class="text-center">{{ $conso }}%</td>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <span style="width:28px; font-size:.78rem; font-weight:600;">{{ $p->avancement_percent }}%</span>
-                                <div class="mini-prog">
-                                    <div class="mini-prog-fill" style="width:{{ $p->avancement_percent }}%"></div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-                <tfoot>
-                    <tr class="tfoot-total">
-                        <td colspan="4" style="color:#3b82f6; font-weight:700;">
-                            <i class="bi bi-layers me-1"></i> TOTAUX PORTEFEUILLE 2025-2026
-                        </td>
-                        <td class="text-center fw-bold">{{ $totalJoursPrevus }}</td>
-                        <td class="text-center fw-bold">{{ $totalJoursRealises }}</td>
-                        <td class="text-center fw-bold">{{ $consoGlobale }}%</td>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <span style="width:28px; font-size:.78rem; font-weight:700;">{{ $avancementMoyen }}%</span>
-                                <div class="mini-prog">
-                                    <div class="mini-prog-fill" style="width:{{ $avancementMoyen }}%"></div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="tfoot-ecart">
-                        <td colspan="7" style="font-size:.78rem; color:#94a3b8; text-align:right;">
-                            Écart total jours :
-                        </td>
-                        <td class="text-center fw-bold"
-                            style="color:{{ $totalEcart >= 0 ? '#16a34a' : '#dc2626' }};">
-                            {{ $totalEcart > 0 ? '+' : '' }}{{ $totalEcart }}
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-
-    <div class="page-footer">
-        <span><i class="bi bi-layers me-1"></i>{{ $totalProjets }} projet(s)</span>
-        <span><i class="bi bi-calendar-week me-1"></i>{{ $totalJoursRealises }} / {{ $totalJoursPrevus }} jours</span>
-    </div>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-
-    // Chart 1 — Répartition statut
-    new Chart(document.getElementById('chartStatut'), {
-        type: 'pie',
-        data: {
-            labels: ['Finalisé', 'En retard', 'En cours', 'Planifié'],
-            datasets: [{
-                data: [{{ $finalises }}, {{ $enRetard }}, {{ $enCours }}, {{ $planifies }}],
-                backgroundColor: ['#10b981','#ef4444','#f97316','#6366f1'],
-                borderWidth: 2,
-                borderColor: '#ffffff'
-            }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: {
-                legend: { position:'bottom', labels:{ boxWidth:10, font:{ size:10 }, padding:10 } }
-            }
-        }
+    // 2. Table
+    const rows = document.querySelectorAll('#detailBody tr');
+    let visible = 0;
+    rows.forEach(row => {
+        const ok = (!fS || row.dataset.statut === fS)
+                && (!fC || row.dataset.chef === fC)
+                && (!fE || row.dataset.secteur === fE);
+        row.style.display = ok ? '' : 'none';
+        if(ok) visible++;
     });
+    document.getElementById('rowCount').textContent = visible + ' ligne(s)';
+    const fc = document.getElementById('filterCount');
+    if(fc) fc.textContent = (fS||fC||fE) ? `→ ${visible} résultat(s)` : '';
 
-    // Chart 2 — Avancement par client
-    new Chart(document.getElementById('chartAvancement'), {
-        type: 'bar',
-        data: {
-            labels: [@foreach($projets as $p)'{{ Str::limit($p->nom_client, 12) }}',@endforeach],
-            datasets: [{
-                label: 'Avancement %',
-                data: [@foreach($projets as $p){{ $p->avancement_percent }},@endforeach],
-                backgroundColor: '#3b82f6',
-                borderRadius: 6,
-                borderSkipped: false
-            }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend:{ display:false } },
-            scales: {
-                y: { beginAtZero:true, max:100, grid:{ color:'#f1f5f9' },
-                     ticks:{ font:{ size:9 }, callback: v => v+'%' } },
-                x: { grid:{ display:false }, ticks:{ font:{ size:9 } } }
-            }
-        }
-    });
+    // 3. Mettre à jour KPIs dynamiques
+    const totalF = filtered.length;
+    const fin  = filtered.filter(p => p.statut === 'Finalisé').length;
+    const ret  = filtered.filter(p => p.statut === 'En retard').length;
+    const pPrevus  = filtered.reduce((s,p) => s + p.prevus, 0);
+    const pReal    = filtered.reduce((s,p) => s + p.realises, 0);
+    const avgAvanct = totalF > 0 ? Math.round(filtered.reduce((s,p) => s + p.avanct, 0) / totalF) : 0;
 
-    // Chart 3 — Jours prévus vs réalisés
-    new Chart(document.getElementById('chartJours'), {
-        type: 'bar',
-        data: {
-            labels: [@foreach($projets as $p)'{{ $p->reference_projet }}',@endforeach],
-            datasets: [
-                {
-                    label: 'Prévus',
-                    data: [@foreach($projets as $p){{ $p->jours_prevus }},@endforeach],
-                    backgroundColor: '#cbd5e1',
-                    borderRadius: 6, borderSkipped: false
-                },
-                {
-                    label: 'Réalisés',
-                    data: [@foreach($projets as $p){{ $p->jours_realises }},@endforeach],
-                    backgroundColor: '#3b82f6',
-                    borderRadius: 6, borderSkipped: false
-                }
-            ]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: {
-                legend: { position:'bottom', labels:{ boxWidth:10, font:{ size:9 }, padding:8 } }
+    // Mettre à jour le badge du donut si filtré
+    const donutBadge = document.getElementById('donutBadge');
+    if(donutBadge) donutBadge.textContent = totalF + ' projets';
+
+    // 4. Mise à jour chart Jours
+    if(chartJoursInst) {
+        chartJoursInst.data.labels = filtered.map(p => p.client.substring(0,9));
+        chartJoursInst.data.datasets[0].data = filtered.map(p => p.prevus);
+        chartJoursInst.data.datasets[1].data = filtered.map(p => p.realises);
+        chartJoursInst.update('active');
+    }
+
+    // 5. Mise à jour chart Avancement
+    if(chartAvancInst) {
+        chartAvancInst.data.labels = filtered.map(p => p.client.substring(0,9));
+        chartAvancInst.data.datasets[0].data = filtered.map(p => p.avanct);
+        chartAvancInst.data.datasets[0].backgroundColor = filtered.map(p =>
+            p.statut === 'Finalisé'  ? '#10B981' :
+            p.statut === 'En retard' ? '#EF4444' :
+            p.statut === 'En cours'  ? '#2563EB' : '#8B5CF6'
+        );
+        chartAvancInst.update('active');
+    }
+
+    // 6. Donut statut
+    if(donutStatutInst) {
+        donutStatutInst.data.datasets[0].data = [
+            filtered.filter(p => p.statut === 'Finalisé').length,
+            filtered.filter(p => p.statut === 'En cours').length,
+            filtered.filter(p => p.statut === 'En retard').length,
+            filtered.filter(p => p.statut === 'Planifié').length,
+        ];
+        donutStatutInst.options.plugins.title.text = totalF + ' projets';
+        donutStatutInst.update('active');
+        // Centre text
+        const dc = document.querySelector('.dc-n');
+        if(dc) dc.textContent = totalF;
+    }
+}
+
+function resetFilters() {
+    ['fStatut','fChef','fSecteur'].forEach(id => document.getElementById(id).value = '');
+    applyFilters();
+}
+
+// ── Setup Charts ──
+const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+const gc  = isDark ? '#1e293b' : '#F1F5F9';
+const tc  = isDark ? '#64748b' : '#9CA3AF';
+const def = { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } };
+
+// Couleurs bien distinctes — palette soigneusement choisie
+const COLORS = {
+    prevu:   isDark ? '#334155' : '#CBD5E1',   // gris neutre = "ce qui était prévu"
+    realise: '#0EA5E9',                          // bleu vif Sky = "ce qui est fait"
+    fin:     '#10B981',                          // vert émeraude
+    retard:  '#EF4444',                          // rouge
+    cours:   '#0EA5E9',                          // sky blue
+    planifie:'#8B5CF6',                          // violet
+    interne: '#0EA5E9',                          // sky
+    externe: '#F59E0B',                          // ambre — bien distinct du sky
+};
+
+// Donut statut
+let donutStatutInst = new Chart(document.getElementById('donutStatut'), {
+    type:'doughnut',
+    data:{
+        labels:['Finalisé','En cours','En retard','Planifié'],
+        datasets:[{
+            data:[{{ $finalises }},{{ $enCours }},{{ $enRetard }},{{ $planifies }}],
+            backgroundColor:[COLORS.fin, COLORS.cours, COLORS.retard, COLORS.planifie],
+            borderWidth: isDark ? 2 : 3,
+            borderColor: isDark ? '#1e293b' : '#ffffff',
+            hoverOffset:6
+        }]
+    },
+    options:{ ...def, cutout:'65%', plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => ` ${c.label}: ${c.raw} projet(s)` } } } }
+});
+
+// Donut ressources — Interne sky vs Externe ambre : très distincts
+new Chart(document.getElementById('donutRessources'), {
+    type:'doughnut',
+    data:{
+        labels:['Interne','Externe'],
+        datasets:[{
+            data:[{{ $joursInternes }},{{ $joursExternes }}],
+            backgroundColor:[COLORS.interne, COLORS.externe],
+            borderWidth: isDark ? 2 : 3,
+            borderColor: isDark ? '#1e293b' : '#ffffff',
+            hoverOffset:6
+        }]
+    },
+    options:{ ...def, cutout:'65%', plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => ` ${c.label}: ${c.raw}j` } } } }
+});
+// Mettre à jour la légende couleur dans le DOM
+document.querySelectorAll('.leg-dot-res').forEach((dot, i) => {
+    dot.style.background = i === 0 ? COLORS.interne : COLORS.externe;
+});
+
+// Chart Jours — gris neutre vs sky bleu : très lisibles ensemble
+chartJoursInst = new Chart(document.getElementById('chartJours'), {
+    type:'bar',
+    data:{
+        labels:[@foreach($projets as $p)'{{ Str::limit($p->nom_client, 9) }}',@endforeach],
+        datasets:[
+            {
+                label:'Prévu',
+                data:[@foreach($projets as $p){{ $p->jours_prevus }},@endforeach],
+                backgroundColor: COLORS.prevu,
+                borderRadius:4, borderSkipped:false, barPercentage:.7
             },
-            scales: {
-                y: { beginAtZero:true, grid:{ color:'#f1f5f9' }, ticks:{ font:{ size:9 } } },
-                x: { grid:{ display:false }, ticks:{ font:{ size:9 } } }
+            {
+                label:'Réalisé',
+                data:[@foreach($projets as $p){{ $p->jours_realises }},@endforeach],
+                backgroundColor: COLORS.realise,
+                borderRadius:4, borderSkipped:false, barPercentage:.7
+            }
+        ]
+    },
+    options:{ ...def,
+        scales:{
+            x:{ grid:{display:false}, ticks:{font:{size:8},color:tc,maxRotation:35,minRotation:25} },
+            y:{ grid:{color:gc}, ticks:{font:{size:8},color:tc}, beginAtZero:true }
+        },
+        plugins:{
+            legend:{display:false},
+            tooltip:{
+                mode:'index',
+                callbacks:{
+                    afterBody: items => {
+                        const pr = items[0]?.raw || 0, re = items[1]?.raw || 0;
+                        const ecart = re - pr;
+                        return [`Écart: ${ecart > 0 ? '+' : ''}${ecart}j`];
+                    }
+                }
             }
         }
-    });
+    }
+});
 
+// Mettre à jour les dots légende jours dans le DOM
+document.querySelectorAll('.leg-dot-jours').forEach((dot, i) => {
+    dot.style.background = i === 0 ? COLORS.prevu : COLORS.realise;
+    if(i === 0) { dot.style.border = isDark ? '1px solid #64748b' : '1px solid #94a3b8'; }
+});
+
+// Chart Consultant — sky interne vs ambre externe
+new Chart(document.getElementById('chartExt'), {
+    type:'bar',
+    data:{
+        labels:[@foreach($consultants as $c)'{{ Str::limit(explode(" ", $c->nom_complet)[0], 9) }}',@endforeach],
+        datasets:[{
+            label:'Jours',
+            data:[@foreach($consultants as $c){{ $c->total_realises }},@endforeach],
+            backgroundColor:[@foreach($consultants as $c)'{{ $c->type_consultant !== "Interne" ? "#F59E0B" : "#0EA5E9" }}',@endforeach],
+            borderRadius:4
+        }]
+    },
+    options:{ ...def, indexAxis:'y',
+        scales:{
+            x:{ grid:{color:gc}, ticks:{font:{size:8},color:tc}, beginAtZero:true },
+            y:{ grid:{display:false}, ticks:{font:{size:9},color:tc} }
+        },
+        plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => ` ${c.raw} jours` } } }
+    }
 });
 </script>
-<script>
-// Sync theme from localStorage
-(function() {
-    const t = localStorage.getItem('lmc-theme') || 'light';
-    document.documentElement.setAttribute('data-theme', t);
-})();
-</script>
-
 </body>
 </html>
