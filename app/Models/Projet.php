@@ -46,11 +46,12 @@ class Projet extends Model
         return $this->hasMany(SuiviChapitre::class);
     }
     
-    public function formations()
-    {
-        return $this->belongsToMany(Formation::class, 'projet_formations')
-                    ->withPivot('statut', 'observations');
-    }
+public function formations()
+{
+    return $this->belongsToMany(Formation::class, 'projet_formations')
+                ->withPivot('statut', 'observations', 'jours_realises', 'date_realisation')
+                ->withTimestamps();
+}
     
     // الحقول المحسوبة
     public function getConsoJoursPercentAttribute()

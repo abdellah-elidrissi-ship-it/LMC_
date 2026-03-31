@@ -261,7 +261,6 @@ $user = auth()->user();
                  class="logo-image"
                  onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
             <div class="logo-text">
-                <span class="logo-main">LMC CONSEIL</span>
                 <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
             </div>
         </div>

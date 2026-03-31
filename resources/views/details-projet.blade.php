@@ -318,6 +318,132 @@
             .detail-card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; page-break-inside: avoid; }
             .print-modal, .preuve-viewer-modal { display: none !important; }
         }
+
+        .sync-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem 1.4rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.sync-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--accent);
+}
+
+.sync-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.sync-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.sync-title i {
+    font-size: 1rem;
+}
+
+.sync-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.22rem 0.8rem;
+    border-radius: 999px;
+    background: var(--surface-hover);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.sync-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.sync-metric {
+    border-radius: 16px;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--border);
+    background: var(--surface-hover);
+}
+
+.sync-metric-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 0.45rem;
+}
+
+.sync-metric-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--text-primary);
+}
+
+.sync-metric-sub {
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.sync-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.sync-alert {
+    margin-top: 1rem;
+    border-radius: 16px;
+    padding: 0.95rem 1rem;
+    border: 1px solid var(--border);
+}
+
+.sync-alert-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.sync-alert-text {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .sync-grid {
+        grid-template-columns: 1fr;
+    }
+    .sync-separator {
+        display: none;
+    }
+}
     </style>
 </head>
 <body>
@@ -342,8 +468,12 @@ if(!$projet) { echo "<div class='alert alert-warning m-5'>Projet introuvable</di
 $normes      = DB::select("SELECT n.* FROM normes n JOIN projet_normes pn ON n.id = pn.norme_id WHERE pn.projet_id = ?", [$id]);
 $consultants = DB::select("SELECT cons.*, a.role_dans_projet, a.jours_alloues, a.jours_realises FROM affectations a JOIN consultants cons ON a.consultant_id = cons.id WHERE a.projet_id = ?", [$id]);
 $chapitres   = DB::select("SELECT sc.*, cs.code_chapitre, cs.titre_chapitre, cs.exigences_cles FROM suivi_chapitres sc JOIN chapitres_smis cs ON sc.chapitre_id = cs.id WHERE sc.projet_id = ? ORDER BY cs.ordre", [$id]);
-$formations  = DB::select("SELECT f.*, pf.statut, pf.observations FROM formations f JOIN projet_formations pf ON f.id = pf.formation_id WHERE pf.projet_id = ?", [$id]);
-
+$formations = DB::select("
+    SELECT f.*, pf.statut, pf.observations, pf.jours_realises, pf.date_realisation
+    FROM formations f
+    JOIN projet_formations pf ON f.id = pf.formation_id
+    WHERE pf.projet_id = ?
+", [$id]);
 $statusClass = match($projet->statut) {
     'Finalisé' => 'finalized',
     'En retard' => 'delayed',
@@ -410,7 +540,40 @@ $avancementGlobalLivrables = $totalLivrablesGlobal > 0 ? round(($terminesLivrabl
 $chapCodeById = DB::table('chapitres_smis')->pluck('code_chapitre', 'id')->toArray();
 
 $chapsColl = collect($chapitres);
-$joursRealisesCalc = $chapsColl->sum('jours_intervention');
+$joursChapitres = $chapsColl->sum('jours_intervention');
+$joursFormations = collect($formations)->sum('jours_realises');
+$joursRealisesCalc = $joursChapitres + $joursFormations;
+
+
+$joursConsultantsCalc = collect($consultants)->sum('jours_realises');
+$ecartConsultantsProjet = round($joursConsultantsCalc - $joursRealisesCalc, 1);
+$absEcartConsultantsProjet = abs($ecartConsultantsProjet);
+
+$syncStatus = 'ok';
+$syncTitle = 'Cohérence des jours réalisés';
+$syncMessage = 'Les jours déclarés par les consultants sont alignés avec les jours du projet.';
+$syncBg = 'linear-gradient(135deg, var(--success-light), rgba(16,185,129,0.06))';
+$syncBorder = 'var(--success)';
+$syncText = 'var(--success)';
+$syncIcon = 'bi-check-circle-fill';
+
+if ($ecartConsultantsProjet > 0) {
+    $syncStatus = 'plus';
+    $syncTitle = 'Écart à surveiller';
+    $syncMessage = "Les consultants déclarent {$joursConsultantsCalc} j. soit + {$absEcartConsultantsProjet} j. de plus que le projet ({$joursRealisesCalc} j.).";
+    $syncBg = 'linear-gradient(135deg, var(--danger-light), rgba(239,68,68,0.05))';
+    $syncBorder = 'var(--danger)';
+    $syncText = 'var(--danger)';
+    $syncIcon = 'bi-exclamation-triangle-fill';
+} elseif ($ecartConsultantsProjet < 0) {
+    $syncStatus = 'moins';
+    $syncTitle = 'Écart à surveiller';
+    $syncMessage = "Les consultants déclarent {$joursConsultantsCalc} j.  soit — {$absEcartConsultantsProjet} j. de moins que le projet ({$joursRealisesCalc} j.).";
+    $syncBg = 'linear-gradient(135deg, var(--warning-light), rgba(245,158,11,0.06))';
+    $syncBorder = 'var(--warning)';
+    $syncText = 'var(--warning)';
+    $syncIcon = 'bi-exclamation-circle-fill';
+}
 $totalChap = $chapsColl->count();
 $doneChap  = $chapsColl->where('phase', 'Terminé')->count();
 
@@ -451,7 +614,6 @@ $user = auth()->user();
                  alt="LMC Conseil" class="logo-image"
                  onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
             <div class="logo-text">
-                <span class="logo-main">LMC CONSEIL</span>
                 <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
             </div>
         </div>
@@ -568,6 +730,47 @@ $user = auth()->user();
             </div>
         </div>
     </div>
+
+    <div class="sync-card" style="background: {{ $syncBg }}; border-left: 4px solid {{ $syncBorder }};">
+    <div class="sync-head">
+        <div class="sync-title" style="color: {{ $syncText }};">
+            <i class="bi {{ $syncIcon }}"></i>
+            <span>Cohérence des jours réalisés</span>
+        </div>
+        <span class="sync-badge">Contrôle auto</span>
+    </div>
+
+    <div class="sync-grid">
+        <div class="sync-metric">
+            <div class="sync-metric-label">Total J. réalisés consultants</div>
+            <div class="sync-metric-value" style="color: var(--accent);">
+                {{ round($joursConsultantsCalc, 1) }}
+            </div>
+            <div class="sync-metric-sub">Somme des jours déclarés par les consultants</div>
+        </div>
+
+        <div class="sync-separator">
+            <i class="bi bi-arrow-left-right"></i>
+        </div>
+
+        <div class="sync-metric">
+            <div class="sync-metric-label">Total J. réalisés projet</div>
+            <div class="sync-metric-value" style="color: var(--success);">
+                {{ round($joursRealisesCalc, 1) }}
+            </div>
+            <div class="sync-metric-sub">Chapitres + formations</div>
+        </div>
+    </div>
+
+    <div class="sync-alert">
+        <div class="sync-alert-title" style="color: {{ $syncText }};">
+            {{ $syncTitle }}
+        </div>
+        <div class="sync-alert-text">
+            {{ $syncMessage }}
+        </div>
+    </div>
+</div>
 
     <!-- Exigences clés SMI -->
     @if(count($chapitres))
@@ -784,25 +987,40 @@ $user = auth()->user();
             <div class="detail-card h-100">
                 <div class="section-title"><i class="bi bi-mortarboard"></i> Plan de formation</div>
                 @if(count($formations))
-                <table class="table-pro">
-                    <thead><tr><th>Formation</th><th>Statut</th></tr></thead>
-                    <tbody>
-                        @foreach($formations as $f)
-                        @php
-                            $formClass = match($f->statut) {
-                                'Finalisée', 'Réalisée' => 'phase-completed',
-                                'En cours'              => 'phase-in-progress',
-                                default                 => 'phase-not-started'
-                            };
-                        @endphp
-                        <tr>
-                            <td>{{ $f->titre_formation }}</td>
-                            <td><span class="phase-badge {{ $formClass }}">{{ $f->statut }}</span></td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @else
+<table class="table-pro">
+    <thead>
+        <tr>
+            <th>Formation</th>
+            <th>Statut</th>
+            <th class="text-center">Jours</th>
+            <th>Date réalisation</th>
+            <th>Observations</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($formations as $f)
+        @php
+            $formClass = match($f->statut) {
+                'Finalisée', 'Réalisée' => 'phase-completed',
+                'En cours'              => 'phase-in-progress',
+                default                 => 'phase-not-started'
+            };
+        @endphp
+        <tr>
+            <td>{{ $f->titre_formation }}</td>
+            <td>
+                <span class="phase-badge {{ $formClass }}">{{ $f->statut }}</span>
+            </td>
+            <td class="text-center">{{ $f->jours_realises ?? 0 }}</td>
+            <td>
+                {{ $f->date_realisation ? \Carbon\Carbon::parse($f->date_realisation)->format('d/m/Y') : '—' }}
+            </td>
+            <td>{{ $f->observations ?: '—' }}</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+@else
                 <p style="color:var(--text-muted); text-align:center; padding:2rem;">Aucune formation planifiée</p>
                 @endif
             </div>
@@ -962,23 +1180,103 @@ function showPreuves(livId, libelle) {
         const safeNom   = (nom || '').replace(/'/g, "\\'");
 
         html += `
-            <div class="preuve-item" onclick="viewPreuve('${safeUrl}', '${safeMime}', '${safeLabel}', '${safeNom}')">
-                ${isImage
-                    ? `<img src="${url}" class="preuve-thumb">`
-                    : `<div class="preuve-thumb-icon"><i class="bi ${icon}"></i></div>`
-                }
-                <div class="preuve-info">
-                    <h6>${label || nom}</h6>
-                    <p>${taille} Ko • ${date}</p>
-                </div>
+    <div class="preuve-item" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+        <div onclick="viewPreuve('${safeUrl}', '${safeMime}', '${safeLabel}', '${safeNom}')"
+             style="display:flex; align-items:center; gap:0.75rem; flex:1; cursor:pointer;">
+            ${isImage
+                ? `<img src="${url}" class="preuve-thumb">`
+                : `<div class="preuve-thumb-icon"><i class="bi ${icon}"></i></div>`
+            }
+            <div class="preuve-info">
+                <h6>${label || nom}</h6>
+                <p>${taille} Ko • ${date}</p>
             </div>
-        `;
+        </div>
+
+        <button type="button"
+            class="intervention-btn"
+            onclick="event.stopPropagation(); printLivrablePreuve('${safeUrl}', '${safeMime}', '${safeLabel}')"
+            title="Imprimer">
+            <i class="bi bi-printer-fill"></i>
+        </button>
+    </div>
+`;
     });
     html += '</div>';
 
     document.getElementById('preuveViewerTitle').textContent = `Preuves - ${libelle}`;
     document.getElementById('preuveViewerBody').innerHTML = html;
     document.getElementById('preuveViewerModal').classList.add('active');
+}
+
+function printLivrablePreuve(url, mime, title) {
+    const isImage = mime && mime.startsWith('image/');
+    const isPdf = mime === 'application/pdf';
+
+    if (isImage) {
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'fixed';
+        iframe.style.right = '0';
+        iframe.style.bottom = '0';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = '0';
+
+        document.body.appendChild(iframe);
+
+        const doc = iframe.contentWindow.document;
+        doc.open();
+        doc.write(`
+            <html>
+            <head>
+                <title>Impression - ${title}</title>
+                <style>
+                    body {
+                        margin: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-height: 100vh;
+                        background: white;
+                    }
+                    img {
+                        max-width: 100%;
+                        max-height: 95vh;
+                    }
+                </style>
+            </head>
+            <body>
+                <img src="${url}" onload="window.print()">
+            </body>
+            </html>
+        `);
+        doc.close();
+
+        setTimeout(() => {
+            iframe.contentWindow.print();
+        }, 500);
+
+    } else if (isPdf) {
+        const viewerUrl = '/view-file?url=' + encodeURIComponent(url);
+
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'fixed';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = '0';
+        iframe.src = viewerUrl;
+
+        document.body.appendChild(iframe);
+
+        iframe.onload = function () {
+            setTimeout(() => {
+                iframe.contentWindow.print();
+            }, 600);
+        };
+
+    } else {
+        downloadFile(url, title);
+    }
 }
 
 function viewPreuve(url, mime, title, filename) {

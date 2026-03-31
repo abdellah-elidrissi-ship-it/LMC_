@@ -570,7 +570,6 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
                  class="logo-image"
                  onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
             <div class="logo-text">
-                <span class="logo-main">LMC CONSEIL</span>
                 <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
             </div>
         </div>
@@ -675,11 +674,64 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
             </div>
         </div>
 
+                <!-- Section F - Consultants (initialement vide) -->
+        <div class="form-card">
+            <div class="section-title">
+                <i class="bi bi-people"></i>
+                B - Équipe projet
+            </div>
+
+            <div id="existingConsultantsContainer"></div>
+            <div id="newConsultantsContainer"></div>
+
+            <div class="add-section">
+                <h6>
+                    <i class="bi bi-plus-circle" style="color:var(--success);"></i>
+                    Ajouter un consultant
+                </h6>
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label">Consultant</label>
+                        <select class="form-select" id="existingConsultantSelect">
+                            <option value="">-- Sélectionner --</option>
+                            @foreach($consultants as $cons)
+                            <option value="{{ $cons->id }}" data-nom="{{ $cons->nom_complet }}">
+                                {{ $cons->nom_complet }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Rôle</label>
+                        <select class="form-select" id="existingConsultantRole">
+                            <option>Chef de Projet</option>
+                            <option selected>Consultant</option>
+                            <option>Consultant Ext.</option>
+                            <option>Expert</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">J. alloués</label>
+                        <input type="number" class="form-control" id="existingConsultantJoursAlloues" min="0" step="0.1" value="0">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">J. réalisés</label>
+                        <input type="number" class="form-control" id="existingConsultantJoursRealises" min="0" step="0.1" value="0">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn-add w-100" onclick="addConsultant()">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Section B - Normes -->
         <div class="form-card">
             <div class="section-title">
                 <i class="bi bi-check-square"></i>
-                B - Normes applicables
+                C - Normes applicables
             </div>
             <div class="normes-section">
                 <div class="normes-grid">
@@ -698,7 +750,7 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
         <div class="form-card">
             <div class="section-title">
                 <i class="bi bi-calendar"></i>
-                C - Dates du projet
+                D - Dates du projet
             </div>
             <div class="row g-3">
                 <div class="col-md-4">
@@ -723,7 +775,7 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
         <div class="form-card">
             <div class="section-title">
                 <i class="bi bi-graph-up"></i>
-                D - Indicateurs de suivi
+                E - Indicateurs de suivi
                 <span class="section-hint">
                     <i class="bi bi-info-circle"></i> Sera calculé automatiquement
                 </span>
@@ -763,7 +815,7 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
         <div class="form-card">
             <div class="section-title">
                 <i class="bi bi-journal-check"></i>
-                E - Suivi des chapitres SMI
+                F - Suivi des chapitres SMI
                 <span class="auto-badge">Configuration initiale</span>
             </div>
 
@@ -814,99 +866,39 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
             </div>
         </div>
 
-        <!-- Section F - Consultants (initialement vide) -->
-        <div class="form-card">
-            <div class="section-title">
-                <i class="bi bi-people"></i>
-                F - Équipe projet
-            </div>
+        
 
-            <div id="existingConsultantsContainer"></div>
-            <div id="newConsultantsContainer"></div>
-
-            <div class="add-section">
-                <h6>
-                    <i class="bi bi-plus-circle" style="color:var(--success);"></i>
-                    Ajouter un consultant
-                </h6>
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-4">
-                        <label class="form-label">Consultant</label>
-                        <select class="form-select" id="existingConsultantSelect">
-                            <option value="">-- Sélectionner --</option>
-                            @foreach($consultants as $cons)
-                            <option value="{{ $cons->id }}" data-nom="{{ $cons->nom_complet }}">
-                                {{ $cons->nom_complet }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Rôle</label>
-                        <select class="form-select" id="existingConsultantRole">
-                            <option>Chef de Projet</option>
-                            <option selected>Consultant</option>
-                            <option>Consultant Ext.</option>
-                            <option>Expert</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">J. alloués</label>
-                        <input type="number" class="form-control" id="existingConsultantJoursAlloues" min="0" step="0.1" value="0">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">J. réalisés</label>
-                        <input type="number" class="form-control" id="existingConsultantJoursRealises" min="0" step="0.1" value="0">
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn-add w-100" onclick="addConsultant()">
-                            <i class="bi bi-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section G - Formations -->
-        <div class="form-card">
-            <div class="section-title">
-                <i class="bi bi-mortarboard"></i>
-                G - Plan de formation
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered" style="min-width:600px;">
-                    <thead>
-                        <tr>
-                            <th>Formation</th>
-                            <th style="width:200px;">Statut initial</th>
-                            <th>Observations</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $formations = DB::table('formations')->get(); @endphp
-                        @foreach($formations as $index => $form)
-                        <tr>
-                            <td style="font-weight:500;">
-                                <input type="hidden" name="formations[{{ $index }}][id]" value="{{ $form->id }}">
-                                {{ $form->titre_formation }}
-                            </td>
-                            <td>
-                                <select class="form-select" name="formations[{{ $index }}][statut]">
-                                    <option value="À planifier">À planifier</option>
-                                    <option value="En cours">En cours</option>
-                                    <option value="Réalisée">Réalisée</option>
-                                    <option value="Finalisée">Finalisée</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" name="formations[{{ $index }}][observations]" placeholder="Observations...">
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<!-- Section G - Plan de formation (personnalisé) -->
+<div class="form-card">
+    <div class="section-title">
+        <i class="bi bi-mortarboard"></i>
+        G - Plan de formation
+        <span class="section-hint">
+            <i class="bi bi-plus-circle"></i> Ajoutez vos propres formations
+        </span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered" style="min-width:600px;" id="formationsTable">
+            <thead>
+                <tr>
+                    <th>Formation</th>
+                    <th>Statut</th>
+                    <th>Jours prévus</th>
+                    <th>Date réalisation</th>
+                    <th style="width:50px;"></th>
+                </tr>
+            </thead>
+            <tbody id="formationsTbody">
+                <!-- Lignes ajoutées dynamiquement ; initialement vide -->
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-3">
+        <button type="button" class="btn-add" onclick="addFormationRow()">
+            <i class="bi bi-plus-lg"></i> Ajouter une formation
+        </button>
+    </div>
+</div>
 
         <!-- Section H - Contraintes -->
         <div class="form-card">
@@ -939,6 +931,51 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
 </div>
 
 <script>
+
+
+// Gestion des formations dynamiques
+let formationRowIndex = 0;
+
+function addFormationRow() {
+    const tbody = document.getElementById('formationsTbody');
+    const row = document.createElement('tr');
+    row.id = `formation-row-${formationRowIndex}`;
+    row.innerHTML = `
+        <td>
+            <input type="text" class="form-control" name="formations_dynamic[${formationRowIndex}][titre]" 
+                   placeholder="Ex: ISO 9001 – Formation interne" required>
+        </td>
+        <td>
+            <select class="form-select" name="formations_dynamic[${formationRowIndex}][statut]">
+                <option value="À planifier">À planifier</option>
+                <option value="En cours">En cours</option>
+                <option value="Réalisée">Réalisée</option>
+                <option value="Finalisée">Finalisée</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control" name="formations_dynamic[${formationRowIndex}][jours]" 
+                   step="0.5" min="0" placeholder="Jours prévus">
+        </td>
+        <td>
+            <input type="date" class="form-control" name="formations_dynamic[${formationRowIndex}][date_realisation]">
+        </td>
+        <td class="text-center">
+            <button type="button" class="btn-remove" onclick="removeFormationRow(${formationRowIndex})">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+    tbody.appendChild(row);
+    formationRowIndex++;
+}
+
+function removeFormationRow(index) {
+    const row = document.getElementById(`formation-row-${index}`);
+    if (row) row.remove();
+}
+
+
 // Theme toggle
 (function() {
     const saved = localStorage.getItem('lmc-theme') || 'light';

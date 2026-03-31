@@ -1285,48 +1285,6 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* ===== CONSULTANTS ===== */
-        .consultant-row {
-            background: linear-gradient(135deg, var(--gray-50), white);
-            border: 1px solid var(--gray-200);
-            border-left: 4px solid var(--primary-500);
-            border-radius: var(--radius-xl);
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            transition: all var(--transition-fast);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .consultant-row:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateX(4px);
-            border-color: var(--primary-300);
-        }
-
-        .add-section {
-            background: linear-gradient(135deg, var(--gray-100), var(--gray-50));
-            border: 2px dashed var(--gray-300);
-            border-radius: var(--radius-xl);
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            transition: all var(--transition-fast);
-        }
-
-        .add-section:hover {
-            border-color: var(--primary-500);
-            background: linear-gradient(135deg, var(--primary-50), var(--gray-50));
-        }
-
-        .add-section h6 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--gray-700);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         /* ===== BUTTONS ===== */
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
@@ -1773,264 +1731,486 @@
         }
 
         /* ===== FULLSCREEN PREUVE MODAL ===== */
-.fs-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.68);
-    backdrop-filter: blur(6px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 99999;
-    padding: 24px;
-}
+        .fs-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.68);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            padding: 24px;
+        }
 
-.fs-overlay.active {
-    display: flex;
-}
+        .fs-overlay.active {
+            display: flex;
+        }
 
-.fs-modal-card {
-    width: min(760px, 94vw);
-    max-height: 92vh;
-    background: #ffffff;
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
-    border: 1px solid #e5e7eb;
-    display: flex;
-    flex-direction: column;
-    animation: fsFadeUp 0.18s ease;
-}
+        .fs-modal-card {
+            width: min(760px, 94vw);
+            max-height: 92vh;
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            animation: fsFadeUp 0.18s ease;
+        }
 
-@keyframes fsFadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(8px) scale(0.98);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
+        @keyframes fsFadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px) scale(0.98);
+            }
 
-.fs-modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 18px 22px;
-    border-bottom: 1px solid #e5e7eb;
-    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-}
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
 
-.fs-modal-title {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 700;
-    color: #111827;
-    line-height: 1.2;
-    max-width: 70%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .fs-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 22px;
+            border-bottom: 1px solid #e5e7eb;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        }
 
-.fs-modal-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        .fs-modal-title {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            color: #111827;
+            line-height: 1.2;
+            max-width: 70%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-.btn-print {
-    border: none;
-    border-radius: 999px;
-    padding: 11px 18px;
-    background: #2563eb;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.22);
-}
+        .fs-modal-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.btn-print:hover {
-    background: #1d4ed8;
-    transform: translateY(-1px);
-}
+        .btn-print {
+            border: none;
+            border-radius: 999px;
+            padding: 11px 18px;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 22px rgba(37, 99, 235, 0.22);
+        }
 
-.fs-close-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 999px;
-    border: 1px solid #d1d5db;
-    background: #ffffff;
-    color: #6b7280;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
+        .btn-print:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
 
-.fs-close-btn:hover {
-    background: #f3f4f6;
-    color: #111827;
-}
+        .fs-close-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            border: 1px solid #d1d5db;
+            background: #ffffff;
+            color: #6b7280;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-.fs-modal-body {
-    padding: 28px;
-    min-height: 430px;
-    max-height: calc(92vh - 88px);
-    overflow: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
-}
+        .fs-close-btn:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
 
-/* PDF / iframe / embed */
-.pdf-embed,
-.fs-modal-body iframe,
-.fs-modal-body embed {
-    width: 100%;
-    height: 72vh;
-    min-height: 520px;
-    border: 1px solid #e5e7eb;
-    border-radius: 18px;
-    background: #ffffff;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-}
+        .fs-modal-body {
+            padding: 28px;
+            min-height: 430px;
+            max-height: calc(92vh - 88px);
+            overflow: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+        }
 
-/* image preview */
-.fs-modal-body img {
-    max-width: 100%;
-    max-height: 72vh;
-    border-radius: 18px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    object-fit: contain;
-    background: #fff;
-}
+        /* PDF / iframe / embed */
+        .pdf-embed,
+        .fs-modal-body iframe,
+        .fs-modal-body embed {
+            width: 100%;
+            height: 72vh;
+            min-height: 520px;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        }
 
-/* generic files preview */
-.file-preview-generic {
-    width: 100%;
-    max-width: 360px;
-    text-align: center;
-    margin: 0 auto;
-}
+        /* image preview */
+        .fs-modal-body img {
+            max-width: 100%;
+            max-height: 72vh;
+            border-radius: 18px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+            object-fit: contain;
+            background: #fff;
+        }
 
-.file-preview-generic i {
-    font-size: 82px;
-    color: #4f46e5;
-    margin-bottom: 14px;
-    display: inline-block;
-}
+        /* generic files preview */
+        .file-preview-generic {
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            margin: 0 auto;
+        }
 
-.file-preview-generic p:first-of-type {
-    font-size: 20px;
-    font-weight: 700;
-    color: #111827;
-    margin: 0 0 8px;
-    word-break: break-word;
-}
+        .file-preview-generic i {
+            font-size: 82px;
+            color: #4f46e5;
+            margin-bottom: 14px;
+            display: inline-block;
+        }
 
-.file-preview-generic p:last-of-type {
-    font-size: 14px;
-    color: #6b7280;
-    margin: 0 0 24px;
-}
+        .file-preview-generic p:first-of-type {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 8px;
+            word-break: break-word;
+        }
 
-.btn-dl {
-    border: none;
-    border-radius: 14px;
-    padding: 14px 22px;
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 12px 30px rgba(79, 70, 229, 0.25);
-    transition: all 0.2s ease;
-}
+        .file-preview-generic p:last-of-type {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 0 0 24px;
+        }
 
-.btn-dl:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 16px 35px rgba(79, 70, 229, 0.32);
-}
+        .btn-dl {
+            border: none;
+            border-radius: 14px;
+            padding: 14px 22px;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 12px 30px rgba(79, 70, 229, 0.25);
+            transition: all 0.2s ease;
+        }
 
-@media (max-width: 768px) {
-    .fs-overlay {
-        padding: 14px;
-    }
+        .btn-dl:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 35px rgba(79, 70, 229, 0.32);
+        }
 
-    .fs-modal-card {
-        width: 100%;
-        max-height: 94vh;
-        border-radius: 18px;
-    }
+        @media (max-width: 768px) {
+            .fs-overlay {
+                padding: 14px;
+            }
 
-    .fs-modal-header {
-        padding: 14px 16px;
-    }
+            .fs-modal-card {
+                width: 100%;
+                max-height: 94vh;
+                border-radius: 18px;
+            }
 
-    .fs-modal-title {
-        font-size: 17px;
-        max-width: 55%;
-    }
+            .fs-modal-header {
+                padding: 14px 16px;
+            }
 
-    .btn-print {
-        padding: 10px 14px;
-        font-size: 13px;
-    }
+            .fs-modal-title {
+                font-size: 17px;
+                max-width: 55%;
+            }
 
-    .fs-modal-body {
-        padding: 16px;
-        min-height: 320px;
-    }
+            .btn-print {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
 
-    .pdf-embed,
-    .fs-modal-body iframe,
-    .fs-modal-body embed {
-        min-height: 420px;
-        height: 60vh;
-    }
+            .fs-modal-body {
+                padding: 16px;
+                min-height: 320px;
+            }
 
-    .file-preview-generic i {
-        font-size: 64px;
-    }
-}
+            .pdf-embed,
+            .fs-modal-body iframe,
+            .fs-modal-body embed {
+                min-height: 420px;
+                height: 60vh;
+            }
 
-.file-actions {
-    margin-top: 10px;
-}
+            .file-preview-generic i {
+                font-size: 64px;
+            }
+        }
 
-.btn-download-clean {
-    border: 1px solid #e5e7eb;
-    background: #ffffff;
-    color: #111827;
-    padding: 10px 18px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
+        .file-actions {
+            margin-top: 10px;
+        }
 
-.btn-download-clean:hover {
-    background: #f9fafb;
-    border-color: #d1d5db;
-}
+        .btn-download-clean {
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            color: #111827;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-download-clean:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        /* ===== COMPACT CONSULTANT TABLE ===== */
+        .consultant-table-header {
+            background: var(--gray-100);
+            border-radius: var(--radius-lg);
+            margin-bottom: 0.75rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .consultant-header-grid {
+            display: grid;
+            grid-template-columns: 3fr 2fr 1.2fr 1.2fr 1fr 0.8fr;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .consultant-row-compact {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .consultant-row-compact:hover {
+            border-color: var(--primary-300);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .consultant-grid {
+            display: grid;
+            grid-template-columns: 3fr 2fr 1.2fr 1.2fr 1fr 0.8fr;
+            gap: 0.75rem;
+            align-items: center;
+            padding: 0.5rem 1rem;
+        }
+
+        .consultant-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .consultant-name i {
+            font-size: 1rem;
+        }
+
+        .charge-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .charge-badge.charge-normal {
+            background: var(--success-100);
+            color: var(--success-700);
+        }
+
+        .charge-badge.charge-warning {
+            background: var(--warning-100);
+            color: var(--warning-700);
+        }
+
+        .charge-badge.charge-high {
+            background: var(--danger-100);
+            color: var(--danger-700);
+        }
+
+        .btn-remove-sm {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--danger-300);
+            background: transparent;
+            color: var(--danger-500);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-remove-sm:hover {
+            background: var(--danger-500);
+            color: white;
+            border-color: var(--danger-500);
+            transform: rotate(90deg);
+        }
+
+        .btn-add-sm {
+            background: linear-gradient(135deg, var(--success-500), var(--success-600));
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-add-sm:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .add-section-compact {
+            background: var(--gray-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .form-label-sm {
+            font-size: 0.7rem;
+            margin-bottom: 0.2rem;
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
+        .form-control-sm,
+        .form-select-sm {
+            padding: 0.4rem 0.6rem !important;
+            font-size: 0.75rem !important;
+        }
+
+        .consultant-summary {
+            background: linear-gradient(135deg, var(--gray-100), var(--gray-50));
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-lg);
+            margin-top: 1rem;
+            border-left: 4px solid var(--primary-500);
+        }
+
+        .total-days-badge {
+            background: white;
+            padding: 0.2rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-600);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .comparison-message span {
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 992px) {
+
+            .consultant-header-grid,
+            .consultant-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .consultant-header-grid {
+                display: none;
+            }
+
+            .consultant-row-compact {
+                padding: 0.75rem;
+            }
+
+            .consultant-grid>div {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .consultant-grid>div::before {
+                content: attr(data-label);
+                font-weight: 600;
+                font-size: 0.7rem;
+                color: var(--gray-500);
+                margin-right: 0.5rem;
+            }
+
+            .consultant-name::before {
+                content: "Consultant";
+            }
+
+            .consultant-grid>div:nth-child(2)::before {
+                content: "Rôle";
+            }
+
+            .consultant-grid>div:nth-child(3)::before {
+                content: "J. alloués";
+            }
+
+            .consultant-grid>div:nth-child(4)::before {
+                content: "J. réalisés";
+            }
+
+            .consultant-grid>div:nth-child(5)::before {
+                content: "Charge";
+            }
+
+            .consultant-grid>div:nth-child(6)::before {
+                content: "Action";
+            }
+        }
     </style>
 </head>
 
@@ -2119,27 +2299,27 @@
 
     <!-- ===== FULLSCREEN PREUVE VIEWER ===== -->
     <div id="preuveFullscreenOverlay" class="fs-overlay" onclick="closeFullscreenOnBackdrop(event)">
-    <div class="fs-modal-card">
-        <div class="fs-modal-header">
-            <h3 class="fs-modal-title" id="fsPreuveTitle">Document</h3>
+        <div class="fs-modal-card">
+            <div class="fs-modal-header">
+                <h3 class="fs-modal-title" id="fsPreuveTitle">Document</h3>
 
-            <div class="fs-modal-actions">
-                <button type="button" class="btn-print" onclick="printCurrentPreuve()">
-                    <i class="bi bi-printer-fill"></i>
-                    Imprimer
-                </button>
+                <div class="fs-modal-actions">
+                    <button type="button" class="btn-print" onclick="printCurrentPreuve()">
+                        <i class="bi bi-printer-fill"></i>
+                        Imprimer
+                    </button>
 
-                <button type="button" class="fs-close-btn" onclick="closeFullscreen()">
-                    <i class="bi bi-x-lg"></i>
-                </button>
+                    <button type="button" class="fs-close-btn" onclick="closeFullscreen()">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="fs-modal-body" id="fsPreuveBody">
+                <!-- contenu injecté par JS -->
             </div>
         </div>
-
-        <div class="fs-modal-body" id="fsPreuveBody">
-            <!-- contenu injecté par JS -->
-        </div>
     </div>
-</div>
 
     <!-- Header -->
     <div class="site-header">
@@ -2149,9 +2329,8 @@
                     alt="LMC Conseil" class="logo-image"
                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
                 <div class="logo-text">
-                    <span class="logo-main">LMC CONSEIL</span>
-                    <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
-                </div>
+                <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
+            </div>
             </div>
             <div class="header-actions">
                 <div class="user-info">
@@ -2245,11 +2424,146 @@
                 </div>
             </div>
 
-            <!-- Section B -->
+            <!-- Section B - Équipe projet (redesign compact) -->
+            <div class="form-card">
+                <div class="section-title">
+                    <i class="bi bi-people-fill"></i>
+                    B - Équipe projet
+                    <span class="section-hint">
+                        <i class="bi bi-person-plus-fill"></i> Gestion des consultants
+                    </span>
+                </div>
+
+                <!-- Entête du tableau -->
+                <div class="consultant-table-header d-none d-md-grid">
+                    <div class="consultant-header-grid">
+                        <span>Consultant</span>
+                        <span>Rôle</span>
+                        <span class="text-center">J. alloués</span>
+                        <span class="text-center">J. réalisés</span>
+                        <span class="text-center">Charge</span>
+                        <span class="text-center">Action</span>
+                    </div>
+                </div>
+
+                <!-- Conteneur des consultants existants -->
+                <div id="existingConsultantsContainer">
+                    @forelse($projet->affectations as $aff)
+                    @php
+                    $charge = $aff->jours_alloues > 0 ? round(($aff->jours_realises / $aff->jours_alloues) * 100) : 0;
+                    $chargeClass = $charge >= 100 ? 'charge-high' : ($charge >= 75 ? 'charge-warning' : 'charge-normal');
+                    @endphp
+                    <div class="consultant-row-compact" id="consultant-row-{{ $aff->consultant_id }}">
+                        <div class="consultant-grid">
+                            <div class="consultant-name">
+                                <i class="bi bi-person-circle me-1" style="color:var(--primary-500);"></i>
+                                {{ $aff->consultant->nom_complet }}
+                                <input type="hidden" name="consultants[{{ $aff->consultant_id }}][id]" value="{{ $aff->consultant_id }}">
+                            </div>
+                            <div>
+                                <select class="form-select form-select-sm" name="consultants[{{ $aff->consultant_id }}][role]">
+                                    @foreach(['Chef de Projet','Consultant','Consultant Ext.','Expert'] as $r)
+                                    <option value="{{ $r }}" {{ $aff->role_dans_projet == $r ? 'selected' : '' }}>{{ $r }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <input type="number" class="form-control form-control-sm text-center"
+                                    name="consultants[{{ $aff->consultant_id }}][jours_alloues]"
+                                    min="0" step="0.1" value="{{ $aff->jours_alloues }}"
+                                    onchange="updateConsultantCharge(this)">
+                            </div>
+                            <div>
+                                <input type="number" class="form-control form-control-sm text-center consultant-jours-realises"
+                                    name="consultants[{{ $aff->consultant_id }}][jours_realises]"
+                                    min="0" step="0.1" value="{{ $aff->jours_realises }}"
+                                    onchange="updateConsultantCharge(this); updateConsultantsTotal()">
+                            </div>
+                            <div class="text-center">
+                                <span class="charge-badge {{ $chargeClass }}">{{ $charge }}%</span>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn-remove-sm"
+                                    onclick="removeConsultant(this, {{ $aff->consultant_id }})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    @empty
+                    <p class="text-center text-muted py-3">Aucun consultant affecté</p>
+                    @endforelse
+                </div>
+
+                <!-- Conteneur des nouveaux consultants (ajoutés dynamiquement) -->
+                <div id="newConsultantsContainer"></div>
+                <div id="deletedConsultantsContainer"></div>
+
+                <!-- Bloc ajout de consultant -->
+                <div class="add-section-compact">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label form-label-sm">Consultant</label>
+                            <select class="form-select form-select-sm" id="existingConsultantSelect">
+                                <option value="">-- Sélectionner --</option>
+                                @foreach($consultants as $cons)
+                                <option value="{{ $cons->id }}" data-nom="{{ $cons->nom_complet }}">{{ $cons->nom_complet }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label form-label-sm">Rôle</label>
+                            <select class="form-select form-select-sm" id="existingConsultantRole">
+                                <option>Chef de Projet</option>
+                                <option selected>Consultant</option>
+                                <option>Consultant Ext.</option>
+                                <option>Expert</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">J. alloués</label>
+                            <input type="number" class="form-control form-control-sm" id="existingConsultantJoursAlloues" min="0" step="0.1" value="0">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label form-label-sm">J. réalisés</label>
+                            <input type="number" class="form-control form-control-sm" id="existingConsultantJoursRealises" min="0" step="0.1" value="0">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn-add-sm w-100" onclick="addExistingConsultant()">
+                                <i class="bi bi-plus-lg"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOC B - Résumé consultants + comparaison  ← NOUVEAU -->
+<div class="consultant-summary mt-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <span style="font-size:0.85rem;">
+                <i class="bi bi-people-fill me-1" style="color:var(--primary-500);"></i>
+                Total J. réalisés <strong>consultants</strong> :
+            </span>
+            <strong class="total-days-badge" id="totalConsultantsDays">0</strong>
+        </div>
+        <div>
+            <span style="font-size:0.85rem;">
+                <i class="bi bi-graph-up-arrow me-1" style="color:var(--primary-500);"></i>
+                Total J. réalisés <strong>projet (E)</strong> :
+            </span>
+            <strong class="total-days-badge" id="totalProjetDaysDisplay"
+                style="background:linear-gradient(135deg,var(--success-100),var(--success-50));color:var(--success-700);">0</strong>
+        </div>
+    </div>
+    <div class="comparison-message small mt-2" id="comparaisonMsg"></div>
+</div>
+            </div>
+
+            <!-- Section C - Normes -->
             <div class="form-card">
                 <div class="section-title">
                     <i class="bi bi-check-square-fill"></i>
-                    B - Normes applicables
+                    C - Normes applicables
                 </div>
                 <div class="normes-section">
                     <div class="normes-grid">
@@ -2265,11 +2579,11 @@
                 </div>
             </div>
 
-            <!-- Section C -->
+            <!-- Section D - Dates -->
             <div class="form-card">
                 <div class="section-title">
                     <i class="bi bi-calendar-check-fill"></i>
-                    C - Dates du projet
+                    D - Dates du projet
                 </div>
                 <div class="row g-3">
                     <div class="col-md-4">
@@ -2290,68 +2604,71 @@
                 </div>
             </div>
 
-            <!-- Section D -->
+            <!-- Section E - Indicateurs -->
             <div class="form-card">
                 <div class="section-title">
                     <i class="bi bi-graph-up-arrow"></i>
-                    D - Indicateurs de suivi
+                    E - Indicateurs de suivi
                     <span class="section-hint">
                         <i class="bi bi-calculator-fill"></i> Calcul automatique
                     </span>
                 </div>
                 <div class="row g-4">
-                    <div class="col-md-4">
-                        <label class="form-label">Jours prévus</label>
-                        <input type="number" class="form-control" name="jours_prevus" id="jours_prevus"
-                            min="0" value="{{ old('jours_prevus', $projet->jours_prevus) }}"
-                            required oninput="recalcJours()">
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">
-                            Jours réalisés
-                            <span class="badge-auto"><i class="bi bi-lock-fill"></i> Auto</span>
-                        </label>
-                        <input type="number" class="form-control auto-calc" name="jours_realises"
-                            id="jours_realises" value="{{ old('jours_realises', $projet->suiviChapitres->sum('jours_intervention')) }}" readonly>
-                        <div class="auto-tag">
-                            <i class="bi bi-arrow-right-circle-fill"></i> Somme des jours d'intervention
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">
-                            Avancement global
-                            <span class="badge-auto"><i class="bi bi-lock-fill"></i> Auto (livrables)</span>
-                        </label>
-                        <input type="number" class="form-control auto-calc" name="avancement_percent"
-                            id="avancement_percent" value="{{ $avancementGlobal }}" readonly>
-                        <div class="auto-tag">
-                            <i class="bi bi-arrow-right-circle-fill"></i>
-                            {{ $terminesLivrablesGlobal }}/{{ $totalLivrablesGlobal }} livrables terminés
-                        </div>
-                    </div>
-                </div>
+    <div class="col-md-4">
+        <label class="form-label">Jours prévus</label>
+        <input type="number" class="form-control" name="jours_prevus" id="jours_prevus"
+            min="0" value="{{ old('jours_prevus', $projet->jours_prevus) }}"
+            required oninput="recalcTotalDays()">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">
+            Jours réalisés
+            <span class="badge-auto"><i class="bi bi-lock-fill"></i> Auto</span>
+        </label>
+        <input type="number" class="form-control auto-calc" name="jours_realises"
+            id="jours_realises"
+            value="{{ old('jours_realises', $projet->suiviChapitres->sum('jours_intervention')) }}"
+            readonly>
+        <div class="auto-tag">
+            <i class="bi bi-arrow-right-circle-fill"></i>
+            Chapitres + Formations (jours prévus)
+        </div>
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">
+            Avancement global
+            <span class="badge-auto"><i class="bi bi-lock-fill"></i> Auto (livrables)</span>
+        </label>
+        <input type="number" class="form-control auto-calc" name="avancement_percent"
+            id="avancement_percent" value="{{ $avancementGlobal }}" readonly>
+        <div class="auto-tag">
+            <i class="bi bi-arrow-right-circle-fill"></i>
+            {{ $terminesLivrablesGlobal }}/{{ $totalLivrablesGlobal }} livrables terminés
+        </div>
+    </div>
+</div>
             </div>
 
-            <!-- Section E - SMI avec livrables + preuves -->
+            <!-- Section F - SMI avec livrables + preuves -->
             <div class="form-card">
                 <div class="section-title">
                     <i class="bi bi-journal-check-fill"></i>
-                    E - Suivi des chapitres SMI
+                    F - Suivi des chapitres SMI
                     <span class="auto-badge">Avancement automatique</span>
                 </div>
 
                 <div class="table-smi-container">
                     <table class="table-smi">
                         <thead>
-                            <tr>
-                                <th style="width:9%;">Chapitre</th>
-                                <th style="width:12%;">Livrables</th>
-                                <th class="col-exigences">Exigences clés</th>
-                                <th style="width:6%;">Av. %</th>
-                                <th style="width:10%;">Phase</th>
-                                <th style="width:6%;">J. Interv.</th>
-                                <th style="width:10%;">Observations</th>
-                            </tr>
+                            藻
+                            <th style="width:9%;">Chapitre</th>
+                            <th style="width:12%;">Livrables</th>
+                            <th class="col-exigences">Exigences clés</th>
+                            <th style="width:6%;">Av. %</th>
+                            <th style="width:10%;">Phase</th>
+                            <th style="width:6%;">J. Interv.</th>
+                            <th style="width:10%;">Observations</th>
+                            藻
                         </thead>
                         <tbody>
                             @foreach($projet->suiviChapitres as $index => $chap)
@@ -2483,64 +2800,65 @@
                                                 <td colspan="4" style="padding:0.75rem 1rem; background:white;">
                                                     <div class="preuve-viewer-panel">
                                                         <div class="preuve-viewer-header">
-    <span>
-        <i class="bi bi-eye-fill me-1" style="color:var(--primary-500);"></i>
-        Preuves — {{ Str::limit($liv->libelle, 50) }}
-    </span>
-    <small style="color:var(--gray-500); font-size:0.65rem;">
-        {{ $preuveCount }} preuve(s)
-    </small>
-</div>
-<div class="preuve-list" id="preuve-list-{{ $liv->id }}">
-    @if($preuveCount === 0)
-        <div class="preuve-empty" id="preuve-empty-{{ $liv->id }}">
-            <i class="bi bi-inbox"></i>
-            Aucune preuve attachée
-        </div>
-    @else
-        @foreach($livPreuves as $pr)
-            @php
-                $isImage = Str::startsWith($pr->mime_type, 'image/');
-                $isPdf = $pr->mime_type === 'application/pdf';
-                $fileIcon = $isPdf ? 'bi-file-earmark-pdf-fill' : 
-                    (Str::contains($pr->mime_type, 'word') ? 'bi-file-earmark-word-fill' :
-                    (Str::contains($pr->mime_type, 'excel') ? 'bi-file-earmark-excel-fill' :
-                    'bi-file-earmark-fill'));
-                $iconColor = $isPdf ? '#ef4444' : 
-                    (Str::contains($pr->mime_type, 'word') ? '#2563eb' : 
-                    (Str::contains($pr->mime_type, 'excel') ? '#10b981' : '#6b7280'));
-            @endphp
-            <div class="preuve-item" id="preuve-item-{{ $pr->id }}">
-                @if($isImage)
-                    <img src="{{ $pr->url }}" alt="{{ $pr->label }}" class="preuve-thumb">
-                @else
-                    <div class="preuve-thumb-icon">
-                        <i class="bi {{ $fileIcon }}" style="color: {{ $iconColor }}"></i>
-                    </div>
-                @endif
-                <div class="preuve-info">
-                    <div class="preuve-name">{{ $pr->label ?: $pr->fichier_nom }}</div>
-                    <div class="preuve-meta">
-                        {{ strtoupper(pathinfo($pr->fichier_nom, PATHINFO_EXTENSION)) }} •
-                        {{ number_format($pr->taille_kb, 0) }} Ko •
-                        {{ \Carbon\Carbon::parse($pr->created_at)->format('d/m/Y H:i') }}
-                    </div>
-                </div>
-                <div class="preuve-item-actions">
-                    <button type="button" class="btn-preuve-print"
-                        data-tooltip="Imprimer / Afficher"
-                        onclick="openFullscreen({{ $pr->id }}, '{{ addslashes($pr->label ?: $pr->fichier_nom) }}', '{{ $pr->mime_type }}', '{{ $pr->url }}', '{{ addslashes($pr->fichier_nom) }}')"                        <i class="bi bi-printer-fill"></i>
-                    </button>
-                    <button type="button" class="btn-preuve-delete"
-                        data-tooltip="Supprimer"
-                        onclick="deletePreuve({{ $pr->id }}, {{ $liv->id }})">
-                        <i class="bi bi-trash-fill"></i>
-                    </button>
-                </div>
-            </div>
-        @endforeach
-    @endif
-</div>
+                                                            <span>
+                                                                <i class="bi bi-eye-fill me-1" style="color:var(--primary-500);"></i>
+                                                                Preuves — {{ Str::limit($liv->libelle, 50) }}
+                                                            </span>
+                                                            <small style="color:var(--gray-500); font-size:0.65rem;">
+                                                                {{ $preuveCount }} preuve(s)
+                                                            </small>
+                                                        </div>
+                                                        <div class="preuve-list" id="preuve-list-{{ $liv->id }}">
+                                                            @if($preuveCount === 0)
+                                                            <div class="preuve-empty" id="preuve-empty-{{ $liv->id }}">
+                                                                <i class="bi bi-inbox"></i>
+                                                                Aucune preuve attachée
+                                                            </div>
+                                                            @else
+                                                            @foreach($livPreuves as $pr)
+                                                            @php
+                                                            $isImage = Str::startsWith($pr->mime_type, 'image/');
+                                                            $isPdf = $pr->mime_type === 'application/pdf';
+                                                            $fileIcon = $isPdf ? 'bi-file-earmark-pdf-fill' :
+                                                            (Str::contains($pr->mime_type, 'word') ? 'bi-file-earmark-word-fill' :
+                                                            (Str::contains($pr->mime_type, 'excel') ? 'bi-file-earmark-excel-fill' :
+                                                            'bi-file-earmark-fill'));
+                                                            $iconColor = $isPdf ? '#ef4444' :
+                                                            (Str::contains($pr->mime_type, 'word') ? '#2563eb' :
+                                                            (Str::contains($pr->mime_type, 'excel') ? '#10b981' : '#6b7280'));
+                                                            @endphp
+                                                            <div class="preuve-item" id="preuve-item-{{ $pr->id }}">
+                                                                @if($isImage)
+                                                                <img src="{{ $pr->url }}" alt="{{ $pr->label }}" class="preuve-thumb">
+                                                                @else
+                                                                <div class="preuve-thumb-icon">
+                                                                    <i class="bi {{ $fileIcon }}" style="color: {{ $iconColor }}"></i>
+                                                                </div>
+                                                                @endif
+                                                                <div class="preuve-info">
+                                                                    <div class="preuve-name">{{ $pr->label ?: $pr->fichier_nom }}</div>
+                                                                    <div class="preuve-meta">
+                                                                        {{ strtoupper(pathinfo($pr->fichier_nom, PATHINFO_EXTENSION)) }} •
+                                                                        {{ number_format($pr->taille_kb, 0) }} Ko •
+                                                                        {{ \Carbon\Carbon::parse($pr->created_at)->format('d/m/Y H:i') }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="preuve-item-actions">
+                                                                    <button type="button" class="btn-preuve-print"
+                                                                        data-tooltip="Imprimer / Afficher"
+                                                                        onclick="openFullscreen({{ $pr->id }}, '{{ addslashes($pr->label ?: $pr->fichier_nom) }}', '{{ $pr->mime_type }}', '{{ $pr->url }}', '{{ addslashes($pr->fichier_nom) }}')">
+                                                                        <i class="bi bi-printer-fill"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btn-preuve-delete"
+                                                                        data-tooltip="Supprimer"
+                                                                        onclick="deletePreuve({{ $pr->id }}, {{ $liv->id }})">
+                                                                        <i class="bi bi-trash-fill"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            @endforeach
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -2610,141 +2928,108 @@
                 </div>
             </div>
 
-            <!-- Section F - Consultants -->
+            <!-- Section G - Plan de formation (personnalisé) -->
             <div class="form-card">
-                <div class="section-title">
-                    <i class="bi bi-people-fill"></i>
-                    F - Équipe projet
-                </div>
-                <div id="existingConsultantsContainer">
-                    @forelse($projet->affectations as $aff)
-                    @php $charge = $aff->jours_alloues > 0 ? round(($aff->jours_realises / $aff->jours_alloues) * 100) : 0; @endphp
-                    <div class="consultant-row" id="consultant-row-{{ $aff->consultant_id }}">
-                        <div class="row align-items-center g-3">
-                            <div class="col-md-3">
-                                <div style="font-weight:600;">
-                                    <i class="bi bi-person-circle me-1" style="color:var(--primary-500);"></i>
-                                    {{ $aff->consultant->nom_complet }}
-                                </div>
-                                <input type="hidden" name="consultants[{{ $aff->consultant_id }}][id]" value="{{ $aff->consultant_id }}">
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-select" name="consultants[{{ $aff->consultant_id }}][role]">
-                                    @foreach(['Chef de Projet','Consultant','Consultant Ext.','Expert'] as $r)
-                                    <option value="{{ $r }}" {{ $aff->role_dans_projet == $r ? 'selected' : '' }}>{{ $r }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="number" class="form-control"
-                                    name="consultants[{{ $aff->consultant_id }}][jours_alloues]"
-                                    min="0" step="0.1" value="{{ $aff->jours_alloues }}" placeholder="J. alloués">
-                            </div>
-                            <div class="col-md-2">
-                                <input type="number" class="form-control"
-                                    name="consultants[{{ $aff->consultant_id }}][jours_realises]"
-                                    min="0" step="0.1" value="{{ $aff->jours_realises }}" placeholder="J. réalisés">
-                            </div>
-                            <div class="col-md-1">
-                                <span class="badge" style="background:linear-gradient(135deg, var(--primary-500), var(--primary-600)); color:white; padding:0.3rem 0.6rem; border-radius:var(--radius-full);">
-                                    {{ $charge }}%
-                                </span>
-                            </div>
-                            <div class="col-md-1 text-center">
-                                <button type="button" class="btn-remove"
-                                    onclick="removeConsultant(this, {{ $aff->consultant_id }})">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    @empty
-                    <p style="color:var(--gray-500); text-align:center; padding:1rem;">Aucun consultant affecté</p>
-                    @endforelse
-                </div>
-                <div id="newConsultantsContainer"></div>
-                <div id="deletedConsultantsContainer"></div>
-                <div class="add-section">
-                    <h6>
-                        <i class="bi bi-plus-circle-fill" style="color:var(--success-500);"></i>
-                        Ajouter un consultant
-                    </h6>
-                    <div class="row g-3 align-items-end">
-                        <div class="col-md-4">
-                            <label class="form-label">Consultant</label>
-                            <select class="form-select" id="existingConsultantSelect">
-                                <option value="">-- Sélectionner --</option>
-                                @foreach($consultants as $cons)
-                                <option value="{{ $cons->id }}" data-nom="{{ $cons->nom_complet }}">{{ $cons->nom_complet }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Rôle</label>
-                            <select class="form-select" id="existingConsultantRole">
-                                <option>Chef de Projet</option>
-                                <option selected>Consultant</option>
-                                <option>Consultant Ext.</option>
-                                <option>Expert</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">J. alloués</label>
-                            <input type="number" class="form-control" id="existingConsultantJoursAlloues" min="0" step="0.1" value="0">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">J. réalisés</label>
-                            <input type="number" class="form-control" id="existingConsultantJoursRealises" min="0" step="0.1" value="0">
-                        </div>
-                        <div class="col-md-1">
-                            <button type="button" class="btn-add w-100" onclick="addExistingConsultant()">
-                                <i class="bi bi-plus-lg"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section G -->
-            <div class="form-card">
-                <div class="section-title">
-                    <i class="bi bi-mortarboard-fill"></i>
-                    G - Plan de formation
-                </div>
-                <div class="table-responsive">
-                    <table class="table-smi" style="min-width:600px;">
-                        <thead>
-                            <tr>
-                                <th>Formation</th>
-                                <th style="width:200px;">Statut</th>
-                                <th>Observations</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($projet->formations as $index => $form)
-                            <tr>
-                                <td style="font-weight:500;">
-                                    <input type="hidden" name="formations[{{ $index }}][id]" value="{{ $form->id }}">
-                                    {{ $form->titre_formation }}
-                                </td>
-                                <td>
-                                    <select class="form-select" name="formations[{{ $index }}][statut]">
-                                        @foreach(['À planifier','En cours','Réalisée','Finalisée'] as $st)
-                                        <option value="{{ $st }}" {{ $form->pivot->statut == $st ? 'selected' : '' }}>{{ $st }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control"
-                                        name="formations[{{ $index }}][observations]"
-                                        value="{{ $form->pivot->observations }}" placeholder="Observations...">
-                                </td>
-                            </tr>
+    <div class="section-title">
+        <i class="bi bi-mortarboard-fill"></i>
+        G - Plan de formation
+        <span class="section-hint">
+            <i class="bi bi-plus-circle"></i> Ajoutez / modifiez vos formations
+        </span>
+    </div>
+ 
+    <div class="table-responsive">
+        <table class="table-smi" style="min-width:700px;" id="formationsTable">
+            <thead>
+                <tr>
+                    <th style="width:35%;">Formation</th>
+                    <th style="width:18%;">Statut</th>
+                    <th style="width:14%;">Jours prévus</th>
+                    <th style="width:18%;">Date réalisation</th>
+                    <th style="width:10%;">Observations</th>
+                    <th style="width:5%;"></th>
+                </tr>
+            </thead>
+            <tbody id="formationsTbody">
+ 
+                @php
+                    $customFormations = [];
+                    foreach($projet->formations as $f) {
+                        $customFormations[] = [
+                            'titre'            => $f->titre_formation,
+                            'statut'           => $f->pivot->statut,
+                            'jours'            => $f->pivot->jours_realises ?? 0,   // on réutilise la colonne existante
+                            'date_realisation' => $f->pivot->date_realisation ?? null,
+                            'observations'     => $f->pivot->observations,
+                            'id_original'      => $f->id,
+                        ];
+                    }
+                @endphp
+ 
+                @foreach($customFormations as $idx => $form)
+                <tr id="formation-row-{{ $idx }}">
+                    <td>
+                        <input type="text" class="form-control"
+                            name="custom_formations[{{ $idx }}][titre]"
+                            value="{{ $form['titre'] }}" required>
+                        @if(isset($form['id_original']))
+                        <input type="hidden" name="custom_formations[{{ $idx }}][id_original]"
+                            value="{{ $form['id_original'] }}">
+                        @endif
+                    </td>
+                    <td>
+                        <select class="form-select" name="custom_formations[{{ $idx }}][statut]">
+                            @foreach(['À planifier','En cours','Réalisée','Finalisée'] as $st)
+                            <option value="{{ $st }}"
+                                {{ ($form['statut'] ?? 'À planifier') == $st ? 'selected' : '' }}>
+                                {{ $st }}
+                            </option>
                             @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                        </select>
+                    </td>
+                    <td>
+                        {{-- "jours_prevus" — on stocke dans la colonne jours_realises du pivot (existant) --}}
+                        <input type="number" class="form-control formation-jours-prevus"
+                            name="custom_formations[{{ $idx }}][jours]"
+                            step="0.5" min="0"
+                            value="{{ $form['jours'] ?? 0 }}"
+                            oninput="recalcTotalDays()"
+                            placeholder="Jours prévus">
+                    </td>
+                    <td>
+                        <input type="date" class="form-control"
+                            name="custom_formations[{{ $idx }}][date_realisation]"
+                            value="{{ $form['date_realisation'] ?? '' }}">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control"
+                            name="custom_formations[{{ $idx }}][observations]"
+                            value="{{ $form['observations'] ?? '' }}"
+                            placeholder="Observations...">
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn-remove"
+                            onclick="removeFormationRow(this, {{ $idx }})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
+ 
+            </tbody>
+        </table>
+    </div>
+ 
+    <div class="mt-3 d-flex align-items-center gap-3">
+        <button type="button" class="btn-add" onclick="addFormationRow()">
+            <i class="bi bi-plus-lg"></i> Ajouter une formation
+        </button>
+        <span style="font-size:0.8rem; color:var(--gray-500);">
+            Total jours formations :
+            <strong id="totalFormationsDays" style="color:var(--primary-600);">0</strong> j.
+        </span>
+    </div>
+</div>
 
             <!-- Section H -->
             <div class="form-card">
@@ -2766,27 +3051,7 @@
                 </div>
             </div>
 
-            <!-- Boutons -->
-            <div class="d-flex justify-content-end gap-3 mb-5">
-                <a href="{{ route('projet.details', $projet->id) }}" class="btn-secondary">
-                    <i class="bi bi-x-circle"></i> Annuler
-                </a>
-                @if($user->hasPermission('voir_gantt'))
-                <a href="/projet/{{ $projet->id }}/gantt" class="btn-primary" style="background:linear-gradient(135deg, var(--success-500), var(--success-600));">
-                    <i class="bi bi-bar-chart-steps-fill"></i> Planning Gantt
-                    @php $ganttCount = DB::table('gantt_taches')->where('projet_id', $projet->id)->count(); @endphp
-                    @if($ganttCount > 0)
-                    <span class="badge bg-white text-success ms-1" style="font-size:0.7rem;">{{ $ganttCount }}</span>
-                    @endif
-                </a>
-                @endif
-                <button type="submit" class="btn-primary">
-                    <i class="bi bi-check-circle-fill"></i> Enregistrer les modifications
-                </button>
-            </div>
-        </form>
-
-        <!-- SECTION I - FICHIERS D'INTERVENTION -->
+<!-- SECTION I - FICHIERS D'INTERVENTION -->
         <div class="form-card preuves-projet-section">
             <div class="section-title">
                 <i class="bi bi-folder-fill"></i>
@@ -2872,12 +3137,13 @@
                         </div>
                         <div class="preuve-actions">
                             <button type="button" class="preuve-action-btn"
-                               onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $preuve->fichier_nom) }}', '{{ $preuve->mime_type }}', '{{ $preuve->url }}', '{{ addslashes($preuve->fichier_nom) }}')"
+                                onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $preuve->fichier_nom) }}', '{{ $preuve->mime_type }}', '{{ $preuve->url }}', '{{ addslashes($preuve->fichier_nom) }}')"
                                 title="Afficher">
                                 <i class="bi bi-eye-fill"></i>
                             </button>
                             <button type="button" class="preuve-action-btn print"
-onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $preuve->fichier_nom) }}', '{{ $preuve->mime_type }}', '{{ $preuve->url }}', '{{ addslashes($preuve->fichier_nom) }}'); setTimeout(() => printCurrentPreuve(), 200);"                                title="Imprimer">
+                                onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $preuve->fichier_nom) }}', '{{ $preuve->mime_type }}', '{{ $preuve->url }}', '{{ addslashes($preuve->fichier_nom) }}'); setTimeout(() => printCurrentPreuve(), 200);"
+                                title="Imprimer">
                                 <i class="bi bi-printer-fill"></i>
                             </button>
                             <button type="button" class="preuve-action-btn delete"
@@ -2897,17 +3163,33 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
                 @endforelse
             </div>
         </div>
+
+            <!-- Boutons -->
+            <div class="d-flex justify-content-end gap-3 mb-5">
+                <a href="{{ route('projet.details', $projet->id) }}" class="btn-secondary">
+                    <i class="bi bi-x-circle"></i> Annuler
+                </a>
+                @if($user->hasPermission('voir_gantt'))
+                <a href="/projet/{{ $projet->id }}/gantt" class="btn-primary" style="background:linear-gradient(135deg, var(--success-500), var(--success-600));">
+                    <i class="bi bi-bar-chart-steps-fill"></i> Planning Gantt
+                    @php $ganttCount = DB::table('gantt_taches')->where('projet_id', $projet->id)->count(); @endphp
+                    @if($ganttCount > 0)
+                    <span class="badge bg-white text-success ms-1" style="font-size:0.7rem;">{{ $ganttCount }}</span>
+                    @endif
+                </a>
+                @endif
+                <button type="submit" class="btn-primary">
+                    <i class="bi bi-check-circle-fill"></i> Enregistrer les modifications
+                </button>
+            </div>
+        </form>
+
+        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // ===== STATE =====
-        let pendingFiles = {};
-        let projetPendingFile = null;
-        let currentFsPreuveId = null;
-        let currentFsPreuveUrl = null;
-        let currentFsPreuveMime = null;
-        let currentFsPreuveFileName = null;
+
 
         // ===== THEME =====
         (function() {
@@ -2926,16 +3208,237 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
             if (icon) icon.className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
         });
 
-        // ===== JOURS RECALC =====
-        function recalcJours() {
-            let totalJ = 0;
-            document.querySelectorAll('input[name^="chapitres"][name$="[jours]"]').forEach(i => {
-                totalJ += parseFloat(i.value) || 0;
-            });
-            totalJ = Math.round(totalJ * 10) / 10;
-            document.getElementById('jours_realises').value = totalJ;
-            document.getElementById('footJours').textContent = totalJ;
+        // ===== CONSULTANTS =====
+        function updateConsultantCharge(input) {
+            const row = input.closest('.consultant-grid');
+            const alloues = parseFloat(row.querySelector('input[name$="[jours_alloues]"]').value) || 0;
+            const realises = parseFloat(row.querySelector('input[name$="[jours_realises]"]').value) || 0;
+            const charge = alloues > 0 ? Math.round((realises / alloues) * 100) : 0;
+            const badge = row.querySelector('.charge-badge');
+            badge.textContent = charge + '%';
+            badge.className = 'charge-badge';
+            if (charge >= 100) badge.classList.add('charge-high');
+            else if (charge >= 75) badge.classList.add('charge-warning');
+            else badge.classList.add('charge-normal');
         }
+
+        function updateConsultantsTotal() {
+    let totalConsultants = 0;
+    document.querySelectorAll('.consultant-jours-realises').forEach(input => {
+        totalConsultants += parseFloat(input.value) || 0;
+    });
+    totalConsultants = Math.round(totalConsultants * 10) / 10;
+ 
+    const totalSpan = document.getElementById('totalConsultantsDays');
+    if (totalSpan) totalSpan.textContent = totalConsultants;
+ 
+    // Valeur totale projet (E)
+    const totalProjet = parseFloat(document.getElementById('jours_realises')?.value) || 0;
+ 
+    // Affichage dans B
+    const totalProjetDisplay = document.getElementById('totalProjetDaysDisplay');
+    if (totalProjetDisplay) totalProjetDisplay.textContent = totalProjet;
+ 
+    const msgSpan = document.getElementById('comparaisonMsg');
+    if (!msgSpan) return;
+ 
+    const diff = Math.round((totalConsultants - totalProjet) * 10) / 10;
+ 
+    if (diff > 0) {
+        msgSpan.innerHTML = `
+            <span style="color:var(--danger-600);">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                Les consultants déclarent <strong>${totalConsultants} j.</strong>
+                — soit <strong>+${diff} j.</strong> de plus que le projet (<strong>${totalProjet} j.</strong>)
+            </span>`;
+    } else if (diff < 0) {
+        msgSpan.innerHTML = `
+            <span style="color:var(--warning-600);">
+                <i class="bi bi-info-circle-fill"></i>
+                Les consultants déclarent <strong>${totalConsultants} j.</strong>
+                — soit <strong>${Math.abs(diff)} j.</strong> de moins que le projet (<strong>${totalProjet} j.</strong>)
+            </span>`;
+    } else {
+        msgSpan.innerHTML = `
+            <span style="color:var(--success-600);">
+                <i class="bi bi-check-circle-fill"></i>
+                Correspondance parfaite — <strong>${totalConsultants} j.</strong> des deux côtés ✓
+            </span>`;
+    }
+}
+
+        function addExistingConsultant() {
+            const select = document.getElementById('existingConsultantSelect');
+            const consId = select.value;
+            const consNom = select.options[select.selectedIndex]?.getAttribute('data-nom') || '';
+            const role = document.getElementById('existingConsultantRole').value;
+            const joursA = parseFloat(document.getElementById('existingConsultantJoursAlloues').value) || 0;
+            const joursR = parseFloat(document.getElementById('existingConsultantJoursRealises').value) || 0;
+
+            if (!consId) {
+                alert('Veuillez sélectionner un consultant');
+                return;
+            }
+
+            if (document.getElementById(`consultant-row-${consId}`)) {
+                alert('Ce consultant est déjà affecté');
+                return;
+            }
+
+            const charge = joursA > 0 ? Math.round((joursR / joursA) * 100) : 0;
+            const chargeClass = charge >= 100 ? 'charge-high' : (charge >= 75 ? 'charge-warning' : 'charge-normal');
+
+            document.getElementById('newConsultantsContainer').insertAdjacentHTML('beforeend', `
+                <div class="consultant-row-compact" id="consultant-row-${consId}">
+                    <div class="consultant-grid">
+                        <div class="consultant-name">
+                            <i class="bi bi-person-plus-fill me-1" style="color:var(--success-500);"></i>
+                            ${consNom}
+                            <input type="hidden" name="consultants[${consId}][id]" value="${consId}">
+                            <span class="badge bg-success ms-2" style="font-size:0.6rem;">Nouveau</span>
+                        </div>
+                        <div>
+                            <select class="form-select form-select-sm" name="consultants[${consId}][role]">
+                                <option ${role === 'Chef de Projet' ? 'selected' : ''}>Chef de Projet</option>
+                                <option ${role === 'Consultant' ? 'selected' : ''}>Consultant</option>
+                                <option ${role === 'Consultant Ext.' ? 'selected' : ''}>Consultant Ext.</option>
+                                <option ${role === 'Expert' ? 'selected' : ''}>Expert</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="number" class="form-control form-control-sm text-center"
+                                name="consultants[${consId}][jours_alloues]"
+                                min="0" step="0.1" value="${joursA}"
+                                onchange="updateConsultantCharge(this)">
+                        </div>
+                        <div>
+                            <input type="number" class="form-control form-control-sm text-center consultant-jours-realises"
+                                name="consultants[${consId}][jours_realises]"
+                                min="0" step="0.1" value="${joursR}"
+                                onchange="updateConsultantCharge(this); updateConsultantsTotal()">
+                        </div>
+                        <div class="text-center">
+                            <span class="charge-badge ${chargeClass}">${charge}%</span>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn-remove-sm"
+                                onclick="removeConsultant(this, ${consId})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `);
+
+            select.value = '';
+            document.getElementById('existingConsultantRole').value = 'Consultant';
+            document.getElementById('existingConsultantJoursAlloues').value = '0';
+            document.getElementById('existingConsultantJoursRealises').value = '0';
+        }
+
+        function removeConsultant(btn, consId) {
+            if (confirm('Supprimer ce consultant du projet ?')) {
+                btn.closest('.consultant-row-compact').remove();
+                document.getElementById('deletedConsultantsContainer').insertAdjacentHTML('beforeend',
+                    `<input type="hidden" name="deleted_consultants[]" value="${consId}">`);
+            }
+        }
+
+        // ===== FORMATIONS =====
+        let formationRowCounter = document.querySelectorAll('#formationsTbody tr').length;
+
+       function addFormationRow() {
+    const tbody = document.getElementById('formationsTbody');
+    const newId = formationRowCounter++;
+    const row = document.createElement('tr');
+    row.id = `formation-row-${newId}`;
+    row.innerHTML = `
+        <td>
+            <input type="text" class="form-control"
+                name="custom_formations[${newId}][titre]"
+                placeholder="Ex : ISO 9001 – Formation interne" required>
+        </td>
+        <td>
+            <select class="form-select" name="custom_formations[${newId}][statut]">
+                <option value="À planifier">À planifier</option>
+                <option value="En cours">En cours</option>
+                <option value="Réalisée">Réalisée</option>
+                <option value="Finalisée">Finalisée</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control formation-jours-prevus"
+                name="custom_formations[${newId}][jours]"
+                step="0.5" min="0" value="0"
+                oninput="recalcTotalDays()"
+                placeholder="Jours prévus">
+        </td>
+        <td>
+            <input type="date" class="form-control"
+                name="custom_formations[${newId}][date_realisation]">
+        </td>
+        <td>
+            <input type="text" class="form-control"
+                name="custom_formations[${newId}][observations]"
+                placeholder="Observations...">
+        </td>
+        <td class="text-center">
+            <button type="button" class="btn-remove"
+                onclick="removeFormationRow(this, ${newId})">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>`;
+    tbody.appendChild(row);
+    recalcTotalDays();
+}
+        // ── Supprimer une ligne formation ──
+function removeFormationRow(btn, rowId) {
+    const row = document.getElementById(`formation-row-${rowId}`);
+    if (row) row.remove();
+    recalcTotalDays();
+}
+
+        // ===== RECALCUL TOTAL JOURS (chapitres + formations) =====
+        function recalcTotalDays() {
+    // Chapitres
+    let totalChapitres = 0;
+    document.querySelectorAll('input[name^="chapitres"][name$="[jours]"]').forEach(i => {
+        totalChapitres += parseFloat(i.value) || 0;
+    });
+ 
+    // Formations (jours prévus — classe formation-jours-prevus)
+    let totalFormations = 0;
+    document.querySelectorAll('.formation-jours-prevus').forEach(i => {
+        totalFormations += parseFloat(i.value) || 0;
+    });
+    totalFormations = Math.round(totalFormations * 10) / 10;
+ 
+    const totalGlobal = Math.round((totalChapitres + totalFormations) * 10) / 10;
+ 
+    // Mise à jour champ E
+    const joursRealisesField = document.getElementById('jours_realises');
+    if (joursRealisesField) joursRealisesField.value = totalGlobal;
+ 
+    // Mise à jour footer
+    const footJours = document.getElementById('footJours');
+    if (footJours) footJours.textContent = totalGlobal;
+ 
+    // Affichage total formations
+    const tfSpan = document.getElementById('totalFormationsDays');
+    if (tfSpan) tfSpan.textContent = totalFormations;
+ 
+    // Mise à jour affichage total projet dans B
+    const totalProjetDisplay = document.getElementById('totalProjetDaysDisplay');
+    if (totalProjetDisplay) totalProjetDisplay.textContent = totalGlobal;
+ 
+    // Relancer la comparaison B vs E
+    updateConsultantsTotal();
+}
+
+        // ===== JOURS (chapitres) =====
+      function recalcJours() {
+    recalcTotalDays();
+}
 
         // ===== LIVRABLE STATUS =====
         function updateLivrableStatus(select, chapCode, collapseId) {
@@ -2990,7 +3493,14 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
             }
         }
 
-        // ===== PREUVES FUNCTIONS =====
+        // ===== PREUVES FUNCTIONS (conservées de l'original) =====
+        let pendingFiles = {};
+        let projetPendingFile = null;
+        let currentFsPreuveId = null;
+        let currentFsPreuveUrl = null;
+        let currentFsPreuveMime = null;
+        let currentFsPreuveFileName = null;
+
         function toggleViewer(livId) {
             const vRow = document.getElementById(`viewer-row-${livId}`);
             const uRow = document.getElementById(`upload-row-${livId}`);
@@ -3006,11 +3516,9 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
         }
 
         function closeFullscreenOnBackdrop(event) {
-    const overlay = document.getElementById('preuveFullscreenOverlay');
-    if (event.target === overlay) {
-        closeFullscreen();
-    }
-}
+            const overlay = document.getElementById('preuveFullscreenOverlay');
+            if (event.target === overlay) closeFullscreen();
+        }
 
         function cancelUpload(livId) {
             const uRow = document.getElementById(`upload-row-${livId}`);
@@ -3069,10 +3577,10 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     item.innerHTML = `
-                <img src="${ev.target.result}" alt="${file.name}">
-                <button class="remove-preview" onclick="clearFile(${livId})" type="button">
-                    <i class="bi bi-x"></i>
-                </button>`;
+                        <img src="${ev.target.result}" alt="${file.name}">
+                        <button class="remove-preview" onclick="clearFile(${livId})" type="button">
+                            <i class="bi bi-x"></i>
+                        </button>`;
                 };
                 reader.readAsDataURL(file);
             } else {
@@ -3080,10 +3588,10 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
                     (file.name.match(/\.docx?$/i) ? 'bi-file-earmark-word-fill' :
                         (file.name.match(/\.xlsx?$/i) ? 'bi-file-earmark-excel-fill' : 'bi-file-earmark-fill'));
                 item.innerHTML = `
-            <div class="file-icon-preview"><i class="bi ${icon}"></i></div>
-            <button class="remove-preview" onclick="clearFile(${livId})" type="button">
-                <i class="bi bi-x"></i>
-            </button>`;
+                    <div class="file-icon-preview"><i class="bi ${icon}"></i></div>
+                    <button class="remove-preview" onclick="clearFile(${livId})" type="button">
+                        <i class="bi bi-x"></i>
+                    </button>`;
             }
             previewContainer.appendChild(item);
 
@@ -3182,27 +3690,27 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
             item.className = 'preuve-item';
             item.id = `preuve-item-${pr.id}`;
             item.innerHTML = `
-        ${isImage
-            ? `<img src="${pr.url}" alt="${pr.label || pr.fichier_nom}" class="preuve-thumb">`
-            : `<div class="preuve-thumb-icon"><i class="bi ${icon}" style="color:${iconColor}"></i></div>`
-        }
-        <div class="preuve-info">
-            <div class="preuve-name">${pr.label || pr.fichier_nom}</div>
-            <div class="preuve-meta">
-                ${pr.fichier_nom.split('.').pop().toUpperCase()} •
-                ${Math.round(pr.taille_kb)} Ko • Maintenant
-            </div>
-        </div>
-        <div class="preuve-item-actions">
-            <button type="button" class="btn-preuve-print" data-tooltip="Imprimer / Afficher"
-                onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}', '${pr.fichier_nom.replace(/'/g,"\\'")}')"
-                <i class="bi bi-printer-fill"></i>
-            </button>
-            <button type="button" class="btn-preuve-delete" data-tooltip="Supprimer"
-                onclick="deletePreuve(${pr.id}, ${livId})">
-                <i class="bi bi-trash-fill"></i>
-            </button>
-        </div>`;
+                ${isImage
+                    ? `<img src="${pr.url}" alt="${pr.label || pr.fichier_nom}" class="preuve-thumb">`
+                    : `<div class="preuve-thumb-icon"><i class="bi ${icon}" style="color:${iconColor}"></i></div>`
+                }
+                <div class="preuve-info">
+                    <div class="preuve-name">${pr.label || pr.fichier_nom}</div>
+                    <div class="preuve-meta">
+                        ${pr.fichier_nom.split('.').pop().toUpperCase()} •
+                        ${Math.round(pr.taille_kb)} Ko • Maintenant
+                    </div>
+                </div>
+                <div class="preuve-item-actions">
+                    <button type="button" class="btn-preuve-print" data-tooltip="Imprimer / Afficher"
+                        onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}', '${pr.fichier_nom.replace(/'/g,"\\'")}')">
+                        <i class="bi bi-printer-fill"></i>
+                    </button>
+                    <button type="button" class="btn-preuve-delete" data-tooltip="Supprimer"
+                        onclick="deletePreuve(${pr.id}, ${livId})">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </div>`;
             list.appendChild(item);
         }
 
@@ -3233,7 +3741,7 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
                 const list = document.getElementById(`preuve-list-${livId}`);
                 if (list && list.querySelectorAll('.preuve-item').length === 0) {
                     list.innerHTML = `<div class="preuve-empty" id="preuve-empty-${livId}">
-                <i class="bi bi-inbox"></i>Aucune preuve attachée</div>`;
+                        <i class="bi bi-inbox"></i>Aucune preuve attachée</div>`;
                 }
 
                 closeFullscreen();
@@ -3243,7 +3751,7 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
             }
         }
 
-        // ===== PREUVES PROJET FUNCTIONS =====
+        // ===== PREUVES PROJET =====
         function toggleProjetUploadPanel() {
             const panel = document.getElementById('projetUploadPanel');
             panel.classList.toggle('active');
@@ -3288,10 +3796,10 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     item.innerHTML = `
-                <img src="${ev.target.result}" alt="${file.name}">
-                <button class="remove-preview" onclick="clearProjetFile()" type="button">
-                    <i class="bi bi-x"></i>
-                </button>`;
+                        <img src="${ev.target.result}" alt="${file.name}">
+                        <button class="remove-preview" onclick="clearProjetFile()" type="button">
+                            <i class="bi bi-x"></i>
+                        </button>`;
                 };
                 reader.readAsDataURL(file);
             } else {
@@ -3299,10 +3807,10 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
                     (file.name.match(/\.docx?$/i) ? 'bi-file-earmark-word-fill' :
                         (file.name.match(/\.xlsx?$/i) ? 'bi-file-earmark-excel-fill' : 'bi-file-earmark-fill'));
                 item.innerHTML = `
-            <div class="file-icon-preview"><i class="bi ${icon}"></i></div>
-            <button class="remove-preview" onclick="clearProjetFile()" type="button">
-                <i class="bi bi-x"></i>
-            </button>`;
+                    <div class="file-icon-preview"><i class="bi ${icon}"></i></div>
+                    <button class="remove-preview" onclick="clearProjetFile()" type="button">
+                        <i class="bi bi-x"></i>
+                    </button>`;
             }
             preview.appendChild(item);
 
@@ -3385,37 +3893,38 @@ onclick="openFullscreen({{ $preuve->id }}, '{{ addslashes($preuve->label ?: $pre
             card.className = 'preuve-card';
             card.id = `projet-preuve-${pr.id}`;
             card.innerHTML = `
-        <div class="preuve-thumb-large">
-            ${isImage 
-                ? `<img src="${pr.url}" alt="${pr.label || pr.fichier_nom}">`
-                : `<i class="bi ${fileIcon}"></i>`
-            }
-        </div>
-        <div class="preuve-body">
-            <h6 title="${pr.label || pr.fichier_nom}">${pr.label || pr.fichier_nom}</h6>
-            <div class="preuve-meta">
-                <span>${pr.fichier_nom.split('.').pop().toUpperCase()}</span>
-                <span>${Math.round(pr.taille_kb)} Ko</span>
-                <span>Maintenant</span>
-            </div>
-            <div class="preuve-actions">
-                <button type="button" class="preuve-action-btn" 
-                       onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}', '${pr.fichier_nom.replace(/'/g,"\\'")}')"
-                        title="Afficher">
-                    <i class="bi bi-eye-fill"></i>
-                </button>
-                <button type="button" class="preuve-action-btn print" 
-onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}', '${pr.fichier_nom.replace(/'/g,"\\'")}'); setTimeout(() => printCurrentPreuve(), 200);"                        title="Imprimer">
-                    <i class="bi bi-printer-fill"></i>
-                </button>
-                <button type="button" class="preuve-action-btn delete" 
-                        onclick="deleteProjetPreuve(${pr.id})"
-                        title="Supprimer">
-                    <i class="bi bi-trash-fill"></i>
-                </button>
-            </div>
-        </div>
-    `;
+                <div class="preuve-thumb-large">
+                    ${isImage 
+                        ? `<img src="${pr.url}" alt="${pr.label || pr.fichier_nom}">`
+                        : `<i class="bi ${fileIcon}"></i>`
+                    }
+                </div>
+                <div class="preuve-body">
+                    <h6 title="${pr.label || pr.fichier_nom}">${pr.label || pr.fichier_nom}</h6>
+                    <div class="preuve-meta">
+                        <span>${pr.fichier_nom.split('.').pop().toUpperCase()}</span>
+                        <span>${Math.round(pr.taille_kb)} Ko</span>
+                        <span>Maintenant</span>
+                    </div>
+                    <div class="preuve-actions">
+                        <button type="button" class="preuve-action-btn" 
+                           onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}', '${pr.fichier_nom.replace(/'/g,"\\'")}')"
+                            title="Afficher">
+                            <i class="bi bi-eye-fill"></i>
+                        </button>
+                        <button type="button" class="preuve-action-btn print" 
+                            onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}', '${pr.fichier_nom.replace(/'/g,"\\'")}'); setTimeout(() => printCurrentPreuve(), 200);"
+                            title="Imprimer">
+                            <i class="bi bi-printer-fill"></i>
+                        </button>
+                        <button type="button" class="preuve-action-btn delete" 
+                            onclick="deleteProjetPreuve(${pr.id})"
+                            title="Supprimer">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
 
             grid.appendChild(card);
 
@@ -3426,270 +3935,147 @@ onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"
             }
         }
 
-       async function deleteProjetPreuve(preuveId) {
-    if (!confirm('Supprimer ce document définitivement ?')) return;
+        async function deleteProjetPreuve(preuveId) {
+            if (!confirm('Supprimer ce document définitivement ?')) return;
 
-    try {
-        const res = await fetch(`/preuves-projet/${preuveId}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+            try {
+                const res = await fetch(`/preuves-projet/${preuveId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+                    }
+                });
+
+                if (!res.ok) throw new Error('Erreur serveur');
+
+                const card = document.getElementById(`projet-preuve-${preuveId}`);
+                if (card) card.remove();
+
+                const countSpan = document.querySelector('.preuves-count');
+                if (countSpan) {
+                    const current = parseInt(countSpan.textContent) || 0;
+                    countSpan.textContent = Math.max(0, current - 1) + ' document(s)';
+                }
+
+                const grid = document.getElementById('projetPreuvesGrid');
+                if (grid && grid.children.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-preuves">
+                            <i class="bi bi-folder2-open"></i>
+                            <p>Aucun document</p>
+                            <small>Cliquez sur "Ajouter un document" pour joindre des fichiers</small>
+                        </div>
+                    `;
+                }
+
+                if (currentFsPreuveId == preuveId) closeFullscreen();
+
+            } catch (err) {
+                alert('Erreur lors de la suppression : ' + err.message);
             }
-        });
-
-        if (!res.ok) throw new Error('Erreur serveur');
-
-        // حذف الكارت
-        const card = document.getElementById(`projet-preuve-${preuveId}`);
-        if (card) card.remove();
-
-        // تحديث العدد
-        const countSpan = document.querySelector('.preuves-count');
-        if (countSpan) {
-            const current = parseInt(countSpan.textContent) || 0;
-            countSpan.textContent = Math.max(0, current - 1) + ' document(s)';
         }
 
-        // إلا ما بقا حتى ملف
-        const grid = document.getElementById('projetPreuvesGrid');
-        if (grid && grid.children.length === 0) {
-            grid.innerHTML = `
-                <div class="empty-preuves">
-                    <i class="bi bi-folder2-open"></i>
-                    <p>Aucun document</p>
-                    <small>Cliquez sur "Ajouter un document" pour joindre des fichiers</small>
-                </div>
-            `;
-        }
-
-        // مهم: نسدو fullscreen غير إلا كان نفس الملف محلول
-        if (currentFsPreuveId == preuveId) {
-            closeFullscreen();
-        }
-
-    } catch (err) {
-        alert('Erreur lors de la suppression : ' + err.message);
-    }
-}
-
-        function downloadFile(url, filename) {
-    const a = document.createElement('a');
-    a.href = '/download-file?url=' + encodeURIComponent(url) + '&name=' + encodeURIComponent(filename);
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-}
-
-        // ===== FULLSCREEN VIEWER =====
+        // ===== FULLSCREEN =====
         function openFullscreen(preuveId, title, mimeType, url, fileName = null) {
+            currentFsPreuveId = preuveId;
+            currentFsPreuveUrl = url;
+            currentFsPreuveMime = mimeType;
+            currentFsPreuveFileName = fileName || title;
 
-        console.log('PDF URL:', url);
-    currentFsPreuveId = preuveId;
-    currentFsPreuveUrl = url;
-    currentFsPreuveMime = mimeType;
-    currentFsPreuveFileName = fileName || title;
+            document.getElementById('fsPreuveTitle').textContent = title;
 
-    document.getElementById('fsPreuveTitle').textContent = title;
+            const body = document.getElementById('fsPreuveBody');
+            const isImage = mimeType && mimeType.startsWith('image/');
+            const isPdf = mimeType === 'application/pdf';
 
-    const body = document.getElementById('fsPreuveBody');
-    const isImage = mimeType && mimeType.startsWith('image/');
-    const isPdf = mimeType === 'application/pdf';
+            if (isImage) {
+                body.innerHTML = `<img src="${url}" alt="${title}">`;
+            } else if (isPdf) {
+                const viewerUrl = '/view-file?url=' + encodeURIComponent(url);
+                body.innerHTML = `<iframe src="${viewerUrl}" class="pdf-embed"></iframe>`;
+            } else {
+                const icon = mimeType && mimeType.includes('word') ? 'bi-file-earmark-word-fill' :
+                    (mimeType && (mimeType.includes('excel') || mimeType.includes('spreadsheet')) ? 'bi-file-earmark-excel-fill' :
+                        'bi-file-earmark-fill');
 
-    if (isImage) {
-        body.innerHTML = `<img src="${url}" alt="${title}">`;
-    } else if (isPdf) {
-    const viewerUrl = '/view-file?url=' + encodeURIComponent(url);
-    body.innerHTML = `<iframe src="${viewerUrl}" class="pdf-embed"></iframe>`;
-    } else {
-        const icon = mimeType && mimeType.includes('word') ? 'bi-file-earmark-word-fill' :
-            (mimeType && (mimeType.includes('excel') || mimeType.includes('spreadsheet')) ? 'bi-file-earmark-excel-fill' :
-                'bi-file-earmark-fill');
+                body.innerHTML = `
+                    <div class="file-preview-generic">
+                        <i class="bi bi-file-earmark-excel"></i>
+                        <p>${title}</p>
+                        <p>Aperçu non disponible</p>
+                        <div class="file-actions">
+                            <button class="btn-download-clean"
+                                onclick="window.location.href='/download-file?url=${encodeURIComponent(currentFsPreuveUrl)}&name=${encodeURIComponent(currentFsPreuveFileName || title)}'">
+                                <i class="bi bi-download"></i>
+                                Télécharger
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
 
-        body.innerHTML = `
-    <div class="file-preview-generic">
-        <i class="bi bi-file-earmark-excel"></i>
-        <p>${title}</p>
-        <p>Aperçu non disponible</p>
-
-        <div class="file-actions">
-            <button class="btn-download-clean"
-                onclick="window.location.href='/download-file?url=${encodeURIComponent(currentFsPreuveUrl)}&name=${encodeURIComponent(currentFsPreuveFileName || title)}'">
-                <i class="bi bi-download"></i>
-                Télécharger
-            </button>
-        </div>
-    </div>
-`;
-    }
-
-    document.getElementById('preuveFullscreenOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
+            document.getElementById('preuveFullscreenOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
 
         function closeFullscreen() {
-    document.getElementById('preuveFullscreenOverlay').classList.remove('active');
-    document.body.style.overflow = '';
-}
-
-       function printCurrentPreuve() {
-    if (!currentFsPreuveUrl) return;
-
-    const isImage = currentFsPreuveMime && currentFsPreuveMime.startsWith('image/');
-    const isPdf = currentFsPreuveMime === 'application/pdf';
-    const title = document.getElementById('fsPreuveTitle').textContent;
-
-    if (isImage) {
-        const printWindow = window.open('', '_blank');
-        printWindow.document.write(`
-            <html><head><title>Impression - ${title}</title>
-            <style>
-                body { margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; background: white; }
-                img { max-width: 100%; max-height: 95vh; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-                .header { text-align: center; padding: 10px; font-family: Arial, sans-serif; color: #333; }
-            </style></head>
-            <body>
-                <div style="text-align: center; width: 100%;">
-                    <div class="header">${title}</div>
-                    <img src="${currentFsPreuveUrl}" onload="window.print(); setTimeout(() => window.close(), 1000);">
-                </div>
-            </body></html>`);
-        printWindow.document.close();
-
-    } else if (isPdf) {
-        const viewerUrl = '/view-file?url=' + encodeURIComponent(currentFsPreuveUrl);
-
-        const iframe = document.createElement('iframe');
-        iframe.style.position = 'fixed';
-        iframe.style.right = '0';
-        iframe.style.bottom = '0';
-        iframe.style.width = '0';
-        iframe.style.height = '0';
-        iframe.style.border = '0';
-        iframe.src = viewerUrl;
-
-        document.body.appendChild(iframe);
-
-        iframe.onload = function () {
-            setTimeout(() => {
-                iframe.contentWindow.focus();
-                iframe.contentWindow.print();
-
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                }, 1000);
-            }, 500);
-        };
-
-    } else {
-        window.location.href = '/download-file?url=' + encodeURIComponent(currentFsPreuveUrl) + '&name=' + encodeURIComponent(currentFsPreuveFileName || title);
-    }
-}
-
-        function printProjetPreuve(url, title) {
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-        <html><head><title>Impression - ${title}</title>
-        <style>
-            body { margin: 0; font-family: Arial, sans-serif; }
-            .header { text-align: center; padding: 10px; background: #f5f5f5; border-bottom: 1px solid #ddd; }
-            iframe { width: 100%; height: 95vh; border: none; }
-        </style></head>
-        <body>
-            <div class="header">${title}</div>
-            <iframe src="${url}" onload="setTimeout(() => this.contentWindow.print(), 500);"></iframe>
-        </body></html>`);
-            printWindow.document.close();
+            document.getElementById('preuveFullscreenOverlay').classList.remove('active');
+            document.body.style.overflow = '';
         }
 
-        function deleteCurrentPreuve() {
-            if (currentFsPreuveId) {
-                deleteProjetPreuve(currentFsPreuveId);
-                closeFullscreen();
+        function printCurrentPreuve() {
+            if (!currentFsPreuveUrl) return;
+
+            const isImage = currentFsPreuveMime && currentFsPreuveMime.startsWith('image/');
+            const isPdf = currentFsPreuveMime === 'application/pdf';
+            const title = document.getElementById('fsPreuveTitle').textContent;
+
+            if (isImage) {
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html><head><title>Impression - ${title}</title>
+                    <style>
+                        body { margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; background: white; }
+                        img { max-width: 100%; max-height: 95vh; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                        .header { text-align: center; padding: 10px; font-family: Arial, sans-serif; color: #333; }
+                    </style></head>
+                    <body>
+                        <div style="text-align: center; width: 100%;">
+                            <div class="header">${title}</div>
+                            <img src="${currentFsPreuveUrl}" onload="window.print(); setTimeout(() => window.close(), 1000);">
+                        </div>
+                    </body></html>`);
+                printWindow.document.close();
+            } else if (isPdf) {
+                const viewerUrl = '/view-file?url=' + encodeURIComponent(currentFsPreuveUrl);
+                const iframe = document.createElement('iframe');
+                iframe.style.position = 'fixed';
+                iframe.style.right = '0';
+                iframe.style.bottom = '0';
+                iframe.style.width = '0';
+                iframe.style.height = '0';
+                iframe.style.border = '0';
+                iframe.src = viewerUrl;
+                document.body.appendChild(iframe);
+                iframe.onload = function() {
+                    setTimeout(() => {
+                        iframe.contentWindow.focus();
+                        iframe.contentWindow.print();
+                        setTimeout(() => document.body.removeChild(iframe), 1000);
+                    }, 500);
+                };
+            } else {
+                window.location.href = '/download-file?url=' + encodeURIComponent(currentFsPreuveUrl) + '&name=' + encodeURIComponent(currentFsPreuveFileName || title);
             }
         }
 
-        // Close fullscreen on overlay click
+        // Close fullscreen on overlay click & Escape
         document.getElementById('preuveFullscreenOverlay')?.addEventListener('click', function(e) {
             if (e.target === this) closeFullscreen();
         });
-
-        // Close on Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeFullscreen();
         });
-
-        // ===== CONSULTANTS =====
-        function addExistingConsultant() {
-            const select = document.getElementById('existingConsultantSelect');
-            const consId = select.value;
-            const consNom = select.options[select.selectedIndex]?.getAttribute('data-nom') || '';
-            const role = document.getElementById('existingConsultantRole').value;
-            const joursA = parseFloat(document.getElementById('existingConsultantJoursAlloues').value) || 0;
-            const joursR = parseFloat(document.getElementById('existingConsultantJoursRealises').value) || 0;
-
-            if (!consId) {
-                alert('Veuillez sélectionner un consultant');
-                return;
-            }
-
-            if (document.getElementById(`consultant-row-${consId}`)) {
-                alert('Ce consultant est déjà affecté');
-                return;
-            }
-
-            const charge = joursA > 0 ? Math.round((joursR / joursA) * 100) : 0;
-
-            document.getElementById('newConsultantsContainer').insertAdjacentHTML('beforeend', `
-        <div class="consultant-row" id="consultant-row-${consId}">
-            <div class="row align-items-center g-3">
-                <div class="col-md-3">
-                    <div style="font-weight:600;">
-                        <i class="bi bi-person-plus-fill me-1" style="color:var(--success-500);"></i>
-                        ${consNom}
-                    </div>
-                    <input type="hidden" name="consultants[${consId}][id]" value="${consId}">
-                    <span class="badge" style="background:linear-gradient(135deg, var(--success-500), var(--success-600)); color:white; font-size:0.6rem; margin-left:0.5rem;">Nouveau</span>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select" name="consultants[${consId}][role]">
-                        <option ${role==='Chef de Projet'?'selected':''}>Chef de Projet</option>
-                        <option ${role==='Consultant'?'selected':''}>Consultant</option>
-                        <option ${role==='Consultant Ext.'?'selected':''}>Consultant Ext.</option>
-                        <option ${role==='Expert'?'selected':''}>Expert</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <input type="number" class="form-control" name="consultants[${consId}][jours_alloues]" min="0" step="0.1" value="${joursA}">
-                </div>
-                <div class="col-md-2">
-                    <input type="number" class="form-control" name="consultants[${consId}][jours_realises]" min="0" step="0.1" value="${joursR}">
-                </div>
-                <div class="col-md-1">
-                    <span class="badge" style="background:linear-gradient(135deg, var(--primary-500), var(--primary-600)); color:white; padding:0.3rem 0.6rem; border-radius:var(--radius-full);">
-                        ${charge}%
-                    </span>
-                </div>
-                <div class="col-md-1 text-center">
-                    <button type="button" class="btn-remove" onclick="removeConsultant(this, ${consId})">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
-            </div>
-        </div>`);
-
-            select.value = '';
-            document.getElementById('existingConsultantRole').value = 'Consultant';
-            document.getElementById('existingConsultantJoursAlloues').value = '0';
-            document.getElementById('existingConsultantJoursRealises').value = '0';
-        }
-
-        function removeConsultant(btn, consId) {
-            if (confirm('Supprimer ce consultant du projet ?')) {
-                btn.closest('.consultant-row').remove();
-                document.getElementById('deletedConsultantsContainer').insertAdjacentHTML('beforeend',
-                    `<input type="hidden" name="deleted_consultants[]" value="${consId}">`);
-            }
-        }
 
         // Auto-hide alerts
         setTimeout(() => {
@@ -3698,17 +4084,12 @@ onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"
 
         // Init
         document.addEventListener('DOMContentLoaded', () => {
+            recalcTotalDays();
+            updateConsultantsTotal();
             recalcJours();
             updateGlobalProgress();
         });
-
-        const isExcel = mimeType.includes('sheet');
-const isWord = mimeType.includes('word');
-
-let icon = 'bi-file-earmark';
-
-if (isExcel) icon = 'bi-file-earmark-excel';
-if (isWord) icon = 'bi-file-earmark-word';
     </script>
 </body>
+
 </html>

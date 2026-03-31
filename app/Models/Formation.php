@@ -20,12 +20,12 @@ class Formation extends Model
      * العلاقة مع المشاريع (Many-to-Many)
      * Formation belongs to many Projets via projet_formations
      */
-    public function projets()
-    {
-        return $this->belongsToMany(Projet::class, 'projet_formations')
-                    ->withPivot('statut', 'observations')
-                    ->withTimestamps();
-    }
+  public function projets()
+{
+    return $this->belongsToMany(Projet::class, 'projet_formations')
+                ->withPivot('statut', 'observations', 'jours_realises', 'date_realisation')
+                ->withTimestamps();
+}
 
     /**
      * Scope للبحث عن التكوينات
@@ -34,4 +34,5 @@ class Formation extends Model
     {
         return $query->where('titre_formation', 'like', "%{$search}%");
     }
+
 }

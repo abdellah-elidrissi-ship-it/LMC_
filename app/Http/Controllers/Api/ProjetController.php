@@ -93,49 +93,97 @@ class ProjetController extends Controller
     // update() — Modifier projet (depuis edit-projet.blade)
     // ──────────────────────────────────────────────────────────────
     public function update(Request $request, $id)
-    {
-        dd($request->all());
-        $projet = Projet::findOrFail($id);
+{
+    $projet = Projet::findOrFail($id);
 
-        $validated = $request->validate([
-            'client_id'          => 'sometimes|exists:clients,id',
-            'chef_projet_id'     => 'sometimes|exists:consultants,id',
-            'type_projet'        => 'sometimes|string',
-            'statut'             => 'sometimes|in:Finalisé,En cours,Planifié,En retard,En pause',
-            'jours_prevus'       => 'sometimes|integer',
-            'jours_realises'     => 'sometimes|integer',
-            'avancement_percent' => 'sometimes|integer|min:0|max:100',
-            'blocage'            => 'nullable|string',
-            'commentaire'        => 'nullable|string',
-            'date_debut'         => 'nullable|date',
-            'date_fin_prevue'    => 'nullable|date',
-            'date_fin_reelle'    => 'nullable|date',
-            'normes'             => 'sometimes|array',
-        ]);
+    $validated = $request->validate([
+        'client_id'          => 'sometimes|exists:clients,id',
+        'chef_projet_id'     => 'sometimes|exists:consultants,id',
+        'type_projet'        => 'sometimes|string',
+        'statut'             => 'sometimes|in:Finalisé,En cours,Planifié,En retard,En pause',
+        'jours_prevus'       => 'sometimes|integer',
+        'jours_realises'     => 'sometimes|numeric',
+        'avancement_percent' => 'sometimes|integer|min:0|max:100',
+        'blocage'            => 'nullable|string',
+        'commentaire'        => 'nullable|string',
+        'date_debut'         => 'nullable|date',
+        'date_fin_prevue'    => 'nullable|date',
+        'date_fin_reelle'    => 'nullable|date',
+        'normes'             => 'sometimes|array',
+        'custom_formations'                    => 'nullable|array',
+        'custom_formations.*.titre'            => 'required_with:custom_formations|string',
+        'custom_formations.*.statut'           => 'nullable|string',
+        'custom_formations.*.jours'            => 'nullable|numeric|min:0',
+        'custom_formations.*.date_realisation' => 'nullable|date',
+        'custom_formations.*.observations'     => 'nullable|string',
+        'custom_formations.*.id_original'      => 'nullable|integer',
+    ]);
 
-        $projet->update($validated);
+    $projet->update($validated);
 
-        if ($request->has('normes')) {
-            $projet->normes()->sync($request->normes);
-        }
-
-        // ── Livrables SMI ──
-        $this->saveLivrables($request, $id);
-
-        // ── Redirect vers details (WEB) ou JSON (API) ──
-        if ($request->expectsJson()) {
-            return response()->json(
-                $projet->load(['client', 'chefProjet', 'normes'])
-            );
-        }
-
-        return redirect()
-            ->route('projet.details', $id)
-            ->with('success', '✅ Projet mis à jour avec succès.');
+    if ($request->has('normes')) {
+        $projet->normes()->sync($request->normes);
     }
+
+    $this->saveLivrables($request, $id);
+
+    // ===== FORMATIONS =====
+    if ($request->has('custom_formations')) {
+        DB::table('projet_formations')->where('projet_id', $id)->delete();
+
+        foreach ($request->custom_formations as $formationData) {
+            if (empty($formationData['titre'])) {
+                continue;
+            }
+
+            if (!empty($formationData['id_original'])) {
+                $formation = \App\Models\Formation::find($formationData['id_original']);
+
+                if ($formation) {
+                    $formation->update([
+                        'titre_formation' => $formationData['titre'],
+                    ]);
+                } else {
+                    $formation = \App\Models\Formation::create([
+                        'titre_formation' => $formationData['titre'],
+                        'description' => null,
+                    ]);
+                }
+            } else {
+                $formation = \App\Models\Formation::create([
+                    'titre_formation' => $formationData['titre'],
+                    'description' => null,
+                ]);
+            }
+
+            DB::table('projet_formations')->insert([
+                'projet_id'        => $id,
+                'formation_id'     => $formation->id,
+                'statut'           => $formationData['statut'] ?? 'À planifier',
+                'observations'     => $formationData['observations'] ?? null,
+                'jours_realises'   => $formationData['jours'] ?? 0,
+                'date_realisation' => $formationData['date_realisation'] ?? null,
+                'created_at'       => now(),
+                'updated_at'       => now(),
+            ]);
+        }
+    }
+
+    if ($request->expectsJson()) {
+        return response()->json(
+            $projet->load(['client', 'chefProjet', 'normes', 'formations'])
+        );
+    }
+
+    return redirect()
+        ->route('projet.details', $id)
+        ->with('success', '✅ Projet mis à jour avec succès.');
+}
 
     public function destroy($id)
     {
+
+    dd('ANA HNA F UPDATE API CONTROLLER');
         $projet = Projet::findOrFail($id);
 
         DB::table('affectations')->where('projet_id', $id)->delete();
