@@ -11,19 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // database/migrations/xxxx_xx_xx_xxxxxx_create_projet_preuves_table.php
-Schema::create('projet_preuves', function (Blueprint $table) {
-    $table->id();
-    $table->unsignedBigInteger('projet_id');
-    $table->string('label')->nullable();
-    $table->string('fichier_nom');
-    $table->string('fichier_path');
-    $table->string('mime_type')->nullable();
-    $table->integer('taille_kb')->nullable();
-    $table->timestamps();
+        if (!Schema::hasTable('projet_preuves')) {
+            Schema::create('projet_preuves', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('projet_id');
+                $table->string('label')->nullable();
+                $table->string('fichier_nom');
+                $table->string('fichier_path');
+                $table->string('mime_type')->nullable();
+                $table->integer('taille_kb')->nullable();
+                $table->timestamps();
 
-    $table->foreign('projet_id')->references('id')->on('projets')->onDelete('cascade');
-});
+                $table->foreign('projet_id')
+                    ->references('id')
+                    ->on('projets')
+                    ->onDelete('cascade');
+            });
+        }
     }
 
     /**
@@ -31,6 +35,6 @@ Schema::create('projet_preuves', function (Blueprint $table) {
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('projet_preuves');
     }
 };

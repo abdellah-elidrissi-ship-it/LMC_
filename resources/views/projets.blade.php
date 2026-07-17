@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMC Conseil - Données</title>
+    <title>LMC Conseil</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -785,6 +786,94 @@
                 padding-top: 0.5rem;
             }
         }
+
+        .project-client-title {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+    min-width: 0;
+}
+
+.project-client-logo-box {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.project-client-logo {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    object-position: center;
+}
+
+.project-client-logo-fallback {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-light)
+    );
+
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 800;
+    box-shadow: var(--shadow-sm);
+}
+
+.project-client-title-text {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.project-client-title .project-title {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.project-client-sector {
+    display: flex;
+    align-items: center;
+
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 500;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+[data-theme="dark"] .project-client-logo-box {
+    background: #ffffff;
+    border-color: rgba(255, 255, 255, 0.15);
+}
     </style>
 </head>
 <body>
@@ -793,8 +882,30 @@
 use Illuminate\Support\Facades\DB;
 
 try {
+    // Visibilité par utilisateur — mêmes règles que Api\ProjetController@index
+    // (chef_projet_id / affectations / user_projet_access), reproduites ici
+    // car cette vue interroge la base directement plutôt que d'utiliser la
+    // collection déjà filtrée transmise par le contrôleur.
+    $authUser = auth()->user();
+    $whereClause = '';
+    $bindings = [];
+
+    if (!$authUser->isSuperAdmin()) {
+        if ($authUser->consultant_id) {
+            $whereClause = 'WHERE (
+                p.chef_projet_id = ?
+                OR p.id IN (SELECT projet_id FROM affectations WHERE consultant_id = ?)
+                OR p.id IN (SELECT projet_id FROM user_projet_access WHERE user_id = ?)
+            )';
+            $bindings = [$authUser->consultant_id, $authUser->consultant_id, $authUser->id];
+        } else {
+            $whereClause = 'WHERE p.id IN (SELECT projet_id FROM user_projet_access WHERE user_id = ?)';
+            $bindings = [$authUser->id];
+        }
+    }
+
     $projets = DB::select("
-        SELECT p.*, c.nom_client, c.secteur_activite,
+        SELECT p.*, c.nom_client, c.secteur_activite, c.logo_path,
                cons.nom_complet as chef_nom,
                GROUP_CONCAT(DISTINCT n.code_norme SEPARATOR '||') as normes_list
         FROM projets p
@@ -802,8 +913,9 @@ try {
         LEFT JOIN consultants cons ON p.chef_projet_id = cons.id
         LEFT JOIN projet_normes pn ON p.id = pn.projet_id
         LEFT JOIN normes n ON pn.norme_id = n.id
+        {$whereClause}
         GROUP BY p.id ORDER BY p.reference_projet
-    ");
+    ", $bindings);
     $db_error = null;
 } catch (\Exception $e) {
     $projets = [];
@@ -836,62 +948,7 @@ $finSemaine = now()->endOfWeek()->format('d/m/Y');
 @endphp
 
 <!-- HEADER -->
-<div class="site-header">
-    <div class="header-container">
-        <div class="logo-wrapper">
-            <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png" 
-                 alt="LMC Conseil" 
-                 class="logo-image"
-                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
-            <div class="logo-text">
-                <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
-            </div>
-        </div>
-        
-        <div class="header-actions">
-            <div class="user-info">
-                <i class="bi bi-person-circle"></i>
-                <span class="user-name">{{ $user->name ?? 'Utilisateur' }}</span>
-            </div>
-            <span class="meta-pill">
-                <i class="bi bi-calendar-check"></i>
-                {{ now()->format('d/m/Y') }}
-            </span>
-            <button class="theme-btn" id="themeToggle">
-                <i class="bi bi-moon-fill" id="themeIcon"></i>
-            </button>
-            <form method="POST" action="/logout" style="margin:0">
-                @csrf
-                <button type="button" class="theme-btn" title="Déconnexion"
-                    onclick="this.closest('form').submit()">
-                    <i class="bi bi-box-arrow-right"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <div class="nav-container">
-        <div class="nav-wrap">
-            <a href="/" class="nav-item active">
-                <i class="bi bi-table"></i> Données
-            </a>
-            <a href="/tableau-de-bord" class="nav-item">
-                <i class="bi bi-bar-chart"></i> Tableau de Bord
-            </a>
-            <a href="/consultants" class="nav-item">
-                <i class="bi bi-people"></i> Consultants
-            </a>
-            <a href="/nouveau-projet" class="nav-item">
-                <i class="bi bi-plus-circle"></i> Nouveau Projet
-            </a>
-            @if($user && $user->isSuperAdmin())
-            <a href="/admin/users" class="nav-item">
-                <i class="bi bi-shield-lock"></i> Accès
-            </a>
-            @endif
-        </div>
-    </div>
-</div>
+@include('partials.navbar', ['navActive' => 'donnees'])
 
 <!-- MAIN CONTENT -->
 <div class="page">
@@ -899,7 +956,6 @@ $finSemaine = now()->endOfWeek()->format('d/m/Y');
     @if(isset($db_error) && $db_error)
         <div class="alert alert-danger">{{ $db_error }}</div>
     @else
-
     <!-- WELCOME BANNER -->
     <div class="welcome-banner">
         <div class="welcome-content">
@@ -1006,12 +1062,36 @@ $finSemaine = now()->endOfWeek()->format('d/m/Y');
                     <span class="project-badge {{ $statusClass }}">{{ $projet->statut }}</span>
                 </div>
                 
-                <h3 class="project-title">{{ $projet->nom_client }}</h3>
+                <div class="project-client-title">
+
+    @if(!empty($projet->logo_path))
+        <div class="project-client-logo-box">
+            <img
+                src="{{ $projet->logo_path }}"
+                alt="Logo {{ $projet->nom_client }}"
+                class="project-client-logo"
+                loading="lazy"
+            >
+        </div>
+    @else
+        <div class="project-client-logo-fallback">
+            {{ strtoupper(substr($projet->nom_client ?? 'C', 0, 1)) }}
+        </div>
+    @endif
+
+    <div class="project-client-title-text">
+        <h3 class="project-title">
+            {{ $projet->nom_client ?? 'Client non défini' }}
+        </h3>
+
+        <span class="project-client-sector">
+            {{ $projet->secteur_activite ?? 'Secteur non spécifié' }}
+        </span>
+    </div>
+
+</div>
                 
-                <div class="project-client">
-                    <i class="bi bi-building"></i>
-                    {{ $projet->secteur_activite ?? 'Secteur non spécifié' }}
-                </div>
+                
                 
                 <div class="project-meta">
                     <div class="project-chef">
@@ -1079,7 +1159,9 @@ $finSemaine = now()->endOfWeek()->format('d/m/Y');
                 <i class="bi bi-folder2-open"></i>
                 <h5>Aucun projet trouvé</h5>
                 <p>Commencez par créer votre premier projet</p>
+                @if($user->hasPermission('creer_projets'))
                 <a href="/nouveau-projet" class="btn btn-primary mt-3">Nouveau projet</a>
+                @endif
             </div>
         </div>
         @endforelse

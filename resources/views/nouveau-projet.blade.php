@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Nouveau Projet - LMC Conseil</title>
+    <title>LMC Conseil</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -489,6 +490,137 @@
                 min-width: 300px;
             }
         }
+
+        /*logo*/ 
+        .form-field-full {
+    grid-column: 1 / -1;
+}
+
+.logo-upload {
+    min-height: 58px;
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid #d6e1ec;
+    border-radius: 12px;
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.logo-upload:hover {
+    border-color: #3b82f6;
+    background: #f8fbff;
+}
+
+.logo-upload:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.logo-upload__icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 1rem;
+}
+
+.logo-upload__content {
+    min-width: 0;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.18rem;
+}
+
+.logo-upload__title {
+    color: #1e293b;
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
+.logo-upload__text {
+    color: #64748b;
+    font-size: 0.74rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.logo-upload__button {
+    flex-shrink: 0;
+    min-height: 36px;
+    padding: 0 0.9rem;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+
+    font-size: 0.78rem;
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.logo-upload:hover .logo-upload__button {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+.logo-upload__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.field-error {
+    margin-top: 0.4rem;
+    padding: 0.45rem 0.65rem;
+    border-radius: 8px;
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    color: #b42318;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+@media (max-width: 640px) {
+    .logo-upload {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .logo-upload__button {
+        width: 100%;
+    }
+}
     </style>
 </head>
 <body>
@@ -562,66 +694,15 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
 @endif
 
 <!-- HEADER -->
-<div class="site-header">
-    <div class="header-container">
-        <div class="logo-wrapper">
-            <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png" 
-                 alt="LMC Conseil" 
-                 class="logo-image"
-                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
-            <div class="logo-text">
-                <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
-            </div>
-        </div>
-        
-        <div class="header-actions">
-            <div class="user-info">
-                <i class="bi bi-person-circle"></i>
-                <span class="user-name">{{ $user->name ?? 'Utilisateur' }}</span>
-            </div>
-            <span class="meta-pill">
-                <i class="bi bi-calendar-check"></i>
-                {{ now()->format('d/m/Y') }}
-            </span>
-            <button class="theme-btn" id="themeToggle">
-                <i class="bi bi-moon-fill" id="themeIcon"></i>
-            </button>
-            <form method="POST" action="/logout" style="margin:0">
-                @csrf
-                <button type="button" class="theme-btn" title="Déconnexion"
-                    onclick="this.closest('form').submit()">
-                    <i class="bi bi-box-arrow-right"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <div class="nav-container">
-        <div class="nav-wrap">
-            <a href="/" class="nav-item">
-                <i class="bi bi-table"></i> Données
-            </a>
-            <a href="/tableau-de-bord" class="nav-item">
-                <i class="bi bi-bar-chart"></i> Tableau de Bord
-            </a>
-            <a href="/consultants" class="nav-item">
-                <i class="bi bi-people"></i> Consultants
-            </a>
-            <a href="/nouveau-projet" class="nav-item active">
-                <i class="bi bi-plus-circle"></i> Nouveau Projet
-            </a>
-            @if($user && $user->isSuperAdmin())
-            <a href="/admin/users" class="nav-item">
-                <i class="bi bi-shield-lock"></i> Accès
-            </a>
-            @endif
-        </div>
-    </div>
-</div>
+@include('partials.navbar', ['navActive' => 'nouveau'])
 
 <!-- Main Content -->
 <div class="container py-4">
-    <form action="{{ route('projets.store') }}" method="POST" id="mainForm">
+    <form
+    method="POST"
+    action="{{ route('projets.store') }}"
+    enctype="multipart/form-data"
+>
         @csrf
 
         <!-- Section A - Informations générales -->
@@ -672,6 +753,40 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
                         value="{{ old('type_projet', 'SMI — Système de Management Intégré') }}">
                 </div>
             </div>
+            <div class="form-field form-field-full">
+    <label for="client_logo">Logo du client</label>
+
+    <label for="client_logo" class="logo-upload">
+        <div class="logo-upload__icon">
+            <i class="bi bi-image"></i>
+        </div>
+
+        <div class="logo-upload__content">
+            <span class="logo-upload__title">Sélectionner un logo</span>
+            <span class="logo-upload__text" id="logoFileName">
+                PNG, JPG ou WEBP — 2 Mo maximum
+            </span>
+        </div>
+
+        <span class="logo-upload__button">
+            Parcourir
+        </span>
+    </label>
+
+    <input
+        type="file"
+        name="client_logo"
+        id="client_logo"
+        accept="image/png,image/jpeg,image/webp"
+        class="logo-upload__input"
+    >
+
+    @error('client_logo')
+        <div class="field-error">
+            {{ $message }}
+        </div>
+    @enderror
+</div>
         </div>
 
                 <!-- Section F - Consultants (initialement vide) -->
@@ -900,11 +1015,41 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
     </div>
 </div>
 
-        <!-- Section H - Contraintes -->
+<!-- Section H - Sensibilisation -->
+<div class="form-card">
+    <div class="section-title">
+        <i class="bi bi-megaphone"></i>
+        H - Sensibilisation
+        <span class="section-hint">
+            <i class="bi bi-plus-circle"></i> Ajoutez les sensibilisations réalisées
+        </span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered" style="min-width:600px;" id="sensibilisationsTable">
+            <thead>
+                <tr>
+                    <th>Thème</th>
+                    <th>Photo</th>
+                    <th style="width:50px;"></th>
+                </tr>
+            </thead>
+            <tbody id="sensibilisationsTbody">
+                <!-- Lignes ajoutées dynamiquement ; initialement vide -->
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-3">
+        <button type="button" class="btn-add" onclick="addSensibilisationRow()">
+            <i class="bi bi-plus-lg"></i> Ajouter une sensibilisation
+        </button>
+    </div>
+</div>
+
+        <!-- Section I - Contraintes -->
         <div class="form-card">
             <div class="section-title">
                 <i class="bi bi-exclamation-triangle"></i>
-                H - Points d'attention
+                I - Points d'attention
             </div>
             <div class="row g-3">
                 <div class="col-md-6">
@@ -929,6 +1074,25 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
         </div>
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('client_logo');
+        const fileName = document.getElementById('logoFileName');
+
+        if (!input || !fileName) {
+            return;
+        }
+
+        input.addEventListener('change', function () {
+            const file = this.files && this.files[0];
+
+            fileName.textContent = file
+                ? file.name
+                : 'PNG, JPG ou WEBP — 2 Mo maximum';
+        });
+    });
+</script>
 
 <script>
 
@@ -972,6 +1136,38 @@ function addFormationRow() {
 
 function removeFormationRow(index) {
     const row = document.getElementById(`formation-row-${index}`);
+    if (row) row.remove();
+}
+
+
+// Gestion des sensibilisations dynamiques
+let sensibilisationRowIndex = 0;
+
+function addSensibilisationRow() {
+    const tbody = document.getElementById('sensibilisationsTbody');
+    const row = document.createElement('tr');
+    row.id = `sensibilisation-row-${sensibilisationRowIndex}`;
+    row.innerHTML = `
+        <td>
+            <input type="text" class="form-control" name="sensibilisations[${sensibilisationRowIndex}][theme]"
+                   placeholder="Ex: Sensibilisation sécurité incendie" required>
+        </td>
+        <td>
+            <input type="file" class="form-control" name="sensibilisations[${sensibilisationRowIndex}][photo]"
+                   accept="image/png,image/jpeg,image/webp">
+        </td>
+        <td class="text-center">
+            <button type="button" class="btn-remove" onclick="removeSensibilisationRow(${sensibilisationRowIndex})">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+    tbody.appendChild(row);
+    sensibilisationRowIndex++;
+}
+
+function removeSensibilisationRow(index) {
+    const row = document.getElementById(`sensibilisation-row-${index}`);
     if (row) row.remove();
 }
 

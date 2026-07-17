@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Consultant extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'nom_complet', 'type_consultant', 'specialite', 
         'email', 'telephone', 'actif'
@@ -20,5 +23,10 @@ class Consultant extends Model
     public function projetsDiriges()
     {
         return $this->hasMany(Projet::class, 'chef_projet_id');
+    }
+
+    public function taches()
+    {
+        return $this->hasMany(Tache::class);
     }
 }

@@ -87,25 +87,8 @@ class LivrablesController extends Controller
             ['projet_id', 'livrable_id'],   // colonnes unique
             ['statut', 'updated_at']         // colonnes à mettre à jour
         );
-        $totalLivrables = DB::table('projet_livrables')
-    ->where('projet_id', $projetId)
-    ->count();
 
-$livrablesTermines = DB::table('projet_livrables')
-    ->where('projet_id', $projetId)
-    ->where('statut', 'Terminé')
-    ->count();
-
-$avancement = $totalLivrables > 0
-    ? round(($livrablesTermines / $totalLivrables) * 100)
-    : 0;
-
-DB::table('projets')
-    ->where('id', $projetId)
-    ->update([
-        'avancement_percent' => $avancement,
-        'updated_at' => now(),
-    ]);
+        \App\Services\ProjetProgressService::recalculerAvancement($projetId);
 
         if ($request->ajax()) {
             return response()->json(['success' => true, 'saved' => count($upserts)]);
@@ -136,25 +119,8 @@ DB::table('projets')
             ['projet_id', 'livrable_id'],
             ['statut', 'updated_at']
         );
-        $totalLivrables = DB::table('projet_livrables')
-    ->where('projet_id', $projetId)
-    ->count();
 
-$livrablesTermines = DB::table('projet_livrables')
-    ->where('projet_id', $projetId)
-    ->where('statut', 'Terminé')
-    ->count();
-
-$avancement = $totalLivrables > 0
-    ? round(($livrablesTermines / $totalLivrables) * 100)
-    : 0;
-
-DB::table('projets')
-    ->where('id', $projetId)
-    ->update([
-        'avancement_percent' => $avancement,
-        'updated_at' => now(),
-    ]);
+        \App\Services\ProjetProgressService::recalculerAvancement($projetId);
 
         return response()->json(['success' => true]);
     }

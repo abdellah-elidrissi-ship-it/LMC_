@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Tache;
+use App\Observers\TacheObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 
@@ -17,5 +19,7 @@ class AppServiceProvider extends ServiceProvider
         if (app()->environment('production')) {
             URL::forceScheme('https');
         }
+
+        Tache::observe(TacheObserver::class);
     }
 }

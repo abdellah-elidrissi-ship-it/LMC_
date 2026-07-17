@@ -5,7 +5,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier Projet - LMC Conseil</title>
+    <title>LMC Conseil</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -429,6 +430,171 @@
             border-radius: var(--radius-full);
             width: fit-content;
         }
+
+        /* ===== CLIENT LOGO EDIT ===== */
+
+.client-logo-edit {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 82px;
+    padding: 0.8rem;
+    background: white;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+    transition: all var(--transition-fast);
+}
+
+.client-logo-edit:hover {
+    border-color: var(--primary-400);
+    box-shadow: var(--shadow-sm);
+}
+
+.client-logo-preview-box {
+    width: 64px;
+    height: 64px;
+    flex: 0 0 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px;
+    background: #ffffff;
+    border: 1px solid var(--gray-200);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.client-logo-preview {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    object-position: center;
+}
+
+.client-logo-fallback-edit {
+    width: 64px;
+    height: 64px;
+    flex: 0 0 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+    background: linear-gradient(
+        135deg,
+        var(--primary-500),
+        var(--primary-400)
+    );
+
+    color: #ffffff;
+    font-size: 1.35rem;
+    font-weight: 800;
+    box-shadow: var(--shadow-sm);
+}
+
+.client-logo-edit-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.client-logo-edit-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 0.2rem;
+}
+
+.client-logo-edit-help {
+    font-size: 0.68rem;
+    color: var(--gray-500);
+    margin-bottom: 0.55rem;
+}
+
+.client-logo-file {
+    display: none;
+}
+
+.client-logo-select-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--primary-300);
+    border-radius: var(--radius-full);
+
+    background: linear-gradient(
+        135deg,
+        var(--primary-50),
+        #ffffff
+    );
+
+    color: var(--primary-600);
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.client-logo-select-btn:hover {
+    background: linear-gradient(
+        135deg,
+        var(--primary-500),
+        var(--primary-600)
+    );
+    border-color: var(--primary-600);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.client-logo-file-name {
+    display: block;
+    margin-top: 0.4rem;
+    color: var(--gray-500);
+    font-size: 0.68rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.client-logo-remove-selection {
+    display: none;
+    margin-left: 0.4rem;
+    padding: 0.42rem 0.7rem;
+    border: 1px solid var(--danger-300);
+    border-radius: var(--radius-full);
+    background: var(--danger-50);
+    color: var(--danger-600);
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.client-logo-remove-selection:hover {
+    background: var(--danger-500);
+    border-color: var(--danger-500);
+    color: #ffffff;
+}
+
+.client-logo-error {
+    margin-top: 0.4rem;
+    color: var(--danger-600);
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .client-logo-edit {
+        align-items: flex-start;
+    }
+}
 
         /* ===== NORMES ===== */
         .normes-section {
@@ -2322,53 +2488,17 @@
     </div>
 
     <!-- Header -->
-    <div class="site-header">
-        <div class="header-container">
-            <div class="logo-wrapper">
-                <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png"
-                    alt="LMC Conseil" class="logo-image"
-                    onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
-                <div class="logo-text">
-                <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
-            </div>
-            </div>
-            <div class="header-actions">
-                <div class="user-info">
-                    <i class="bi bi-person-circle"></i>
-                    <span class="user-name">{{ $user->name ?? 'Utilisateur' }}</span>
-                </div>
-                <span class="meta-pill">
-                    <i class="bi bi-calendar-check"></i>
-                    {{ now()->format('d/m/Y') }}
-                </span>
-                <button class="theme-btn" id="themeToggle">
-                    <i class="bi bi-moon-fill" id="themeIcon"></i>
-                </button>
-                <form method="POST" action="/logout" style="margin:0">
-                    @csrf
-                    <button type="button" class="theme-btn" title="Déconnexion"
-                        onclick="this.closest('form').submit()">
-                        <i class="bi bi-box-arrow-right"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-        <div class="nav-container">
-            <div class="nav-wrap">
-                <a href="/" class="nav-item"><i class="bi bi-table"></i> Données</a>
-                <a href="/tableau-de-bord" class="nav-item"><i class="bi bi-bar-chart"></i> Tableau de Bord</a>
-                <a href="/consultants" class="nav-item"><i class="bi bi-people"></i> Consultants</a>
-                <a href="/nouveau-projet" class="nav-item"><i class="bi bi-plus-circle"></i> Nouveau Projet</a>
-                @if($user && $user->isSuperAdmin())
-                <a href="/admin/users" class="nav-item"><i class="bi bi-shield-lock"></i> Accès</a>
-                @endif
-            </div>
-        </div>
-    </div>
+  @include('partials.navbar', ['navActive' => 'donnees'])
+
 
     <!-- Main Content -->
     <div class="page">
-        <form action="{{ route('projets.update', $projet->id) }}" method="POST" id="mainForm">
+       <form
+    action="{{ route('projets.update', $projet->id) }}"
+    method="POST"
+    enctype="multipart/form-data"
+    id="mainForm"
+>
             @csrf
             @method('PUT')
 
@@ -2385,10 +2515,16 @@
                             value="{{ old('reference_projet', $projet->reference_projet) }}" required>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Client</label>
-                        <input type="text" class="form-control" name="client_nom"
-                            value="{{ old('client_nom', $projet->client->nom_client ?? '') }}" required>
-                    </div>
+    <label class="form-label">Client</label>
+
+    <input
+        type="text"
+        class="form-control"
+        name="client_nom"
+        value="{{ old('client_nom', $projet->client->nom_client ?? '') }}"
+        required
+    >
+</div>
                     <div class="col-md-3">
                         <label class="form-label">Chef de projet</label>
                         <select class="form-select" name="chef_projet_id" required>
@@ -2421,6 +2557,120 @@
                         <input type="text" class="form-control" name="type_projet"
                             value="{{ old('type_projet', $projet->type_projet) }}">
                     </div>
+                    <div class="col-12">
+    <label class="form-label">
+        <i class="bi bi-image-fill"></i>
+        Logo du client
+    </label>
+
+    <div class="client-logo-edit">
+
+        @if(!empty($projet->client?->logo_path))
+            <div
+                class="client-logo-preview-box"
+                id="clientLogoPreviewBox"
+            >
+                <img
+                    src="{{ $projet->client->logo_path }}"
+                    alt="Logo {{ $projet->client->nom_client }}"
+                    class="client-logo-preview"
+                    id="clientLogoPreview"
+                >
+            </div>
+
+            <div
+                class="client-logo-fallback-edit"
+                id="clientLogoFallback"
+                style="display:none;"
+            >
+                {{ mb_strtoupper(
+                    mb_substr(
+                        $projet->client->nom_client ?? 'C',
+                        0,
+                        1
+                    )
+                ) }}
+            </div>
+        @else
+            <div
+                class="client-logo-preview-box"
+                id="clientLogoPreviewBox"
+                style="display:none;"
+            >
+                <img
+                    src=""
+                    alt="Aperçu du logo"
+                    class="client-logo-preview"
+                    id="clientLogoPreview"
+                >
+            </div>
+
+            <div
+                class="client-logo-fallback-edit"
+                id="clientLogoFallback"
+            >
+                {{ mb_strtoupper(
+                    mb_substr(
+                        $projet->client->nom_client ?? 'C',
+                        0,
+                        1
+                    )
+                ) }}
+            </div>
+        @endif
+
+        <div class="client-logo-edit-content">
+            <div class="client-logo-edit-title">
+                Modifier le logo du client
+            </div>
+
+            <div class="client-logo-edit-help">
+                Le logo actuel sera conservé si aucun nouveau fichier
+                n’est sélectionné. PNG, JPG ou WEBP — 2 Mo maximum.
+            </div>
+
+            <input
+                type="file"
+                name="client_logo"
+                id="client_logo"
+                class="client-logo-file"
+                accept="image/png,image/jpeg,image/webp"
+            >
+
+            <label
+                for="client_logo"
+                class="client-logo-select-btn"
+            >
+                <i class="bi bi-cloud-arrow-up-fill"></i>
+                Choisir un nouveau logo
+            </label>
+
+            <button
+                type="button"
+                class="client-logo-remove-selection"
+                id="removeClientLogoSelection"
+                onclick="resetClientLogoSelection()"
+            >
+                <i class="bi bi-x-lg"></i>
+                Annuler la sélection
+            </button>
+
+            <span
+                class="client-logo-file-name"
+                id="clientLogoFileName"
+            >
+                Aucun nouveau fichier sélectionné
+            </span>
+
+            @error('client_logo')
+                <div class="client-logo-error">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+
+    </div>
+</div>
                 </div>
             </div>
 
@@ -3031,11 +3281,74 @@
     </div>
 </div>
 
-            <!-- Section H -->
+            <!-- Section H - Sensibilisation -->
+            <div class="form-card">
+                <div class="section-title">
+                    <i class="bi bi-megaphone-fill"></i>
+                    H - Sensibilisation
+                    <span class="section-hint">
+                        <i class="bi bi-plus-circle"></i> Ajoutez / modifiez les sensibilisations
+                    </span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table-smi" style="min-width:600px;" id="sensibilisationsTable">
+                        <thead>
+                            <tr>
+                                <th style="width:40%;">Thème</th>
+                                <th style="width:15%;">Photo actuelle</th>
+                                <th style="width:35%;">Nouvelle photo</th>
+                                <th style="width:10%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="sensibilisationsTbody">
+                            @foreach($projet->sensibilisations as $idx => $s)
+                            <tr id="sensibilisation-row-{{ $idx }}">
+                                <td>
+                                    <input type="text" class="form-control"
+                                        name="sensibilisations[{{ $idx }}][theme]"
+                                        value="{{ $s->theme }}" required>
+                                    <input type="hidden"
+                                        name="sensibilisations[{{ $idx }}][existing_photo_path]"
+                                        value="{{ $s->photo_path }}">
+                                </td>
+                                <td class="text-center">
+                                    @if($s->photo_path)
+                                    <img src="{{ $s->photo_path }}" alt=""
+                                        style="width:48px;height:48px;object-fit:cover;border-radius:6px;">
+                                    @else
+                                    <span style="color:var(--gray-400);">—</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <input type="file" class="form-control"
+                                        name="sensibilisations[{{ $idx }}][photo]"
+                                        accept="image/png,image/jpeg,image/webp">
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn-remove"
+                                        onclick="removeSensibilisationRow(this, {{ $idx }})">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3">
+                    <button type="button" class="btn-add" onclick="addSensibilisationRow()">
+                        <i class="bi bi-plus-lg"></i> Ajouter une sensibilisation
+                    </button>
+                </div>
+            </div>
+
+            <!-- Section I -->
             <div class="form-card">
                 <div class="section-title">
                     <i class="bi bi-exclamation-triangle-fill"></i>
-                    H - Points d'attention
+                    I - Points d'attention
                 </div>
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -3051,11 +3364,11 @@
                 </div>
             </div>
 
-<!-- SECTION I - FICHIERS D'INTERVENTION -->
+<!-- SECTION J - FICHIERS D'INTERVENTION -->
         <div class="form-card preuves-projet-section">
             <div class="section-title">
                 <i class="bi bi-folder-fill"></i>
-                I - Fichiers d'intervention du projet
+                J - Fichiers d'intervention du projet
             </div>
 
             <div class="preuves-header">
@@ -3190,6 +3503,86 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
 
+
+// ===== CLIENT LOGO PREVIEW =====
+
+const clientLogoInput = document.getElementById('client_logo');
+const clientLogoPreview = document.getElementById('clientLogoPreview');
+const clientLogoPreviewBox = document.getElementById('clientLogoPreviewBox');
+const clientLogoFallback = document.getElementById('clientLogoFallback');
+const clientLogoFileName = document.getElementById('clientLogoFileName');
+const removeClientLogoSelection = document.getElementById(
+    'removeClientLogoSelection'
+);
+
+const originalClientLogo = @json(
+    $projet->client?->logo_path ?? ''
+);
+
+clientLogoInput?.addEventListener('change', function () {
+    const file = this.files?.[0];
+
+    if (!file) {
+        resetClientLogoSelection();
+        return;
+    }
+
+    const allowedTypes = [
+        'image/jpeg',
+        'image/png',
+        'image/webp'
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+        alert('Format non autorisé. Utilisez JPG, PNG ou WEBP.');
+        this.value = '';
+        resetClientLogoSelection();
+        return;
+    }
+
+    const maxSize = 2 * 1024 * 1024;
+
+    if (file.size > maxSize) {
+        alert('Le logo ne doit pas dépasser 2 Mo.');
+        this.value = '';
+        resetClientLogoSelection();
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+        clientLogoPreview.src = event.target.result;
+        clientLogoPreviewBox.style.display = 'flex';
+        clientLogoFallback.style.display = 'none';
+    };
+
+    reader.readAsDataURL(file);
+
+    clientLogoFileName.textContent = file.name;
+    removeClientLogoSelection.style.display = 'inline-flex';
+});
+
+function resetClientLogoSelection() {
+    if (clientLogoInput) {
+        clientLogoInput.value = '';
+    }
+
+    if (originalClientLogo) {
+        clientLogoPreview.src = originalClientLogo;
+        clientLogoPreviewBox.style.display = 'flex';
+        clientLogoFallback.style.display = 'none';
+    } else {
+        clientLogoPreview.src = '';
+        clientLogoPreviewBox.style.display = 'none';
+        clientLogoFallback.style.display = 'flex';
+    }
+
+    clientLogoFileName.textContent =
+        'Aucun nouveau fichier sélectionné';
+
+    removeClientLogoSelection.style.display = 'none';
+}
 
         // ===== THEME =====
         (function() {
@@ -3397,6 +3790,42 @@ function removeFormationRow(btn, rowId) {
     if (row) row.remove();
     recalcTotalDays();
 }
+
+        // ===== SENSIBILISATIONS =====
+        let sensibilisationRowCounter = document.querySelectorAll('#sensibilisationsTbody tr').length;
+
+        function addSensibilisationRow() {
+            const tbody = document.getElementById('sensibilisationsTbody');
+            const newId = sensibilisationRowCounter++;
+            const row = document.createElement('tr');
+            row.id = `sensibilisation-row-${newId}`;
+            row.innerHTML = `
+                <td>
+                    <input type="text" class="form-control"
+                        name="sensibilisations[${newId}][theme]"
+                        placeholder="Ex: Sensibilisation sécurité incendie" required>
+                </td>
+                <td class="text-center">
+                    <span style="color:var(--gray-400);">—</span>
+                </td>
+                <td>
+                    <input type="file" class="form-control"
+                        name="sensibilisations[${newId}][photo]"
+                        accept="image/png,image/jpeg,image/webp">
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn-remove"
+                        onclick="removeSensibilisationRow(this, ${newId})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>`;
+            tbody.appendChild(row);
+        }
+
+        function removeSensibilisationRow(btn, rowId) {
+            const row = document.getElementById(`sensibilisation-row-${rowId}`);
+            if (row) row.remove();
+        }
 
         // ===== RECALCUL TOTAL JOURS (chapitres + formations) =====
         function recalcTotalDays() {

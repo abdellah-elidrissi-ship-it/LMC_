@@ -2,122 +2,141 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\GanttPhase;
+use App\Models\GanttTache;
 use App\Models\Projet;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class GanttController extends Controller
 {
     // ── Afficher le Gantt d'un projet ────────────────────────────────
     public function show($id)
     {
-        // Vérifier la permission
         if (!auth()->user()->hasPermission('voir_gantt')) {
             abort(403, 'Accès non autorisé à la page Gantt');
         }
-        
-        $projet = DB::selectOne("
-            SELECT p.*, c.nom_client, cons.nom_complet AS chef_nom
-            FROM projets p
-            LEFT JOIN clients c    ON p.client_id       = c.id
-            LEFT JOIN consultants cons ON p.chef_projet_id = cons.id
-            WHERE p.id = ?
-        ", [$id]);
 
-        if (!$projet) abort(404);
+        $projet = Projet::with(['client', 'chefProjet'])->findOrFail($id);
 
-        $taches = DB::select(
-            "SELECT * FROM gantt_taches WHERE projet_id = ? ORDER BY numero ASC",
-            [$id]
-        );
+        $phases = $projet->ganttPhases()->with('taches')->get();
 
-        return view('Gantt', compact('projet', 'taches'));
+        $tachesSansPhase = GanttTache::where('projet_id', $id)
+            ->whereNull('phase_id')
+            ->orderBy('numero')
+            ->get();
+
+        return view('Gantt', compact('projet', 'phases', 'tachesSansPhase'));
     }
 
-    // ── Ajouter une tâche manuellement ────────────────────────────────
+    // ── Phases ─────────────────────────────────────────────────────
+
+    public function storePhase(Request $request, $id)
+    {
+        $this->autoriser();
+
+        $request->validate(['nom' => 'required|string|max:255']);
+
+        $ordre = GanttPhase::where('projet_id', $id)->max('ordre') ?? 0;
+
+        GanttPhase::create([
+            'projet_id' => $id,
+            'nom' => trim($request->nom),
+            'ordre' => $ordre + 1,
+        ]);
+
+        return redirect()->route('gantt.show', $id)->with('success', '✅ Phase ajoutée !');
+    }
+
+    public function updatePhase(Request $request, $id, $phaseId)
+    {
+        $this->autoriser();
+
+        $request->validate(['nom' => 'required|string|max:255']);
+
+        GanttPhase::where('id', $phaseId)
+            ->where('projet_id', $id)
+            ->update(['nom' => trim($request->nom)]);
+
+        return redirect()->route('gantt.show', $id)->with('success', '✅ Phase modifiée !');
+    }
+
+    public function destroyPhase($id, $phaseId)
+    {
+        $this->autoriser();
+
+        GanttPhase::where('id', $phaseId)->where('projet_id', $id)->delete();
+
+        return redirect()->route('gantt.show', $id)->with('success', '✅ Phase supprimée !');
+    }
+
+    // ── Tâches ─────────────────────────────────────────────────────
+
     public function storeTache(Request $request, $id)
     {
-        // Vérifier la permission
-        if (!auth()->user()->hasPermission('modifier_projets')) {
-            abort(403, 'Action non autorisée');
-        }
-        
-        $request->validate(['designation' => 'required|string|max:255']);
+        $this->autoriser();
 
-        $dernier = DB::table('gantt_taches')->where('projet_id', $id)->max('numero') ?? 0;
-        $delai   = max((int)($request->delai_jours ?? 1), 1);
-        $debut   = $request->date_debut ?: null;
-        $fin     = $debut ? Carbon::parse($debut)->addDays($delai - 1)->format('Y-m-d') : null;
+        $request->validate([
+            'designation' => 'required|string|max:255',
+            'phase_id' => 'nullable|exists:gantt_phases,id',
+        ]);
 
-        DB::table('gantt_taches')->insert([
-            'projet_id'         => $id,
-            'numero'            => $dernier + 1,
-            'designation'       => trim($request->designation),
-            'unite'             => $request->unite ?? 'H/J',
-            'responsable'       => $request->responsable ?? null,
-            'ct_prevue'         => (float)($request->ct_prevue  ?? 0),
-            'ct_realisee'       => (float)($request->ct_realisee ?? 0),
-            'avancement'        => min(max((float)($request->avancement ?? 0) / 100, 0), 1),
-            'date_debut'        => $debut,
-            'delai_jours'       => $delai,
-            'date_fin_initiale' => $fin,
-            'date_fin_calculee' => $fin,
-            'delai_sup'         => 0,
-            'created_at'        => now(),
-            'updated_at'        => now(),
+        $numero = GanttTache::where('projet_id', $id)->max('numero') ?? 0;
+
+        GanttTache::create([
+            'projet_id' => $id,
+            'phase_id' => $request->phase_id ?: null,
+            'numero' => $numero + 1,
+            'designation' => trim($request->designation),
+            'unite' => 'H/J',
+            'responsable' => $request->responsable,
+            'ct_prevue' => (float) ($request->ct_prevue ?? 0),
+            'ct_realisee' => (float) ($request->ct_realisee ?? 0),
+            'avancement' => min(max((float) ($request->avancement ?? 0), 0), 100),
+            'date_debut' => $request->date_debut ?: null,
+            'date_fin' => $request->date_fin ?: null,
         ]);
 
         return redirect()->route('gantt.show', $id)->with('success', '✅ Tâche ajoutée !');
     }
 
-    // ── Modifier une tâche ────────────────────────────────────────────
     public function updateTache(Request $request, $id, $tacheId)
     {
-        // Vérifier la permission
-        if (!auth()->user()->hasPermission('modifier_projets')) {
-            abort(403, 'Action non autorisée');
-        }
-        
-        $request->validate(['designation' => 'required|string|max:255']);
+        $this->autoriser();
 
-        $delai = max((int)($request->delai_jours ?? 1), 1);
-        $debut = $request->date_debut ?: null;
-        $fin   = $debut ? Carbon::parse($debut)->addDays($delai - 1)->format('Y-m-d') : null;
+        $request->validate([
+            'designation' => 'required|string|max:255',
+            'phase_id' => 'nullable|exists:gantt_phases,id',
+        ]);
 
-        DB::table('gantt_taches')
-            ->where('id', $tacheId)
+        GanttTache::where('id', $tacheId)
             ->where('projet_id', $id)
             ->update([
-                'designation'       => trim($request->designation),
-                'unite'             => $request->unite ?? 'H/J',
-                'responsable'       => $request->responsable ?? null,
-                'ct_prevue'         => (float)($request->ct_prevue  ?? 0),
-                'ct_realisee'       => (float)($request->ct_realisee ?? 0),
-                'avancement'        => min(max((float)($request->avancement ?? 0) / 100, 0), 1),
-                'date_debut'        => $debut,
-                'delai_jours'       => $delai,
-                'date_fin_initiale' => $fin,
-                'date_fin_calculee' => $fin,
-                'updated_at'        => now(),
+                'phase_id' => $request->phase_id ?: null,
+                'designation' => trim($request->designation),
+                'responsable' => $request->responsable,
+                'ct_prevue' => (float) ($request->ct_prevue ?? 0),
+                'ct_realisee' => (float) ($request->ct_realisee ?? 0),
+                'avancement' => min(max((float) ($request->avancement ?? 0), 0), 100),
+                'date_debut' => $request->date_debut ?: null,
+                'date_fin' => $request->date_fin ?: null,
             ]);
 
         return redirect()->route('gantt.show', $id)->with('success', '✅ Tâche modifiée !');
     }
 
-    // ── Supprimer une tâche ───────────────────────────────────────────
     public function destroyTache($id, $tacheId)
     {
-        // Vérifier la permission
+        $this->autoriser();
+
+        GanttTache::where('id', $tacheId)->where('projet_id', $id)->delete();
+
+        return redirect()->route('gantt.show', $id)->with('success', '✅ Tâche supprimée !');
+    }
+
+    private function autoriser(): void
+    {
         if (!auth()->user()->hasPermission('modifier_projets')) {
             abort(403, 'Action non autorisée');
         }
-        
-        DB::table('gantt_taches')
-            ->where('id', $tacheId)
-            ->where('projet_id', $id)
-            ->delete();
-
-        return redirect()->route('gantt.show', $id)->with('success', '✅ Tâche supprimée !');
     }
 }

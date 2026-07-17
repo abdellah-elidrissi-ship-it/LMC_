@@ -18,24 +18,10 @@ class ProjetController extends Controller
         /** @var \App\Models\User $user */
         $user = auth()->user();
 
-        $query = Projet::with(['client','chefProjet','normes','affectations.consultant']);
-
-        if (!$user->isSuperAdmin()) {
-            if ($user->consultant_id) {
-                $query->where(function($q) use ($user) {
-                    $q->where('chef_projet_id', $user->consultant_id)
-                      ->orWhereIn('id', function($sub) use ($user) {
-                          $sub->select('projet_id')
-                              ->from('affectations')
-                              ->where('consultant_id', $user->consultant_id);
-                      });
-                });
-            } else {
-                $query->whereRaw('1 = 0');
-            }
-        }
-
-        $projets = $query->orderBy('reference_projet')->get();
+        $projets = Projet::with(['client','chefProjet','normes','affectations.consultant'])
+            ->visiblesPour($user)
+            ->orderBy('reference_projet')
+            ->get();
         return view('projets', compact('projets'));
     }
 
@@ -182,19 +168,19 @@ class ProjetController extends Controller
 
     public function destroy($id)
     {
-
-    dd('ANA HNA F UPDATE API CONTROLLER');
         $projet = Projet::findOrFail($id);
 
-        DB::table('affectations')->where('projet_id', $id)->delete();
-        DB::table('projet_normes')->where('projet_id', $id)->delete();
-        DB::table('suivi_chapitres')->where('projet_id', $id)->delete();
-        DB::table('projet_formations')->where('projet_id', $id)->delete();
-        DB::table('projet_livrables')->where('projet_id', $id)->delete();
+        DB::transaction(function () use ($id, $projet) {
+            DB::table('affectations')->where('projet_id', $id)->delete();
+            DB::table('projet_normes')->where('projet_id', $id)->delete();
+            DB::table('suivi_chapitres')->where('projet_id', $id)->delete();
+            DB::table('projet_formations')->where('projet_id', $id)->delete();
+            DB::table('projet_livrables')->where('projet_id', $id)->delete();
 
-        $projet->delete();
+            $projet->delete();
+        });
 
-        return redirect('/')->with('success', '✅ Projet supprimé avec succès!');
+        return response()->json(null, 204);
     }
 
     // ──────────────────────────────────────────────────────────────

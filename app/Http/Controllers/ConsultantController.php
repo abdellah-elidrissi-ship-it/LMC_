@@ -71,15 +71,34 @@ class ConsultantController extends Controller
         // Vérifier s'il est chef de projet
         $isChef = DB::table('projets')->where('chef_projet_id', $id)->count();
         if ($isChef > 0) {
-            return redirect('/consultants')
+            return redirect()->back()
                 ->with('error', '❌ Impossible de supprimer — ce consultant est chef de projet!');
         }
 
-        // Supprimer affectations puis consultant
-        Affectation::where('consultant_id', $id)->delete();
-        $consultant->delete();
+        $user = \App\Models\User::where('consultant_id', $id)->first();
+
+        if ($user) {
+            if ($user->id === auth()->id()) {
+                return redirect()->back()
+                    ->with('error', '❌ Vous ne pouvez pas supprimer votre propre compte.');
+            }
+
+            if ($user->role === 'super_admin' && \App\Models\User::where('role', 'super_admin')->count() <= 1) {
+                return redirect()->back()
+                    ->with('error', '❌ Impossible de supprimer — ce compte est le seul Super Admin.');
+            }
+        }
+
+        $nom = $consultant->nom_complet;
+
+        DB::transaction(function () use ($id, $consultant, $user) {
+            Affectation::where('consultant_id', $id)->delete();
+            \App\Models\Tache::where('consultant_id', $id)->delete();
+            $user?->delete();
+            $consultant->delete();
+        });
 
         return redirect('/consultants')
-            ->with('success', '✅ Consultant supprimé avec succès!');
+            ->with('success', "✅ Consultant {$nom} supprimé avec succès (compte utilisateur et tâches associées inclus).");
     }
 }

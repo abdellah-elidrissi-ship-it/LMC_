@@ -2,8 +2,10 @@
 <html lang="fr" data-theme="light">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Détails Projet - LMC Conseil</title>
+    <title>LMC Conseil</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -443,6 +445,93 @@
     .sync-separator {
         display: none;
     }
+
+
+}
+
+
+
+
+.client-detail-identity {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-width: 0;
+}
+
+.client-detail-logo-box {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.client-detail-logo {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    object-position: center;
+}
+
+.client-detail-logo-fallback {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-light)
+    );
+
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 800;
+    box-shadow: var(--shadow-sm);
+}
+
+.client-detail-content {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.client-detail-name {
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.client-detail-sector {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+[data-theme="dark"] .client-detail-logo-box {
+    background: #ffffff;
 }
     </style>
 </head>
@@ -456,7 +545,12 @@ $id = request()->route('id') ?? request()->query('id') ?? 0;
 if($id == 0) { echo "<div class='alert alert-danger m-5'>Projet non spécifié</div>"; return; }
 
 $projet = DB::selectOne("
-    SELECT p.*, c.nom_client, c.secteur_activite, cons.nom_complet as chef_nom, cons.email as chef_email
+    SELECT p.*,
+           c.nom_client,
+           c.secteur_activite,
+           c.logo_path,
+           cons.nom_complet as chef_nom,
+           cons.email as chef_email
     FROM projets p
     LEFT JOIN clients c ON p.client_id = c.id
     LEFT JOIN consultants cons ON p.chef_projet_id = cons.id
@@ -474,6 +568,11 @@ $formations = DB::select("
     JOIN projet_formations pf ON f.id = pf.formation_id
     WHERE pf.projet_id = ?
 ", [$id]);
+
+$sensibilisations = DB::table('sensibilisations')
+    ->where('projet_id', $id)
+    ->orderBy('id')
+    ->get();
 $statusClass = match($projet->statut) {
     'Finalisé' => 'finalized',
     'En retard' => 'delayed',
@@ -607,48 +706,8 @@ $user = auth()->user();
 </div>
 
 <!-- HEADER -->
-<div class="site-header">
-    <div class="header-container">
-        <div class="logo-wrapper">
-            <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png"
-                 alt="LMC Conseil" class="logo-image"
-                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
-            <div class="logo-text">
-                <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
-            </div>
-        </div>
-        <div class="header-actions">
-            <div class="user-info">
-                <i class="bi bi-person-circle"></i>
-                <span class="user-name">{{ $user->name ?? 'Utilisateur' }}</span>
-            </div>
-            <span class="meta-pill">
-                <i class="bi bi-calendar-check"></i>
-                {{ now()->format('d/m/Y') }}
-            </span>
-            <button class="theme-btn" id="themeToggle">
-                <i class="bi bi-moon-fill" id="themeIcon"></i>
-            </button>
-            <form method="POST" action="/logout" style="margin:0">
-                @csrf
-                <button type="button" class="theme-btn" title="Déconnexion" onclick="this.closest('form').submit()">
-                    <i class="bi bi-box-arrow-right"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-    <div class="nav-container">
-        <div class="nav-wrap">
-            <a href="/" class="nav-item"><i class="bi bi-table"></i> Données</a>
-            <a href="/tableau-de-bord" class="nav-item"><i class="bi bi-bar-chart"></i> Tableau de Bord</a>
-            <a href="/consultants" class="nav-item"><i class="bi bi-people"></i> Consultants</a>
-            <a href="/nouveau-projet" class="nav-item"><i class="bi bi-plus-circle"></i> Nouveau Projet</a>
-            @if($user && $user->isSuperAdmin())
-            <a href="/admin/users" class="nav-item"><i class="bi bi-shield-lock"></i> Accès</a>
-            @endif
-        </div>
-    </div>
-</div>
+@include('partials.navbar', ['navActive' => 'donnees'])
+
 
 <!-- Main Content -->
 <div class="container py-4">
@@ -667,10 +726,37 @@ $user = auth()->user();
                 @if($projet->chef_email)<div class="info-sub">{{ $projet->chef_email }}</div>@endif
             </div>
             <div class="info-item">
-                <div class="info-label">Client</div>
-                <div class="info-value">{{ $projet->nom_client }}</div>
-                <div class="info-sub">{{ $projet->secteur_activite ?? 'Secteur non spécifié' }}</div>
+    <div class="info-label">Client</div>
+
+    <div class="client-detail-identity">
+
+        @if(!empty($projet->logo_path))
+            <div class="client-detail-logo-box">
+                <img
+                    src="{{ $projet->logo_path }}"
+                    alt="Logo {{ $projet->nom_client }}"
+                    class="client-detail-logo"
+                    loading="lazy"
+                >
             </div>
+        @else
+            <div class="client-detail-logo-fallback">
+                {{ mb_strtoupper(mb_substr($projet->nom_client ?? 'C', 0, 1)) }}
+            </div>
+        @endif
+
+        <div class="client-detail-content">
+            <div class="client-detail-name">
+                {{ $projet->nom_client ?? 'Client non défini' }}
+            </div>
+
+            <div class="client-detail-sector">
+                {{ $projet->secteur_activite ?? 'Secteur non spécifié' }}
+            </div>
+        </div>
+
+    </div>
+</div>
             <div class="info-item">
                 <div class="info-label">Période</div>
                 <div class="info-value">Début: {{ $projet->date_debut ? date('d/m/Y', strtotime($projet->date_debut)) : '—' }}</div>
@@ -1025,6 +1111,50 @@ $user = auth()->user();
                 @endif
             </div>
         </div>
+    </div>
+
+    <!-- Sensibilisation -->
+    <div class="detail-card">
+        <div class="section-title"><i class="bi bi-megaphone"></i> Sensibilisation</div>
+        @if($sensibilisations->count())
+        <div class="intervention-grid">
+            @foreach($sensibilisations as $s)
+            <div class="intervention-card">
+                <div class="intervention-thumb">
+                    @if($s->photo_path)
+                        <img src="{{ $s->photo_path }}" alt="{{ $s->theme }}">
+                    @else
+                        <i class="bi bi-image"></i>
+                    @endif
+                </div>
+                <div class="intervention-body">
+                    <h5 title="{{ $s->theme }}">{{ Str::limit($s->theme, 30) }}</h5>
+                    @if($s->photo_path)
+                    <div class="intervention-actions">
+                        <button class="intervention-btn"
+                            onclick="viewDocument('{{ $s->photo_path }}', 'image/jpeg', '{{ addslashes($s->theme) }}')"
+                            title="Voir la photo">
+                            <i class="bi bi-eye-fill"></i>
+                        </button>
+                        <button class="intervention-btn"
+                            onclick="downloadFile('{{ $s->photo_path }}', '{{ addslashes($s->theme) }}')"
+                            title="Télécharger">
+                            <i class="bi bi-download"></i>
+                        </button>
+                        <button class="intervention-btn"
+                            onclick="printDocumentUrl('{{ $s->photo_path }}', 'image/jpeg', '{{ addslashes($s->theme) }}')"
+                            title="Imprimer">
+                            <i class="bi bi-printer-fill"></i>
+                        </button>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @else
+        <p style="color:var(--text-muted); text-align:center; padding:2rem;">Aucune sensibilisation enregistrée</p>
+        @endif
     </div>
 
     <!-- Points d'attention -->

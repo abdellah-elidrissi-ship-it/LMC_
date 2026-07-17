@@ -13,12 +13,14 @@ use App\Http\Controllers\Api\ProjetFormationController;
 use App\Http\Controllers\Api\AffectationController;
 
 
-Route::apiResource('clients', ClientController::class);
-Route::apiResource('consultants', ConsultantController::class);
-Route::apiResource('normes', NormeController::class);
-Route::apiResource('projets', ProjetController::class);
-Route::apiResource('chapitres', ChapitreSmiController::class);
-Route::apiResource('suivis-chapitres', SuiviChapitreController::class);
-Route::apiResource('formations', FormationController::class);
-Route::apiResource('projet-formations', ProjetFormationController::class);
-Route::apiResource('affectations', AffectationController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::apiResource('clients', ClientController::class);
+    Route::apiResource('consultants', ConsultantController::class);
+    Route::apiResource('normes', NormeController::class);
+    Route::apiResource('projets', ProjetController::class);
+    Route::apiResource('chapitres', ChapitreSmiController::class);
+    Route::apiResource('suivis-chapitres', SuiviChapitreController::class);
+    Route::apiResource('formations', FormationController::class);
+    Route::apiResource('projet-formations', ProjetFormationController::class);
+    Route::apiResource('affectations', AffectationController::class);
+});

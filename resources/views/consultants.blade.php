@@ -2,8 +2,10 @@
 <html lang="fr" data-theme="light">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultants - LMC Conseil</title>
+    <title>LMC Conseil</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -252,63 +254,8 @@ $user = auth()->user();
 </div>
 @endif
 
-<!-- Header -->
-<div class="site-header">
-    <div class="header-container">
-        <div class="logo-wrapper">
-            <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png" 
-                 alt="LMC Conseil" 
-                 class="logo-image"
-                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
-            <div class="logo-text">
-                <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
-            </div>
-        </div>
-        
-        <div class="header-actions">
-            <div class="user-info">
-                <i class="bi bi-person-circle"></i>
-                <span class="user-name">{{ $user->name ?? 'Utilisateur' }}</span>
-            </div>
-            <span class="meta-pill">
-                <i class="bi bi-calendar-check"></i>
-                {{ now()->format('d/m/Y') }}
-            </span>
-            <button class="theme-btn" id="themeToggle">
-                <i class="bi bi-moon-fill" id="themeIcon"></i>
-            </button>
-            <form method="POST" action="/logout" style="margin:0">
-                @csrf
-                <button type="button" class="theme-btn" title="Déconnexion"
-                    onclick="this.closest('form').submit()">
-                    <i class="bi bi-box-arrow-right"></i>
-                </button>
-            </form>
-        </div>
-    </div>
+@include('partials.navbar', ['navActive' => 'consultants'])
 
-    <div class="nav-container">
-        <div class="nav-wrap">
-            <a href="/" class="nav-item">
-                <i class="bi bi-table"></i> Données
-            </a>
-            <a href="/tableau-de-bord" class="nav-item">
-                <i class="bi bi-bar-chart"></i> Tableau de Bord
-            </a>
-            <a href="/consultants" class="nav-item active">
-                <i class="bi bi-people"></i> Consultants
-            </a>
-            <a href="/nouveau-projet" class="nav-item">
-                <i class="bi bi-plus-circle"></i> Nouveau Projet
-            </a>
-            @if($user && $user->isSuperAdmin())
-            <a href="/admin/users" class="nav-item">
-                <i class="bi bi-shield-lock"></i> Accès
-            </a>
-            @endif
-        </div>
-    </div>
-</div>
 
 <div class="container py-4">
 

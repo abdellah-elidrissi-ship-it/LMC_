@@ -3,8 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMC Conseil — Tableau de Bord PMO</title>
+    <title>LMC Conseil</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
@@ -1020,6 +1022,94 @@
             font-size: 8px;
             font-weight: 600;
         }
+        /*LOGOOOO*/
+
+        /* CLIENT LOGO + NAME */
+
+.client-with-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.client-logo-mini {
+    width: 25px;
+    height: 25px;
+    flex: 0 0 25px;
+    padding: 3px;
+    object-fit: contain;
+    object-position: center;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+}
+
+.client-logo-small {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    padding: 4px;
+    object-fit: contain;
+    object-position: center;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(15, 23, 42, 0.08);
+}
+
+.client-logo-fallback {
+    width: 25px;
+    height: 25px;
+    flex: 0 0 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    background: linear-gradient(135deg, #2563EB, #60A5FA);
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.client-name-wrap {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.bar-client-label {
+    width: 105px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+.bar-client-label .client-name-wrap {
+    font-size: 9px;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.smi-client-label {
+    width: 130px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+.smi-client-label .client-name-wrap {
+    font-size: 8.5px;
+    color: var(--text);
+    font-weight: 600;
+}
     </style>
 </head>
 
@@ -1030,7 +1120,12 @@
     use Illuminate\Support\Str;
 
     $projets = DB::select("
-    SELECT p.*, c.nom_client, c.secteur_activite, cons.nom_complet as chef_nom, cons.type_consultant as chef_type
+   SELECT p.*,
+       c.nom_client,
+       c.secteur_activite,
+       c.logo_path,
+       cons.nom_complet as chef_nom,
+       cons.type_consultant as chef_type
     FROM projets p
     LEFT JOIN clients c ON p.client_id = c.id
     LEFT JOIN consultants cons ON p.chef_projet_id = cons.id
@@ -1100,17 +1195,18 @@
 
     $formations = DB::select("
     SELECT
-    p.id as projet_id,
-    c.nom_client,
-    COUNT(pf.formation_id) as total,
-    SUM(CASE WHEN pf.statut IN ('Finalisée','Réalisée') THEN 1 ELSE 0 END) as ok
+        p.id as projet_id,
+        c.nom_client,
+        c.logo_path,
+        COUNT(pf.formation_id) as total,
+        SUM(CASE WHEN pf.statut IN ('Finalisée','Réalisée') THEN 1 ELSE 0 END) as ok
     FROM projets p
     LEFT JOIN clients c ON c.id = p.client_id
     LEFT JOIN projet_formations pf ON pf.projet_id = p.id
-    GROUP BY p.id, c.nom_client
+    GROUP BY p.id, c.nom_client, c.logo_path
     HAVING COUNT(pf.formation_id) > 0
     ORDER BY c.nom_client
-    ");
+");
 
     $affectationsRaw = DB::select("
     SELECT
@@ -1149,39 +1245,7 @@
     $user = auth()->user();
     @endphp
 
-    <!-- NAVBAR -->
-    <div class="site-header">
-        <div class="hdr-wrap">
-            <div class="logo-wrap">
-                <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png" alt="LMC" class="logo-img"
-                    onerror="this.src='data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%2260%22 height%3D%2230%22%3E%3Ctext x%3D%220%22 y%3D%2222%22 font-family%3D%22Inter%22 font-size%3D%2218%22 font-weight%3D%22700%22 fill%3D%22%23fff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
-                <div>
-                    <div class="logo-sub">LEAD MANAGEMENT CONSULTING</div>
-                </div>
-            </div>
-            <div class="hdr-actions">
-                <div class="user-pill"><i class="bi bi-person-circle"></i> {{ $user->name ?? 'Utilisateur' }}</div>
-                <div class="meta-pill"><i class="bi bi-calendar-check"></i> {{ now()->format('d/m/Y') }}</div>
-                <button class="icon-btn" id="themeToggle"><i class="bi bi-moon-fill" id="themeIcon"></i></button>
-                <form method="POST" action="/logout" style="margin:0">
-                    @csrf
-                    <button type="button" class="icon-btn" onclick="this.closest('form').submit()"><i class="bi bi-box-arrow-right"></i></button>
-                </form>
-            </div>
-        </div>
-        <div class="nav-wrap-outer">
-            <div class="nav-wrap">
-                <a href="/" class="nav-item"><i class="bi bi-table"></i> Données</a>
-                <a href="/tableau-de-bord" class="nav-item active"><i class="bi bi-bar-chart"></i> Tableau de Bord</a>
-                <a href="/consultants" class="nav-item"><i class="bi bi-people"></i> Consultants</a>
-                <a href="/nouveau-projet" class="nav-item"><i class="bi bi-plus-circle"></i> Nouveau Projet</a>
-                @if($user && $user->isSuperAdmin())
-                <a href="/admin/users" class="nav-item"><i class="bi bi-shield-lock"></i> Accès</a>
-                @endif
-            </div>
-        </div>
-    </div>
-
+    @include('partials.navbar', ['navActive' => 'tableau'])
     <script>
         (function() {
             const t = localStorage.getItem('lmc-theme') || 'light';
@@ -1352,7 +1416,25 @@
                   'linear-gradient(90deg,#F59E0B,#FCD34D)'));
         @endphp
         <div class="bar-row">
-            <span class="bar-lbl" title="{{ $p->nom_client }}">{{ Str::limit($p->nom_client, 11) }}</span>
+           <div class="bar-client-label" title="{{ $p->nom_client }}">
+
+    @if(!empty($p->logo_path))
+        <img
+            src="{{ $p->logo_path }}"
+            alt="Logo {{ $p->nom_client }}"
+            class="client-logo-mini"
+        >
+    @else
+        <span class="client-logo-fallback">
+            {{ mb_strtoupper(mb_substr($p->nom_client ?? 'C', 0, 1)) }}
+        </span>
+    @endif
+
+    <span class="client-name-wrap">
+        {{ Str::limit($p->nom_client, 11) }}
+    </span>
+
+</div>
             <div class="bar-track">
                 <div class="bar-fill" style="width:{{ max(1,$p->avancement_percent) }}%;background:{{ $bg }};">
                     @if($p->avancement_percent >= 15)<span class="bar-pct">{{ $p->avancement_percent }}%</span>@endif
@@ -1521,8 +1603,37 @@
                             @endphp
                             <tr>
                                 <td>
-                                    <div class="proj-id"><a href="/projet/{{ $p->id }}" style="color:var(--blue);text-decoration:none;">{{ Str::limit($p->nom_client, 10) }}</a></div>
-                                    <div class="proj-nm">{{ $p->reference_projet }}</div>
+                                    <div class="client-with-logo">
+
+    @if(!empty($p->logo_path))
+        <img
+            src="{{ $p->logo_path }}"
+            alt="Logo {{ $p->nom_client }}"
+            class="client-logo-mini"
+        >
+    @else
+        <span class="client-logo-fallback">
+            {{ mb_strtoupper(mb_substr($p->nom_client ?? 'C', 0, 1)) }}
+        </span>
+    @endif
+
+    <div>
+        <div class="proj-id">
+            <a
+                href="/projet/{{ $p->id }}"
+                style="color:var(--blue);text-decoration:none;"
+            >
+                {{ Str::limit($p->nom_client, 10) }}
+            </a>
+        </div>
+
+        <div class="proj-nm">
+            {{ $p->reference_projet }}
+        </div>
+    </div>
+
+</div>
+                                  
                                 </td>
                                 <td><span class="hm-cell {{ $planClass }}">{{ $p->statut === 'En retard' ? '✗ Retard' : ($p->avancement_percent > 0 ? '✓ OK' : '— N/D') }}</span></td>
                                 <td><span class="hm-cell {{ $budgClass }}">{{ $ec > 5 ? '✗ Dépass.' : ($ec > 0 ? '⚡ Risque' : '✓ OK') }}</span></td>
@@ -1571,7 +1682,31 @@
                         $pbColor = $p->avancement_percent === 100 ? '#10B981' : ($p->avancement_percent > 25 ? '#2563EB' : '#60A5FA');
                         @endphp
                         <tr data-statut="{{ $p->statut }}" data-chef="{{ $p->chef_nom }}" data-secteur="{{ $p->secteur_activite }}">
-                            <td><a href="/projet/{{ $p->id }}" style="font-weight:700;color:var(--blue);text-decoration:none;font-size:11px;">{{ $p->nom_client }}</a></td>
+                            <td>
+    <div class="client-with-logo">
+
+        @if(!empty($p->logo_path))
+            <img
+                src="{{ $p->logo_path }}"
+                alt="Logo {{ $p->nom_client }}"
+                class="client-logo-small"
+            >
+        @else
+            <span class="client-logo-fallback">
+                {{ mb_strtoupper(mb_substr($p->nom_client ?? 'C', 0, 1)) }}
+            </span>
+        @endif
+
+        <a
+            href="/projet/{{ $p->id }}"
+            class="client-name-wrap"
+            style="font-weight:700;color:var(--blue);text-decoration:none;font-size:11px;"
+        >
+            {{ $p->nom_client }}
+        </a>
+
+    </div>
+</td>
                             <td><span style="font-size:8.5px;color:var(--muted);background:var(--bg);padding:1px 6px;border-radius:4px;font-weight:600;">{{ $p->reference_projet }}</span></td>
                             <td style="font-size:10px;">{{ $p->chef_nom ?? '—' }}</td>
                             <td><span class="sbadge {{ $sc }}">{{ $p->statut }}</span></td>
@@ -1636,6 +1771,7 @@ const ALL_PROJETS = {!! json_encode(collect($projets)->map(function($p) {
     return [
         'id'       => $p->id,
         'client'   => $p->nom_client,
+        'logo'     => $p->logo_path ?? '',
         'reference'=> $p->reference_projet,
         'statut'   => $p->statut,
         'chef'     => $p->chef_nom ?? '',
@@ -1672,6 +1808,7 @@ const ALL_FORMATIONS = {!! json_encode(collect($formations)->map(function($f) {
     return [
         'projet_id' => (int) $f->projet_id,
         'nom_client' => $f->nom_client,
+        'logo' => $f->logo_path ?? '',
         'total' => (int) $f->total,
         'ok' => (int) $f->ok,
     ];
@@ -1720,6 +1857,25 @@ const short = (v, n = 10) => {
     const s = String(v ?? '');
     return s.length > n ? s.slice(0, n) + '…' : s;
 };
+
+function clientIdentityHtml(name, logo, sizeClass = 'client-logo-mini') {
+    const safeName = esc(name || 'Client');
+    const initial = safeName.trim().charAt(0).toUpperCase() || 'C';
+
+    const visual = logo
+        ? `<img src="${esc(logo)}"
+                alt="Logo ${safeName}"
+                class="${sizeClass}"
+                loading="lazy">`
+        : `<span class="client-logo-fallback">${initial}</span>`;
+
+    return `
+        <span class="client-with-logo">
+            ${visual}
+            <span class="client-name-wrap">${safeName}</span>
+        </span>
+    `;
+}
 
 function getFilters() {
     return {
@@ -1920,7 +2076,16 @@ function updateAvancementClient(rows) {
 
         return `
             <div class="bar-row">
-                <span class="bar-lbl" title="${esc(p.client)}">${esc(short(p.client, 11))}</span>
+               <div class="bar-client-label" title="${esc(p.client)}">
+    ${
+        p.logo
+            ? `<img src="${esc(p.logo)}"
+                    alt="Logo ${esc(p.client)}"
+                    class="client-logo-mini">`
+            : `<span class="client-logo-fallback">${esc(p.client).charAt(0).toUpperCase()}</span>`
+    }
+    <span class="client-name-wrap">${esc(short(p.client, 11))}</span>
+</div>
                 <div class="bar-track">
                     <div class="bar-fill" style="width:${Math.max(1,p.avanct)}%;background:${bg};">
                         ${p.avanct >= 15 ? `<span class="bar-pct">${p.avanct}%</span>` : ``}
@@ -2027,7 +2192,16 @@ function updateFormations(forms, liv) {
             const fc2 = fp >= 100 ? '#10B981' : (fp >= 50 ? '#2563EB' : (fp > 0 ? '#F59E0B' : '#E2E8F0'));
             return `
                 <div class="smi-row">
-                    <span class="smi-lbl" title="${esc(f.nom_client)}">${esc(short(f.nom_client, 22))}</span>
+                   <div class="smi-client-label" title="${esc(f.nom_client)}">
+    ${
+        f.logo
+            ? `<img src="${esc(f.logo)}"
+                    alt="Logo ${esc(f.nom_client)}"
+                    class="client-logo-mini">`
+            : `<span class="client-logo-fallback">${esc(f.nom_client).charAt(0).toUpperCase()}</span>`
+    }
+    <span class="client-name-wrap">${esc(short(f.nom_client, 18))}</span>
+</div>
                     <div class="smi-track">
                         <div class="smi-fill" style="width:${Math.max(1,fp)}%;background:${fc2};">
                             ${fp >= 18 ? `<span style="font-size:7.5px;font-weight:700;color:#fff;">${f.ok}/${f.total}</span>` : ``}
@@ -2070,10 +2244,30 @@ function updateHeatmap(rows) {
 
         return `
             <tr>
-                <td>
-                    <div class="proj-id"><a href="/projet/${p.id}" style="color:var(--blue);text-decoration:none;">${esc(short(p.client, 10))}</a></div>
-                    <div class="proj-nm">${esc(p.reference)}</div>
-                </td>
+               <td>
+    <div class="client-with-logo">
+        ${
+            p.logo
+                ? `<img src="${esc(p.logo)}"
+                        alt="Logo ${esc(p.client)}"
+                        class="client-logo-mini">`
+                : `<span class="client-logo-fallback">${esc(p.client).charAt(0).toUpperCase()}</span>`
+        }
+
+        <div>
+            <div class="proj-id">
+                <a href="/projet/${p.id}"
+                   style="color:var(--blue);text-decoration:none;">
+                    ${esc(short(p.client, 10))}
+                </a>
+            </div>
+
+            <div class="proj-nm">
+                ${esc(p.reference)}
+            </div>
+        </div>
+    </div>
+</td>
                 <td><span class="hm-cell ${planClass}">${planText}</span></td>
                 <td><span class="hm-cell ${budgClass}">${budgetText}</span></td>
                 <td><span class="hm-cell ${riskClass}">${riskText}</span></td>

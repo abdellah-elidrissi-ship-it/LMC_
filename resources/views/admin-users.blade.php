@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>LMC Conseil — Gestion des Accès</title>
+    <title>LMC Conseil</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -166,20 +167,20 @@
         .page-title{font-size:20px;font-weight:700;margin-bottom:4px;}
         .page-desc{font-size:13px;color:var(--text2);margin-bottom:24px;}
 
-        .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
-        @media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr);}}
+        .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:28px;}
+        @media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr);}}
+        @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr);}}
         .sc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--shadow);}
         .sc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px;}
         .sc-icon.blue{background:rgba(59,130,246,.12);color:#3b82f6;}
         .sc-icon.red{background:rgba(239,68,68,.12);color:#ef4444;}
         .sc-icon.yellow{background:rgba(234,179,8,.12);color:#eab308;}
         .sc-icon.green{background:rgba(34,197,94,.12);color:#22c55e;}
+        .sc-icon.amber{background:rgba(245,158,11,.12);color:#f59e0b;}
         .sc-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:4px;}
         .sc-val{font-size:28px;font-weight:700;color:var(--text);line-height:1;margin-bottom:3px;}
         .sc-sub{font-size:12px;color:var(--muted);}
-
-        .main-grid{display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start;}
-        @media(max-width:1000px){.main-grid{grid-template-columns:1fr;}}
+        .sc.pending-stat{border-color:rgba(245,158,11,.35);}
 
         .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;}
         .card-head{padding:15px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
@@ -220,6 +221,7 @@
         .perm-icon.red{background:rgba(239,68,68,.1);color:#ef4444;}
         .perm-icon.purple{background:rgba(139,92,246,.1);color:#8b5cf6;}
         .perm-icon.pink{background:rgba(236,72,153,.1);color:#ec4899;}
+        .perm-icon.teal{background:rgba(20,184,166,.1);color:#14b8a6;}
         .perm-name{font-size:12px;font-weight:500;color:var(--text);}
         .perm-desc{font-size:10px;color:var(--muted);margin-top:1px;}
 
@@ -284,6 +286,36 @@
         .modal-sub{font-size:12px;color:var(--text2);margin-bottom:20px;}
         .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
         .admin-note{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:9px;padding:10px 13px;font-size:12px;color:#ef4444;display:flex;align-items:center;gap:7px;margin-bottom:15px;}
+
+        /* ══ Demandes en attente — mise en avant ══ */
+        .pending-card{border:1px solid rgba(245,158,11,.35);border-left:4px solid #f59e0b;box-shadow:0 4px 20px rgba(245,158,11,.08);}
+        .pending-card .card-head{background:rgba(245,158,11,.06);}
+        .pending-card .card-title i{color:#f59e0b;}
+        .pending-count{background:#f59e0b;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:4px;}
+        .pending-row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);gap:12px;flex-wrap:wrap;}
+        .pending-row:last-child{border-bottom:none;}
+
+        /* ══ Badges projets ══ */
+        .projbadges{display:flex;gap:4px;flex-wrap:wrap;max-width:220px;}
+        .projbadge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;white-space:nowrap;}
+        .projbadge.derive{background:rgba(59,130,246,.1);color:#3b82f6;}
+        .projbadge.direct{background:rgba(139,92,246,.12);color:#8b5cf6;}
+        .proj-check-row{display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid var(--border);font-size:12px;}
+        .proj-check-row:last-child{border-bottom:none;}
+        .proj-check-row input[type="checkbox"]{accent-color:var(--accent);width:15px;height:15px;flex-shrink:0;}
+        .proj-check-row.is-derived{color:var(--muted);}
+        .proj-tag-derived{font-size:9px;background:rgba(59,130,246,.1);color:#3b82f6;padding:1px 6px;border-radius:10px;margin-left:auto;}
+        .proj-list-scroll{max-height:260px;overflow-y:auto;border:1px solid var(--border);border-radius:9px;margin-bottom:15px;}
+
+        /* ══ Historique / audit ══ */
+        .audit-row{display:flex;align-items:center;gap:10px;padding:11px 20px;border-bottom:1px solid var(--border);font-size:12px;}
+        .audit-row:last-child{border-bottom:none;}
+        .audit-icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+        .audit-icon.approuve{background:rgba(34,197,94,.1);color:#16a34a;}
+        .audit-icon.refuse{background:rgba(239,68,68,.1);color:#ef4444;}
+        .audit-txt{color:var(--text2);}
+        .audit-txt strong{color:var(--text);}
+        .audit-date{margin-left:auto;color:var(--muted);font-size:11px;white-space:nowrap;}
     </style>
 </head>
 <body>
@@ -294,62 +326,7 @@ $user = auth()->user();
 @endphp
 
 <!-- HEADER -->
-<div class="site-header">
-    <div class="header-container">
-        <div class="logo-wrapper">
-            <img src="https://lmc.ma/wp-content/uploads/2021/02/LMC-Logo.png" 
-                 alt="LMC Conseil" 
-                 class="logo-image"
-                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2280%22%20height%3D%2240%22%20viewBox%3D%220%200%2080%2040%22%3E%3Ctext%20x%3D%220%22%20y%3D%2230%22%20font-family%3D%22Inter%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22700%22%20fill%3D%22%23ffffff%22%3ELMC%3C%2Ftext%3E%3C%2Fsvg%3E';">
-            <div class="logo-text">
-                <span class="logo-sub">LEAD MANAGEMENT CONSULTING</span>
-            </div>
-        </div>
-        
-        <div class="header-actions">
-            <div class="user-info">
-                <i class="bi bi-person-circle"></i>
-                <span class="user-name">{{ $user->name ?? 'Utilisateur' }}</span>
-            </div>
-            <span class="meta-pill">
-                <i class="bi bi-calendar-check"></i>
-                {{ now()->format('d/m/Y') }}
-            </span>
-            <button class="theme-btn" id="themeToggle">
-                <i class="bi bi-moon-fill" id="themeIcon"></i>
-            </button>
-            <form method="POST" action="/logout" style="margin:0">
-                @csrf
-                <button type="button" class="theme-btn" title="Déconnexion"
-                    onclick="this.closest('form').submit()">
-                    <i class="bi bi-box-arrow-right"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <div class="nav-container">
-        <div class="nav-wrap">
-            <a href="/" class="nav-item">
-                <i class="bi bi-table"></i> Données
-            </a>
-            <a href="/tableau-de-bord" class="nav-item">
-                <i class="bi bi-bar-chart"></i> Tableau de Bord
-            </a>
-            <a href="/consultants" class="nav-item">
-                <i class="bi bi-people"></i> Consultants
-            </a>
-            <a href="/nouveau-projet" class="nav-item">
-                <i class="bi bi-plus-circle"></i> Nouveau Projet
-            </a>
-            @if($user && $user->isSuperAdmin())
-            <a href="/admin/users" class="nav-item active">
-                <i class="bi bi-shield-lock"></i> Accès
-            </a>
-            @endif
-        </div>
-    </div>
-</div>
+@include('partials.navbar', ['navActive' => 'admin'])
 
 <div class="page">
 
@@ -361,87 +338,59 @@ $user = auth()->user();
     @endif
 
     <div class="page-title">Gestion des Accès</div>
-    <div class="page-desc">Créez des comptes et définissez les permissions de chaque utilisateur</div>
+    <div class="page-desc">Validez les demandes d'accès et gérez les permissions des utilisateurs existants</div>
+
+    @if($enAttente->isNotEmpty())
+    <div class="card pending-card" style="margin-bottom:20px;">
+        <div class="card-head">
+            <div class="card-title">
+                <i class="bi bi-hourglass-split"></i> Demandes en attente
+                <span class="pending-count">{{ $enAttente->count() }}</span>
+            </div>
+        </div>
+        <div>
+            @foreach($enAttente as $demandeur)
+            <div class="pending-row">
+                <div>
+                    <div class="un">{{ $demandeur->name }}</div>
+                    <div class="ue">{{ $demandeur->email }} · demandé le {{ $demandeur->created_at->format('d/m/Y à H:i') }}</div>
+                </div>
+                <div class="ab">
+                    <button class="btn btn-primary btn-sm" onclick="openApprove({{ $demandeur->id }}, {{ json_encode($demandeur->name) }}, {{ json_encode($demandeur->email) }})">
+                        <i class="bi bi-check-lg"></i> Accepter
+                    </button>
+                    <button class="btn btn-ghost btn-sm" onclick="openReject({{ $demandeur->id }}, {{ json_encode($demandeur->name) }})">
+                        <i class="bi bi-x-lg"></i> Refuser
+                    </button>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
 
     <div class="stats">
+        <div class="sc pending-stat"><div class="sc-icon amber"><i class="bi bi-hourglass-split"></i></div><div class="sc-lbl">Demandes en attente</div><div class="sc-val">{{ $enAttente->count() }}</div><div class="sc-sub">À valider</div></div>
         <div class="sc"><div class="sc-icon blue"><i class="bi bi-people-fill"></i></div><div class="sc-lbl">Total</div><div class="sc-val">{{ $users->count() }}</div><div class="sc-sub">Utilisateurs actifs</div></div>
         <div class="sc"><div class="sc-icon red"><i class="bi bi-shield-fill"></i></div><div class="sc-lbl">Super Admins</div><div class="sc-val">{{ $users->where('role','super_admin')->count() }}</div><div class="sc-sub">Accès complet</div></div>
         <div class="sc"><div class="sc-icon yellow"><i class="bi bi-person-badge-fill"></i></div><div class="sc-lbl">Chefs Projet</div><div class="sc-val">{{ $users->where('role','chef_projet')->count() }}</div><div class="sc-sub">Gestion projets</div></div>
         <div class="sc"><div class="sc-icon green"><i class="bi bi-person-fill"></i></div><div class="sc-lbl">Consultants</div><div class="sc-val">{{ $users->where('role','consultant')->count() }}</div><div class="sc-sub">Lecture & suivi</div></div>
     </div>
 
-    <div class="main-grid">
-
-        {{-- FORM --}}
-        <div class="card">
+    <div class="card">
             <div class="card-head">
-                <div class="card-title"><i class="bi bi-person-plus-fill"></i> Créer un compte</div>
-            </div>
-            <div class="card-body">
-                <form method="POST" action="/admin/users">
-                    @csrf
-
-                    <div class="fg">
-                        <label class="fl">Consultant <span class="req">*</span></label>
-                        <div class="sw">
-                            <select name="consultant_id" class="fs" required onchange="fillName(this)">
-                                <option value="">— Sélectionner —</option>
-                                @foreach($consultants as $c)
-                                <option value="{{ $c->id }}" data-nom="{{ $c->nom_complet }}" {{ old('consultant_id')==$c->id?'selected':'' }}>
-                                    {{ $c->nom_complet }}{{ $c->user_id?' ✓':'' }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="hint"><i class="bi bi-info-circle"></i> ✓ = a déjà un compte</div>
+                <div class="card-title"><i class="bi bi-people-fill"></i> Utilisateurs actifs ({{ $users->count() }})</div>
+                <div class="d-flex" style="display:flex; gap:8px; align-items:center;">
+                    <select class="fs" id="roleFilter" style="width:auto; padding:7px 28px 7px 10px; font-size:12px;" onchange="filterUsers()">
+                        <option value="">Tous les rôles</option>
+                        <option value="super_admin">Super Admin</option>
+                        <option value="chef_projet">Chef Projet</option>
+                        <option value="consultant">Consultant</option>
+                    </select>
+                    <div class="srch">
+                        <i class="bi bi-search"></i>
+                        <input type="text" class="si" id="searchInput" placeholder="Rechercher..." oninput="filterUsers()">
                     </div>
-
-                    <div class="fg">
-                        <label class="fl">Nom affiché <span class="req">*</span></label>
-                        <input type="text" name="name" id="nameInp" class="fc" placeholder="Nom complet" value="{{ old('name') }}" required>
-                    </div>
-
-                    <div class="fg">
-                        <label class="fl">Email <span class="req">*</span></label>
-                        <input type="email" name="email" class="fc" placeholder="prenom.nom@lmc.ma" value="{{ old('email') }}" required>
-                    </div>
-
-                    <div class="fg">
-                        <label class="fl">Mot de passe <span class="req">*</span></label>
-                        <div class="pww">
-                            <input type="password" name="password" id="pwInp" class="fc" placeholder="Min. 8 caractères" required minlength="8">
-                            <button type="button" class="pwe" onclick="togglePw('pwInp','pwIco')"><i class="bi bi-eye" id="pwIco"></i></button>
-                        </div>
-                    </div>
-
-                    <div class="fg">
-                        <label class="fl">Rôle <span class="req">*</span></label>
-                        <div class="rpills">
-                            <input type="radio" name="role" value="super_admin" id="r1" class="rr" {{ old('role')=='super_admin'?'checked':'' }} onchange="onRoleChange('super_admin','create')">
-                            <label for="r1" class="rp"><span class="rdot a"></span> Super Admin</label>
-                            <input type="radio" name="role" value="chef_projet" id="r2" class="rr" {{ old('role','chef_projet')=='chef_projet'?'checked':'' }} onchange="onRoleChange('chef_projet','create')">
-                            <label for="r2" class="rp"><span class="rdot c"></span> Chef Projet</label>
-                            <input type="radio" name="role" value="consultant" id="r3" class="rr" {{ old('role')=='consultant'?'checked':'' }} onchange="onRoleChange('consultant','create')">
-                            <label for="r3" class="rp"><span class="rdot cn"></span> Consultant</label>
-                        </div>
-                    </div>
-
-                    <div id="createPermsWrap"></div>
-
-                    <button type="submit" class="btn btn-primary btn-full">
-                        <i class="bi bi-person-plus-fill"></i> Créer le compte
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        {{-- TABLE --}}
-        <div class="card">
-            <div class="card-head">
-                <div class="card-title"><i class="bi bi-people-fill"></i> Utilisateurs ({{ $users->count() }})</div>
-                <div class="srch">
-                    <i class="bi bi-search"></i>
-                    <input type="text" class="si" placeholder="Rechercher..." oninput="filterUsers(this.value)">
                 </div>
             </div>
 
@@ -455,6 +404,7 @@ $user = auth()->user();
                             <th>Utilisateur</th>
                             <th>Rôle</th>
                             <th>Permissions</th>
+                            <th>Projets</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -465,9 +415,12 @@ $user = auth()->user();
                             $col=$cols[abs(crc32($user->name))%count($cols)];
                             $ini=collect(explode(' ',$user->name))->take(2)->map(fn($w)=>strtoupper($w[0]??''))->join('');
                             $perms=$user->permissions ?? [];
-                            $permLabels=['voir_details'=>'Détails','creer_projets'=>'Créer','modifier_projets'=>'Modifier','supprimer_projets'=>'Supprimer','voir_consultants'=>'Consultants','voir_gantt'=>'Gantt'];
+                            $permLabels=['voir_details'=>'Détails','creer_projets'=>'Créer','modifier_projets'=>'Modifier','supprimer_projets'=>'Supprimer','voir_consultants'=>'Consultants','voir_gantt'=>'Gantt','voir_tableau_bord'=>'Tableau de Bord'];
+                            $directIds = $user->projets_directs->pluck('id')->all() ?? [];
+                            $deriveIds = $user->projets_derives->pluck('id')->all() ?? [];
+                            $tousProjetsUser = collect($user->projets_derives ?? [])->merge($user->projets_directs ?? [])->unique('id');
                         @endphp
-                        <tr class="urow">
+                        <tr class="urow" data-role="{{ $user->role }}">
                             <td>
                                 <div class="uc">
                                     <div class="av" style="background:{{ $col }}">{{ $ini }}</div>
@@ -500,6 +453,23 @@ $user = auth()->user();
                                 @endif
                             </td>
                             <td>
+                                @if($user->role==='super_admin')
+                                    <span style="font-size:11px;color:#22c55e;font-weight:600">Tous les projets</span>
+                                @else
+                                    <div class="projbadges">
+                                        @forelse($tousProjetsUser as $p)
+                                        <span class="projbadge {{ in_array($p->id, $deriveIds) ? 'derive' : 'direct' }}">{{ $p->reference_projet }}</span>
+                                        @empty
+                                        <span style="font-size:11px;color:var(--muted)">Aucun projet</span>
+                                        @endforelse
+                                    </div>
+                                    <button class="ib" title="Gérer l'accès aux projets" style="margin-top:6px;"
+                                        onclick="openProjets({{ $user->id }}, {{ json_encode($user->name) }}, {{ json_encode($directIds) }}, {{ json_encode($deriveIds) }})">
+                                        <i class="bi bi-diagram-3"></i>
+                                    </button>
+                                @endif
+                            </td>
+                            <td>
                                 <div class="ab">
                                     <button class="ib" title="Modifier"
                                         onclick="openEdit({{ $user->id }},'{{ addslashes($user->name) }}','{{ $user->email }}','{{ $user->role }}',{{ json_encode($perms) }})">
@@ -519,8 +489,33 @@ $user = auth()->user();
                 </table>
             </div>
             @endif
+    </div>
+
+    @if($auditLog->isNotEmpty())
+    <div class="card" style="margin-top:20px;">
+        <div class="card-head">
+            <div class="card-title"><i class="bi bi-clock-history"></i> Historique des décisions</div>
+        </div>
+        <div>
+            @foreach($auditLog as $entry)
+            <div class="audit-row">
+                <div class="audit-icon {{ $entry->action }}">
+                    <i class="bi {{ $entry->action === 'approuve' ? 'bi-check-lg' : 'bi-x-lg' }}"></i>
+                </div>
+                <div class="audit-txt">
+                    <strong>{{ $entry->admin->name ?? 'Admin supprimé' }}</strong>
+                    {{ $entry->action === 'approuve' ? 'a approuvé' : 'a refusé' }}
+                    <strong>{{ $entry->user->name ?? 'Compte supprimé' }}</strong>
+                    @if($entry->details)
+                    <span style="color:var(--muted);">— {{ $entry->details }}</span>
+                    @endif
+                </div>
+                <div class="audit-date">{{ $entry->created_at->format('d/m/Y à H:i') }}</div>
+            </div>
+            @endforeach
         </div>
     </div>
+    @endif
 </div>
 
 {{-- EDIT MODAL --}}
@@ -542,7 +537,7 @@ $user = auth()->user();
             <div class="fg">
                 <label class="fl">Rôle</label>
                 <div class="sw">
-                    <select name="role" id="eRole" class="fs" onchange="onRoleChange(this.value,'edit')">
+                    <select name="role" id="eRole" class="fs" onchange="onRoleChange(this.value)">
                         <option value="super_admin">Super Admin</option>
                         <option value="chef_projet">Chef de Projet</option>
                         <option value="consultant">Consultant</option>
@@ -581,6 +576,127 @@ $user = auth()->user();
     </div>
 </div>
 
+{{-- APPROVE MODAL --}}
+<div class="ov" id="approveOv">
+    <div class="modal">
+        <div class="modal-title"><i class="bi bi-check-circle-fill" style="color:#22c55e"></i> Approuver la demande</div>
+        <div class="modal-sub" id="approveSub"></div>
+        <form method="POST" id="approveForm">
+            @csrf
+            @method('PUT')
+
+            <div class="fg">
+                <label class="fl">Rôle</label>
+                <div class="rpills">
+                    <input type="radio" name="role" value="super_admin" id="ar1" class="rr" onchange="onApproveRoleChange('super_admin')">
+                    <label for="ar1" class="rp"><span class="rdot a"></span> Super Admin</label>
+                    <input type="radio" name="role" value="chef_projet" id="ar2" class="rr" onchange="onApproveRoleChange('chef_projet')">
+                    <label for="ar2" class="rp"><span class="rdot c"></span> Chef Projet</label>
+                    <input type="radio" name="role" value="consultant" id="ar3" class="rr" onchange="onApproveRoleChange('consultant')">
+                    <label for="ar3" class="rp"><span class="rdot cn"></span> Consultant</label>
+                </div>
+            </div>
+
+            <div id="approvePermsWrap"></div>
+
+            <div id="approveConsultantWrap">
+                <div class="fg">
+                    <label class="fl">Profil consultant</label>
+                    <div class="rpills" style="margin-bottom:10px;">
+                        <input type="radio" name="consultant_mode" value="existing" id="cmExisting" class="rr" onchange="onConsultantModeChange('existing')">
+                        <label for="cmExisting" class="rp">Lier un existant</label>
+                        <input type="radio" name="consultant_mode" value="nouveau" id="cmNouveau" class="rr" onchange="onConsultantModeChange('nouveau')">
+                        <label for="cmNouveau" class="rp">Créer un nouveau profil</label>
+                    </div>
+
+                    <div id="consultantExistingWrap">
+                        <select name="consultant_id" id="approveConsultantId" class="fs">
+                            <option value="">— Sélectionner —</option>
+                            @foreach($consultantsSansCompte as $c)
+                            <option value="{{ $c->id }}">{{ $c->nom_complet }}</option>
+                            @endforeach
+                        </select>
+                        @if($consultantsSansCompte->isEmpty())
+                        <div class="hint"><i class="bi bi-info-circle"></i> Aucun consultant sans compte — créez un nouveau profil.</div>
+                        @endif
+                    </div>
+
+                    <div id="consultantNouveauWrap" style="display:none;">
+                        <div class="fg">
+                            <label class="fl">Type</label>
+                            <select name="nouveau_type_consultant" class="fs">
+                                <option value="Interne">Interne</option>
+                                <option value="Freelancer">Freelancer</option>
+                            </select>
+                        </div>
+                        <div class="fg">
+                            <label class="fl">Spécialité</label>
+                            <input type="text" name="nouveau_specialite" class="fc" placeholder="ex: ISO 9001">
+                        </div>
+                        <div class="fg">
+                            <label class="fl">Téléphone</label>
+                            <input type="text" name="nouveau_telephone" class="fc">
+                        </div>
+                        <div class="hint"><i class="bi bi-info-circle"></i> Nom et email repris automatiquement depuis la demande.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost btn-sm" onclick="closeOv('approveOv')">Annuler</button>
+                <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-lg"></i> Approuver</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- REJECT MODAL --}}
+<div class="ov" id="rejectOv">
+    <div class="modal">
+        <div class="modal-title" style="color:#ef4444"><i class="bi bi-x-circle-fill"></i> Refuser la demande</div>
+        <div class="modal-sub" id="rejectSub"></div>
+        <form method="POST" id="rejectForm">
+            @csrf
+            @method('PUT')
+            <div class="fg">
+                <label class="fl">Motif <span style="color:var(--muted); font-weight:400;">(optionnel, envoyé au candidat)</span></label>
+                <textarea name="motif_refus" class="fc" rows="3" placeholder="Expliquer le refus..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost btn-sm" onclick="closeOv('rejectOv')">Annuler</button>
+                <button type="submit" class="btn btn-del btn-sm"><i class="bi bi-x-lg"></i> Refuser</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- PROJETS ACCESS MODAL --}}
+<div class="ov" id="projetsOv">
+    <div class="modal">
+        <div class="modal-title"><i class="bi bi-diagram-3"></i> Accès aux projets</div>
+        <div class="modal-sub" id="projetsSub"></div>
+        <form method="POST" id="projetsForm">
+            @csrf
+            @method('PUT')
+            <div class="proj-list-scroll" id="projetsListWrap">
+                @forelse($projets as $p)
+                <label class="proj-check-row" id="projRow_{{ $p->id }}">
+                    <input type="checkbox" name="projets[]" value="{{ $p->id }}" id="projChk_{{ $p->id }}">
+                    {{ $p->reference_projet }}
+                </label>
+                @empty
+                <div style="padding:14px; font-size:12px; color:var(--muted);">Aucun projet créé.</div>
+                @endforelse
+            </div>
+            <div class="hint"><i class="bi bi-info-circle"></i> Les projets marqués "via affectation" viennent du staffing (page Modifier Projet) et ne sont pas modifiables ici.</div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost btn-sm" onclick="closeOv('projetsOv')">Annuler</button>
+                <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-lg"></i> Enregistrer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 const PERMS_DEF = [
     { key:'voir_details',      label:'Voir les détails',    desc:'Accéder à la fiche complète du projet', icon:'bi-eye-fill',         color:'blue'   },
@@ -589,8 +705,9 @@ const PERMS_DEF = [
     { key:'supprimer_projets', label:'Supprimer un projet', desc:'Supprimer définitivement un projet',    icon:'bi-trash-fill',       color:'red'    },
     { key:'voir_consultants',  label:'Voir les consultants',desc:'Accéder à la page consultants',         icon:'bi-people-fill',      color:'purple' },
     { key:'voir_gantt',        label:'Voir le Gantt',       desc:'Accéder au planning Gantt',             icon:'bi-bar-chart-steps',  color:'pink'   },
+    { key:'voir_tableau_bord', label:'Voir le Tableau de Bord', desc:'Accéder à la page Tableau de Bord', icon:'bi-speedometer2',     color:'teal'   },
 ];
-let createPerms = {}, editPerms = {};
+let editPerms = {}, approvePerms = {};
 
 function renderPerms(containerId, permsState, prefix, role) {
     const wrap = document.getElementById(containerId);
@@ -620,33 +737,31 @@ function renderPerms(containerId, permsState, prefix, role) {
 
 function togglePerm(key, prefix, checked) {
     const val = checked ? 'yes' : 'no';
-    if (prefix === 'create') createPerms[key] = val;
-    else editPerms[key] = val;
+    if (prefix === 'edit') editPerms[key] = val;
+    else if (prefix === 'approve') approvePerms[key] = val;
     document.getElementById(`hid_${prefix}_${key}`).value = val;
     const lbl = document.getElementById(`lbl_${prefix}_${key}`);
     lbl.textContent = checked ? 'OUI' : 'NON';
     lbl.className = `toggle-lbl ${checked?'on':'off'}`;
 }
 
-function onRoleChange(role, prefix) {
-    if (prefix === 'create') { createPerms = {}; renderPerms('createPermsWrap', createPerms, 'create', role); }
-    else { editPerms = {}; renderPerms('editPermsWrap', editPerms, 'edit', role); }
+function onRoleChange(role) {
+    editPerms = {};
+    renderPerms('editPermsWrap', editPerms, 'edit', role);
 }
 
-const checked = document.querySelector('.rr:checked');
-renderPerms('createPermsWrap', {}, 'create', checked ? checked.value : 'chef_projet');
-
-function fillName(sel) {
-    const opt = sel.options[sel.selectedIndex];
-    if (opt.value) document.getElementById('nameInp').value = opt.dataset.nom || '';
-}
 function togglePw(inp, ico) {
     const i = document.getElementById(inp);
     document.getElementById(ico).className = (i.type = i.type === 'password' ? 'text' : 'password') === 'text' ? 'bi bi-eye-slash' : 'bi bi-eye';
 }
-function filterUsers(q) {
-    q = q.toLowerCase();
-    document.querySelectorAll('.urow').forEach(r => r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none');
+function filterUsers() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const role = document.getElementById('roleFilter').value;
+    document.querySelectorAll('.urow').forEach(r => {
+        const matchesText = r.textContent.toLowerCase().includes(q);
+        const matchesRole = !role || r.dataset.role === role;
+        r.style.display = (matchesText && matchesRole) ? '' : 'none';
+    });
 }
 
 function openEdit(id, name, email, role, perms) {
@@ -659,6 +774,72 @@ function openEdit(id, name, email, role, perms) {
     editPerms = perms && typeof perms === 'object' ? {...perms} : {};
     renderPerms('editPermsWrap', editPerms, 'edit', role);
     document.getElementById('editOv').classList.add('open');
+}
+
+function openApprove(id, name, email) {
+    document.getElementById('approveSub').textContent = `${name} (${email})`;
+    document.getElementById('approveForm').action = `/admin/users/${id}/approuver`;
+    document.querySelector('#approveForm input[name="_token"]').value =
+        document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    document.querySelectorAll('#approveForm input[name="role"]').forEach(r => r.checked = (r.value === 'consultant'));
+
+    approvePerms = {};
+    renderPerms('approvePermsWrap', approvePerms, 'approve', 'consultant');
+    onApproveRoleChange('consultant');
+
+    document.getElementById('cmExisting').checked = true;
+    onConsultantModeChange('existing');
+
+    document.getElementById('approveOv').classList.add('open');
+}
+
+function onApproveRoleChange(role) {
+    approvePerms = {};
+    renderPerms('approvePermsWrap', approvePerms, 'approve', role);
+    document.getElementById('approveConsultantWrap').style.display = role === 'super_admin' ? 'none' : 'block';
+}
+
+function onConsultantModeChange(mode) {
+    document.getElementById('consultantExistingWrap').style.display = mode === 'existing' ? 'block' : 'none';
+    document.getElementById('consultantNouveauWrap').style.display = mode === 'nouveau' ? 'block' : 'none';
+}
+
+function openProjets(id, name, directIds, deriveIds) {
+    document.getElementById('projetsSub').textContent = `${name} — cocher les projets accordés en accès direct`;
+    document.getElementById('projetsForm').action = `/admin/users/${id}/projets`;
+    document.querySelector('#projetsForm input[name="_token"]').value =
+        document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    document.querySelectorAll('#projetsListWrap .proj-check-row').forEach(row => {
+        const checkbox = row.querySelector('input[type="checkbox"]');
+        const projId = parseInt(checkbox.value, 10);
+        const isDerived = deriveIds.includes(projId);
+        const isDirect = directIds.includes(projId);
+
+        checkbox.checked = isDerived || isDirect;
+        checkbox.disabled = isDerived;
+
+        row.classList.toggle('is-derived', isDerived);
+        const existingTag = row.querySelector('.proj-tag-derived');
+        if (existingTag) existingTag.remove();
+        if (isDerived) {
+            const tag = document.createElement('span');
+            tag.className = 'proj-tag-derived';
+            tag.textContent = 'via affectation';
+            row.appendChild(tag);
+        }
+    });
+
+    document.getElementById('projetsOv').classList.add('open');
+}
+
+function openReject(id, name) {
+    document.getElementById('rejectSub').textContent = `Refuser la demande de "${name}" ?`;
+    document.getElementById('rejectForm').action = `/admin/users/${id}/refuser`;
+    document.querySelector('#rejectForm input[name="_token"]').value =
+        document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    document.getElementById('rejectOv').classList.add('open');
 }
 
 function openDelete(id, name) {
