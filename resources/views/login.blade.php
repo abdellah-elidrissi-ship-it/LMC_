@@ -95,15 +95,17 @@
 
         .auth-visual-top {
             position: relative; z-index: 2;
-            display: flex; align-items: center; gap: 0.7rem;
+            display: flex; align-items: center; gap: 1.4rem;
+            margin-bottom: 12px;
         }
         .auth-visual-badge {
-            width: 40px; height: 40px;
+            width: 108px; height: 108px;
             display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
         }
-        .auth-visual-badge svg { width: 40px; height: 40px; fill: #ffffff; }
-        .auth-visual-brand-main { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
-        .auth-visual-brand-sub { font-size: 0.62rem; font-weight: 600; color: #6fd3f5; letter-spacing: 0.08em; }
+        .auth-visual-badge svg { width: 108px; height: 108px; fill: #ffffff; }
+        .auth-visual-brand-main { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.4rem; letter-spacing: -0.01em; }
+        .auth-visual-brand-sub { font-size: 0.75rem; font-weight: 600; color: #6fd3f5; letter-spacing: 0.08em; }
 
         .auth-visual-body { position: relative; z-index: 2; max-width: 460px; }
         .auth-visual-title {
@@ -415,9 +417,9 @@
         </div>
 
         <div class="auth-visual-footer">
-            <div><strong>9001</strong>Qualité</div>
-            <div><strong>14001</strong>Environnement</div>
-            <div><strong>45001</strong>Sécurité</div>
+            <div><strong>ISO 9001</strong>Qualité</div>
+            <div><strong>ISO 14001</strong>Environnement</div>
+            <div><strong>ISO 45001</strong>Sécurité</div>
         </div>
     </div>
 

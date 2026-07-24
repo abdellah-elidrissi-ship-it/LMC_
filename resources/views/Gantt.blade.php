@@ -10,17 +10,109 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         :root {
-            --bg: #fafafa;
+            --bg: #f4f6f9;
             --surface: #ffffff;
-            --border: #e5e5e5;
-            --border-strong: #d4d4d4;
-            --text: #171717;
-            --text-muted: #8a8a8a;
-            --accent: #2563eb;
-            --prevu: #94a3b8;
-            --realise: #2563eb;
-            --phase-bg: #eef2f9;
+            --border: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --accent: #164b78;
+            --prevu: #a8b4c2;
+            --realise: #2ea8e0;
+            --phase-bg: #dde5ee;
             --tache-bg: #ffffff;
+            --phase-violet: #7c3aed;
+            --danger-bg: #fee2e2;
+            --danger-text: #b91c1c;
+            --warning-bg: #fef3c7;
+            --warning-text: #b45309;
+            --success-bg: #dcfce7;
+            --success-text: #15803d;
+            --ecart-neg: #b91c1c;
+            --btn: #78716c;
+            --btn-hover: #57534e;
+            --journee: #0d9488;
+            --report-gap: #f59e0b;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0b1220;
+                --surface: #131b2c;
+                --border: #263349;
+                --border-strong: #34445f;
+                --text: #e5e9f0;
+                --text-muted: #93a0b4;
+                --accent: #4a9eda;
+                --prevu: #4b5768;
+                --realise: #38bdf8;
+                --phase-bg: #1b2a41;
+                --tache-bg: #131b2c;
+                --phase-violet: #a78bfa;
+                --danger-bg: #4c1d1d;
+                --danger-text: #fca5a5;
+                --warning-bg: #4a2e05;
+                --warning-text: #fcd34d;
+                --success-bg: #0f3d24;
+                --success-text: #86efac;
+                --ecart-neg: #fca5a5;
+                --btn: #a8a29e;
+                --btn-hover: #d6d3d1;
+                --journee: #2dd4bf;
+                --report-gap: #fbbf24;
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #0b1220;
+            --surface: #131b2c;
+            --border: #263349;
+            --border-strong: #34445f;
+            --text: #e5e9f0;
+            --text-muted: #93a0b4;
+            --accent: #4a9eda;
+            --prevu: #4b5768;
+            --realise: #38bdf8;
+            --phase-bg: #1b2a41;
+            --tache-bg: #131b2c;
+            --phase-violet: #a78bfa;
+            --danger-bg: #4c1d1d;
+            --danger-text: #fca5a5;
+            --warning-bg: #4a2e05;
+            --warning-text: #fcd34d;
+            --success-bg: #0f3d24;
+            --success-text: #86efac;
+            --ecart-neg: #fca5a5;
+            --btn: #a8a29e;
+            --btn-hover: #d6d3d1;
+            --journee: #2dd4bf;
+            --report-gap: #fbbf24;
+        }
+
+        :root[data-theme="light"] {
+            --bg: #f4f6f9;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --accent: #164b78;
+            --prevu: #a8b4c2;
+            --realise: #2ea8e0;
+            --phase-bg: #dde5ee;
+            --tache-bg: #ffffff;
+            --phase-violet: #7c3aed;
+            --danger-bg: #fee2e2;
+            --danger-text: #b91c1c;
+            --warning-bg: #fef3c7;
+            --warning-text: #b45309;
+            --success-bg: #dcfce7;
+            --success-text: #15803d;
+            --ecart-neg: #b91c1c;
+            --btn: #78716c;
+            --btn-hover: #57534e;
+            --journee: #0d9488;
+            --report-gap: #f59e0b;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,7 +126,19 @@
             font-weight: 700;
             letter-spacing: 0.01em;
             margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
+
+        .btn-retour-gantt {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            border: 1px solid var(--border); border-radius: 6px;
+            padding: 0.4rem 0.9rem; font-size: 0.78rem; font-weight: 600;
+            color: var(--text); background: var(--surface); text-decoration: none;
+            transition: background 0.15s;
+        }
+        .btn-retour-gantt:hover { background: var(--bg); color: var(--text); }
 
         .legend {
             display: flex;
@@ -56,22 +160,20 @@
         .gstat-label { font-size: 0.68rem; color: var(--text-muted); }
         .gstat-value { font-size: 0.82rem; font-weight: 700; color: var(--text); }
         .gstat-value.avancement-pill { padding: 0.1rem 0.45rem; border-radius: 999px; font-size: 0.72rem; }
-        .gstat-value.avancement-pill.danger { background: rgba(220,38,38,.1); }
-        .gstat-value.avancement-pill.warning { background: rgba(217,119,6,.1); }
-        .gstat-value.avancement-pill.success { background: rgba(5,150,105,.1); }
 
         .toolbar { display: flex; gap: 0.5rem; }
 
         .btn {
             border: 1px solid transparent; border-radius: 6px; padding: 0.5rem 1rem; font-size: 0.8rem; font-weight: 500;
             cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; transition: background 0.15s;
+            text-decoration: none;
         }
-        .btn-accent { background: var(--text); color: white; }
-        .btn-accent:hover { background: #000; }
-        .btn-light { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+        .btn-accent { background: var(--btn); color: white; }
+        .btn-accent:hover { background: var(--btn-hover); }
+        .btn-light { background: var(--surface); color: var(--btn); border-color: var(--btn); }
         .btn-light:hover { background: var(--bg); }
-        .btn-danger { background: transparent; color: #dc2626; border-color: var(--border-strong); }
-        .btn-danger:hover { background: #fef2f2; }
+        .btn-danger { background: transparent; color: var(--btn); border-color: var(--btn); }
+        .btn-danger:hover { background: var(--btn); color: white; }
         .btn-sm { padding: 0.3rem 0.7rem; font-size: 0.72rem; }
 
         /* ===== Modal ===== */
@@ -84,6 +186,20 @@
         .form-control { width: 100%; border: 1px solid var(--border-strong); border-radius: 6px; padding: 0.5rem 0.7rem; font-size: 0.85rem; font-family: 'Inter', sans-serif; }
         .form-control:focus { outline: none; border-color: var(--accent); }
         .modal-actions { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+        .consultants-dropdown { position: relative; }
+        .consultants-dropdown-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; border: 1px solid var(--border-strong); border-radius: 6px; padding: 0.5rem 0.7rem; font-size: 0.82rem; font-family: 'Inter', sans-serif; background: var(--surface); color: var(--text); cursor: pointer; text-align: left; }
+        .consultants-dropdown-toggle:focus { outline: none; border-color: var(--accent); }
+        .consultants-dropdown-toggle .cdt-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .consultants-dropdown-toggle .cdt-label.cdt-placeholder { color: var(--text-muted); }
+        .consultants-dropdown-toggle i { flex-shrink: 0; color: var(--text-muted); transition: transform 0.15s; }
+        .consultants-dropdown.open .consultants-dropdown-toggle i { transform: rotate(180deg); }
+        .consultants-dropdown-panel { display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 20; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 6px; box-shadow: 0 6px 16px rgba(0,0,0,0.15); padding: 0.4rem 0.6rem; max-height: 180px; overflow-y: auto; }
+        .consultants-dropdown.open .consultants-dropdown-panel { display: block; }
+        .consultants-checklist .consultant-check { display: flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0; font-size: 0.82rem; }
+        .consultants-checklist .consultant-check input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--accent); flex-shrink: 0; }
+        .consultants-checklist .consultant-check label { cursor: pointer; margin: 0; }
+        .consultants-checklist .consultants-empty { font-size: 0.78rem; color: var(--text-muted); padding: 0.2rem 0; }
+        .equipe-badge { display: inline-flex; align-items: center; gap: 0.3rem; background: color-mix(in srgb, var(--accent) 15%, var(--surface)); color: var(--accent); font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 999px; white-space: nowrap; }
 
         /* ===== Table Gantt ===== */
         :root { --row-h: 42px; --header-h: 44px; }
@@ -92,22 +208,22 @@
 
         /* Bandeau d'en-tête FIXE — hors du flux scrollable, plus de position:sticky */
         .gantt-head { display: flex; background: var(--bg); border-bottom: 1px solid var(--border-strong); }
-        .gantt-head-left { flex-shrink: 0; width: 760px; border-right: 1px solid var(--border); }
+        .gantt-head-left { flex-shrink: 0; width: 890px; border-right: 1px solid var(--border); }
         .gantt-head-right { flex: 1; overflow: hidden; }
 
         .gantt-wrapper { display: flex; align-items: flex-start; max-height: calc(100vh - 300px); overflow-y: auto; }
-        .left-panel { flex-shrink: 0; width: 760px; border-right: 1px solid var(--border); }
+        .left-panel { flex-shrink: 0; width: 890px; border-right: 1px solid var(--border); }
         .right-panel { flex: 1; overflow-x: auto; overflow-y: hidden; }
 
-        .cols-grid { display: grid; grid-template-columns: 1fr 100px 100px 90px 110px 90px; }
+        .cols-grid { display: grid; grid-template-columns: 1fr 130px 100px 100px 90px 110px 90px; }
 
         .table-header-row { height: var(--header-h); }
         .table-header-row .col { display: flex; align-items: center; justify-content: center; padding: 0 0.6rem; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text-muted); }
         .table-header-row .col:first-child { justify-content: flex-start; }
 
-        .phase-row { height: var(--row-h); overflow: hidden; background: var(--phase-bg); border-bottom: 1px solid var(--border); border-top: 1px solid var(--border); border-left: 4px solid var(--phase-color, var(--border-strong)); align-items: center; }
-        .phase-row .col.nom i { color: var(--phase-color, var(--text-muted)); }
-        .tl-phase-row { border-left: 4px solid var(--phase-color, var(--border-strong)); }
+        .phase-row { height: var(--row-h); overflow: hidden; background: var(--phase-bg); border-bottom: 1px solid var(--border); border-top: 1px solid var(--border); border-left: 5px solid var(--phase-violet); align-items: center; }
+        .phase-row .col.nom i { color: var(--phase-violet); }
+        .tl-phase-row { border-left: 5px solid var(--phase-violet); }
         .phase-row .col { padding: 0.5rem 0.6rem; font-weight: 600; font-size: 0.82rem; text-align: center; overflow: hidden; }
         .phase-row .col.nom { text-align: left; display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; text-overflow: ellipsis; }
         .phase-row .col.nom span.label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
@@ -116,7 +232,7 @@
         .phase-actions { display: flex; gap: 0.2rem; justify-content: center; flex-shrink: 0; }
         .icon-btn { border: none; background: transparent; color: var(--text-muted); cursor: pointer; padding: 0.2rem 0.35rem; border-radius: 4px; font-size: 0.85rem; }
         .icon-btn:hover { background: var(--border); color: var(--text); }
-        .icon-btn.danger:hover { background: #fef2f2; color: var(--danger, #dc2626); }
+        .icon-btn.danger:hover { background: var(--danger-bg); color: var(--danger-text); }
 
         .tache-row { height: var(--row-h); overflow: hidden; background: var(--tache-bg); border-bottom: 1px solid var(--border); align-items: center; cursor: pointer; transition: background 0.1s; }
         .tache-row:hover { background: var(--bg); }
@@ -125,13 +241,28 @@
         .tache-row .col.nom { text-align: left; padding-left: 1.5rem; }
 
         .ecart-pos { color: var(--text-muted); }
-        .ecart-neg { color: #dc2626; font-weight: 600; }
+        .ecart-neg { color: var(--ecart-neg); font-weight: 600; }
         .ecart-zero { color: var(--text-muted); }
+        .tt-ecart-display { padding: 0.5rem 0.75rem; font-size: 0.85rem; font-weight: 600; }
 
-        .avancement-pill { font-weight: 600; }
-        .avancement-pill.danger { color: #dc2626; }
-        .avancement-pill.warning { color: #d97706; }
-        .avancement-pill.success { color: #059669; }
+        /* Mini barre de progression bicolore : même logique que la timeline
+           (fond = Prévu, remplissage = Réalisation/Journée selon le type de tâche),
+           au lieu d'un code couleur rouge/orange/vert déconnecté du reste du Gantt. */
+        .avancement-pill {
+            font-weight: 700;
+            padding: 0.15rem 0.6rem;
+            border-radius: 999px;
+            color: var(--text);
+            border: 1px solid var(--border-strong);
+            background: linear-gradient(90deg,
+                color-mix(in srgb, var(--realise) 40%, var(--surface)) var(--fill, 0%),
+                var(--bg) var(--fill, 0%));
+        }
+        .avancement-pill.journee {
+            background: linear-gradient(90deg,
+                color-mix(in srgb, var(--journee) 40%, var(--surface)) var(--fill, 0%),
+                var(--bg) var(--fill, 0%));
+        }
 
         .edit-panel { display: none; background: var(--bg); border-bottom: 1px solid var(--border-strong); padding: 1rem 1.25rem; }
         .edit-panel.open { display: block; }
@@ -151,7 +282,7 @@
         .tl-days-row { height: calc(var(--header-h) / 2); display: flex; align-items: center; }
         .tl-day-cell { font-size: 0.62rem; line-height: 1.2; color: var(--text-muted); text-align: center; flex-shrink: 0; }
         .tl-day-cell .tl-day-letter { display: block; font-size: 0.58rem; font-weight: 600; color: var(--text-muted); }
-        .tl-day-cell.weekend .tl-day-letter { color: #2563eb; }
+        .tl-day-cell.weekend .tl-day-letter { color: var(--accent); }
         .tl-day-cell.weekend { background: var(--bg); }
         .tl-day-cell.today { color: var(--accent); font-weight: 700; }
         .tl-day-cell.today .tl-day-letter { color: var(--accent); }
@@ -167,6 +298,56 @@
 
         .tl-bar { position: absolute; height: 20px; top: 50%; transform: translateY(-50%); border-radius: 4px; background: var(--prevu); }
         .tl-bar-fill { position: absolute; top: 0; left: 0; bottom: 0; background: var(--realise); border-radius: 3px; }
+
+        /* Type "Journée" — jours discontinus, un bloc par jour choisi */
+        .tl-journee-block { position: absolute; height: 20px; top: 50%; transform: translateY(-50%); border-radius: 4px; background: var(--journee); }
+
+        /* Type "Report" — période d'attente entre l'interruption et la reprise */
+        .tl-report-gap {
+            position: absolute; height: 12px; top: 50%; transform: translateY(-50%); border-radius: 3px;
+            background: repeating-linear-gradient(45deg, var(--report-gap), var(--report-gap) 5px, transparent 5px, transparent 10px);
+            border: 1px dashed var(--report-gap); opacity: 0.85;
+        }
+
+        /* Icône de type dans la colonne Désignation */
+        .tache-type-icon { margin-right: 0.3rem; font-size: 0.75rem; }
+        .tache-type-icon.journee { color: var(--journee); }
+        .tache-type-icon.report { color: var(--report-gap); }
+
+        /* ===== Sélecteur de type de tâche (formulaires) ===== */
+        .type-tache-selector { display: flex; gap: 0.5rem; }
+        .type-pill {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.35rem;
+            padding: 0.5rem 0.4rem; border: 1px solid var(--border-strong); border-radius: 6px;
+            font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.15s; color: var(--text-muted);
+        }
+        .type-pill input { display: none; }
+        .type-pill.active { background: var(--text); color: var(--surface); border-color: var(--text); }
+
+        /* ===== Sélecteur de jours (type Journée) ===== */
+        .jour-picker { border: 1px solid var(--border-strong); border-radius: 6px; padding: 0.75rem; margin-top: 0.5rem; }
+        .jp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+        .jp-header .jp-month-label { font-size: 0.8rem; font-weight: 600; text-transform: capitalize; }
+        .jp-nav { border: none; background: transparent; cursor: pointer; color: var(--text-muted); padding: 0.2rem 0.4rem; border-radius: 4px; }
+        .jp-nav:hover { background: var(--bg); color: var(--text); }
+        .jp-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+        .jp-dow { text-align: center; font-size: 0.6rem; font-weight: 600; color: var(--text-muted); padding-bottom: 0.2rem; }
+        .jp-day { border: 1px solid transparent; background: var(--bg); border-radius: 4px; padding: 0.3rem 0; font-size: 0.72rem; cursor: pointer; color: var(--text); }
+        .jp-day:hover { border-color: var(--journee); }
+        .jp-day.weekend { color: var(--text-muted); }
+        .jp-day.selected { background: var(--journee); color: white; font-weight: 700; }
+        .jp-counter { margin-top: 0.5rem; font-size: 0.72rem; font-weight: 600; text-align: center; }
+        .jp-counter.jp-counter-ok { color: var(--success-text); }
+        .jp-counter.jp-counter-bad { color: var(--danger-text); }
+        .tt-date-fin-preview { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem; }
+        .tt-date-reprise-countdown { font-size: 0.7rem; margin-top: 0.3rem; }
+        .tt-countdown-ok { color: var(--text-muted); font-weight: 600; }
+        .tt-countdown-late { color: var(--danger-text); font-weight: 700; }
+
+        .tt-report-block { border-top: 1px dashed var(--border-strong); padding-top: 0.6rem; }
+        .tt-report-status { font-size: 0.75rem; font-weight: 600; color: var(--report-gap); margin-bottom: 0.4rem; }
+        .tt-report-reveal { margin-top: 0.5rem; display: flex; align-items: flex-end; gap: 0.6rem; flex-wrap: wrap; }
+        .tt-report-reveal .edit-input { width: auto; }
     </style>
 </head>
 <body>
@@ -175,7 +356,12 @@
 
 <div class="page">
 
-    <div class="page-title">PLANNING GANTT - ACCOMPAGNEMENT SMI</div>
+    <div class="page-title">
+        <a href="{{ url('/projet/'.$projet->id) }}" class="btn-retour-gantt">
+            <i class="bi bi-arrow-left"></i> Retour au projet
+        </a>
+        PLANNING GANTT - ACCOMPAGNEMENT SMI
+    </div>
 
     @php
         // Total général du projet — Avancement pondéré par CT Prévu (une tâche
@@ -189,12 +375,13 @@
             ? round($toutesTachesGlobal->sum(fn($t) => $t->ct_prevue * $t->avancement) / $ctPrevuGlobal)
             : 0;
         $ecartGlobalClass = $ecartGlobal > 0 ? 'ecart-pos' : ($ecartGlobal < 0 ? 'ecart-neg' : 'ecart-zero');
-        $avancementGlobalTier = $avancementGlobal >= 100 ? 'success' : ($avancementGlobal >= 50 ? 'warning' : 'danger');
     @endphp
 
     <div class="legend">
         <span><span class="legend-swatch" style="background:var(--prevu);"></span>Prévu</span>
         <span><span class="legend-swatch" style="background:var(--realise);"></span>Réalisation</span>
+        <span><span class="legend-swatch" style="background:var(--journee);"></span>Journée (jours choisis)</span>
+        <span><span class="legend-swatch" style="background:var(--report-gap);"></span>Report (en attente de reprise)</span>
 
         <div class="global-stats">
             <span class="gstat-title"><i class="bi bi-calculator"></i> Total général</span>
@@ -216,7 +403,7 @@
             <div class="gstat">
                 <i class="bi bi-speedometer2"></i>
                 <span class="gstat-label">Avancement</span>
-                <span class="gstat-value avancement-pill {{ $avancementGlobalTier }}">{{ $avancementGlobal }}%</span>
+                <span class="gstat-value avancement-pill" style="--fill: {{ $avancementGlobal }}%;">{{ $avancementGlobal }}%</span>
             </div>
         </div>
     </div>
@@ -227,33 +414,78 @@
     </div>
     @endif
 
-    @if(auth()->user()->hasPermission('modifier_projets'))
+    @if($errors->any())
+    <div class="alert" style="background:#fef2f2; color:#991b1b; border:1px solid #fecaca; padding:0.6rem 1rem; border-radius:6px; margin-bottom:1rem; font-size:0.85rem;">
+        <i class="bi bi-exclamation-triangle-fill"></i> {{ $errors->first() }}
+    </div>
+    @endif
+
     <div class="toolbar">
+        @if($groupBy === 'consultant')
+        <a href="{{ route('gantt.show', $projet->id) }}" class="btn btn-light">
+            <i class="bi bi-folder2-open"></i> Vue par phase
+        </a>
+        @else
+        <a href="{{ route('gantt.show', $projet->id) }}?groupBy=consultant" class="btn btn-light">
+            <i class="bi bi-people"></i> Vue par consultant
+        </a>
+        @endif
+
+        @if(auth()->user()->hasPermission('modifier_projets'))
         <button class="btn btn-light" onclick="openModal('addPhaseModal')">
             <i class="bi bi-folder-plus"></i> Ajouter une phase
         </button>
         <button class="btn btn-accent" onclick="openModal('addTacheModal')">
             <i class="bi bi-plus-lg"></i> Ajouter une tâche
         </button>
+        @endif
     </div>
-    @endif
 
     @php
-        // Palette professionnelle — une couleur distincte par phase (cycle si plus de 8 phases).
-        $palettePhases = ['#2563eb', '#7c3aed', '#0891b2', '#059669', '#d97706', '#dc2626', '#4f46e5', '#db2777'];
-
+        // Toutes les lignes de groupe (phase ou consultant) partagent la même couleur
+        // de bordure (--phase-violet, définie en CSS) — plus de cycle de palette par index.
         $groupes = [];
-        foreach ($phases as $idx => $phase) {
-            $groupes[] = [
-                'nom' => $phase->nom,
-                'phase' => $phase,
-                'taches' => $phase->taches,
-                'couleur' => $palettePhases[$idx % count($palettePhases)],
-            ];
+
+        if ($groupBy === 'consultant') {
+            $toutesTachesProjet = \App\Models\GanttTache::where('projet_id', $projet->id)
+                ->orderBy('numero')
+                ->with('consultants')
+                ->get();
+            $idsConsultantsProjet = $consultantsProjet->pluck('id');
+
+            // Une tâche avec plusieurs consultants apparaît dans le groupe de chacun d'eux.
+            foreach ($consultantsProjet as $consultant) {
+                $groupes[] = [
+                    'nom' => $consultant->nom_complet,
+                    'phase' => null,
+                    'taches' => $toutesTachesProjet->filter(
+                        fn($t) => $t->consultants->contains('id', $consultant->id)
+                    ),
+                    'icon' => 'bi-person-circle',
+                ];
+            }
+
+            // Tâches sans consultant, ou assignées uniquement à des consultants qui ne sont plus dans l'équipe projet.
+            $nonAssignees = $toutesTachesProjet->reject(
+                fn($t) => $t->consultants->pluck('id')->intersect($idsConsultantsProjet)->isNotEmpty()
+            );
+            if ($nonAssignees->isNotEmpty()) {
+                $groupes[] = ['nom' => 'Non assigné', 'phase' => null, 'taches' => $nonAssignees, 'icon' => 'bi-person-circle'];
+            }
+        } else {
+            foreach ($phases as $phase) {
+                $groupes[] = [
+                    'nom' => $phase->nom,
+                    'phase' => $phase,
+                    'taches' => $phase->taches,
+                    'icon' => 'bi-folder2-open',
+                ];
+            }
+            if ($tachesSansPhase->isNotEmpty()) {
+                $groupes[] = ['nom' => 'Sans phase', 'phase' => null, 'taches' => $tachesSansPhase, 'icon' => 'bi-folder2-open'];
+            }
         }
-        if ($tachesSansPhase->isNotEmpty()) {
-            $groupes[] = ['nom' => 'Sans phase', 'phase' => null, 'taches' => $tachesSansPhase, 'couleur' => null];
-        }
+
         $toutesTaches = collect($groupes)->flatMap(fn($g) => $g['taches']);
 
         $aujourdhui = \Carbon\Carbon::today();
@@ -264,7 +496,10 @@
             $tlEnd = \Carbon\Carbon::now()->addMonths(2)->endOfMonth();
         } else {
             $tlStart = $tachesAvecDate->min('date_debut')->copy()->subDays(5);
-            $finMax = $tachesAvecDate->map(fn($t) => $t->date_fin ?? $t->date_debut)->max();
+            $finMax = $tachesAvecDate->map(function ($t) {
+                $fin = $t->date_fin ?? $t->date_debut;
+                return ($t->date_reprise && $t->date_reprise->gt($fin)) ? $t->date_reprise : $fin;
+            })->max();
             $tlEnd = $finMax->copy()->addDays(10);
         }
 
@@ -288,26 +523,51 @@
 
         $todayPosition = max(0, $tlStart->diffInDays($aujourdhui)) * $jourWidth;
 
-        if (!function_exists('ganttTimelineBar')) {
-            function ganttTimelineBar($tache, $tlStart, $jourWidth) {
-                if (!$tache->date_debut) return null;
-                $start = $tache->date_debut;
-                $end = $tache->date_fin ?? $start;
-                if ($end->lt($start)) $end = $start;
-                $duree = $start->diffInDays($end) + 1;
-                return [
-                    'left' => $tlStart->diffInDays($start) * $jourWidth,
-                    'width' => max($duree * $jourWidth, $jourWidth),
-                ];
+        // Position de scroll cible pour la tâche qu'on vient de créer/modifier (voir
+        // GanttController et le script en bas de page). On centre sur le MILIEU de
+        // [date_debut, date_fin] plutôt que sur le tout début : pour une tâche en
+        // report, date_fin est recalculée après la reprise (voir
+        // GanttTacheDateCalculator::resoudrePourPhase), donc ce milieu tombe déjà
+        // naturellement dans/près de la pause — flexible avec la durée du report,
+        // qu'il soit court ou très long, sans avoir à cibler un segment DOM précis.
+        $scrollTargetLeft = null;
+        $tacheAScroller = session('scrollToTacheId') ? $toutesTaches->firstWhere('id', (int) session('scrollToTacheId')) : null;
+        if ($tacheAScroller && $tacheAScroller->date_debut) {
+            $finCible = $tacheAScroller->date_fin ?? $tacheAScroller->date_debut;
+            $milieu = $tacheAScroller->date_debut->copy()->addDays(intdiv($tacheAScroller->date_debut->diffInDays($finCible), 2));
+            $scrollTargetLeft = $tlStart->diffInDays($milieu) * $jourWidth;
+        }
+
+        // Projette les segments déjà résolus/stockés (colonne `segments`, calculés
+        // au save() par App\Services\GanttTacheDateCalculator) en pixels. Aucune
+        // décision de date ici — uniquement date -> pixel via $tlStart/$jourWidth.
+        if (!function_exists('ganttProjeterSegments')) {
+            function ganttProjeterSegments($tache, $tlStart, $jourWidth) {
+                return collect($tache->segments ?? [])->map(function ($seg) use ($tlStart, $jourWidth) {
+                    $debut = \Carbon\Carbon::parse($seg['debut']);
+                    $width = $seg['jours'] * $jourWidth;
+                    $fillJours = $seg['fill_jours'] ?? 0;
+
+                    return [
+                        'type' => $seg['type'],
+                        'left' => $tlStart->diffInDays($debut) * $jourWidth,
+                        'width' => $width,
+                        'fillWidth' => $fillJours >= $seg['jours'] ? $width : round($fillJours * $jourWidth),
+                    ];
+                })->all();
             }
         }
     @endphp
 
-    @if($toutesTaches->isEmpty() && $phases->isEmpty())
+    @if(empty($groupes))
     <div class="gantt-container">
         <div class="empty-state">
             <i class="bi bi-bar-chart-steps"></i>
-            Aucune phase ni tâche pour le moment.
+            @if($groupBy === 'consultant')
+                Aucun consultant affecté à ce projet pour le moment.
+            @else
+                Aucune phase ni tâche pour le moment.
+            @endif
         </div>
     </div>
     @else
@@ -317,6 +577,7 @@
         <div class="gantt-head-left">
             <div class="cols-grid table-header-row">
                 <div class="col">Désignation</div>
+                <div class="col">Consultant</div>
                 <div class="col">CT Prévu</div>
                 <div class="col">CT Réalisé</div>
                 <div class="col">Écart</div>
@@ -351,15 +612,16 @@
             $ecartTotal = $ctPrevuTotal - $ctRealiseTotal;
             $avancementMoyen = $groupe['phase']->avancement_moyen ?? round($groupe['taches']->avg('avancement') ?: 0);
         @endphp
-        <div class="cols-grid phase-row" @if($groupe['couleur']) style="--phase-color: {{ $groupe['couleur'] }};" @endif>
+        <div class="cols-grid phase-row">
             <div class="col nom">
-                <i class="bi bi-folder2-open"></i>
+                <i class="bi {{ $groupe['icon'] }}"></i>
                 <span class="label">{{ $groupe['nom'] }}</span>
                 <span class="count">({{ $groupe['taches']->count() }} tâche{{ $groupe['taches']->count() > 1 ? 's' : '' }})</span>
             </div>
+            <div class="col"></div>
             <div class="col">{{ number_format($ctPrevuTotal, 1) }}</div>
             <div class="col">{{ number_format($ctRealiseTotal, 1) }}</div>
-            <div class="col">{{ number_format($ecartTotal, 1) }}</div>
+            <div class="col {{ $ecartTotal > 0 ? 'ecart-pos' : ($ecartTotal < 0 ? 'ecart-neg' : 'ecart-zero') }}">{{ number_format($ecartTotal, 1) }}</div>
             <div class="col">{{ $avancementMoyen }}%</div>
             <div class="col">
                 @if($groupe['phase'] && auth()->user()->hasPermission('modifier_projets'))
@@ -377,18 +639,35 @@
 
         @foreach($groupe['taches'] as $tache)
         <div class="cols-grid tache-row" id="row-{{ $tache->id }}" onclick="toggleEdit({{ $tache->id }})">
-            <div class="col nom">{{ $tache->designation }}</div>
+            <div class="col nom">
+                @if($tache->isJournee())
+                <i class="bi bi-calendar-week tache-type-icon journee" title="Journée (jours choisis)"></i>
+                @endif
+                @if($tache->hasReport())
+                <i class="bi bi-pause-circle-fill tache-type-icon report" title="En pause — reprise prévue le {{ $tache->date_reprise->format('d/m/Y') }}"></i>
+                @endif
+                {{ $tache->designation }}
+            </div>
+            @php $nomsConsultants = $tache->consultants->pluck('nom_complet')->join(', '); @endphp
+            <div class="col" title="{{ $nomsConsultants }}">
+                @if($tache->consultants->count() > 1)
+                <span class="equipe-badge"><i class="bi bi-people-fill"></i> Équipe ({{ $tache->consultants->count() }})</span>
+                @else
+                {{ $nomsConsultants ?: '—' }}
+                @endif
+            </div>
             <div class="col">{{ number_format($tache->ct_prevue, 1) }}</div>
             <div class="col">{{ number_format($tache->ct_realisee, 1) }}</div>
             <div class="col {{ $tache->ecart > 0 ? 'ecart-pos' : ($tache->ecart < 0 ? 'ecart-neg' : 'ecart-zero') }}">{{ number_format($tache->ecart, 1) }}</div>
-            <div class="col"><span class="avancement-pill {{ $tache->statut_color }}">{{ round($tache->avancement) }}%</span></div>
+            <div class="col"><span class="avancement-pill {{ $tache->isJournee() ? 'journee' : '' }}" style="--fill: {{ round($tache->avancement) }}%;">{{ round($tache->avancement) }}%</span></div>
             <div class="col"></div>
         </div>
 
         @if(auth()->user()->hasPermission('modifier_projets'))
         <div class="edit-panel" id="ep-{{ $tache->id }}">
-            <form method="POST" action="{{ route('gantt.tache.update', [$projet->id, $tache->id]) }}">
+            <form method="POST" action="{{ route('gantt.tache.update', [$projet->id, $tache->id]) }}" class="tt-root">
                 @csrf @method('PUT')
+                <input type="hidden" name="_tache_id" value="{{ $tache->id }}">
                 <input type="hidden" name="responsable" value="{{ $tache->responsable }}">
                 <div class="edit-grid">
                     <div class="edit-full">
@@ -397,6 +676,10 @@
                     </div>
                 </div>
                 <div class="edit-grid">
+                    <div>
+                        <label class="edit-label tt-ct-prevue-label">CT Prévu (H/J)</label>
+                        <input type="number" name="ct_prevue" class="edit-input tt-ct-prevue" value="{{ $tache->ct_prevue }}" step="0.5" min="0">
+                    </div>
                     <div>
                         <label class="edit-label">Phase</label>
                         <select name="phase_id" class="edit-input">
@@ -407,32 +690,107 @@
                         </select>
                     </div>
                     <div>
-                        <label class="edit-label">CT Prévu (H/J)</label>
-                        <input type="number" name="ct_prevue" class="edit-input" value="{{ $tache->ct_prevue }}" step="0.5" min="0">
+                        <label class="edit-label">Consultant(s)</label>
+                        @php $selectedNoms = $tache->consultants->pluck('nom_complet'); @endphp
+                        <div class="consultants-dropdown" data-consultants-dropdown>
+                            <button type="button" class="consultants-dropdown-toggle" data-cdt-toggle>
+                                <span class="cdt-label {{ $selectedNoms->isEmpty() ? 'cdt-placeholder' : '' }}" data-cdt-label>{{ $selectedNoms->isNotEmpty() ? $selectedNoms->join(', ') : 'Sélectionner...' }}</span>
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+                            <div class="consultants-dropdown-panel">
+                                <div class="consultants-checklist">
+                                    @forelse($consultantsProjet as $c)
+                                    @php $checkId = "edit-consultant-{$tache->id}-{$c->id}"; @endphp
+                                    <div class="consultant-check">
+                                        <input type="checkbox" name="consultant_ids[]" value="{{ $c->id }}" id="{{ $checkId }}"
+                                            data-cdt-name="{{ $c->nom_complet }}"
+                                            {{ $tache->consultants->contains('id', $c->id) ? 'checked' : '' }}>
+                                        <label for="{{ $checkId }}">{{ $c->nom_complet }}</label>
+                                    </div>
+                                    @empty
+                                    <div class="consultants-empty">Aucun consultant affecté au projet.</div>
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <label class="edit-label">CT Réalisé (H/J)</label>
-                        <input type="number" name="ct_realisee" class="edit-input" value="{{ $tache->ct_realisee }}" step="0.5" min="0">
+                        <input type="number" name="ct_realisee" class="edit-input tt-ct-realisee" value="{{ $tache->ct_realisee }}" step="0.5" min="0">
                     </div>
                     <div>
                         <label class="edit-label">Avancement (%)</label>
                         <input type="number" name="avancement" class="edit-input" value="{{ round($tache->avancement) }}" min="0" max="100">
                     </div>
+                    <div>
+                        <label class="edit-label">Écart</label>
+                        <div class="tt-ecart-display {{ $tache->ecart < 0 ? 'ecart-neg' : 'ecart-zero' }}">{{ number_format($tache->ecart, 1) }}</div>
+                    </div>
                 </div>
+
                 <div class="edit-grid">
+                    <div class="edit-full">
+                        <label class="edit-label">Type de tâche</label>
+                        <div class="type-tache-selector">
+                            <label class="type-pill {{ !$tache->isJournee() ? 'active' : '' }}">
+                                <input type="radio" name="type_tache" value="phase" {{ !$tache->isJournee() ? 'checked' : '' }}>
+                                <i class="bi bi-bar-chart-steps"></i> Phase
+                            </label>
+                            <label class="type-pill {{ $tache->isJournee() ? 'active' : '' }}">
+                                <input type="radio" name="type_tache" value="journee" {{ $tache->isJournee() ? 'checked' : '' }}>
+                                <i class="bi bi-calendar-week"></i> Journée
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="edit-grid tt-fields-phase">
                     <div>
                         <label class="edit-label">Date début</label>
-                        <input type="date" name="date_debut" class="edit-input" value="{{ $tache->date_debut?->format('Y-m-d') }}">
+                        <input type="date" name="date_debut" lang="fr" class="edit-input tt-date-debut" value="{{ $tache->date_debut?->format('Y-m-d') }}">
                     </div>
-                    <div>
-                        <label class="edit-label">Date fin (prévue)</label>
-                        <input type="date" name="date_fin" class="edit-input" value="{{ $tache->date_fin?->format('Y-m-d') }}">
+                    <div class="tt-date-fin-preview"></div>
+                </div>
+
+                <div class="edit-grid tt-fields-journee" style="display:{{ $tache->isJournee() ? '' : 'none' }};">
+                    <div class="edit-full jour-picker" data-initial='@json($tache->jours_choisis ?? [])'>
+                        <div class="jp-header">
+                            <button type="button" class="jp-nav jp-prev"><i class="bi bi-chevron-left"></i></button>
+                            <span class="jp-month-label"></span>
+                            <button type="button" class="jp-nav jp-next"><i class="bi bi-chevron-right"></i></button>
+                        </div>
+                        <div class="jp-grid"></div>
+                        <div class="jp-counter"></div>
+                    </div>
+                    <div class="jp-hidden-inputs"></div>
+                </div>
+
+                <div class="edit-grid tt-report-block">
+                    <div class="edit-full">
+                        <button type="button" class="btn btn-light btn-sm tt-report-toggle" onclick="toggleReportField(this)">
+                            <i class="bi bi-pause-circle"></i> {{ $tache->hasReport() ? 'Modifier le report' : 'Reporter cette tâche' }}
+                        </button>
+                        <div class="tt-report-reveal" style="display:{{ $tache->hasReport() ? '' : 'none' }};">
+                            <div>
+                                <label class="edit-label">Date de début du report</label>
+                                <input type="date" name="date_interruption" lang="fr" class="edit-input tt-date-interruption" value="{{ $tache->date_interruption?->format('Y-m-d') }}">
+                            </div>
+                            <div>
+                                <label class="edit-label">Date de reprise</label>
+                                <input type="date" name="date_reprise" lang="fr" class="edit-input tt-date-reprise" value="{{ $tache->date_reprise?->format('Y-m-d') }}">
+                            </div>
+                            <div class="tt-date-reprise-countdown"></div>
+                            @if($tache->hasReport())
+                            <button type="button" class="btn btn-light btn-sm" onclick="annulerReport(this)">Annuler le report</button>
+                            @endif
+                        </div>
                     </div>
                 </div>
+
                 <div class="edit-actions">
-                    <button type="button" class="btn btn-light btn-sm" onclick="closeEdit({{ $tache->id }})">Annuler</button>
+                    <button type="button" class="btn btn-light btn-sm" onclick="closeEdit({{ $tache->id }})" data-persist-cancel>Annuler</button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="confirmDeleteTache({{ $tache->id }})">Supprimer</button>
-                    <button type="submit" class="btn btn-accent btn-sm">Enregistrer</button>
+                    <button type="submit" class="btn btn-accent btn-sm tt-submit-btn">Enregistrer</button>
                 </div>
             </form>
             <form id="delete-tache-{{ $tache->id }}" method="POST" action="{{ route('gantt.tache.destroy', [$projet->id, $tache->id]) }}" style="display:none;">@csrf @method('DELETE')</form>
@@ -447,18 +805,26 @@
             <div class="tl-body">
                 <div class="tl-today-line" style="left: {{ $todayPosition }}px;"></div>
                 @foreach($groupes as $groupe)
-                <div class="tl-phase-row" style="width: {{ $timelineWidth }}px; {{ $groupe['couleur'] ? '--phase-color: '.$groupe['couleur'].';' : '' }}"></div>
+                <div class="tl-phase-row" style="width: {{ $timelineWidth }}px;"></div>
                 @foreach($groupe['taches'] as $tache)
-                @php $bar = ganttTimelineBar($tache, $tlStart, $jourWidth); @endphp
+                @php
+                    $segmentsProjetes = ganttProjeterSegments($tache, $tlStart, $jourWidth);
+                @endphp
                 <div class="tl-row" style="width: {{ $timelineWidth }}px;">
                     @foreach($jours as $idx => $j)
                     <div class="tl-day-col {{ $j->isWeekend() ? 'weekend' : '' }}" style="left: {{ $idx * $jourWidth }}px; width: {{ $jourWidth }}px;"></div>
                     @endforeach
-                    @if($bar)
-                    <div class="tl-bar" style="left: {{ $bar['left'] }}px; width: {{ $bar['width'] }}px;" title="{{ $tache->designation }} — {{ round($tache->avancement) }}%">
-                        <div class="tl-bar-fill" style="width: {{ round($bar['width'] * min($tache->avancement, 100) / 100) }}px;"></div>
-                    </div>
-                    @endif
+                    @foreach($segmentsProjetes as $seg)
+                        @if($seg['type'] === 'report')
+                        <div class="tl-report-gap" style="left: {{ $seg['left'] }}px; width: {{ $seg['width'] }}px;" title="Reporté — reprise prévue le {{ $tache->date_reprise?->format('d/m/Y') }}"></div>
+                        @elseif($seg['type'] === 'journee')
+                        <div class="tl-journee-block" style="left: {{ $seg['left'] }}px; width: {{ $seg['width'] }}px;" title="{{ $tache->designation }} — {{ round($tache->avancement) }}%"></div>
+                        @else
+                        <div class="tl-bar" style="left: {{ $seg['left'] }}px; width: {{ $seg['width'] }}px;" title="{{ $tache->designation }} — {{ round($tache->avancement) }}%">
+                            <div class="tl-bar-fill" style="width: {{ $seg['fillWidth'] }}px;"></div>
+                        </div>
+                        @endif
+                    @endforeach
                 </div>
                 @endforeach
                 @endforeach
@@ -484,7 +850,7 @@
                 <input type="text" name="nom" class="form-control" placeholder="Ex: Phase 1 — Diagnostic" required>
             </div>
             <div class="modal-actions">
-                <button type="button" class="btn btn-light" onclick="closeModal('addPhaseModal')">Annuler</button>
+                <button type="button" class="btn btn-light" onclick="closeModal('addPhaseModal')" data-persist-cancel>Annuler</button>
                 <button type="submit" class="btn btn-accent">Créer</button>
             </div>
         </form>
@@ -493,13 +859,17 @@
 
 <!-- Modal Ajouter tâche -->
 <div class="modal-overlay" id="addTacheModal">
-    <div class="modal">
+    <div class="modal" style="width:520px;">
         <h3><i class="bi bi-plus-circle"></i> Nouvelle tâche</h3>
-        <form method="POST" action="{{ route('gantt.tache.store', $projet->id) }}">
+        <form method="POST" action="{{ route('gantt.tache.store', $projet->id) }}" class="tt-root">
             @csrf
             <div class="form-group">
                 <label class="form-label">Désignation</label>
                 <input type="text" name="designation" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label tt-ct-prevue-label">CT Prévu (H/J)</label>
+                <input type="number" name="ct_prevue" class="form-control tt-ct-prevue" step="0.5" min="0" value="0">
             </div>
             <div class="form-group">
                 <label class="form-label">Phase</label>
@@ -511,22 +881,65 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="form-label">CT Prévu (H/J)</label>
-                <input type="number" name="ct_prevue" class="form-control" step="0.5" min="0" value="0" required>
+                <label class="form-label">Consultant(s)</label>
+                <div class="consultants-dropdown" data-consultants-dropdown>
+                    <button type="button" class="consultants-dropdown-toggle" data-cdt-toggle>
+                        <span class="cdt-label cdt-placeholder" data-cdt-label>Sélectionner...</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <div class="consultants-dropdown-panel">
+                        <div class="consultants-checklist">
+                            @forelse($consultantsProjet as $c)
+                            <div class="consultant-check">
+                                <input type="checkbox" name="consultant_ids[]" value="{{ $c->id }}" id="add-consultant-{{ $c->id }}" data-cdt-name="{{ $c->nom_complet }}">
+                                <label for="add-consultant-{{ $c->id }}">{{ $c->nom_complet }}</label>
+                            </div>
+                            @empty
+                            <div class="consultants-empty">Aucun consultant affecté au projet.</div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
-                <div>
+
+            <div class="form-group">
+                <label class="form-label">Type de tâche</label>
+                <div class="type-tache-selector">
+                    <label class="type-pill active">
+                        <input type="radio" name="type_tache" value="phase" checked>
+                        <i class="bi bi-bar-chart-steps"></i> Phase
+                    </label>
+                    <label class="type-pill">
+                        <input type="radio" name="type_tache" value="journee">
+                        <i class="bi bi-calendar-week"></i> Journée
+                    </label>
+                </div>
+            </div>
+
+            <div class="tt-fields-phase">
+                <div class="form-group">
                     <label class="form-label">Date début</label>
-                    <input type="date" name="date_debut" class="form-control">
-                </div>
-                <div>
-                    <label class="form-label">Date fin (prévue)</label>
-                    <input type="date" name="date_fin" class="form-control">
+                    <input type="date" name="date_debut" lang="fr" class="form-control tt-date-debut">
+                    <div class="tt-date-fin-preview"></div>
                 </div>
             </div>
+
+            <div class="tt-fields-journee" style="display:none;">
+                <div class="jour-picker" data-initial="[]">
+                    <div class="jp-header">
+                        <button type="button" class="jp-nav jp-prev"><i class="bi bi-chevron-left"></i></button>
+                        <span class="jp-month-label"></span>
+                        <button type="button" class="jp-nav jp-next"><i class="bi bi-chevron-right"></i></button>
+                    </div>
+                    <div class="jp-grid"></div>
+                    <div class="jp-counter"></div>
+                </div>
+                <div class="jp-hidden-inputs"></div>
+            </div>
+
             <div class="modal-actions">
-                <button type="button" class="btn btn-light" onclick="closeModal('addTacheModal')">Annuler</button>
-                <button type="submit" class="btn btn-accent">Créer</button>
+                <button type="button" class="btn btn-light" onclick="closeModal('addTacheModal')" data-persist-cancel>Annuler</button>
+                <button type="submit" class="btn btn-accent tt-submit-btn">Créer</button>
             </div>
         </form>
     </div>
@@ -536,7 +949,7 @@
 <div class="modal-overlay" id="renamePhaseModal">
     <div class="modal">
         <h3><i class="bi bi-pencil"></i> Renommer la phase</h3>
-        <form method="POST" id="renamePhaseForm">
+        <form method="POST" id="renamePhaseForm" data-no-persist>
             @csrf @method('PUT')
             <div class="form-group">
                 <label class="form-label">Nom de la phase</label>
@@ -553,7 +966,7 @@
 <!-- Modal Confirmation (remplace confirm() du navigateur) -->
 <div class="modal-overlay" id="confirmModal">
     <div class="modal" style="width:400px;">
-        <h3><i class="bi bi-exclamation-triangle" style="color:#dc2626;"></i> Confirmation</h3>
+        <h3><i class="bi bi-exclamation-triangle" style="color:var(--danger-text);"></i> Confirmation</h3>
         <p id="confirmModalMessage" style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem;"></p>
         <div class="modal-actions">
             <button type="button" class="btn btn-light" onclick="closeModal('confirmModal')">Annuler</button>
@@ -564,11 +977,66 @@
 @endif
 
 <script>
+// Theme toggle
+// localStorage peut lever une SecurityError selon le contexte du navigateur
+// (mode privé strict, politique de stockage, etc.) — sans ce try/catch, une
+// exception ici arrêtait silencieusement TOUT le reste de ce script (donc
+// aussi le sélecteur de type de tâche plus bas).
+(function() {
+    let saved = 'light';
+    try { saved = localStorage.getItem('lmc-theme') || 'light'; } catch (e) {}
+    document.documentElement.setAttribute('data-theme', saved);
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.className = saved === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+})();
+
+document.getElementById('themeToggle')?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('lmc-theme', next); } catch (e) {}
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+});
+
 function openModal(id) { document.getElementById(id).classList.add('active'); }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
 document.querySelectorAll('.modal-overlay').forEach(function (modal) {
     modal.addEventListener('click', function (e) { if (e.target === modal) modal.classList.remove('active'); });
+});
+
+function updateConsultantsDropdownLabel(dropdown) {
+    const label = dropdown.querySelector('[data-cdt-label]');
+    if (!label) return;
+    const checked = dropdown.querySelectorAll('input[type="checkbox"]:checked');
+    if (checked.length === 0) {
+        label.textContent = 'Sélectionner...';
+        label.classList.add('cdt-placeholder');
+    } else {
+        label.textContent = Array.from(checked).map(function (cb) { return cb.dataset.cdtName; }).join(', ');
+        label.classList.remove('cdt-placeholder');
+    }
+}
+
+document.addEventListener('click', function (e) {
+    const toggle = e.target.closest('[data-cdt-toggle]');
+    if (toggle) {
+        const dropdown = toggle.closest('[data-consultants-dropdown]');
+        const wasOpen = dropdown.classList.contains('open');
+        document.querySelectorAll('.consultants-dropdown.open').forEach(function (d) { d.classList.remove('open'); });
+        if (!wasOpen) dropdown.classList.add('open');
+        return;
+    }
+    if (!e.target.closest('[data-consultants-dropdown]')) {
+        document.querySelectorAll('.consultants-dropdown.open').forEach(function (d) { d.classList.remove('open'); });
+    }
+});
+
+document.addEventListener('change', function (e) {
+    if (e.target.matches('[data-consultants-dropdown] input[type="checkbox"]')) {
+        updateConsultantsDropdownLabel(e.target.closest('[data-consultants-dropdown]'));
+    }
 });
 
 let currentEditId = null;
@@ -640,11 +1108,339 @@ if (timelineBodyScroll && timelineHeadScroll) {
 }
 
 window.addEventListener('load', function () {
-    if (timelineBodyScroll) {
-        const todayPosition = {{ $todayPosition ?? 0 }};
-        timelineBodyScroll.scrollLeft = Math.max(0, todayPosition - timelineBodyScroll.offsetWidth / 3);
+    if (!timelineBodyScroll) return;
+
+    // Une tâche vient d'être créée/modifiée (voir GanttController) : on centre la
+    // timeline sur elle (voir $scrollTargetLeft, calculé côté serveur — milieu de
+    // [date_debut, date_fin], y compris pour une tâche en report puisque date_fin
+    // est recalculée après la reprise) plutôt que sur "aujourd'hui", sinon une
+    // tâche datée dans le passé (ou loin dans le futur) reste hors champ après le
+    // scroll par défaut et donne l'impression de ne jamais apparaître dans la
+    // timeline.
+    const scrollTargetLeft = @json($scrollTargetLeft);
+    if (scrollTargetLeft !== null) {
+        timelineBodyScroll.scrollLeft = Math.max(0, scrollTargetLeft - timelineBodyScroll.offsetWidth / 2);
+        return;
     }
+
+    const todayPosition = {{ $todayPosition ?? 0 }};
+    timelineBodyScroll.scrollLeft = Math.max(0, todayPosition - timelineBodyScroll.offsetWidth / 3);
 });
+
+// ===== TYPE DE TÂCHE (Phase / Journée / Report) =====
+
+function setGroupVisibility(el, visible) {
+    if (!el) return;
+    el.style.display = visible ? '' : 'none';
+    el.querySelectorAll('input, select, textarea').forEach(function (field) {
+        field.disabled = !visible;
+    });
+}
+
+function applyTypeTacheVisibility(root) {
+    const checked = root.querySelector('input[name="type_tache"]:checked');
+    const type = checked ? checked.value : 'phase';
+
+    root.querySelectorAll('.type-pill').forEach(function (pill) {
+        pill.classList.toggle('active', pill.querySelector('input').value === type);
+    });
+
+    const ctLabel = root.querySelector('.tt-ct-prevue-label');
+    if (ctLabel) ctLabel.textContent = (type === 'journee') ? 'Nombre de jours' : 'CT Prévu (H/J)';
+
+    setGroupVisibility(root.querySelector('.tt-fields-phase'), type !== 'journee');
+    setGroupVisibility(root.querySelector('.tt-fields-journee'), type === 'journee');
+
+    const submitBtn = root.querySelector('.tt-submit-btn');
+    if (submitBtn && type === 'journee') {
+        const picker = root.querySelector('.jour-picker');
+        if (picker && picker._updateCounter) picker._updateCounter();
+    } else if (submitBtn) {
+        submitBtn.disabled = false;
+    }
+
+    updateDateFinPreview(root);
+    updateReportRemainingWork(root);
+    updateEcartDisplay(root);
+}
+
+// Compare une date cible à aujourd'hui : "X jours restants" ou "En retard de X jours".
+function formatCountdown(targetDate) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const t = new Date(targetDate);
+    t.setHours(0, 0, 0, 0);
+    const diffDays = Math.round((t - today) / 86400000);
+
+    if (diffDays < 0) {
+        const n = Math.abs(diffDays);
+        return { text: 'En retard de ' + n + ' jour' + (n > 1 ? 's' : ''), late: true };
+    }
+    return { text: diffDays + ' jour' + (diffDays > 1 ? 's' : '') + ' restant' + (diffDays > 1 ? 's' : ''), late: false };
+}
+
+function countdownHtml(cd) {
+    return '<span class="' + (cd.late ? 'tt-countdown-late' : 'tt-countdown-ok') + '">' + cd.text + '</span>';
+}
+
+function updateDateFinPreview(root) {
+    const preview = root.querySelector('.tt-date-fin-preview');
+    if (!preview) return;
+    const checked = root.querySelector('input[name="type_tache"]:checked');
+    const type = checked ? checked.value : 'phase';
+    if (type === 'journee') { preview.innerHTML = ''; return; }
+
+    // Une fois un report actif, la vraie date de fin dépend du report (calculée
+    // côté serveur à partir de la date de reprise + jours restants), pas de ce
+    // calcul naïf date_debut + CT Prévu — l'afficher quand même produisait un
+    // "jours restants" incohérent avec celui du bloc report (bug constaté).
+    const dateRepriseInput = root.querySelector('.tt-date-reprise');
+    if (dateRepriseInput && dateRepriseInput.value) { preview.innerHTML = ''; return; }
+
+    const dateInput = root.querySelector('.tt-date-debut');
+    const ctInput = root.querySelector('.tt-ct-prevue');
+    if (!dateInput || !ctInput || !dateInput.value || !ctInput.value) { preview.innerHTML = ''; return; }
+
+    const start = new Date(dateInput.value + 'T00:00:00');
+    let restants = Math.max(0, Math.ceil(parseFloat(ctInput.value) || 0) - 1);
+    const d = new Date(start);
+    while (restants > 0) {
+        d.setDate(d.getDate() + 1);
+        if (d.getDay() !== 0 && d.getDay() !== 6) restants--;
+    }
+    preview.innerHTML = 'Fin calculée (jours ouvrés) : ' + d.toLocaleDateString('fr-FR') + ' — ' + countdownHtml(formatCountdown(d));
+}
+
+// "Jours restants" pour une tâche Report = CT Prévu − CT Réalisé (travail qu'il
+// reste réellement à faire), PAS un compte à rebours calendaire jusqu'à la date
+// de reprise — la date de reprise dit QUAND on reprend, pas COMBIEN il reste à faire.
+function updateReportRemainingWork(root) {
+    const el = root.querySelector('.tt-date-reprise-countdown');
+    if (!el) return;
+
+    // Report est un état orthogonal au type — le compteur ne dépend que de la
+    // présence d'une date de reprise saisie, pas du type de tâche (phase/journée).
+    const dateRepriseInput = root.querySelector('.tt-date-reprise');
+    if (!dateRepriseInput || !dateRepriseInput.value) { el.innerHTML = ''; return; }
+
+    const ctPrevueInput = root.querySelector('.tt-ct-prevue');
+    const ctRealiseeInput = root.querySelector('.tt-ct-realisee');
+    if (!ctPrevueInput || !ctRealiseeInput) { el.innerHTML = ''; return; }
+
+    const ctPrevue = parseFloat(ctPrevueInput.value) || 0;
+    const ctRealisee = parseFloat(ctRealiseeInput.value) || 0;
+    const restant = Math.round((ctPrevue - ctRealisee) * 10) / 10;
+
+    if (restant > 0) {
+        el.innerHTML = '<span class="tt-countdown-ok">' + restant + ' jour' + (restant > 1 ? 's' : '') + ' de travail restant' + (restant > 1 ? 's' : '') + '</span>';
+    } else if (restant === 0) {
+        el.innerHTML = '<span class="tt-countdown-ok">Travail prévu complété</span>';
+    } else {
+        el.innerHTML = '<span class="tt-countdown-late">Dépassement de ' + Math.abs(restant) + ' jour' + (Math.abs(restant) > 1 ? 's' : '') + '</span>';
+    }
+}
+
+// Écart = CT Prévu - CT Réalisé. Négatif = dépassement (rouge), sinon neutre.
+function updateEcartDisplay(root) {
+    const el = root.querySelector('.tt-ecart-display');
+    if (!el) return;
+
+    const ctPrevueInput = root.querySelector('.tt-ct-prevue');
+    const ctRealiseeInput = root.querySelector('.tt-ct-realisee');
+    if (!ctPrevueInput || !ctRealiseeInput) return;
+
+    const ecart = Math.round(((parseFloat(ctPrevueInput.value) || 0) - (parseFloat(ctRealiseeInput.value) || 0)) * 10) / 10;
+
+    el.textContent = ecart.toFixed(1);
+    el.classList.toggle('ecart-neg', ecart < 0);
+    el.classList.toggle('ecart-zero', ecart >= 0);
+}
+
+function initJourPicker(root) {
+    const picker = root.querySelector('.jour-picker');
+    if (!picker) return;
+
+    const nbInput = root.querySelector('.tt-ct-prevue');
+    const monthLabel = picker.querySelector('.jp-month-label');
+    const grid = picker.querySelector('.jp-grid');
+    const counter = picker.querySelector('.jp-counter');
+    // .jp-hidden-inputs est un frère de .jour-picker (pas un descendant) : chercher
+    // depuis root, pas depuis picker (c'était le 2e bug — le calendrier ne crashait
+    // qu'à l'initialisation, silencieusement, faute de ce conteneur trouvé).
+    const hiddenWrap = root.querySelector('.jp-hidden-inputs');
+    const submitBtn = root.querySelector('.tt-submit-btn');
+
+    let initial = [];
+    try { initial = JSON.parse(picker.dataset.initial || '[]'); } catch (e) { initial = []; }
+    const selected = new Set(initial);
+
+    let viewDate = selected.size
+        ? new Date(Array.from(selected).sort()[0] + 'T00:00:00')
+        : new Date();
+    viewDate.setDate(1);
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+
+    function syncHiddenInputs() {
+        hiddenWrap.innerHTML = '';
+        Array.from(selected).sort().forEach(function (d) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'jours[]';
+            input.value = d;
+            hiddenWrap.appendChild(input);
+        });
+    }
+
+    function updateCounter() {
+        const needed = parseInt((nbInput && nbInput.value) || '0', 10) || 0;
+        // Report actif = les jours restants seront choisis plus tard, après la
+        // reprise — on ne bloque plus sur l'égalité stricte, juste sur le dépassement.
+        const dateRepriseInput = root.querySelector('.tt-date-reprise');
+        const hasReport = !!(dateRepriseInput && dateRepriseInput.value);
+        const ok = hasReport ? (selected.size <= needed) : (selected.size === needed);
+        counter.textContent = selected.size + ' / ' + needed + ' jour' + (needed > 1 ? 's' : '') + ' sélectionné' + (selected.size > 1 ? 's' : '');
+        counter.classList.toggle('jp-counter-ok', ok);
+        counter.classList.toggle('jp-counter-bad', !ok);
+
+        const currentType = root.querySelector('input[name="type_tache"]:checked');
+        if (submitBtn && currentType && currentType.value === 'journee') {
+            submitBtn.disabled = !ok;
+        }
+    }
+    picker._updateCounter = updateCounter;
+
+    function toggleDay(key) {
+        if (selected.has(key)) selected.delete(key);
+        else selected.add(key);
+        syncHiddenInputs();
+        render();
+    }
+
+    function render() {
+        monthLabel.textContent = viewDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+        grid.innerHTML = '';
+
+        ['L', 'M', 'M', 'J', 'V', 'S', 'D'].forEach(function (d) {
+            const el = document.createElement('span');
+            el.className = 'jp-dow';
+            el.textContent = d;
+            grid.appendChild(el);
+        });
+
+        const year = viewDate.getFullYear(), month = viewDate.getMonth();
+        const first = new Date(year, month, 1);
+        const startOffset = (first.getDay() + 6) % 7; // lundi = 0
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < startOffset; i++) grid.appendChild(document.createElement('span'));
+
+        for (let d = 1; d <= daysInMonth; d++) {
+            const cellDate = new Date(year, month, d);
+            const key = iso(cellDate);
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            const isWeekend = cellDate.getDay() === 0 || cellDate.getDay() === 6;
+            btn.className = 'jp-day' + (selected.has(key) ? ' selected' : '') + (isWeekend ? ' weekend' : '');
+            btn.textContent = String(d);
+            btn.addEventListener('click', function () { toggleDay(key); });
+            grid.appendChild(btn);
+        }
+
+        updateCounter();
+    }
+
+    picker.querySelector('.jp-prev').addEventListener('click', function () { viewDate.setMonth(viewDate.getMonth() - 1); render(); });
+    picker.querySelector('.jp-next').addEventListener('click', function () { viewDate.setMonth(viewDate.getMonth() + 1); render(); });
+    if (nbInput) nbInput.addEventListener('input', updateCounter);
+
+    syncHiddenInputs();
+    render();
+}
+
+function initTypeTacheUI(root) {
+    if (!root || root._ttInitialized) return;
+    root._ttInitialized = true;
+
+    root.querySelectorAll('.type-pill').forEach(function (pill) {
+        pill.addEventListener('click', function () {
+            const input = pill.querySelector('input');
+            input.checked = true;
+            applyTypeTacheVisibility(root);
+        });
+    });
+
+    root.querySelectorAll('.tt-date-debut, .tt-ct-prevue').forEach(function (field) {
+        field.addEventListener('input', function () {
+            updateDateFinPreview(root);
+            updateReportRemainingWork(root);
+            updateEcartDisplay(root);
+        });
+    });
+
+    const ctRealiseeInput = root.querySelector('.tt-ct-realisee');
+    if (ctRealiseeInput) {
+        ctRealiseeInput.addEventListener('input', function () {
+            updateReportRemainingWork(root);
+            updateEcartDisplay(root);
+        });
+    }
+
+    const dateRepriseInput = root.querySelector('.tt-date-reprise');
+    if (dateRepriseInput) {
+        dateRepriseInput.addEventListener('input', function () {
+            updateReportRemainingWork(root);
+            updateDateFinPreview(root);
+            refreshJourPickerCounter(root);
+        });
+    }
+
+    initJourPicker(root);
+    applyTypeTacheVisibility(root);
+}
+
+// Le compteur "X / CT Prévu jours sélectionnés" (type Journée) tolère un compte
+// partiel tant qu'un report est actif — le recalculer quand l'état du report change.
+function refreshJourPickerCounter(root) {
+    const picker = root.querySelector('.jour-picker');
+    if (picker && picker._updateCounter) picker._updateCounter();
+}
+
+// "Reporter cette tâche" / "Modifier le report" : révèle les 2 champs de dates manuels.
+function toggleReportField(btn) {
+    const reveal = btn.parentElement.querySelector('.tt-report-reveal');
+    if (!reveal) return;
+    reveal.style.display = (reveal.style.display === 'none') ? '' : 'none';
+    const root = btn.closest('.tt-root');
+    updateDateFinPreview(root);
+    refreshJourPickerCounter(root);
+}
+
+// "Annuler le report" : vide les 2 champs — la sauvegarde (bouton Enregistrer)
+// effacera alors date_reprise ET date_interruption côté serveur.
+function annulerReport(btn) {
+    const reveal = btn.closest('.tt-report-reveal');
+    const dateRepriseInput = reveal ? reveal.querySelector('.tt-date-reprise') : null;
+    const dateInterruptionInput = reveal ? reveal.querySelector('.tt-date-interruption') : null;
+    if (!dateRepriseInput) return;
+    dateRepriseInput.value = '';
+    if (dateInterruptionInput) dateInterruptionInput.value = '';
+    const root = dateRepriseInput.closest('.tt-root');
+    updateReportRemainingWork(root);
+    updateDateFinPreview(root);
+    refreshJourPickerCounter(root);
+}
+
+document.querySelectorAll('.tt-root').forEach(initTypeTacheUI);
+
+@if($errors->any() && old('_tache_id'))
+// Une soumission (report, etc.) a échoué la validation — rouvre le panneau
+// d'édition de la tâche concernée, sinon le message d'erreur ci-dessus n'a
+// aucun panneau visible pour s'y rattacher.
+toggleEdit({{ (int) old('_tache_id') }});
+document.getElementById('row-{{ (int) old('_tache_id') }}')?.scrollIntoView({ block: 'center' });
+@endif
 </script>
 
 </body>

@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\GanttController;
 use App\Http\Controllers\LivrablesController;
 use App\Http\Controllers\PreuveController;
+use App\Http\Controllers\ProjetPreuveController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
@@ -83,13 +84,13 @@ Route::middleware(['auth', 'approuve'])->group(function () {
         ->middleware('permission:voir_consultants');
     Route::post('/consultants', [ConsultantController::class, 'store'])
         ->name('consultants.store')
-        ->middleware('permission:voir_consultants');
+        ->middleware('permission:creer_consultants');
     Route::put('/consultants/{id}', [ConsultantController::class, 'update'])
         ->name('consultants.update')
-        ->middleware('permission:voir_consultants');
+        ->middleware('permission:modifier_consultants');
     Route::delete('/consultants/{id}', [ConsultantController::class, 'destroy'])
         ->name('consultants.destroy')
-        ->middleware('permission:voir_consultants');
+        ->middleware('permission:supprimer_consultants');
 
     // Calendrier — "Mon calendrier" (consultant connecté)
     Route::get('/calendrier', [CalendrierController::class, 'index'])->name('calendrier.index');
@@ -119,47 +120,35 @@ Route::middleware(['auth', 'approuve'])->group(function () {
         Route::delete('/admin/calendrier/taches/{id}',      [CalendrierAdminController::class, 'destroy'])->name('admin.calendrier.tache.destroy');
         Route::delete('/admin/calendrier/{consultantId}/vider', [CalendrierAdminController::class, 'viderCalendrier'])->name('admin.calendrier.vider');
     });
-});
 
-Route::post('/projet/{id}/livrables', [LivrablesController::class, 'save'])
-    ->name('projet.livrables.save')
-    ->middleware('permission:modifier_projets');
+    // Livrables SMI
+    Route::post('/projet/{id}/livrables', [LivrablesController::class, 'save'])
+        ->name('projet.livrables.save')
+        ->middleware('permission:modifier_projets');
 
-// Sauvegarde AJAX d'un seul livrable (depuis details — dropdown change)
-Route::post('/projet/{id}/livrables/single', [LivrablesController::class, 'saveSingle'])
-    ->name('projet.livrables.single')
-    ->middleware('permission:modifier_projets');
+    // Sauvegarde AJAX d'un seul livrable (depuis details — dropdown change)
+    Route::post('/projet/{id}/livrables/single', [LivrablesController::class, 'saveSingle'])
+        ->name('projet.livrables.single')
+        ->middleware('permission:modifier_projets');
 
+    // Preuves des livrables
+    Route::post('/preuves/upload', [PreuveController::class, 'upload'])
+        ->name('preuves.upload')
+        ->middleware('permission:gerer_preuves');
+    Route::delete('/preuves/{id}', [PreuveController::class, 'destroy'])
+        ->name('preuves.destroy')
+        ->middleware('permission:gerer_preuves');
 
-// Routes pour les preuves des livrables
-
-Route::post('/preuves/upload', [App\Http\Controllers\PreuveController::class, 'upload'])->name('preuves.upload');
-Route::delete('/preuves/{id}', [App\Http\Controllers\PreuveController::class, 'destroy'])->name('preuves.destroy');
-
-// Routes pour les preuves projet
-
-Route::post('/preuves-projet/upload', [App\Http\Controllers\ProjetPreuveController::class, 'upload'])->name('preuves-projet.upload');
-Route::delete('/preuves-projet/{id}', [App\Http\Controllers\ProjetPreuveController::class, 'destroy'])->name('preuves-projet.destroy');
-Route::get('/preuves-projet/{projetId}', [App\Http\Controllers\ProjetPreuveController::class, 'index'])->name('preuves-projet.index');
-
-
-Route::get('/test-cloudinary', function() {
-    try {
-        $cloudName = config('cloudinary.cloud_name');
-        $apiKey = config('cloudinary.api_key');
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Cloudinary configuré',
-            'cloud_name' => $cloudName,
-            'api_key' => substr($apiKey, 0, 5) . '...'
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Erreur Cloudinary: ' . $e->getMessage()
-        ], 500);
-    }
+    // Preuves projet
+    Route::post('/preuves-projet/upload', [ProjetPreuveController::class, 'upload'])
+        ->name('preuves-projet.upload')
+        ->middleware('permission:gerer_preuves');
+    Route::delete('/preuves-projet/{id}', [ProjetPreuveController::class, 'destroy'])
+        ->name('preuves-projet.destroy')
+        ->middleware('permission:gerer_preuves');
+    Route::get('/preuves-projet/{projetId}', [ProjetPreuveController::class, 'index'])
+        ->name('preuves-projet.index')
+        ->middleware('permission:gerer_preuves');
 });
 
 Route::get('/download-file', function (\Illuminate\Http\Request $request) {

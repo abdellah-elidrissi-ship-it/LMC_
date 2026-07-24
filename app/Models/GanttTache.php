@@ -18,8 +18,13 @@ class GanttTache extends Model
         'ct_prevue',
         'ct_realisee',
         'avancement',
+        'type_tache',
         'date_debut',
         'date_fin',
+        'date_interruption',
+        'jours_choisis',
+        'date_reprise',
+        'segments',
     ];
 
     protected $casts = [
@@ -28,11 +33,20 @@ class GanttTache extends Model
         'avancement' => 'float',
         'date_debut' => 'date',
         'date_fin' => 'date',
+        'date_interruption' => 'date',
+        'jours_choisis' => 'array',
+        'date_reprise' => 'date',
+        'segments' => 'array',
     ];
 
     public function phase()
     {
         return $this->belongsTo(GanttPhase::class, 'phase_id');
+    }
+
+    public function consultants()
+    {
+        return $this->belongsToMany(Consultant::class, 'gantt_tache_consultant');
     }
 
     public function projet()
@@ -45,10 +59,15 @@ class GanttTache extends Model
         return round($this->ct_prevue - $this->ct_realisee, 2);
     }
 
-    public function getStatutColorAttribute()
+    public function isJournee(): bool
     {
-        if ($this->avancement >= 100) return 'success';
-        if ($this->avancement >= 50) return 'warning';
-        return 'danger';
+        return $this->type_tache === 'journee';
+    }
+
+    // "Report" n'est plus un type_tache — c'est un état orthogonal (applicable à
+    // phase ET journee) marqué par la présence d'une date de reprise.
+    public function hasReport(): bool
+    {
+        return !is_null($this->date_reprise);
     }
 }

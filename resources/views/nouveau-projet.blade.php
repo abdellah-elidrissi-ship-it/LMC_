@@ -460,6 +460,13 @@
             color: white;
         }
 
+        .jours-alloues-na {
+            display: block;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--gray-400, #9ca3af);
+        }
+
         /* Alert */
         .alert-float {
             position: fixed;
@@ -699,6 +706,7 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
 <!-- Main Content -->
 <div class="container py-4">
     <form
+    id="nouveau-projet-form"
     method="POST"
     action="{{ route('projets.store') }}"
     enctype="multipart/form-data"
@@ -818,22 +826,18 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Rôle</label>
-                        <select class="form-select" id="existingConsultantRole">
+                        <select class="form-select" id="existingConsultantRole"
+                            onchange="applyJoursAllouesVisibility(this, document.getElementById('existingConsultantJoursAlloues'))">
                             <option>Chef de Projet</option>
                             <option selected>Consultant</option>
                             <option>Consultant Ext.</option>
-                            <option>Expert</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label class="form-label">J. alloués</label>
                         <input type="number" class="form-control" id="existingConsultantJoursAlloues" min="0" step="0.1" value="0">
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">J. réalisés</label>
-                        <input type="number" class="form-control" id="existingConsultantJoursRealises" min="0" step="0.1" value="0">
-                    </div>
-                    <div class="col-md-1">
                         <button type="button" class="btn-add w-100" onclick="addConsultant()">
                             <i class="bi bi-plus"></i>
                         </button>
@@ -902,15 +906,9 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
                         min="0" value="{{ old('jours_prevus', 0) }}" required>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">
-                        Jours réalisés
-                        <span class="badge-auto"><i class="bi bi-lock-fill"></i> Auto</span>
-                    </label>
-                    <input type="number" class="form-control auto-calc" name="jours_realises"
-                        id="jours_realises" value="0" readonly>
-                    <div class="auto-tag">
-                        <i class="bi bi-arrow-right"></i> Sera calculé après création
-                    </div>
+                    <label class="form-label">Jours réalisés</label>
+                    <input type="number" class="form-control" name="jours_realises"
+                        id="jours_realises" min="0" value="{{ old('jours_realises', 0) }}">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">
@@ -1030,6 +1028,8 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
                 <tr>
                     <th>Thème</th>
                     <th>Photo</th>
+                    <th>Jours prévus</th>
+                    <th>Date réalisation</th>
                     <th style="width:50px;"></th>
                 </tr>
             </thead>
@@ -1065,7 +1065,7 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
 
         <!-- Boutons d'action -->
         <div class="d-flex justify-content-end gap-3 mb-5">
-            <a href="{{ route('projets.index') }}" class="btn-secondary">
+            <a href="{{ route('projets.index') }}" class="btn-secondary" data-persist-cancel>
                 <i class="bi bi-x-circle"></i> Annuler
             </a>
             <button type="submit" class="btn-primary">
@@ -1156,6 +1156,13 @@ function addSensibilisationRow() {
             <input type="file" class="form-control" name="sensibilisations[${sensibilisationRowIndex}][photo]"
                    accept="image/png,image/jpeg,image/webp">
         </td>
+        <td>
+            <input type="number" class="form-control" name="sensibilisations[${sensibilisationRowIndex}][jours_prevus]"
+                   step="0.5" min="0" placeholder="Jours prévus">
+        </td>
+        <td>
+            <input type="date" class="form-control" name="sensibilisations[${sensibilisationRowIndex}][date_realisation]">
+        </td>
         <td class="text-center">
             <button type="button" class="btn-remove" onclick="removeSensibilisationRow(${sensibilisationRowIndex})">
                 <i class="bi bi-trash"></i>
@@ -1189,6 +1196,44 @@ document.getElementById('themeToggle').addEventListener('click', () => {
     icon.className = next === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
 });
 
+// Le champ "J. alloués" n'est pertinent que pour les consultants externes
+// (Chef de Projet / Consultant interne n'ont pas de jours alloués facturés).
+// Masqué => désactivé, pour que le navigateur ne l'envoie pas dans le POST
+// (le contrôleur retombe déjà sur 0 quand la clé est absente).
+function applyJoursAllouesVisibility(roleSelect, joursInput) {
+    if (!roleSelect || !joursInput) return;
+    const hidden = roleSelect.value === 'Chef de Projet' || roleSelect.value === 'Consultant';
+
+    joursInput.style.display = hidden ? 'none' : '';
+    joursInput.disabled = hidden;
+    if (hidden) joursInput.value = 0;
+
+    let placeholder = joursInput.parentElement.querySelector('.jours-alloues-na');
+    if (hidden) {
+        if (!placeholder) {
+            placeholder = document.createElement('span');
+            placeholder.className = 'jours-alloues-na';
+            placeholder.textContent = '—';
+            joursInput.insertAdjacentElement('afterend', placeholder);
+        }
+    } else if (placeholder) {
+        placeholder.remove();
+    }
+}
+
+function onConsultantRoleChange(roleSelect) {
+    const row = roleSelect.closest('.consultant-row');
+    if (!row) return;
+    applyJoursAllouesVisibility(roleSelect, row.querySelector('input[name$="[jours_alloues]"]'));
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    applyJoursAllouesVisibility(
+        document.getElementById('existingConsultantRole'),
+        document.getElementById('existingConsultantJoursAlloues')
+    );
+});
+
 // Ajouter un consultant
 function addConsultant() {
     const select = document.getElementById('existingConsultantSelect');
@@ -1196,7 +1241,6 @@ function addConsultant() {
     const consNom = select.options[select.selectedIndex]?.getAttribute('data-nom') || '';
     const role = document.getElementById('existingConsultantRole').value;
     const joursA = parseFloat(document.getElementById('existingConsultantJoursAlloues').value) || 0;
-    const joursR = parseFloat(document.getElementById('existingConsultantJoursRealises').value) || 0;
 
     if (!consId) {
         alert('Veuillez sélectionner un consultant');
@@ -1208,12 +1252,10 @@ function addConsultant() {
         return;
     }
 
-    const charge = joursA > 0 ? Math.round((joursR / joursA) * 100) : 0;
-
     document.getElementById('newConsultantsContainer').insertAdjacentHTML('beforeend', `
         <div class="consultant-row" id="consultant-row-${consId}">
             <div class="row align-items-center g-3">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div style="font-weight:600;">
                         <i class="bi bi-person-plus-fill me-1" style="color:var(--success);"></i>
                         ${consNom}
@@ -1221,23 +1263,15 @@ function addConsultant() {
                     <input type="hidden" name="consultants[${consId}][id]" value="${consId}">
                 </div>
                 <div class="col-md-3">
-                    <select class="form-select" name="consultants[${consId}][role]">
+                    <select class="form-select" name="consultants[${consId}][role]" onchange="onConsultantRoleChange(this)">
                         <option ${role === 'Chef de Projet' ? 'selected' : ''}>Chef de Projet</option>
                         <option ${role === 'Consultant' ? 'selected' : ''}>Consultant</option>
                         <option ${role === 'Consultant Ext.' ? 'selected' : ''}>Consultant Ext.</option>
-                        <option ${role === 'Expert' ? 'selected' : ''}>Expert</option>
                     </select>
                 </div>
-                <div class="col-md-2">
-                    <input type="number" class="form-control" name="consultants[${consId}][jours_alloues]" 
+                <div class="col-md-3">
+                    <input type="number" class="form-control" name="consultants[${consId}][jours_alloues]"
                            min="0" step="0.1" value="${joursA}">
-                </div>
-                <div class="col-md-2">
-                    <input type="number" class="form-control" name="consultants[${consId}][jours_realises]" 
-                           min="0" step="0.1" value="${joursR}">
-                </div>
-                <div class="col-md-1">
-                    <span class="badge bg-info">${charge}%</span>
                 </div>
                 <div class="col-md-1 text-center">
                     <button type="button" class="btn-remove" onclick="removeConsultant(this, ${consId})">
@@ -1248,10 +1282,16 @@ function addConsultant() {
         </div>
     `);
 
+    const newRow = document.getElementById(`consultant-row-${consId}`);
+    onConsultantRoleChange(newRow.querySelector('select[name$="[role]"]'));
+
     select.value = '';
     document.getElementById('existingConsultantRole').value = 'Consultant';
     document.getElementById('existingConsultantJoursAlloues').value = '0';
-    document.getElementById('existingConsultantJoursRealises').value = '0';
+    applyJoursAllouesVisibility(
+        document.getElementById('existingConsultantRole'),
+        document.getElementById('existingConsultantJoursAlloues')
+    );
 }
 
 function removeConsultant(btn, consId) {

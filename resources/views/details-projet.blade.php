@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         [data-theme="light"] {
             --bg-primary: #f8fafc;
@@ -777,8 +778,16 @@ $user = auth()->user();
     <div class="detail-card">
         <div class="section-title"><i class="bi bi-graph-up"></i> Indicateurs de suivi</div>
         @php
-            $consoCalc = $projet->jours_prevus > 0 ? round(($joursRealisesCalc / $projet->jours_prevus) * 100) : 0;
-            $ecartCalc = $joursRealisesCalc - $projet->jours_prevus;
+            // jours_realises est saisi manuellement (page Modifier Projet) depuis le
+            // 2026-07-15 — ne plus utiliser $joursRealisesCalc (somme chapitres +
+            // formations, désormais obsolète pour ce KPI) sinon "Jours réalisés"
+            // reste bloqué à 0 tant qu'aucun chapitre/formation n'est renseigné,
+            // en désaccord avec la valeur affichée sur Modifier Projet (bug constaté
+            // le 2026-07-22). $joursRealisesCalc reste utilisé plus bas dans la carte
+            // "Cohérence des jours réalisés", qui compare volontairement un autre
+            // total (chapitres + formations) aux jours déclarés par les consultants.
+            $consoCalc = $projet->jours_prevus > 0 ? round(($projet->jours_realises / $projet->jours_prevus) * 100) : 0;
+            $ecartCalc = $projet->jours_realises - $projet->jours_prevus;
         @endphp
         <div class="row g-3">
             <div class="col-md-3 col-6">
@@ -787,7 +796,7 @@ $user = auth()->user();
             <div class="col-md-3 col-6">
                 <div class="kpi-box">
                     <div class="kpi-label">Jours réalisés</div>
-                    <div class="kpi-value">{{ $joursRealisesCalc }}</div>
+                    <div class="kpi-value">{{ $projet->jours_realises }}</div>
                     <div style="font-size:0.7rem; color:var(--text-muted);">Total interventions</div>
                 </div>
             </div>
@@ -1064,6 +1073,41 @@ $user = auth()->user();
                         @endforeach
                     </tbody>
                 </table>
+
+                @php
+                    $rolesInternes = ['Chef de Projet', 'Consultant'];
+                    $consultantsCollection = collect($consultants);
+                    $totalRealiseInterne = $consultantsCollection->whereIn('role_dans_projet', $rolesInternes)->sum('jours_realises');
+                    $totalRealiseExterne = $consultantsCollection->where('role_dans_projet', 'Consultant Ext.')->sum('jours_realises');
+
+                    $consultantsChartData = $consultantsCollection->map(function ($c) use ($rolesInternes) {
+                        return [
+                            'nom' => $c->nom_complet,
+                            'jours' => (float) $c->jours_realises,
+                            'interne' => in_array($c->role_dans_projet, $rolesInternes, true),
+                        ];
+                    })->values();
+                @endphp
+                <div style="position:relative; height:{{ max(count($consultants) * 34, 90) }}px; margin-top:1.25rem;">
+                    <canvas id="chartConsultantsRealises"></canvas>
+                </div>
+                <script>
+                    window.consultantsRealisesData = @json($consultantsChartData);
+                </script>
+                <div style="display:flex; gap:1rem; justify-content:center; margin-top:0.6rem; font-size:0.75rem; color:var(--text-muted);">
+                    <span style="display:flex;align-items:center;gap:0.35rem;"><span style="width:10px;height:10px;border-radius:3px;background:#0EA5E9;display:inline-block;"></span>Interne (Chef de projet / Consultant)</span>
+                    <span style="display:flex;align-items:center;gap:0.35rem;"><span style="width:10px;height:10px;border-radius:3px;background:#F59E0B;display:inline-block;"></span>Externe (Consultant Ext.)</span>
+                </div>
+                <div class="info-grid" style="margin-top:1rem;">
+                    <div class="info-item" style="border-left-color:#0EA5E9;">
+                        <div class="info-label">Total réalisés — Internes</div>
+                        <div class="info-value">{{ $totalRealiseInterne }} j</div>
+                    </div>
+                    <div class="info-item" style="border-left-color:#F59E0B;">
+                        <div class="info-label">Total réalisés — Externes</div>
+                        <div class="info-value">{{ $totalRealiseExterne }} j</div>
+                    </div>
+                </div>
                 @else
                 <p style="color:var(--text-muted); text-align:center; padding:2rem;">Aucun consultant affecté</p>
                 @endif
@@ -1129,6 +1173,10 @@ $user = auth()->user();
                 </div>
                 <div class="intervention-body">
                     <h5 title="{{ $s->theme }}">{{ Str::limit($s->theme, 30) }}</h5>
+                    <div class="intervention-meta">
+                        <span><i class="bi bi-clock-history"></i> {{ $s->jours_prevus ?? 0 }} j. prévu(s)</span>
+                        <span><i class="bi bi-calendar-check"></i> {{ $s->date_realisation ? \Carbon\Carbon::parse($s->date_realisation)->format('d/m/Y') : '—' }}</span>
+                    </div>
                     @if($s->photo_path)
                     <div class="intervention-actions">
                         <button class="intervention-btn"
@@ -1715,7 +1763,53 @@ document.getElementById('themeToggle')?.addEventListener('click', () => {
     localStorage.setItem('lmc-theme', newTheme);
     const icon = document.getElementById('themeIcon');
     if (icon) icon.className = newTheme === 'light' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+    if (chartConsultantsRealisesInst) {
+        const isDarkNow = newTheme === 'dark';
+        chartConsultantsRealisesInst.options.scales.x.ticks.color = isDarkNow ? '#94a3b8' : '#64748b';
+        chartConsultantsRealisesInst.options.scales.y.ticks.color = isDarkNow ? '#94a3b8' : '#64748b';
+        chartConsultantsRealisesInst.options.scales.x.grid.color = isDarkNow ? '#334155' : '#e2e8f0';
+        chartConsultantsRealisesInst.update();
+    }
 });
+
+// ===== GRAPHIQUE : JOURS RÉALISÉS PAR CONSULTANT =====
+let chartConsultantsRealisesInst = null;
+(function () {
+    const canvas = document.getElementById('chartConsultantsRealises');
+    const data = window.consultantsRealisesData || [];
+    if (!canvas || !data.length) return;
+
+    const isDarkNow = document.documentElement.getAttribute('data-theme') === 'dark';
+    const tickColor = isDarkNow ? '#94a3b8' : '#64748b';
+    const gridColor = isDarkNow ? '#334155' : '#e2e8f0';
+
+    chartConsultantsRealisesInst = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: data.map(c => c.nom),
+            datasets: [{
+                label: 'Jours réalisés',
+                data: data.map(c => c.jours),
+                backgroundColor: data.map(c => c.interne ? '#0EA5E9' : '#F59E0B'),
+                borderRadius: 4,
+                barPercentage: 0.6,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            scales: {
+                x: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } },
+                y: { grid: { display: false }, ticks: { color: tickColor, font: { size: 10 } } },
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: (ctx) => ` ${ctx.raw} jour${ctx.raw > 1 ? 's' : ''} réalisé${ctx.raw > 1 ? 's' : ''}` } },
+            },
+        },
+    });
+})();
 </script>
 </body>
 </html>

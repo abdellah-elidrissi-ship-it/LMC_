@@ -17,7 +17,7 @@ class ProjetPreuveController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'projet_id' => 'required|integer|exists:projets,id',
-                'fichier'   => 'required|file|max:10240',
+                'fichier'   => 'required|file|max:10240|mimes:pdf,jpg,jpeg,png,webp,doc,docx,xls,xlsx',
                 'label'     => 'nullable|string|max:255',
             ]);
 
@@ -26,6 +26,13 @@ class ProjetPreuveController extends Controller
                     'success' => false,
                     'errors'  => $validator->errors(),
                 ], 422);
+            }
+
+            if (!\App\Models\Projet::visiblesPour(auth()->user())->where('id', $request->projet_id)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Vous n'avez pas accès à ce projet.",
+                ], 403);
             }
 
             $file = $request->file('fichier');
@@ -98,6 +105,13 @@ class ProjetPreuveController extends Controller
                 ], 404);
             }
 
+            if (!\App\Models\Projet::visiblesPour(auth()->user())->where('id', $preuve->projet_id)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Vous n'avez pas accès à ce projet.",
+                ], 403);
+            }
+
             DB::table('projet_preuves')->where('id', $id)->delete();
 
             return response()->json(['success' => true]);
@@ -117,6 +131,13 @@ class ProjetPreuveController extends Controller
     public function index($projetId)
     {
         try {
+            if (!\App\Models\Projet::visiblesPour(auth()->user())->where('id', $projetId)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Vous n'avez pas accès à ce projet.",
+                ], 403);
+            }
+
             $preuves = DB::table('projet_preuves')
                 ->where('projet_id', $projetId)
                 ->orderBy('created_at', 'desc')

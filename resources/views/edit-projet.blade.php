@@ -2173,7 +2173,7 @@
 
         .consultant-header-grid {
             display: grid;
-            grid-template-columns: 3fr 2fr 1.2fr 1.2fr 1fr 0.8fr;
+            grid-template-columns: 3fr 2fr 1.3fr 1.3fr 0.9fr;
             gap: 0.75rem;
             align-items: center;
         }
@@ -2193,7 +2193,7 @@
 
         .consultant-grid {
             display: grid;
-            grid-template-columns: 3fr 2fr 1.2fr 1.2fr 1fr 0.8fr;
+            grid-template-columns: 3fr 2fr 1.3fr 1.3fr 0.9fr;
             gap: 0.75rem;
             align-items: center;
             padding: 0.5rem 1rem;
@@ -2211,29 +2211,11 @@
             font-size: 1rem;
         }
 
-        .charge-badge {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: var(--radius-full);
-            font-size: 0.7rem;
-            font-weight: 600;
-            background: var(--gray-100);
-            color: var(--gray-700);
-        }
-
-        .charge-badge.charge-normal {
-            background: var(--success-100);
-            color: var(--success-700);
-        }
-
-        .charge-badge.charge-warning {
-            background: var(--warning-100);
-            color: var(--warning-700);
-        }
-
-        .charge-badge.charge-high {
-            background: var(--danger-100);
-            color: var(--danger-700);
+        .jours-alloues-na {
+            display: block;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--gray-400);
         }
 
         .btn-remove-sm {
@@ -2370,10 +2352,6 @@
             }
 
             .consultant-grid>div:nth-child(5)::before {
-                content: "Charge";
-            }
-
-            .consultant-grid>div:nth-child(6)::before {
                 content: "Action";
             }
         }
@@ -2690,8 +2668,7 @@
                         <span>Consultant</span>
                         <span>Rôle</span>
                         <span class="text-center">J. alloués</span>
-                        <span class="text-center">J. réalisés</span>
-                        <span class="text-center">Charge</span>
+                        <span class="text-center">J. réalisés <i class="bi bi-info-circle" title="Calculé automatiquement depuis les tâches Gantt réalisées par ce consultant — non modifiable ici"></i></span>
                         <span class="text-center">Action</span>
                     </div>
                 </div>
@@ -2699,10 +2676,6 @@
                 <!-- Conteneur des consultants existants -->
                 <div id="existingConsultantsContainer">
                     @forelse($projet->affectations as $aff)
-                    @php
-                    $charge = $aff->jours_alloues > 0 ? round(($aff->jours_realises / $aff->jours_alloues) * 100) : 0;
-                    $chargeClass = $charge >= 100 ? 'charge-high' : ($charge >= 75 ? 'charge-warning' : 'charge-normal');
-                    @endphp
                     <div class="consultant-row-compact" id="consultant-row-{{ $aff->consultant_id }}">
                         <div class="consultant-grid">
                             <div class="consultant-name">
@@ -2711,8 +2684,9 @@
                                 <input type="hidden" name="consultants[{{ $aff->consultant_id }}][id]" value="{{ $aff->consultant_id }}">
                             </div>
                             <div>
-                                <select class="form-select form-select-sm" name="consultants[{{ $aff->consultant_id }}][role]">
-                                    @foreach(['Chef de Projet','Consultant','Consultant Ext.','Expert'] as $r)
+                                <select class="form-select form-select-sm" name="consultants[{{ $aff->consultant_id }}][role]"
+                                    onchange="onConsultantRoleChange(this)">
+                                    @foreach(['Chef de Projet','Consultant','Consultant Ext.'] as $r)
                                     <option value="{{ $r }}" {{ $aff->role_dans_projet == $r ? 'selected' : '' }}>{{ $r }}</option>
                                     @endforeach
                                 </select>
@@ -2720,17 +2694,12 @@
                             <div>
                                 <input type="number" class="form-control form-control-sm text-center"
                                     name="consultants[{{ $aff->consultant_id }}][jours_alloues]"
-                                    min="0" step="0.1" value="{{ $aff->jours_alloues }}"
-                                    onchange="updateConsultantCharge(this)">
+                                    min="0" step="0.1" value="{{ $aff->jours_alloues }}">
                             </div>
                             <div>
                                 <input type="number" class="form-control form-control-sm text-center consultant-jours-realises"
-                                    name="consultants[{{ $aff->consultant_id }}][jours_realises]"
-                                    min="0" step="0.1" value="{{ $aff->jours_realises }}"
-                                    onchange="updateConsultantCharge(this); updateConsultantsTotal()">
-                            </div>
-                            <div class="text-center">
-                                <span class="charge-badge {{ $chargeClass }}">{{ $charge }}%</span>
+                                    value="{{ $aff->jours_realises }}" disabled
+                                    title="Calculé automatiquement depuis les tâches Gantt — non modifiable ici">
                             </div>
                             <div class="text-center">
                                 <button type="button" class="btn-remove-sm"
@@ -2763,22 +2732,18 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label form-label-sm">Rôle</label>
-                            <select class="form-select form-select-sm" id="existingConsultantRole">
+                            <select class="form-select form-select-sm" id="existingConsultantRole"
+                                onchange="applyJoursAllouesVisibility(this, document.getElementById('existingConsultantJoursAlloues'))">
                                 <option>Chef de Projet</option>
                                 <option selected>Consultant</option>
                                 <option>Consultant Ext.</option>
-                                <option>Expert</option>
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label form-label-sm">J. alloués</label>
                             <input type="number" class="form-control form-control-sm" id="existingConsultantJoursAlloues" min="0" step="0.1" value="0">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label form-label-sm">J. réalisés</label>
-                            <input type="number" class="form-control form-control-sm" id="existingConsultantJoursRealises" min="0" step="0.1" value="0">
-                        </div>
-                        <div class="col-md-1">
                             <button type="button" class="btn-add-sm w-100" onclick="addExistingConsultant()">
                                 <i class="bi bi-plus-lg"></i> Ajouter
                             </button>
@@ -2871,18 +2836,11 @@
             required oninput="recalcTotalDays()">
     </div>
     <div class="col-md-4">
-        <label class="form-label">
-            Jours réalisés
-            <span class="badge-auto"><i class="bi bi-lock-fill"></i> Auto</span>
-        </label>
-        <input type="number" class="form-control auto-calc" name="jours_realises"
-            id="jours_realises"
-            value="{{ old('jours_realises', $projet->suiviChapitres->sum('jours_intervention')) }}"
-            readonly>
-        <div class="auto-tag">
-            <i class="bi bi-arrow-right-circle-fill"></i>
-            Chapitres + Formations (jours prévus)
-        </div>
+        <label class="form-label">Jours réalisés</label>
+        <input type="number" class="form-control" name="jours_realises"
+            id="jours_realises" min="0" step="1"
+            value="{{ old('jours_realises', $projet->jours_realises) }}"
+            oninput="updateConsultantsTotal()">
     </div>
     <div class="col-md-4">
         <label class="form-label">
@@ -2910,7 +2868,7 @@
                 <div class="table-smi-container">
                     <table class="table-smi">
                         <thead>
-                            藻
+                            <tr>
                             <th style="width:9%;">Chapitre</th>
                             <th style="width:12%;">Livrables</th>
                             <th class="col-exigences">Exigences clés</th>
@@ -2918,7 +2876,7 @@
                             <th style="width:10%;">Phase</th>
                             <th style="width:6%;">J. Interv.</th>
                             <th style="width:10%;">Observations</th>
-                            藻
+                            </tr>
                         </thead>
                         <tbody>
                             @foreach($projet->suiviChapitres as $index => $chap)
@@ -3295,10 +3253,12 @@
                     <table class="table-smi" style="min-width:600px;" id="sensibilisationsTable">
                         <thead>
                             <tr>
-                                <th style="width:40%;">Thème</th>
-                                <th style="width:15%;">Photo actuelle</th>
-                                <th style="width:35%;">Nouvelle photo</th>
-                                <th style="width:10%;"></th>
+                                <th style="width:30%;">Thème</th>
+                                <th style="width:12%;">Photo actuelle</th>
+                                <th style="width:23%;">Nouvelle photo</th>
+                                <th style="width:12%;">Jours prévus</th>
+                                <th style="width:15%;">Date réalisation</th>
+                                <th style="width:8%;"></th>
                             </tr>
                         </thead>
                         <tbody id="sensibilisationsTbody">
@@ -3324,6 +3284,18 @@
                                     <input type="file" class="form-control"
                                         name="sensibilisations[{{ $idx }}][photo]"
                                         accept="image/png,image/jpeg,image/webp">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control"
+                                        name="sensibilisations[{{ $idx }}][jours_prevus]"
+                                        step="0.5" min="0"
+                                        value="{{ $s->jours_prevus ?? 0 }}"
+                                        placeholder="Jours prévus">
+                                </td>
+                                <td>
+                                    <input type="date" class="form-control"
+                                        name="sensibilisations[{{ $idx }}][date_realisation]"
+                                        value="{{ $s->date_realisation ?? '' }}">
                                 </td>
                                 <td class="text-center">
                                     <button type="button" class="btn-remove"
@@ -3479,7 +3451,7 @@
 
             <!-- Boutons -->
             <div class="d-flex justify-content-end gap-3 mb-5">
-                <a href="{{ route('projet.details', $projet->id) }}" class="btn-secondary">
+                <a href="{{ route('projet.details', $projet->id) }}" class="btn-secondary" data-persist-cancel="mainForm">
                     <i class="bi bi-x-circle"></i> Annuler
                 </a>
                 @if($user->hasPermission('voir_gantt'))
@@ -3602,18 +3574,47 @@ function resetClientLogoSelection() {
         });
 
         // ===== CONSULTANTS =====
-        function updateConsultantCharge(input) {
-            const row = input.closest('.consultant-grid');
-            const alloues = parseFloat(row.querySelector('input[name$="[jours_alloues]"]').value) || 0;
-            const realises = parseFloat(row.querySelector('input[name$="[jours_realises]"]').value) || 0;
-            const charge = alloues > 0 ? Math.round((realises / alloues) * 100) : 0;
-            const badge = row.querySelector('.charge-badge');
-            badge.textContent = charge + '%';
-            badge.className = 'charge-badge';
-            if (charge >= 100) badge.classList.add('charge-high');
-            else if (charge >= 75) badge.classList.add('charge-warning');
-            else badge.classList.add('charge-normal');
+        // Le champ "J. alloués" n'est pertinent que pour les consultants externes
+        // (Chef de Projet / Consultant interne n'ont pas de jours alloués facturés).
+        // Masqué => désactivé, pour que le navigateur ne l'envoie pas dans le POST
+        // (le contrôleur retombe déjà sur 0 quand la clé est absente).
+        function applyJoursAllouesVisibility(roleSelect, joursInput) {
+            if (!roleSelect || !joursInput) return;
+            const hidden = roleSelect.value === 'Chef de Projet' || roleSelect.value === 'Consultant';
+
+            joursInput.style.display = hidden ? 'none' : '';
+            joursInput.disabled = hidden;
+            if (hidden) joursInput.value = 0;
+
+            let placeholder = joursInput.parentElement.querySelector('.jours-alloues-na');
+            if (hidden) {
+                if (!placeholder) {
+                    placeholder = document.createElement('span');
+                    placeholder.className = 'jours-alloues-na';
+                    placeholder.textContent = '—';
+                    joursInput.insertAdjacentElement('afterend', placeholder);
+                }
+            } else if (placeholder) {
+                placeholder.remove();
+            }
         }
+
+        function onConsultantRoleChange(roleSelect) {
+            const grid = roleSelect.closest('.consultant-grid');
+            if (!grid) return;
+            applyJoursAllouesVisibility(roleSelect, grid.querySelector('input[name$="[jours_alloues]"]'));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.consultant-grid').forEach(function (grid) {
+                const roleSelect = grid.querySelector('select[name$="[role]"]');
+                if (roleSelect) applyJoursAllouesVisibility(roleSelect, grid.querySelector('input[name$="[jours_alloues]"]'));
+            });
+            applyJoursAllouesVisibility(
+                document.getElementById('existingConsultantRole'),
+                document.getElementById('existingConsultantJoursAlloues')
+            );
+        });
 
         function updateConsultantsTotal() {
     let totalConsultants = 0;
@@ -3666,7 +3667,6 @@ function resetClientLogoSelection() {
             const consNom = select.options[select.selectedIndex]?.getAttribute('data-nom') || '';
             const role = document.getElementById('existingConsultantRole').value;
             const joursA = parseFloat(document.getElementById('existingConsultantJoursAlloues').value) || 0;
-            const joursR = parseFloat(document.getElementById('existingConsultantJoursRealises').value) || 0;
 
             if (!consId) {
                 alert('Veuillez sélectionner un consultant');
@@ -3678,9 +3678,6 @@ function resetClientLogoSelection() {
                 return;
             }
 
-            const charge = joursA > 0 ? Math.round((joursR / joursA) * 100) : 0;
-            const chargeClass = charge >= 100 ? 'charge-high' : (charge >= 75 ? 'charge-warning' : 'charge-normal');
-
             document.getElementById('newConsultantsContainer').insertAdjacentHTML('beforeend', `
                 <div class="consultant-row-compact" id="consultant-row-${consId}">
                     <div class="consultant-grid">
@@ -3691,27 +3688,22 @@ function resetClientLogoSelection() {
                             <span class="badge bg-success ms-2" style="font-size:0.6rem;">Nouveau</span>
                         </div>
                         <div>
-                            <select class="form-select form-select-sm" name="consultants[${consId}][role]">
+                            <select class="form-select form-select-sm" name="consultants[${consId}][role]"
+                                onchange="onConsultantRoleChange(this)">
                                 <option ${role === 'Chef de Projet' ? 'selected' : ''}>Chef de Projet</option>
                                 <option ${role === 'Consultant' ? 'selected' : ''}>Consultant</option>
                                 <option ${role === 'Consultant Ext.' ? 'selected' : ''}>Consultant Ext.</option>
-                                <option ${role === 'Expert' ? 'selected' : ''}>Expert</option>
                             </select>
                         </div>
                         <div>
                             <input type="number" class="form-control form-control-sm text-center"
                                 name="consultants[${consId}][jours_alloues]"
-                                min="0" step="0.1" value="${joursA}"
-                                onchange="updateConsultantCharge(this)">
+                                min="0" step="0.1" value="${joursA}">
                         </div>
                         <div>
                             <input type="number" class="form-control form-control-sm text-center consultant-jours-realises"
-                                name="consultants[${consId}][jours_realises]"
-                                min="0" step="0.1" value="${joursR}"
-                                onchange="updateConsultantCharge(this); updateConsultantsTotal()">
-                        </div>
-                        <div class="text-center">
-                            <span class="charge-badge ${chargeClass}">${charge}%</span>
+                                value="0" disabled
+                                title="Calculé automatiquement depuis les tâches Gantt — non modifiable ici">
                         </div>
                         <div class="text-center">
                             <button type="button" class="btn-remove-sm"
@@ -3723,10 +3715,16 @@ function resetClientLogoSelection() {
                 </div>
             `);
 
+            const newGrid = document.getElementById(`consultant-row-${consId}`).querySelector('.consultant-grid');
+            onConsultantRoleChange(newGrid.querySelector('select[name$="[role]"]'));
+
             select.value = '';
             document.getElementById('existingConsultantRole').value = 'Consultant';
             document.getElementById('existingConsultantJoursAlloues').value = '0';
-            document.getElementById('existingConsultantJoursRealises').value = '0';
+            applyJoursAllouesVisibility(
+                document.getElementById('existingConsultantRole'),
+                document.getElementById('existingConsultantJoursAlloues')
+            );
         }
 
         function removeConsultant(btn, consId) {
@@ -3813,6 +3811,15 @@ function removeFormationRow(btn, rowId) {
                         name="sensibilisations[${newId}][photo]"
                         accept="image/png,image/jpeg,image/webp">
                 </td>
+                <td>
+                    <input type="number" class="form-control"
+                        name="sensibilisations[${newId}][jours_prevus]"
+                        step="0.5" min="0" placeholder="Jours prévus">
+                </td>
+                <td>
+                    <input type="date" class="form-control"
+                        name="sensibilisations[${newId}][date_realisation]">
+                </td>
                 <td class="text-center">
                     <button type="button" class="btn-remove"
                         onclick="removeSensibilisationRow(this, ${newId})">
@@ -3843,24 +3850,16 @@ function removeFormationRow(btn, rowId) {
     totalFormations = Math.round(totalFormations * 10) / 10;
  
     const totalGlobal = Math.round((totalChapitres + totalFormations) * 10) / 10;
- 
-    // Mise à jour champ E
-    const joursRealisesField = document.getElementById('jours_realises');
-    if (joursRealisesField) joursRealisesField.value = totalGlobal;
- 
-    // Mise à jour footer
+
+    // Mise à jour footer (info chapitres + formations — n'alimente plus "Jours réalisés", qui est manuel)
     const footJours = document.getElementById('footJours');
     if (footJours) footJours.textContent = totalGlobal;
- 
+
     // Affichage total formations
     const tfSpan = document.getElementById('totalFormationsDays');
     if (tfSpan) tfSpan.textContent = totalFormations;
- 
-    // Mise à jour affichage total projet dans B
-    const totalProjetDisplay = document.getElementById('totalProjetDaysDisplay');
-    if (totalProjetDisplay) totalProjetDisplay.textContent = totalGlobal;
- 
-    // Relancer la comparaison B vs E
+
+    // Relancer la comparaison B vs E (lit la valeur actuelle, manuelle, de "Jours réalisés")
     updateConsultantsTotal();
 }
 

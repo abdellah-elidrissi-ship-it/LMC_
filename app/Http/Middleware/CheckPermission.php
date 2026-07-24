@@ -17,8 +17,12 @@ class CheckPermission
         'modifier_projets' => "la modification d'un projet",
         'supprimer_projets' => 'la suppression de projet',
         'voir_consultants' => 'la page Consultants',
+        'creer_consultants' => "l'ajout d'un consultant",
+        'modifier_consultants' => "la modification d'un consultant",
+        'supprimer_consultants' => "la suppression d'un consultant",
         'voir_gantt' => 'le planning Gantt',
         'voir_tableau_bord' => 'le Tableau de Bord',
+        'gerer_preuves' => 'la gestion des preuves documentaires',
     ];
 
     public function handle(Request $request, Closure $next, string $permission)

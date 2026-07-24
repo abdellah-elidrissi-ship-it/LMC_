@@ -15,6 +15,10 @@ if (!function_exists('cloudinary_url')) {
         try {
             return cloudinary()->getUrl($publicId, $options);
         } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Échec de génération d\'URL Cloudinary', [
+                'public_id' => $publicId,
+                'error' => $e->getMessage(),
+            ]);
             // Fallback vers storage local
             return asset('storage/preuves/' . $publicId);
         }

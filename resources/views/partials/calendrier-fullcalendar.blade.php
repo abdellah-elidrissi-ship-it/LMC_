@@ -233,20 +233,22 @@
 
                 @if($role === 'consultant')
                 <hr>
-                <div class="mb-2">
-                    <label class="form-label">Votre réponse</label>
-                    <select class="form-select" id="reponseStatut">
-                        <option value="Acceptée">Accepter</option>
-                        <option value="Refusée">Refuser</option>
-                        <option value="En cours">Marquer en cours</option>
-                        <option value="Terminée">Marquer terminée</option>
-                    </select>
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">Commentaire</label>
-                    <textarea class="form-control" id="reponseCommentaire" rows="3"
-                        placeholder="Laisser un commentaire..."></textarea>
-                </div>
+                <form id="reponseTacheForm" onsubmit="return false;">
+                    <div class="mb-2">
+                        <label class="form-label">Votre réponse</label>
+                        <select class="form-select" id="reponseStatut" name="reponseStatut">
+                            <option value="Acceptée">Accepter</option>
+                            <option value="Refusée">Refuser</option>
+                            <option value="En cours">Marquer en cours</option>
+                            <option value="Terminée">Marquer terminée</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Commentaire</label>
+                        <textarea class="form-control" id="reponseCommentaire" name="reponseCommentaire" rows="3"
+                            placeholder="Laisser un commentaire..."></textarea>
+                    </div>
+                </form>
                 @else
                 <p class="mb-2"><strong>Lecture :</strong> <span id="detailLu"></span></p>
                 <p class="mb-2"><strong>Commentaire du consultant :</strong><br>
@@ -528,6 +530,10 @@
             document.getElementById('reponseStatut').value =
                 ['Acceptée', 'Refusée', 'En cours', 'Terminée'].includes(p.statut) ? p.statut : 'Acceptée';
             document.getElementById('reponseCommentaire').value = p.commentaire || '';
+
+            const reponseForm = document.getElementById('reponseTacheForm');
+            reponseForm.dataset.persistKey = 'reponse-' + event.id;
+            if (window.FormPersist) window.FormPersist.restore(reponseForm);
         }
 
         tacheDetailModal.show();
@@ -569,6 +575,9 @@
             .then(r => r.json())
             .then(data => {
                 if (data.success) {
+                    if (window.FormPersist) {
+                        window.FormPersist.clear(document.getElementById('reponseTacheForm'));
+                    }
                     tacheDetailModal.hide();
                     calendar.refetchEvents();
                 }
@@ -614,6 +623,11 @@
         resetFormulaire();
         document.getElementById('tacheFormTitre').textContent = 'Assigner une tâche';
         if (date) document.getElementById('formDate').value = date;
+
+        const tacheForm = document.getElementById('tacheForm');
+        tacheForm.dataset.persistKey = 'creation';
+        if (window.FormPersist) window.FormPersist.restore(tacheForm);
+
         tacheFormModal.show();
     };
 
@@ -629,6 +643,10 @@
         document.getElementById('formHeureDebut').value = p.heure_debut || '';
         document.getElementById('formHeureFin').value = p.heure_fin || '';
         document.getElementById('formObjectif').value = p.objectif || '';
+
+        const tacheForm = document.getElementById('tacheForm');
+        tacheForm.dataset.persistKey = 'edit-' + currentEvent.id;
+        if (window.FormPersist) window.FormPersist.restore(tacheForm);
 
         tacheDetailModal.hide();
         tacheFormModal.show();

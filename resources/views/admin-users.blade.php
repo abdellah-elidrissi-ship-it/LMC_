@@ -415,7 +415,7 @@ $user = auth()->user();
                             $col=$cols[abs(crc32($user->name))%count($cols)];
                             $ini=collect(explode(' ',$user->name))->take(2)->map(fn($w)=>strtoupper($w[0]??''))->join('');
                             $perms=$user->permissions ?? [];
-                            $permLabels=['voir_details'=>'Détails','creer_projets'=>'Créer','modifier_projets'=>'Modifier','supprimer_projets'=>'Supprimer','voir_consultants'=>'Consultants','voir_gantt'=>'Gantt','voir_tableau_bord'=>'Tableau de Bord'];
+                            $permLabels=['voir_details'=>'Détails','creer_projets'=>'Créer','modifier_projets'=>'Modifier','supprimer_projets'=>'Supprimer','voir_consultants'=>'Consultants','creer_consultants'=>'+ Consultant','modifier_consultants'=>'Éditer consultant','supprimer_consultants'=>'Suppr. consultant','voir_gantt'=>'Gantt','voir_tableau_bord'=>'Tableau de Bord','gerer_preuves'=>'Preuves'];
                             $directIds = $user->projets_directs->pluck('id')->all() ?? [];
                             $deriveIds = $user->projets_derives->pluck('id')->all() ?? [];
                             $tousProjetsUser = collect($user->projets_derives ?? [])->merge($user->projets_directs ?? [])->unique('id');
@@ -523,7 +523,7 @@ $user = auth()->user();
     <div class="modal">
         <div class="modal-title">Modifier l'utilisateur</div>
         <div class="modal-sub">Mettez à jour le rôle et les permissions</div>
-        <form method="POST" id="editForm">
+        <form method="POST" id="editForm" data-no-persist>
             @csrf
             @method('PUT')
             <div class="fg">
@@ -565,7 +565,7 @@ $user = auth()->user();
     <div class="modal">
         <div class="modal-title" style="color:#ef4444"><i class="bi bi-exclamation-triangle-fill"></i> Supprimer l'utilisateur</div>
         <div class="modal-sub" id="delSub">Cette action est irréversible.</div>
-        <form method="POST" id="delForm">
+        <form method="POST" id="delForm" data-no-persist>
             @csrf
             @method('DELETE')
             <div class="modal-actions">
@@ -581,7 +581,7 @@ $user = auth()->user();
     <div class="modal">
         <div class="modal-title"><i class="bi bi-check-circle-fill" style="color:#22c55e"></i> Approuver la demande</div>
         <div class="modal-sub" id="approveSub"></div>
-        <form method="POST" id="approveForm">
+        <form method="POST" id="approveForm" data-no-persist>
             @csrf
             @method('PUT')
 
@@ -655,7 +655,7 @@ $user = auth()->user();
     <div class="modal">
         <div class="modal-title" style="color:#ef4444"><i class="bi bi-x-circle-fill"></i> Refuser la demande</div>
         <div class="modal-sub" id="rejectSub"></div>
-        <form method="POST" id="rejectForm">
+        <form method="POST" id="rejectForm" data-no-persist>
             @csrf
             @method('PUT')
             <div class="fg">
@@ -675,7 +675,7 @@ $user = auth()->user();
     <div class="modal">
         <div class="modal-title"><i class="bi bi-diagram-3"></i> Accès aux projets</div>
         <div class="modal-sub" id="projetsSub"></div>
-        <form method="POST" id="projetsForm">
+        <form method="POST" id="projetsForm" data-no-persist>
             @csrf
             @method('PUT')
             <div class="proj-list-scroll" id="projetsListWrap">
@@ -703,9 +703,13 @@ const PERMS_DEF = [
     { key:'creer_projets',     label:'Créer un projet',     desc:'Ajouter de nouveaux projets',           icon:'bi-plus-circle-fill', color:'green'  },
     { key:'modifier_projets',  label:'Modifier un projet',  desc:'Éditer les informations du projet',     icon:'bi-pencil-fill',      color:'yellow' },
     { key:'supprimer_projets', label:'Supprimer un projet', desc:'Supprimer définitivement un projet',    icon:'bi-trash-fill',       color:'red'    },
-    { key:'voir_consultants',  label:'Voir les consultants',desc:'Accéder à la page consultants',         icon:'bi-people-fill',      color:'purple' },
+    { key:'voir_consultants',  label:'Voir les consultants',desc:'Accéder à la page consultants (lecture seule)', icon:'bi-people-fill',      color:'purple' },
+    { key:'creer_consultants',    label:'Ajouter un consultant',    desc:'Créer de nouveaux consultants',       icon:'bi-person-plus-fill', color:'green'  },
+    { key:'modifier_consultants', label:'Modifier un consultant',   desc:'Éditer les informations consultant',  icon:'bi-pencil-fill',      color:'yellow' },
+    { key:'supprimer_consultants',label:'Supprimer un consultant',  desc:'Supprimer définitivement un consultant', icon:'bi-trash-fill',    color:'red'    },
     { key:'voir_gantt',        label:'Voir le Gantt',       desc:'Accéder au planning Gantt',             icon:'bi-bar-chart-steps',  color:'pink'   },
     { key:'voir_tableau_bord', label:'Voir le Tableau de Bord', desc:'Accéder à la page Tableau de Bord', icon:'bi-speedometer2',     color:'teal'   },
+    { key:'gerer_preuves',     label:'Gérer les preuves',   desc:'Uploader/supprimer les preuves documentaires (livrables et projet)', icon:'bi-file-earmark-check-fill', color:'blue' },
 ];
 let editPerms = {}, approvePerms = {};
 

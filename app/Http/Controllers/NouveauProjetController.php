@@ -216,6 +216,17 @@ class NouveauProjetController extends Controller
                 'mimes:jpg,jpeg,png,webp',
                 'max:5120',
             ],
+
+            'sensibilisations.*.jours_prevus' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
+
+            'sensibilisations.*.date_realisation' => [
+                'nullable',
+                'date',
+            ],
         ]);
 
         DB::beginTransaction();
@@ -335,12 +346,13 @@ class NouveauProjetController extends Controller
                         continue;
                     }
 
+                    // jours_realises n'est plus saisi manuellement — reste à 0 tant
+                    // qu'aucune tâche Gantt n'est réalisée (App\Services\AffectationChargeService).
                     Affectation::create([
                         'projet_id' => $projet->id,
                         'consultant_id' => $consData['id'],
                         'role_dans_projet' => $consData['role'] ?? 'Consultant',
                         'jours_alloues' => $consData['jours_alloues'] ?? 0,
-                        'jours_realises' => $consData['jours_realises'] ?? 0,
                     ]);
 
                     ProjetAccessNotifier::notifierAjout(
@@ -420,7 +432,6 @@ class NouveauProjetController extends Controller
                         'consultant_id' => $newConsultant->id,
                         'role_dans_projet' => $newCons['role'] ?? 'Consultant',
                         'jours_alloues' => $newCons['jours_alloues'] ?? 0,
-                        'jours_realises' => $newCons['jours_realises'] ?? 0,
                     ]);
                 }
             }
@@ -469,6 +480,8 @@ class NouveauProjetController extends Controller
                         'projet_id' => $projet->id,
                         'theme' => $theme,
                         'photo_path' => $photoPath,
+                        'jours_prevus' => $sensData['jours_prevus'] ?? 0,
+                        'date_realisation' => $sensData['date_realisation'] ?? null,
                     ]);
                 }
             }

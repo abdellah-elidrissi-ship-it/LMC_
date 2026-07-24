@@ -60,7 +60,9 @@ livrables, formations, planning (Gantt), et preuves documentaires.
 - `ChapitreSmi` → `hasMany SuiviChapitre`, `belongsToMany Projet` (via
   `suivi_chapitres`)
 - `Affectation` — pivot enrichi projet↔consultant (jours alloués/réalisés,
-  attributs calculés `charge_percent`, `jours_restants`)
+  attributs calculés `charge_percent`, `jours_restants`) ; `jours_realises`
+  n'est plus saisi manuellement, il est recalculé depuis le Gantt — voir
+  `App\Services\AffectationChargeService` et la section Gantt plus bas
 - `User` → `belongsTo Consultant` ; rôle (`super_admin`, `chef_projet`,
   `consultant`) + `permissions` (JSON) ; `hasPermission()` est le point
   d'entrée unique pour vérifier un droit ; `use Notifiable` (système de
@@ -115,6 +117,65 @@ livrables, formations, planning (Gantt), et preuves documentaires.
   plusieurs projets), ça lève `Cannot redeclare function` (bug rencontré
   et corrigé sur `ganttBarPosition()`, voir aussi
   `CloudinaryHelper.php::cloudinary_url()` qui suit déjà ce pattern)
+  **Consultants multiples par tâche (2026-07-23)** : une tâche Gantt peut
+  être assignée à plusieurs consultants (équipe), pas un seul —
+  `GanttTache::consultants()` est un `belongsToMany` via la table pivot
+  `gantt_tache_consultant` (migration
+  `2026_07_23_090000_create_gantt_tache_consultant_table.php`, qui a aussi
+  backfillé les assignations simples existantes). **L'ancienne colonne
+  `gantt_taches.consultant_id` existe toujours en base mais n'est plus
+  lue/écrite par le code** (gardée volontairement le temps de valider la
+  bascule ; suppression prévue dans une migration séparée, ne pas la
+  réutiliser). Formulaires (ajout + édition inline) et "Vue par
+  consultant" utilisent tous `consultant_ids[]` (checkboxes) / la
+  relation `consultants` — une tâche à N consultants apparaît dans les N
+  groupes de la vue par consultant.
+  **Timeline et tâches datées dans le passé (2026-07-23)** : le scroll
+  horizontal automatique au chargement centre la vue sur "aujourd'hui"
+  (`$todayPosition`), ce qui peut laisser hors champ une tâche dont la
+  date est loin dans le passé (ou le futur) — elle existe bien dans le
+  DOM mais semble "ne pas apparaître" dans la timeline. Fix : après
+  `storeTache`/`updateTache`, le contrôleur flashe `scrollToTacheId` en
+  session ; `Gantt.blade.php` calcule `$scrollTargetLeft` = position du
+  **milieu de `[date_debut, date_fin]`** de cette tâche et centre le
+  scroll dessus au chargement si présent (sinon comportement par défaut,
+  centré sur aujourd'hui). Ce milieu fonctionne aussi pour une tâche en
+  **report** sans traitement spécial : `date_fin` est recalculée après la
+  reprise (`GanttTacheDateCalculator::resoudrePourPhase`), donc le milieu
+  de l'intervalle tombe naturellement dans/près de la fenêtre de pause
+  `[date_interruption, date_reprise]`, quelle que soit sa durée — vérifié
+  en tinker avec une pause de 3 mois (milieu tombe bien dedans).
+  **`affectations.jours_realises` = calculé depuis Gantt (2026-07-23)** :
+  ce champ n'est plus saisi manuellement (formulaires nouveau-projet/
+  edit-projet : champ retiré / affiché en lecture seule) — il est
+  recalculé par `App\Services\AffectationChargeService::recalculerPourProjet($projetId)`,
+  qui fait la somme de `ct_realisee` de toutes les tâches Gantt du projet
+  assignées à ce consultant (via `GanttTache::consultants()`). Une tâche
+  assignée à une équipe compte pour le **total complet** chez chaque
+  consultant (pas de répartition/division). Appelé après tout
+  create/update/delete de tâche Gantt (`GanttController`) et après toute
+  modification des affectations d'un projet (`EditController::update`).
+  Ne pas réintroduire de saisie manuelle de ce champ.
+  **Jours restants après un report ≠ CT Prévu − CT Réalisé (fix 2026-07-23)** :
+  dans `GanttTacheDateCalculator::resoudrePourPhase()`, le nombre de jours
+  du segment de réalisation APRÈS la reprise se calcule maintenant comme
+  `CT Prévu − (jours ouvrés déjà couverts par le segment AVANT la pause)`
+  (nouvelle méthode `joursOuvresDansIntervalle()`), plus le garde-fou
+  "au moins 1 jour si < 100%" déjà existant (fix du 2026-07-22, préservé).
+  L'ancienne formule (`CT Prévu − CT Réalisé`) mélangeait deux notions
+  différentes — CT Réalisé/avancement ne pilotent QUE le remplissage
+  visuel (`repartirAvancement`), jamais la durée totale du bâton — et
+  tombait à 0 dès que le segment avant la pause ne couvrait pas déjà
+  exactement CT Prévu jours, même si CT Prévu n'était pas encore
+  "physiquement" représenté quelque part sur la timeline (bug réel sur
+  "Constitution du comité de pilotage" : CT Prévu=4/CT Réalisé=4/
+  avancement=100% mais interruption posée après seulement 3 jours ouvrés
+  → aucun segment après la reprise, bâton visuellement figé en plein
+  report malgré les 100%). Vérifié : ne régresse pas le cas de
+  dépassement (CT Réalisé > CT Prévu, avancement < 100%).
+  Les champs `<input type="date">` de cette vue ont aussi `lang="fr"`
+  (affichage DD/MM/YYYY plutôt que le format US du navigateur — dépend
+  in fine du navigateur/OS de l'utilisateur, pas garanti à 100%).
 - Livrables SMI : suivi par chapitre/statut (`LivrablesController`,
   tables `livrables_smi` et `projet_livrables`, migrations présentes
   dans `database/migrations/2026_03_19_1243*`)

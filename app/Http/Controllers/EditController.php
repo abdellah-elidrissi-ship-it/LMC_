@@ -8,6 +8,7 @@ use App\Models\Consultant;
 use App\Models\Projet;
 use App\Models\Sensibilisation;
 use App\Models\SuiviChapitre;
+use App\Services\AffectationChargeService;
 use App\Services\ProjetAccessNotifier;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
@@ -138,6 +139,12 @@ class EditController extends Controller
 
             'jours_prevus' => [
                 'required',
+                'integer',
+                'min:0',
+            ],
+
+            'jours_realises' => [
+                'nullable',
                 'integer',
                 'min:0',
             ],
@@ -299,8 +306,11 @@ class EditController extends Controller
                 'statut' => $request->statut,
                 'jours_prevus' => $request->jours_prevus,
 
-                // Ces valeurs seront recalculées à la fin.
-                'jours_realises' => 0,
+                // Jours réalisés : saisi manuellement désormais (n'est plus recalculé
+                // depuis chapitres/formations, voir recalculerAvancement() plus bas).
+                'jours_realises' => $request->jours_realises ?? 0,
+
+                // Recalculé à la fin (voir recalculerAvancement() plus bas).
                 'avancement_percent' => 0,
 
                 'blocage' => $request->blocage ?? '',
@@ -389,8 +399,8 @@ class EditController extends Controller
                             'jours_alloues' =>
                                 $consData['jours_alloues'] ?? 0,
 
-                            'jours_realises' =>
-                                $consData['jours_realises'] ?? 0,
+                            // jours_realises n'est plus saisi manuellement — recalculé
+                            // ci-dessous depuis les tâches Gantt (App\Services\AffectationChargeService).
                         ]
                     );
 
@@ -403,6 +413,8 @@ class EditController extends Controller
                         );
                     }
                 }
+
+                AffectationChargeService::recalculerPourProjet($projet->id);
             }
 
             /*
@@ -550,6 +562,8 @@ class EditController extends Controller
                         'projet_id' => $projet->id,
                         'theme' => $theme,
                         'photo_path' => $photoPath,
+                        'jours_prevus' => $sensData['jours_prevus'] ?? 0,
+                        'date_realisation' => $sensData['date_realisation'] ?? null,
                     ]);
                 }
             }
@@ -598,11 +612,13 @@ class EditController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | CALCUL FINAL DES JOURS RÉALISÉS ET DE L'AVANCEMENT
+            | CALCUL FINAL DE L'AVANCEMENT (jours_realises est désormais manuel,
+            | voir $projet->update() plus haut — ne plus appeler
+            | recalculerJoursEtAvancement() qui l'écraserait avec chapitres+formations)
             |--------------------------------------------------------------------------
             */
 
-            \App\Services\ProjetProgressService::recalculerJoursEtAvancement($projet->id);
+            \App\Services\ProjetProgressService::recalculerAvancement($projet->id);
 
             DB::commit();
 

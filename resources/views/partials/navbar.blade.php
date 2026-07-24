@@ -400,3 +400,4 @@ if (notifWrapper && notifBell && notifDropdown) {
     });
 }
 </script>
+<script src="{{ asset('js/form-persist.js') }}" defer></script>

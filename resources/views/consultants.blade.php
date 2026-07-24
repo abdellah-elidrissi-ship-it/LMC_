@@ -260,6 +260,7 @@ $user = auth()->user();
 <div class="container py-4">
 
     <!-- Formulaire ajout -->
+    @if(auth()->user()->hasPermission('creer_consultants'))
     <div class="form-card">
         <div class="section-title"><i class="bi bi-person-plus"></i> Ajouter un consultant</div>
         <form action="{{ route('consultants.store') }}" method="POST">
@@ -301,6 +302,7 @@ $user = auth()->user();
             </div>
         </form>
     </div>
+    @endif
 
     <!-- Liste -->
     <div class="form-card">
@@ -342,6 +344,7 @@ $user = auth()->user();
                 <div class="d-flex align-items-center gap-2">
                     <span class="type-pill type-{{ $cons->type_consultant }}">{{ $cons->type_consultant }}</span>
 
+                    @if(auth()->user()->hasPermission('modifier_consultants'))
                     <button class="act-btn" title="Modifier"
                         onclick="openEditModal(
                             {{ $cons->id }},
@@ -354,7 +357,9 @@ $user = auth()->user();
                         )">
                         <i class="bi bi-pencil"></i>
                     </button>
+                    @endif
 
+                    @if(auth()->user()->hasPermission('supprimer_consultants'))
                     <form action="{{ route('consultants.destroy', $cons->id) }}" method="POST"
                           style="display:inline;"
                           onsubmit="return confirm('Supprimer {{ addslashes($cons->nom_complet) }} ?')">
@@ -363,6 +368,7 @@ $user = auth()->user();
                             <i class="bi bi-trash"></i>
                         </button>
                     </form>
+                    @endif
                 </div>
             </div>
             @empty
@@ -383,7 +389,7 @@ $user = auth()->user();
                 <h5 class="modal-title"><i class="bi bi-pencil-square me-2 text-primary"></i>Modifier consultant</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form id="editForm" method="POST">
+            <form id="editForm" method="POST" data-no-persist>
                 @csrf @method('PUT')
                 <div class="modal-body">
                     <div class="row g-3">

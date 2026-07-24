@@ -15,11 +15,18 @@ class PreuveController extends Controller
             Log::info('Upload preuve - début', $request->all());
 
             $request->validate([
-                'livrable_id' => 'required|integer',
-                'projet_id'   => 'required|integer',
-                'fichier'     => 'required|file|max:10240',
+                'livrable_id' => 'required|integer|exists:livrables_smi,id',
+                'projet_id'   => 'required|integer|exists:projets,id',
+                'fichier'     => 'required|file|max:10240|mimes:pdf,jpg,jpeg,png,webp,doc,docx,xls,xlsx',
                 'label'       => 'nullable|string|max:255',
             ]);
+
+            if (!\App\Models\Projet::visiblesPour(auth()->user())->where('id', $request->projet_id)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Vous n'avez pas accès à ce projet.",
+                ], 403);
+            }
 
             $file = $request->file('fichier');
             $originalName = $file->getClientOriginalName();
@@ -96,6 +103,13 @@ class PreuveController extends Controller
                     'success' => false,
                     'message' => 'Preuve non trouvée',
                 ], 404);
+            }
+
+            if (!\App\Models\Projet::visiblesPour(auth()->user())->where('id', $preuve->projet_id)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Vous n'avez pas accès à ce projet.",
+                ], 403);
             }
 
             DB::table('livrable_preuves')->where('id', $id)->delete();

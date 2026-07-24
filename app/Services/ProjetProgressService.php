@@ -34,26 +34,4 @@ class ProjetProgressService
 
         return $avancement;
     }
-
-    /**
-     * Recalcule jours_realises (chapitres + formations) puis avancement_percent.
-     */
-    public static function recalculerJoursEtAvancement(int $projetId): void
-    {
-        $joursChapitres = DB::table('suivi_chapitres')
-            ->where('projet_id', $projetId)
-            ->sum('jours_intervention');
-
-        $joursFormations = DB::table('projet_formations')
-            ->where('projet_id', $projetId)
-            ->sum('jours_realises');
-
-        DB::table('projets')
-            ->where('id', $projetId)
-            ->update([
-                'jours_realises' => $joursChapitres + $joursFormations,
-            ]);
-
-        static::recalculerAvancement($projetId);
-    }
 }
