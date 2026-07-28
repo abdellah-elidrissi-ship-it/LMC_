@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Consultant;
 use App\Models\GanttPhase;
 use App\Models\GanttTache;
 use App\Models\Projet;
@@ -30,7 +31,7 @@ class GanttController extends Controller
             ->with('consultants')
             ->get();
 
-        $consultantsProjet = $projet->consultants()->orderBy('nom_complet')->get();
+        $consultantsProjet = Consultant::orderBy('nom_complet')->get();
 
         $groupBy = $request->query('groupBy') === 'consultant' ? 'consultant' : 'phase';
 

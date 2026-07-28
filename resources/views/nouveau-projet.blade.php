@@ -333,6 +333,55 @@
             color: var(--accent);
         }
 
+        /* Lien OneDrive par chapitre */
+        .onedrive-icon { width: 18px; height: 12px; flex-shrink: 0; display: block; }
+
+        .onedrive-input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            border: 1.5px solid var(--input-border);
+            border-radius: var(--radius-sm);
+            background: var(--input-bg);
+            padding: 0 0.6rem;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .onedrive-input-wrap input {
+            flex: 1;
+            min-width: 110px;
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 0.5rem 0;
+            font-size: 0.78rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+        }
+
+        .onedrive-input-wrap input::placeholder { color: var(--text-muted); }
+
+        .onedrive-input-wrap:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        .onedrive-input-wrap.is-valid { border-color: var(--success); }
+        .onedrive-input-wrap.is-invalid { border-color: var(--danger); }
+
+        .onedrive-state-icon { flex-shrink: 0; font-size: 0.8rem; display: none; }
+        .onedrive-input-wrap.is-valid .onedrive-state-icon.ok { display: inline; color: var(--success); }
+        .onedrive-input-wrap.is-invalid .onedrive-state-icon.err { display: inline; color: var(--danger); }
+
+        .onedrive-hint {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .onedrive-hint.err { color: var(--danger); }
+
         .auto-tag {
             display: flex;
             align-items: center;
@@ -918,7 +967,7 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
                     <input type="number" class="form-control auto-calc" name="avancement_percent"
                         id="avancement_percent" value="0" readonly>
                     <div class="auto-tag">
-                        <i class="bi bi-arrow-right"></i> Basé sur les livrables
+                        <i class="bi bi-arrow-right"></i> Basé sur la moyenne des chapitres
                     </div>
                 </div>
             </div>
@@ -936,12 +985,13 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
                 <table class="table table-bordered" style="font-size:0.85rem;">
                     <thead>
                         <tr>
-                            <th style="width:10%;">Chapitre</th>
-                            <th style="width:35%;">Exigences clés</th>
-                            <th style="width:7%;">Av. %</th>
-                            <th style="width:12%;">Phase</th>
-                            <th style="width:7%;">J. Interv.</th>
-                            <th style="width:15%;">Observations</th>
+                            <th style="width:9%;">Chapitre</th>
+                            <th style="width:16%;">OneDrive</th>
+                            <th style="width:28%;">Exigences clés</th>
+                            <th style="width:6%;">Av. %</th>
+                            <th style="width:11%;">Phase</th>
+                            <th style="width:6%;">J. Interv.</th>
+                            <th style="width:14%;">Observations</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -953,10 +1003,23 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
                                 <input type="hidden" name="chapitres[{{ $index }}][chapitre_id]" value="{{ $chap->id }}">
                             </td>
                             <td>
+                                <div class="onedrive-input-wrap" data-onedrive-wrap>
+                                    <svg class="onedrive-icon" viewBox="0 0 36 22" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.2 4.6c-3.3 0-6.1 2.3-6.9 5.4-2.9.4-5.1 2.9-5.1 5.9 0 3.3 2.7 6 6 6h15.3c3.1 0 5.5-2.5 5.5-5.5 0-2.7-1.9-4.9-4.4-5.4C23.5 7 20.3 4.6 16.7 4.6c-.9 0-1.7.1-2.5.4z" fill="#0A5DB2"/>
+                                        <path d="M14.6 7.4c-2.5 0-4.6 1.7-5.3 4-2.2.3-3.9 2.2-3.9 4.5 0 2.5 2 4.5 4.5 4.5h12.4c2.5 0 4.6-2 4.6-4.6 0-2.2-1.5-4-3.6-4.5-.6-2.9-3.1-5-6.2-5-.9 0-1.7.2-2.5.6z" fill="#28A8EA"/>
+                                    </svg>
+                                    <input type="url" class="onedrive-link-input" name="chapitres[{{ $index }}][lien_onedrive]"
+                                        placeholder="Lien du dossier..." oninput="checkOnedriveLink(this)">
+                                    <i class="bi bi-check-circle-fill onedrive-state-icon ok"></i>
+                                    <i class="bi bi-exclamation-circle-fill onedrive-state-icon err"></i>
+                                </div>
+                                <div class="onedrive-hint">Sous-dossier OneDrive/SharePoint de ce chapitre.</div>
+                            </td>
+                            <td>
                                 <textarea name="chapitres[{{ $index }}][exigences_cles]" class="form-control" rows="3">{{ $chap->exigences_cles }}</textarea>
                             </td>
                             <td>
-                                <input type="number" class="form-control" name="chapitres[{{ $index }}][avancement]" value="0" min="0" max="100" style="width:60px;">
+                                <input type="number" class="form-control chap-avancement" name="chapitres[{{ $index }}][avancement]" value="0" min="0" max="100" style="width:60px;" oninput="recalcAvancementGlobal()">
                             </td>
                             <td>
                                 <select class="form-select" name="chapitres[{{ $index }}][phase]">
@@ -1092,6 +1155,33 @@ $newRef = 'PRJ-' . str_pad(($lastProjet ? $lastProjet->id + 1 : 1), 3, '0', STR_
                 : 'PNG, JPG ou WEBP — 2 Mo maximum';
         });
     });
+
+    function checkOnedriveLink(input) {
+        const wrap = input.closest('[data-onedrive-wrap]');
+        const value = input.value.trim();
+        wrap.classList.remove('is-valid', 'is-invalid');
+
+        if (value === '') {
+            return;
+        }
+
+        const isOnedrive = /^https:\/\//i.test(value)
+            && /(sharepoint\.com|onedrive\.live\.com|1drv\.ms)/i.test(value);
+
+        wrap.classList.add(isOnedrive ? 'is-valid' : 'is-invalid');
+    }
+
+    function recalcAvancementGlobal() {
+        const inputs = document.querySelectorAll('.chap-avancement');
+        if (!inputs.length) return;
+
+        let total = 0;
+        inputs.forEach((i) => total += Number(i.value) || 0);
+
+        const moyenne = Math.round(total / inputs.length);
+        const target = document.getElementById('avancement_percent');
+        if (target) target.value = moyenne;
+    }
 </script>
 
 <script>

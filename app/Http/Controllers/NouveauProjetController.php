@@ -189,6 +189,12 @@ class NouveauProjetController extends Controller
                 'array',
             ],
 
+            'chapitres.*.lien_onedrive' => [
+                'nullable',
+                'url',
+                'regex:/(sharepoint\.com|onedrive\.live\.com|1drv\.ms)/i',
+            ],
+
             'formations' => [
                 'nullable',
                 'array',
@@ -383,9 +389,12 @@ class NouveauProjetController extends Controller
                         'phase' => $chapData['phase'] ?? '⬜ Non démarré',
                         'jours_intervention' => $chapData['jours'] ?? 0,
                         'statut_livrables' => $chapData['livrables'] ?? null,
+                        'lien_onedrive' => $chapData['lien_onedrive'] ?? null,
                         'observations' => $chapData['observations'] ?? null,
                     ]);
                 }
+
+                \App\Services\ProjetProgressService::recalculerAvancement($projet->id);
             }
 
             /*

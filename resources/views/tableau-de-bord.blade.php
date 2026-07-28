@@ -1185,14 +1185,6 @@
     GROUP BY cs.id, cs.code_chapitre, cs.titre_chapitre ORDER BY cs.ordre
     ");
 
-    $livStats = DB::selectOne("
-    SELECT COUNT(*) as total,
-    SUM(CASE WHEN statut='Terminé' THEN 1 ELSE 0 END) as termines,
-    SUM(CASE WHEN statut='En cours' THEN 1 ELSE 0 END) as en_cours
-    FROM projet_livrables
-    ");
-    $livPct = ($livStats->total > 0) ? round(($livStats->termines / $livStats->total) * 100) : 0;
-
     $formations = DB::select("
     SELECT
         p.id as projet_id,
@@ -1233,14 +1225,12 @@
     ORDER BY cs.ordre
     ");
 
-    $livrablesRaw = DB::select("
-    SELECT
-    projet_id,
-    statut,
-    COUNT(*) as total
-    FROM projet_livrables
-    GROUP BY projet_id, statut
-    ");
+    $chapStats = (object) [
+        'total' => count($chapitresRaw),
+        'termines' => collect($chapitresRaw)->where('avancement_percent', 100)->count(),
+        'en_cours' => collect($chapitresRaw)->filter(fn($c) => $c->avancement_percent > 0 && $c->avancement_percent < 100)->count(),
+    ];
+    $chapPct = ($chapStats->total > 0) ? round(($chapStats->termines / $chapStats->total) * 100) : 0;
 
     $user = auth()->user();
     @endphp
@@ -1280,8 +1270,8 @@
                     <div class="bstat-lbl">Charge restante</div>
                 </div>
                 <div class="bstat">
-                    <div class="bstat-val" id="bannerLivPct">{{ $livPct }}%</div>
-                    <div class="bstat-lbl">Livrables OK</div>
+                    <div class="bstat-val" id="bannerChapPct">{{ $chapPct }}%</div>
+                    <div class="bstat-lbl">Chapitres à 100%</div>
                 </div>
                 <div class="banner-date">📅 {{ now()->format('M Y') }}<br>Confidentiel — COPIL</div>
             </div>
@@ -1367,10 +1357,10 @@
 
     <div class="kpi c-teal">
         <div class="kpi-icon">📋</div>
-        <div class="kpi-lbl">Livrables terminés</div>
-        <div class="kpi-val" id="kpiLivTermines">{{ $livStats->termines ?? 0 }}</div>
-        <div class="kpi-sub" id="kpiLivSub">/ {{ $livStats->total ?? 0 }} total</div>
-        <span class="kpi-trend trend-up">↑ {{ $livPct }}%</span>
+        <div class="kpi-lbl">Chapitres terminés</div>
+        <div class="kpi-val" id="kpiChapTermines">{{ $chapStats->termines ?? 0 }}</div>
+        <div class="kpi-sub" id="kpiChapSub">/ {{ $chapStats->total ?? 0 }} total</div>
+        <span class="kpi-trend trend-up">↑ {{ $chapPct }}%</span>
     </div>
 
     <div class="kpi c-green">
@@ -1513,7 +1503,7 @@
         </div>
 
         <!-- ROW 4 : SMI -->
-        <div class="sl sl-smi">Pilotage SMI — Livrables & Formations</div>
+        <div class="sl sl-smi">Pilotage SMI — Chapitres & Formations</div>
         <div class="row3 c3c">
             <div class="card">
                 <div class="ctitle">Avancement Chapitres SMI <span class="cbadge">{{ count($chapitres) }} chapitres</span></div>
@@ -1558,26 +1548,26 @@
 
                 <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);">
                     <div style="font-size:9px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;">
-                        Livrables globaux <span class="cbadge" id="livStatsBadge">{{ $livStats->termines }}/{{ $livStats->total }}</span>
+                        Avancement chapitres SMI <span class="cbadge" id="chapStatsBadge">{{ $chapStats->termines }}/{{ $chapStats->total }}</span>
                     </div>
-                    @php $ecPct = ($livStats->total > 0) ? round(($livStats->en_cours / $livStats->total) * 100) : 0; @endphp
+                    @php $ecPct = ($chapStats->total > 0) ? round(($chapStats->en_cours / $chapStats->total) * 100) : 0; @endphp
                     <div class="smi-row">
                         <span class="smi-lbl">Terminés</span>
                         <div class="smi-track">
-                            <div class="smi-fill" id="livTerminesFill" style="width:{{ $livPct }}%;background:#10B981;">
-                                @if($livPct >= 18)<span style="font-size:7.5px;font-weight:700;color:#fff;">{{ $livPct }}%</span>@endif
+                            <div class="smi-fill" id="chapTerminesFill" style="width:{{ $chapPct }}%;background:#10B981;">
+                                @if($chapPct >= 18)<span style="font-size:7.5px;font-weight:700;color:#fff;">{{ $chapPct }}%</span>@endif
                             </div>
                         </div>
-                        @if($livPct < 18)<span class="smi-pct-ext" id="livPctText" style="color:#10B981;">{{ $livPct }}%</span>@endif
+                        @if($chapPct < 18)<span class="smi-pct-ext" id="chapPctText" style="color:#10B981;">{{ $chapPct }}%</span>@endif
                     </div>
                     <div class="smi-row">
                         <span class="smi-lbl">En cours</span>
                         <div class="smi-track">
-                            <div class="smi-fill" id="livEnCoursFill" style="width:{{ max(1,$ecPct) }}%;background:#F59E0B;">
+                            <div class="smi-fill" id="chapEnCoursFill" style="width:{{ max(1,$ecPct) }}%;background:#F59E0B;">
                                 @if($ecPct >= 18)<span style="font-size:7.5px;font-weight:700;color:#fff;">{{ $ecPct }}%</span>@endif
                             </div>
                         </div>
-                        @if($ecPct < 18)<span class="smi-pct-ext" id="livEnCoursText" style="color:#F59E0B;">{{ $ecPct }}%</span>@endif
+                        @if($ecPct < 18)<span class="smi-pct-ext" id="chapEnCoursText" style="color:#F59E0B;">{{ $ecPct }}%</span>@endif
                     </div>
                 </div>
             </div>
@@ -1814,14 +1804,6 @@ const ALL_FORMATIONS = {!! json_encode(collect($formations)->map(function($f) {
     ];
 })->values()) !!};
 
-const ALL_LIVRABLES = {!! json_encode(collect($livrablesRaw)->map(function($l) {
-    return [
-        'projet_id' => (int) $l->projet_id,
-        'statut' => $l->statut,
-        'total' => (int) $l->total,
-    ];
-})->values()) !!};
-
 // ── GLOBALS ──
 let chartJoursInst = null;
 let chartExtInst = null;
@@ -1971,11 +1953,11 @@ function groupFormations(ids) {
     return byProjectIds(ALL_FORMATIONS, ids).sort((a,b) => a.nom_client.localeCompare(b.nom_client));
 }
 
-function groupLivrables(ids) {
-    const rows = byProjectIds(ALL_LIVRABLES, ids);
-    const total = rows.reduce((s,r) => s + r.total, 0);
-    const termines = rows.filter(r => r.statut === 'Terminé').reduce((s,r) => s + r.total, 0);
-    const enCours = rows.filter(r => r.statut === 'En cours').reduce((s,r) => s + r.total, 0);
+function chapCompletionStats(ids) {
+    const rows = byProjectIds(ALL_CHAPITRES_RAW, ids);
+    const total = rows.length;
+    const termines = rows.filter(r => r.avg_pct === 100).length;
+    const enCours = rows.filter(r => r.avg_pct > 0 && r.avg_pct < 100).length;
     return {
         total,
         termines,
@@ -2016,24 +1998,24 @@ function setText(id, value) {
     if (el) el.textContent = value;
 }
 
-function updateBanner(stats, liv) {
+function updateBanner(stats, chap) {
     setText('bannerTotalProjets', stats.total);
     setText('bannerAvancement', stats.avancement + '%');
     setText('bannerChargeRestante', stats.chargeRestante + 'j');
-    setText('bannerLivPct', liv.pct + '%');
+    setText('bannerChapPct', chap.pct + '%');
 }
 
-function updateKpis(stats, consStats, liv) {
+function updateKpis(stats, consStats, chap) {
     setText('kpiTotalProjets', stats.total);
     setText('kpiAvancement', stats.avancement + '%');
     setText('kpiRetard', stats.enRetard);
     setText('kpiChargeRestante', stats.chargeRestante + 'j');
     setText('kpiJoursInternes', Math.round(consStats.joursInternes) + 'j');
     setText('kpiJoursExternes', Math.round(consStats.joursExternes) + 'j');
-    setText('kpiLivTermines', liv.termines);
+    setText('kpiChapTermines', chap.termines);
     setText('kpiConso', stats.conso + '%');
     setText('kpiJoursExternesSub', consStats.tauxExterne + '% du total');
-    setText('kpiLivSub', '/ ' + liv.total + ' total');
+    setText('kpiChapSub', '/ ' + chap.total + ' total');
 }
 
 function updateDonutStatut(stats) {
@@ -2178,7 +2160,7 @@ function updateChapitres(chaps) {
     }).join('');
 }
 
-function updateFormations(forms, liv) {
+function updateFormations(forms, chap) {
     const box = document.getElementById('formationsBody');
     if (!box) return;
 
@@ -2213,14 +2195,14 @@ function updateFormations(forms, liv) {
         }).join('');
     }
 
-    setText('livStatsBadge', `${liv.termines}/${liv.total}`);
-    setText('livPctText', `${liv.pct}%`);
-    setText('livEnCoursText', `${liv.pctEnCours}%`);
+    setText('chapStatsBadge', `${chap.termines}/${chap.total}`);
+    setText('chapPctText', `${chap.pct}%`);
+    setText('chapEnCoursText', `${chap.pctEnCours}%`);
 
-    const termFill = document.getElementById('livTerminesFill');
-    const encFill = document.getElementById('livEnCoursFill');
-    if (termFill) termFill.style.width = `${liv.pct}%`;
-    if (encFill) encFill.style.width = `${Math.max(1, liv.pctEnCours)}%`;
+    const termFill = document.getElementById('chapTerminesFill');
+    const encFill = document.getElementById('chapEnCoursFill');
+    if (termFill) termFill.style.width = `${chap.pct}%`;
+    if (encFill) encFill.style.width = `${Math.max(1, chap.pctEnCours)}%`;
 }
 
 function updateHeatmap(rows) {
@@ -2313,17 +2295,17 @@ function applyFilters() {
     const consStats = consultantStats(consultants);
     const chapitres = groupChapitres(ids);
     const formations = groupFormations(ids);
-    const liv = groupLivrables(ids);
+    const chap = chapCompletionStats(ids);
 
-    updateBanner(stats, liv);
-    updateKpis(stats, consStats, liv);
+    updateBanner(stats, chap);
+    updateKpis(stats, consStats, chap);
     updateDonutStatut(stats);
     updateAvancementClient(filteredProjects);
     updateChartJours(filteredProjects);
     updateDonutRessources(consStats);
     updateConsultantBars(consultants, consStats);
     updateChapitres(chapitres);
-    updateFormations(formations, liv);
+    updateFormations(formations, chap);
     updateHeatmap(filteredProjects);
     updateTable(filteredProjects, stats);
 

@@ -18,6 +18,7 @@ class SuiviChapitre extends Model
         'phase',
         'jours_intervention',
         'statut_livrables',
+        'lien_onedrive',
         'observations'
     ];
 

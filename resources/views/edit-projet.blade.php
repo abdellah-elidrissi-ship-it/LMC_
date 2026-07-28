@@ -735,6 +735,49 @@
             border-radius: var(--radius-md) !important;
         }
 
+        /* Lien OneDrive par chapitre */
+        .onedrive-icon { width: 18px; height: 12px; flex-shrink: 0; display: block; }
+
+        .onedrive-input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            background: var(--gray-50);
+            padding: 0 0.55rem;
+            min-width: 150px;
+            transition: border-color .15s, box-shadow .15s, background .15s;
+        }
+
+        .onedrive-input-wrap input {
+            flex: 1;
+            min-width: 0;
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 0.55rem 0;
+            font-size: 0.78rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-900);
+        }
+
+        .onedrive-input-wrap input::placeholder { color: var(--gray-400); }
+
+        .onedrive-input-wrap:focus-within {
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 4px var(--primary-100);
+            background: white;
+        }
+
+        .onedrive-input-wrap.is-valid { border-color: var(--success-500); background: var(--success-50); }
+        .onedrive-input-wrap.is-invalid { border-color: var(--danger-500); background: var(--danger-50); }
+
+        .onedrive-state-icon { flex-shrink: 0; font-size: 0.8rem; display: none; }
+        .onedrive-input-wrap.is-valid .onedrive-state-icon.ok { display: inline; color: var(--success-600); }
+        .onedrive-input-wrap.is-invalid .onedrive-state-icon.err { display: inline; color: var(--danger-600); }
+
         .input-num.avancement {
             border-color: var(--primary-500) !important;
             background: linear-gradient(135deg, var(--primary-50), white) !important;
@@ -2366,26 +2409,6 @@
 
     $id = $projet->id;
 
-    // Récupérer les livrables avec leurs statuts
-    $livrableRows = DB::select("
-    SELECT ls.id, ls.chapitre_code, ls.clause, ls.libelle, ls.ordre,
-    COALESCE(pl.statut, 'Non commencé') as statut
-    FROM livrables_smi ls
-    LEFT JOIN projet_livrables pl ON pl.livrable_id = ls.id AND pl.projet_id = ?
-    ORDER BY ls.ordre ASC
-    ", [$id]);
-
-    // Récupérer les preuves par livrable
-    $preuvesParLivrable = [];
-    $preuveRows = DB::table('livrable_preuves')
-    ->where('projet_id', $id)
-    ->orderBy('created_at', 'desc')
-    ->get();
-    foreach ($preuveRows as $pr) {
-    $pr->url = $pr->fichier_path;
-    $preuvesParLivrable[$pr->livrable_id][] = $pr;
-    }
-
     // Récupérer les preuves projet (fichiers d'intervention généraux)
     $preuvesProjet = DB::table('projet_preuves')
     ->where('projet_id', $id)
@@ -2394,47 +2417,6 @@
     foreach ($preuvesProjet as $pr) {
     $pr->url = $pr->fichier_path;
     }
-
-    // Organiser les livrables par chapitre
-    $livrablesByChap = [];
-    $totalLivrablesGlobal = 0;
-    $terminesLivrablesGlobal = 0;
-
-    foreach ($livrableRows as $lrow) {
-    $chap = $lrow->chapitre_code;
-    if (!isset($livrablesByChap[$chap])) {
-    $livrablesByChap[$chap] = ['items' => [], 'total' => 0, 'termines' => 0];
-    }
-    $livrablesByChap[$chap]['items'][] = $lrow;
-    $livrablesByChap[$chap]['total']++;
-    $totalLivrablesGlobal++;
-    if ($lrow->statut === 'Terminé') {
-    $livrablesByChap[$chap]['termines']++;
-    $terminesLivrablesGlobal++;
-    }
-    }
-
-    // Calculer l'avancement par chapitre
-    $avancementParChapitre = [];
-    foreach ($livrablesByChap as $chapCode => $chapData) {
-    $avancementParChapitre[$chapCode] = $chapData['total'] > 0
-    ? round(($chapData['termines'] / $chapData['total']) * 100) : 0;
-    }
-
-    $avancementGlobal = $totalLivrablesGlobal > 0
-    ? round(($terminesLivrablesGlobal / $totalLivrablesGlobal) * 100) : 0;
-
-    $chapOrder = ['§4','§5','§6','§7','§8','§9','§10','Transversal'];
-    $chapTitres = [
-    '§4' => 'Contexte de l\'organisme',
-    '§5' => 'Leadership',
-    '§6' => 'Planification',
-    '§7' => 'Support',
-    '§8' => 'Réalisation des activités',
-    '§9' => 'Évaluation des performances',
-    '§10' => 'Amélioration',
-    'Transversal' => 'Exigences transversales',
-    ];
 
     $consultants = DB::table('consultants')->where('actif', 1)->get();
     $normes = DB::table('normes')->get();
@@ -2845,13 +2827,13 @@
     <div class="col-md-4">
         <label class="form-label">
             Avancement global
-            <span class="badge-auto"><i class="bi bi-lock-fill"></i> Auto (livrables)</span>
+            <span class="badge-auto"><i class="bi bi-lock-fill"></i> Auto (chapitres)</span>
         </label>
         <input type="number" class="form-control auto-calc" name="avancement_percent"
-            id="avancement_percent" value="{{ $avancementGlobal }}" readonly>
+            id="avancement_percent" value="{{ $projet->avancement_percent }}" readonly>
         <div class="auto-tag">
             <i class="bi bi-arrow-right-circle-fill"></i>
-            {{ $terminesLivrablesGlobal }}/{{ $totalLivrablesGlobal }} livrables terminés
+            Moyenne des Av.% par chapitre
         </div>
     </div>
 </div>
@@ -2870,7 +2852,7 @@
                         <thead>
                             <tr>
                             <th style="width:9%;">Chapitre</th>
-                            <th style="width:12%;">Livrables</th>
+                            <th style="width:16%;">OneDrive</th>
                             <th class="col-exigences">Exigences clés</th>
                             <th style="width:6%;">Av. %</th>
                             <th style="width:10%;">Phase</th>
@@ -2882,12 +2864,6 @@
                             @foreach($projet->suiviChapitres as $index => $chap)
                             @php
                             $codeChapitre = $chap->chapitre->code_chapitre;
-                            $avancementCalcule = $avancementParChapitre[$codeChapitre] ?? 0;
-                            $chapLiv = $livrablesByChap[$codeChapitre] ?? null;
-                            $livTotal = $chapLiv['total'] ?? 0;
-                            $livDone = $chapLiv['termines'] ?? 0;
-                            $livPct = $livTotal > 0 ? round(($livDone / $livTotal) * 100) : 0;
-                            $collapseId = 'liv-chap-' . $chap->chapitre_id;
                             @endphp
                             <tr>
                                 <td>
@@ -2897,26 +2873,28 @@
                                     <input type="hidden" name="chapitres[{{ $index }}][chapitre_id]" value="{{ $chap->chapitre_id }}">
                                 </td>
                                 <td>
-                                    @if($livTotal > 0)
-                                    <button class="livrables-toggle" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#{{ $collapseId }}">
-                                        <i class="bi bi-list-ul me-1"></i>Voir
-                                    </button>
-                                    <div class="livrables-count">{{ $livDone }}/{{ $livTotal }} ({{ $livPct }}%)</div>
-                                    @else
-                                    <span style="color: var(--gray-500);">—</span>
-                                    @endif
+                                    <div class="onedrive-input-wrap" data-onedrive-wrap>
+                                        <svg class="onedrive-icon" viewBox="0 0 36 22" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14.2 4.6c-3.3 0-6.1 2.3-6.9 5.4-2.9.4-5.1 2.9-5.1 5.9 0 3.3 2.7 6 6 6h15.3c3.1 0 5.5-2.5 5.5-5.5 0-2.7-1.9-4.9-4.4-5.4C23.5 7 20.3 4.6 16.7 4.6c-.9 0-1.7.1-2.5.4z" fill="#0A5DB2"/>
+                                            <path d="M14.6 7.4c-2.5 0-4.6 1.7-5.3 4-2.2.3-3.9 2.2-3.9 4.5 0 2.5 2 4.5 4.5 4.5h12.4c2.5 0 4.6-2 4.6-4.6 0-2.2-1.5-4-3.6-4.5-.6-2.9-3.1-5-6.2-5-.9 0-1.7.2-2.5.6z" fill="#28A8EA"/>
+                                        </svg>
+                                        <input type="url" class="onedrive-link-input" name="chapitres[{{ $index }}][lien_onedrive]"
+                                            placeholder="Lien du dossier..." value="{{ $chap->lien_onedrive }}"
+                                            oninput="checkOnedriveLink(this)">
+                                        <i class="bi bi-check-circle-fill onedrive-state-icon ok"></i>
+                                        <i class="bi bi-exclamation-circle-fill onedrive-state-icon err"></i>
+                                    </div>
                                 </td>
                                 <td class="col-exigences">
                                     <textarea name="chapitres[{{ $index }}][exigences_cles]"
                                         class="form-control" rows="4">{{ $chap->chapitre->exigences_cles }}</textarea>
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control input-num avancement"
+                                    <input type="number" class="form-control input-num chap-avancement"
                                         name="chapitres[{{ $index }}][avancement]"
                                         id="avancement-{{ $codeChapitre }}"
-                                        min="0" max="100" value="{{ $avancementCalcule }}" readonly>
-                                    <small style="font-size:0.6rem;color:var(--gray-500);display:block;text-align:center;">auto</small>
+                                        min="0" max="100" value="{{ $chap->avancement_percent }}"
+                                        oninput="recalcAvancementGlobal()">
                                 </td>
                                 <td>
                                     <select class="phase-select" name="chapitres[{{ $index }}][phase]">
@@ -2940,185 +2918,6 @@
                                         value="{{ $chap->observations }}" placeholder="Observations...">
                                 </td>
                             </tr>
-
-                            @if($livTotal > 0)
-                            <tr class="collapse" id="{{ $collapseId }}">
-                                <td colspan="7" style="background:linear-gradient(135deg, var(--gray-50), white); padding:1.25rem;">
-                                    <table class="livrables-inline-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="width:90px;">Clause</th>
-                                                <th>Libellé</th>
-                                                <th style="width:140px;">Statut</th>
-                                                <th style="width:120px; text-align:center;">
-                                                    <i class="bi bi-paperclip"></i> Preuves
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($chapLiv['items'] as $liv)
-                                            @php
-                                            $selClass = match($liv->statut) {
-                                            'Terminé' => 's-ok',
-                                            'En cours' => 's-ec',
-                                            default => 's-nc',
-                                            };
-                                            $livPreuves = $preuvesParLivrable[$liv->id] ?? [];
-                                            $preuveCount = count($livPreuves);
-                                            @endphp
-                                            <tr>
-                                                <td>{{ $liv->clause ?: '—' }}</td>
-                                                <td>{{ $liv->libelle }}</td>
-                                                <td>
-                                                    <select class="liv-statut-select {{ $selClass }}"
-                                                        name="livrables[{{ $liv->id }}]"
-                                                        onchange="updateLivrableStatus(this, '{{ $codeChapitre }}', '{{ $collapseId }}')">
-                                                        <option value="Non commencé" {{ $liv->statut === 'Non commencé' ? 'selected' : '' }}>⬜ Non commencé</option>
-                                                        <option value="En cours" {{ $liv->statut === 'En cours' ? 'selected' : '' }}>🔄 En cours</option>
-                                                        <option value="Terminé" {{ $liv->statut === 'Terminé' ? 'selected' : '' }}>✅ Terminé</option>
-                                                    </select>
-                                                </td>
-
-                                                <td style="text-align:center; vertical-align:middle;">
-                                                    <div class="preuve-actions">
-                                                        <div class="preuve-btn-group">
-                                                            <button type="button"
-                                                                class="btn-preuve-voir"
-                                                                data-tooltip="Voir les preuves"
-                                                                onclick="toggleViewer({{ $liv->id }})">
-                                                                <i class="bi bi-eye-fill"></i>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="btn-preuve-add"
-                                                                data-tooltip="Ajouter une preuve"
-                                                                onclick="toggleUploader({{ $liv->id }})">
-                                                                <i class="bi bi-paperclip"></i>
-                                                            </button>
-                                                        </div>
-                                                        <span class="preuve-count-badge {{ $preuveCount == 0 ? 'zero' : '' }}"
-                                                            id="preuve-count-{{ $liv->id }}">
-                                                            {{ $preuveCount }}
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <!-- VIEWER ROW -->
-                                            <tr id="viewer-row-{{ $liv->id }}" style="display:none;">
-                                                <td colspan="4" style="padding:0.75rem 1rem; background:white;">
-                                                    <div class="preuve-viewer-panel">
-                                                        <div class="preuve-viewer-header">
-                                                            <span>
-                                                                <i class="bi bi-eye-fill me-1" style="color:var(--primary-500);"></i>
-                                                                Preuves — {{ Str::limit($liv->libelle, 50) }}
-                                                            </span>
-                                                            <small style="color:var(--gray-500); font-size:0.65rem;">
-                                                                {{ $preuveCount }} preuve(s)
-                                                            </small>
-                                                        </div>
-                                                        <div class="preuve-list" id="preuve-list-{{ $liv->id }}">
-                                                            @if($preuveCount === 0)
-                                                            <div class="preuve-empty" id="preuve-empty-{{ $liv->id }}">
-                                                                <i class="bi bi-inbox"></i>
-                                                                Aucune preuve attachée
-                                                            </div>
-                                                            @else
-                                                            @foreach($livPreuves as $pr)
-                                                            @php
-                                                            $isImage = Str::startsWith($pr->mime_type, 'image/');
-                                                            $isPdf = $pr->mime_type === 'application/pdf';
-                                                            $fileIcon = $isPdf ? 'bi-file-earmark-pdf-fill' :
-                                                            (Str::contains($pr->mime_type, 'word') ? 'bi-file-earmark-word-fill' :
-                                                            (Str::contains($pr->mime_type, 'excel') ? 'bi-file-earmark-excel-fill' :
-                                                            'bi-file-earmark-fill'));
-                                                            $iconColor = $isPdf ? '#ef4444' :
-                                                            (Str::contains($pr->mime_type, 'word') ? '#2563eb' :
-                                                            (Str::contains($pr->mime_type, 'excel') ? '#10b981' : '#6b7280'));
-                                                            @endphp
-                                                            <div class="preuve-item" id="preuve-item-{{ $pr->id }}">
-                                                                @if($isImage)
-                                                                <img src="{{ $pr->url }}" alt="{{ $pr->label }}" class="preuve-thumb">
-                                                                @else
-                                                                <div class="preuve-thumb-icon">
-                                                                    <i class="bi {{ $fileIcon }}" style="color: {{ $iconColor }}"></i>
-                                                                </div>
-                                                                @endif
-                                                                <div class="preuve-info">
-                                                                    <div class="preuve-name">{{ $pr->label ?: $pr->fichier_nom }}</div>
-                                                                    <div class="preuve-meta">
-                                                                        {{ strtoupper(pathinfo($pr->fichier_nom, PATHINFO_EXTENSION)) }} •
-                                                                        {{ number_format($pr->taille_kb, 0) }} Ko •
-                                                                        {{ \Carbon\Carbon::parse($pr->created_at)->format('d/m/Y H:i') }}
-                                                                    </div>
-                                                                </div>
-                                                                <div class="preuve-item-actions">
-                                                                    <button type="button" class="btn-preuve-print"
-                                                                        data-tooltip="Imprimer / Afficher"
-                                                                        onclick="openFullscreen({{ $pr->id }}, '{{ addslashes($pr->label ?: $pr->fichier_nom) }}', '{{ $pr->mime_type }}', '{{ $pr->url }}', '{{ addslashes($pr->fichier_nom) }}')">
-                                                                        <i class="bi bi-printer-fill"></i>
-                                                                    </button>
-                                                                    <button type="button" class="btn-preuve-delete"
-                                                                        data-tooltip="Supprimer"
-                                                                        onclick="deletePreuve({{ $pr->id }}, {{ $liv->id }})">
-                                                                        <i class="bi bi-trash-fill"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endforeach
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <!-- UPLOAD ROW -->
-                                            <tr id="upload-row-{{ $liv->id }}" style="display:none;">
-                                                <td colspan="4" style="padding:0.75rem 1rem; background:white;">
-                                                    <div class="preuve-upload-panel">
-                                                        <h6>
-                                                            <i class="bi bi-cloud-upload-fill"></i>
-                                                            Ajouter une preuve
-                                                            <small style="font-size:0.7rem; color:var(--gray-500); margin-left:0.5rem;">
-                                                                {{ Str::limit($liv->libelle, 40) }}
-                                                            </small>
-                                                        </h6>
-                                                        <div class="mb-2">
-                                                            <input type="text" class="form-control" id="label-{{ $liv->id }}" placeholder="Libellé / description (optionnel)">
-                                                        </div>
-                                                        <div class="preuve-drop-zone" id="dropzone-{{ $liv->id }}"
-                                                            onclick="document.getElementById('file-input-{{ $liv->id }}').click()"
-                                                            ondragover="handleDragOver(event, {{ $liv->id }})"
-                                                            ondragleave="handleDragLeave({{ $liv->id }})"
-                                                            ondrop="handleDrop(event, {{ $liv->id }})">
-                                                            <i class="bi bi-cloud-arrow-up-fill"></i>
-                                                            <strong style="display:block; font-size:0.8rem; color:var(--gray-900); margin-top:0.3rem;">
-                                                                Cliquer ou glisser un fichier ici
-                                                            </strong>
-                                                            <p>PDF, Image, Word, Excel — max 10 MB</p>
-                                                        </div>
-                                                        <input type="file" class="preuve-file-input" id="file-input-{{ $liv->id }}"
-                                                            accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.doc,.docx,.xls,.xlsx"
-                                                            onchange="handleFileSelect(event, {{ $liv->id }})">
-                                                        <div id="file-preview-{{ $liv->id }}" class="upload-preview-grid"></div>
-                                                        <div style="display:flex; gap:0.5rem; margin-top:0.75rem; align-items:center;">
-                                                            <button type="button" class="btn-upload-confirm" onclick="uploadPreuve({{ $liv->id }}, {{ $projet->id }})">
-                                                                <i class="bi bi-check-circle-fill"></i> Enregistrer
-                                                            </button>
-                                                            <button type="button" class="btn-upload-cancel" onclick="cancelUpload({{ $liv->id }})">
-                                                                Annuler
-                                                            </button>
-                                                            <span id="upload-status-{{ $liv->id }}" style="font-size:0.75rem; color:var(--gray-500); margin-left:0.5rem;"></span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -3130,7 +2929,7 @@
                         </span>
                         <span>
                             Avancement global :
-                            <span class="footer-value" id="footAvancement">{{ $avancementGlobal }}</span>%
+                            <span class="footer-value" id="footAvancement">{{ $projet->avancement_percent }}</span>%
                         </span>
                     </div>
                 </div>
@@ -3868,315 +3667,47 @@ function removeFormationRow(btn, rowId) {
     recalcTotalDays();
 }
 
-        // ===== LIVRABLE STATUS =====
-        function updateLivrableStatus(select, chapCode, collapseId) {
-            select.className = 'liv-statut-select ' +
-                (select.value === 'Terminé' ? 's-ok' : select.value === 'En cours' ? 's-ec' : 's-nc');
+        // ===== ONEDRIVE LINK + AVANCEMENT (chapitres) =====
+        function checkOnedriveLink(input) {
+            const wrap = input.closest('[data-onedrive-wrap]');
+            const value = input.value.trim();
+            wrap.classList.remove('is-valid', 'is-invalid');
 
-            const row = document.getElementById(collapseId);
-            const selects = row.querySelectorAll('.liv-statut-select');
-            let total = selects.length,
-                termines = 0;
-            selects.forEach(s => {
-                if (s.value === 'Terminé') termines++;
-            });
-            const pct = Math.round((termines / total) * 100);
-
-            const af = document.getElementById('avancement-' + chapCode);
-            if (af) af.value = pct;
-
-            const pr = row.previousElementSibling;
-            if (pr) {
-                const cd = pr.querySelector('.livrables-count');
-                if (cd) cd.innerHTML = `${termines}/${total} (${pct}%)`;
+            if (value === '') {
+                return;
             }
 
-            updateGlobalProgress();
+            const isOnedrive = /^https:\/\//i.test(value)
+                && /(sharepoint\.com|onedrive\.live\.com|1drv\.ms)/i.test(value);
+
+            wrap.classList.add(isOnedrive ? 'is-valid' : 'is-invalid');
         }
 
-        function updateGlobalProgress() {
-            let totalGlobal = 0,
-                terminesGlobal = 0;
-            document.querySelectorAll('[id^="liv-chap-"]').forEach(body => {
-                const selects = body.querySelectorAll('.liv-statut-select');
-                if (selects.length > 0) {
-                    totalGlobal += selects.length;
-                    selects.forEach(s => {
-                        if (s.value === 'Terminé') terminesGlobal++;
-                    });
-                }
-            });
+        function recalcAvancementGlobal() {
+            const inputs = document.querySelectorAll('.chap-avancement');
+            if (!inputs.length) return;
 
-            const pctGlobal = totalGlobal > 0 ? Math.round((terminesGlobal / totalGlobal) * 100) : 0;
+            let total = 0;
+            inputs.forEach((i) => total += Number(i.value) || 0);
+            const moyenne = Math.round(total / inputs.length);
 
             const ag = document.getElementById('avancement_percent');
-            if (ag) ag.value = pctGlobal;
+            if (ag) ag.value = moyenne;
 
             const fa = document.getElementById('footAvancement');
-            if (fa) fa.textContent = pctGlobal;
-
-            const autoTags = document.querySelectorAll('.auto-tag');
-            if (autoTags.length >= 2) {
-                autoTags[1].innerHTML = `<i class="bi bi-arrow-right-circle-fill"></i> ${terminesGlobal}/${totalGlobal} livrables terminés`;
-            }
+            if (fa) fa.textContent = moyenne;
         }
 
         // ===== PREUVES FUNCTIONS (conservées de l'original) =====
-        let pendingFiles = {};
         let projetPendingFile = null;
         let currentFsPreuveId = null;
         let currentFsPreuveUrl = null;
         let currentFsPreuveMime = null;
         let currentFsPreuveFileName = null;
 
-        function toggleViewer(livId) {
-            const vRow = document.getElementById(`viewer-row-${livId}`);
-            const uRow = document.getElementById(`upload-row-${livId}`);
-            if (uRow) uRow.style.display = 'none';
-            if (vRow) vRow.style.display = vRow.style.display === 'none' ? 'table-row' : 'none';
-        }
-
-        function toggleUploader(livId) {
-            const uRow = document.getElementById(`upload-row-${livId}`);
-            const vRow = document.getElementById(`viewer-row-${livId}`);
-            if (vRow) vRow.style.display = 'none';
-            if (uRow) uRow.style.display = uRow.style.display === 'none' ? 'table-row' : 'none';
-        }
-
         function closeFullscreenOnBackdrop(event) {
             const overlay = document.getElementById('preuveFullscreenOverlay');
             if (event.target === overlay) closeFullscreen();
-        }
-
-        function cancelUpload(livId) {
-            const uRow = document.getElementById(`upload-row-${livId}`);
-            if (uRow) uRow.style.display = 'none';
-            delete pendingFiles[livId];
-            const preview = document.getElementById(`file-preview-${livId}`);
-            if (preview) preview.innerHTML = '';
-            const fi = document.getElementById(`file-input-${livId}`);
-            if (fi) fi.value = '';
-            const lbl = document.getElementById(`label-${livId}`);
-            if (lbl) lbl.value = '';
-            const dz = document.getElementById(`dropzone-${livId}`);
-            if (dz) {
-                dz.querySelector('strong').textContent = 'Cliquer ou glisser un fichier ici';
-                dz.querySelector('p').textContent = 'PDF, Image, Word, Excel — max 10 MB';
-            }
-        }
-
-        function handleDragOver(e, livId) {
-            e.preventDefault();
-            document.getElementById(`dropzone-${livId}`)?.classList.add('dragover');
-        }
-
-        function handleDragLeave(livId) {
-            document.getElementById(`dropzone-${livId}`)?.classList.remove('dragover');
-        }
-
-        function handleDrop(e, livId) {
-            e.preventDefault();
-            document.getElementById(`dropzone-${livId}`)?.classList.remove('dragover');
-            const file = e.dataTransfer.files[0];
-            if (file) processFile(file, livId);
-        }
-
-        function handleFileSelect(e, livId) {
-            const file = e.target.files[0];
-            if (file) processFile(file, livId);
-        }
-
-        function processFile(file, livId) {
-            if (file.size > 10 * 1024 * 1024) {
-                alert('Fichier trop grand (max 10 MB)');
-                return;
-            }
-            pendingFiles[livId] = file;
-
-            const previewContainer = document.getElementById(`file-preview-${livId}`);
-            if (!previewContainer) return;
-            previewContainer.innerHTML = '';
-
-            const isImage = file.type.startsWith('image/');
-            const item = document.createElement('div');
-            item.className = 'upload-preview-item';
-
-            if (isImage) {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    item.innerHTML = `
-                        <img src="${ev.target.result}" alt="${file.name}">
-                        <button class="remove-preview" onclick="clearFile(${livId})" type="button">
-                            <i class="bi bi-x"></i>
-                        </button>`;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                const icon = file.type === 'application/pdf' ? 'bi-file-earmark-pdf-fill' :
-                    (file.name.match(/\.docx?$/i) ? 'bi-file-earmark-word-fill' :
-                        (file.name.match(/\.xlsx?$/i) ? 'bi-file-earmark-excel-fill' : 'bi-file-earmark-fill'));
-                item.innerHTML = `
-                    <div class="file-icon-preview"><i class="bi ${icon}"></i></div>
-                    <button class="remove-preview" onclick="clearFile(${livId})" type="button">
-                        <i class="bi bi-x"></i>
-                    </button>`;
-            }
-            previewContainer.appendChild(item);
-
-            const dz = document.getElementById(`dropzone-${livId}`);
-            if (dz) {
-                dz.querySelector('strong').textContent = file.name;
-                dz.querySelector('p').textContent = `${(file.size / 1024).toFixed(0)} Ko`;
-            }
-        }
-
-        function clearFile(livId) {
-            delete pendingFiles[livId];
-            const preview = document.getElementById(`file-preview-${livId}`);
-            if (preview) preview.innerHTML = '';
-            const fi = document.getElementById(`file-input-${livId}`);
-            if (fi) fi.value = '';
-            const dz = document.getElementById(`dropzone-${livId}`);
-            if (dz) {
-                dz.querySelector('strong').textContent = 'Cliquer ou glisser un fichier ici';
-                dz.querySelector('p').textContent = 'PDF, Image, Word, Excel — max 10 MB';
-            }
-        }
-
-        async function uploadPreuve(livId, projetId) {
-            const file = pendingFiles[livId];
-            if (!file) {
-                showUploadStatus(livId, 'Veuillez sélectionner un fichier', 'danger');
-                return;
-            }
-            const label = document.getElementById(`label-${livId}`)?.value || '';
-
-            const formData = new FormData();
-            formData.append('_token', document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}');
-            formData.append('livrable_id', livId);
-            formData.append('projet_id', projetId);
-            formData.append('label', label);
-            formData.append('fichier', file);
-
-            showUploadStatus(livId, 'Envoi en cours...', 'info');
-
-            try {
-                const res = await fetch('/preuves/upload', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
-                    }
-                });
-
-                if (!res.ok) throw new Error('Erreur serveur ' + res.status);
-                const data = await res.json();
-
-                showUploadStatus(livId, '✅ Preuve enregistrée !', 'success');
-
-                const badge = document.getElementById(`preuve-count-${livId}`);
-                if (badge) {
-                    const currentCount = parseInt(badge.textContent) || 0;
-                    badge.textContent = currentCount + 1;
-                    badge.classList.remove('zero');
-                }
-
-                addPreuveToViewer(livId, data.preuve);
-                setTimeout(() => cancelUpload(livId), 1200);
-
-            } catch (err) {
-                showUploadStatus(livId, '❌ Erreur : ' + err.message, 'danger');
-            }
-        }
-
-        function showUploadStatus(livId, msg, type) {
-            const el = document.getElementById(`upload-status-${livId}`);
-            if (!el) return;
-            el.textContent = msg;
-            el.style.color = type === 'success' ? 'var(--success-600)' :
-                type === 'danger' ? 'var(--danger-600)' : 'var(--gray-500)';
-        }
-
-        function addPreuveToViewer(livId, pr) {
-            const list = document.getElementById(`preuve-list-${livId}`);
-            if (!list) return;
-
-            const empty = document.getElementById(`preuve-empty-${livId}`);
-            if (empty) empty.remove();
-
-            const isImage = pr.mime_type && pr.mime_type.startsWith('image/');
-            const isPdf = pr.mime_type === 'application/pdf';
-            const icon = isPdf ? 'bi-file-earmark-pdf-fill' :
-                (pr.mime_type && pr.mime_type.includes('word') ? 'bi-file-earmark-word-fill' :
-                    (pr.mime_type && (pr.mime_type.includes('excel') || pr.mime_type.includes('spreadsheet')) ? 'bi-file-earmark-excel-fill' :
-                        'bi-file-earmark-fill'));
-            const iconColor = isPdf ? '#ef4444' :
-                (pr.mime_type && pr.mime_type.includes('word') ? '#2563eb' :
-                    (pr.mime_type && (pr.mime_type.includes('excel') || pr.mime_type.includes('spreadsheet')) ? '#10b981' : '#6b7280'));
-
-            const item = document.createElement('div');
-            item.className = 'preuve-item';
-            item.id = `preuve-item-${pr.id}`;
-            item.innerHTML = `
-                ${isImage
-                    ? `<img src="${pr.url}" alt="${pr.label || pr.fichier_nom}" class="preuve-thumb">`
-                    : `<div class="preuve-thumb-icon"><i class="bi ${icon}" style="color:${iconColor}"></i></div>`
-                }
-                <div class="preuve-info">
-                    <div class="preuve-name">${pr.label || pr.fichier_nom}</div>
-                    <div class="preuve-meta">
-                        ${pr.fichier_nom.split('.').pop().toUpperCase()} •
-                        ${Math.round(pr.taille_kb)} Ko • Maintenant
-                    </div>
-                </div>
-                <div class="preuve-item-actions">
-                    <button type="button" class="btn-preuve-print" data-tooltip="Imprimer / Afficher"
-                        onclick="openFullscreen(${pr.id}, '${(pr.label || pr.fichier_nom).replace(/'/g,"\\'")}', '${pr.mime_type}', '${pr.url}', '${pr.fichier_nom.replace(/'/g,"\\'")}')">
-                        <i class="bi bi-printer-fill"></i>
-                    </button>
-                    <button type="button" class="btn-preuve-delete" data-tooltip="Supprimer"
-                        onclick="deletePreuve(${pr.id}, ${livId})">
-                        <i class="bi bi-trash-fill"></i>
-                    </button>
-                </div>`;
-            list.appendChild(item);
-        }
-
-        async function deletePreuve(preuveId, livId) {
-            if (!confirm('Supprimer cette preuve définitivement ?')) return;
-
-            try {
-                const res = await fetch(`/preuves/${preuveId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}',
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!res.ok) throw new Error('Erreur serveur');
-
-                const item = document.getElementById(`preuve-item-${preuveId}`);
-                if (item) item.remove();
-
-                const badge = document.getElementById(`preuve-count-${livId}`);
-                if (badge) {
-                    const newCount = Math.max(0, (parseInt(badge.textContent) || 0) - 1);
-                    badge.textContent = newCount;
-                    if (newCount === 0) badge.classList.add('zero');
-                }
-
-                const list = document.getElementById(`preuve-list-${livId}`);
-                if (list && list.querySelectorAll('.preuve-item').length === 0) {
-                    list.innerHTML = `<div class="preuve-empty" id="preuve-empty-${livId}">
-                        <i class="bi bi-inbox"></i>Aucune preuve attachée</div>`;
-                }
-
-                closeFullscreen();
-
-            } catch (err) {
-                alert('Erreur lors de la suppression : ' + err.message);
-            }
         }
 
         // ===== PREUVES PROJET =====
@@ -4515,7 +4046,6 @@ function removeFormationRow(btn, rowId) {
             recalcTotalDays();
             updateConsultantsTotal();
             recalcJours();
-            updateGlobalProgress();
         });
     </script>
 </body>

@@ -190,6 +190,12 @@ class EditController extends Controller
                 'exists:normes,id',
             ],
 
+            'chapitres.*.lien_onedrive' => [
+                'nullable',
+                'url',
+                'regex:/(sharepoint\.com|onedrive\.live\.com|1drv\.ms)/i',
+            ],
+
             'custom_formations' => [
                 'nullable',
                 'array',
@@ -449,6 +455,9 @@ class EditController extends Controller
                             'statut_livrables' =>
                                 $chapData['livrables'] ?? null,
 
+                            'lien_onedrive' =>
+                                $chapData['lien_onedrive'] ?? null,
+
                             'observations' =>
                                 $chapData['observations'] ?? null,
                         ]);
@@ -570,51 +579,9 @@ class EditController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | LIVRABLES
-            |--------------------------------------------------------------------------
-            */
-
-            if ($request->filled('livrables')) {
-                $now = now();
-                $upserts = [];
-
-                foreach (
-                    $request->input('livrables', [])
-                    as $livrableId => $statut
-                ) {
-                    if (
-                        !in_array(
-                            $statut,
-                            ['Non commencé', 'En cours', 'Terminé'],
-                            true
-                        )
-                    ) {
-                        continue;
-                    }
-
-                    $upserts[] = [
-                        'projet_id' => $projet->id,
-                        'livrable_id' => (int) $livrableId,
-                        'statut' => $statut,
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                    ];
-                }
-
-                if (!empty($upserts)) {
-                    DB::table('projet_livrables')->upsert(
-                        $upserts,
-                        ['projet_id', 'livrable_id'],
-                        ['statut', 'updated_at']
-                    );
-                }
-            }
-
-            /*
-            |--------------------------------------------------------------------------
-            | CALCUL FINAL DE L'AVANCEMENT (jours_realises est désormais manuel,
-            | voir $projet->update() plus haut — ne plus appeler
-            | recalculerJoursEtAvancement() qui l'écraserait avec chapitres+formations)
+            | CALCUL FINAL DE L'AVANCEMENT (moyenne des Av.% par chapitre saisis
+            | ci-dessus — voir App\Services\ProjetProgressService. jours_realises
+            | est saisi manuellement, voir $projet->update() plus haut)
             |--------------------------------------------------------------------------
             */
 

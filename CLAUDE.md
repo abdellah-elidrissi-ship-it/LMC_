@@ -35,10 +35,11 @@ livrables, formations, planning (Gantt), et preuves documentaires.
   (ex. `Api\ProjetController@index` monté sur `/` dans `routes/web.php`).
   Si un jour on veut exposer une vraie API, il faut explicitement
   ajouter `api: __DIR__.'/../routes/api.php'` dans `withRouting()`.
-- `app/Services/ProjetProgressService.php` — recalcule
-  `jours_realises`/`avancement_percent` d'un projet ; source de vérité
-  unique, appelée depuis `EditController::update` et
-  `LivrablesController::save`/`saveSingle`
+- `app/Services/ProjetProgressService.php` — `recalculerAvancement()`
+  recalcule `avancement_percent` d'un projet à partir de la **moyenne des
+  Av.% saisis manuellement par chapitre** (`suivi_chapitres.avancement_percent`,
+  voir section Livrables/OneDrive plus bas) ; source de vérité unique,
+  appelée depuis `EditController::update` et `NouveauProjetController::store`
 - `app/Http/Middleware/CheckRole.php`, `CheckPermission.php` — alias
   `role:` et `permission:` déclarés dans `bootstrap/app.php`
 - `routes/web.php` — toutes les routes protégées par `auth` + permissions
@@ -176,11 +177,22 @@ livrables, formations, planning (Gantt), et preuves documentaires.
   Les champs `<input type="date">` de cette vue ont aussi `lang="fr"`
   (affichage DD/MM/YYYY plutôt que le format US du navigateur — dépend
   in fine du navigateur/OS de l'utilisateur, pas garanti à 100%).
-- Livrables SMI : suivi par chapitre/statut (`LivrablesController`,
-  tables `livrables_smi` et `projet_livrables`, migrations présentes
-  dans `database/migrations/2026_03_19_1243*`)
-- Preuves documentaires : livrable (`PreuveController`) et projet
-  (`ProjetPreuveController`), uploadées sur Cloudinary
+- **Lien OneDrive/SharePoint par chapitre SMI (2026-07-24)** : remplace
+  l'ancienne checklist de livrables (voir "Historique de features" plus
+  bas) — colonne `suivi_chapitres.lien_onedrive` (nullable, un lien par
+  couple projet↔chapitre, saisi dans `nouveau-projet.blade.php` /
+  `edit-projet.blade.php`, affiché en lecture seule — bouton "Ouvrir le
+  dossier" ou rien si vide, jamais de bouton désactivé — dans
+  `details-projet.blade.php`). Validation souple (host `sharepoint.com`,
+  `onedrive.live.com` ou `1drv.ms`), côté client (JS `checkOnedriveLink`)
+  et serveur (règle Laravel `regex`) — ne pas restreindre à un seul de
+  ces domaines.
+- Preuves documentaires : projet uniquement (`ProjetPreuveController`),
+  uploadées sur Cloudinary. (L'ancien système de preuves par livrable —
+  `PreuveController`, tables `livrables_smi`/`projet_livrables`/
+  `livrable_preuves` — a été retiré du code le 2026-07-24, voir
+  "Historique de features" ; les tables restent en base, non lues par
+  le code.)
 - Tableau de bord PMO (`tableau-de-bord.blade.php`) — calcule ses propres
   KPI/heatmap/risques inline (`@php` + `DB::select`) ; ne dépend d'aucun
   contrôleur dédié
@@ -279,10 +291,12 @@ livrables, formations, planning (Gantt), et preuves documentaires.
   Toute nouvelle section ajoutée à cette vue doit suivre ce même style
   (requête `DB::table(...)->where('projet_id', $id)`), sinon `$projet->x`
   plante avec `Undefined property: stdClass::$x`
-- Le calcul d'`avancement_percent` / `jours_realises` passe désormais par
-  `App\Services\ProjetProgressService` (méthodes `recalculerAvancement()`
-  et `recalculerJoursEtAvancement()`) — ne pas réintroduire de bloc de
-  calcul dupliqué dans un contrôleur, appeler le service à la place
+- Le calcul d'`avancement_percent` passe désormais par
+  `App\Services\ProjetProgressService::recalculerAvancement()` (moyenne
+  des Av.% par chapitre, voir plus haut) — ne pas réintroduire de bloc de
+  calcul dupliqué dans un contrôleur, appeler le service à la place.
+  `jours_realises` est saisi manuellement (projet) / recalculé depuis le
+  Gantt (par consultant, voir `AffectationChargeService`)
 
 ## Règles de sécurité
 
@@ -304,13 +318,15 @@ livrables, formations, planning (Gantt), et preuves documentaires.
 
 - `composer run dev` — lance serveur + queue + logs (`pail`) + Vite en
   parallèle
-- `php artisan migrate` — `livrables_smi` et `projet_livrables` ont
-  désormais leurs migrations (`2026_03_19_124300_*` et
-  `2026_03_19_124320_*`, avant `livrable_preuves` dans l'ordre
-  d'exécution — respecter cet ordre si de nouvelles migrations touchent
-  ces tables)
-- `php artisan db:seed --class=LivrablesSmiSeeder` — peuple
-  `livrables_smi` (skip si déjà peuplée)
+- `php artisan migrate` — `livrables_smi`, `projet_livrables` et
+  `livrable_preuves` existent toujours en base (migrations
+  `2026_03_19_124300_*`/`2026_03_19_124320_*`/`2026_03_19_124339_*`) mais
+  ne sont plus lues par le code depuis le 2026-07-24 (voir "Historique de
+  features") — ne pas y écrire de nouvelle logique
+- `php artisan db:seed --class=LivrablesSmiSeeder` — peuplait
+  `livrables_smi`, devenu inutile depuis le retrait de la checklist de
+  livrables (2026-07-24), gardé pour ne pas casser un environnement qui
+  l'exécuterait encore
 - `npm run dev` / `npm run build` — Vite (Tailwind + build JS), impact
   limité puisque les vues actuelles n'en dépendent pas directement
 
@@ -356,3 +372,50 @@ Passe de nettoyage backend effectuée (voir plan
   (`edit-projet.blade.php`, wipe-and-reinsert) et en lecture
   (`details-projet.blade.php`, requête `DB::table` dédiée — voir la note
   sur le `$projet` stdClass de cette vue ci-dessus).
+
+## Historique de features (2026-07-24)
+
+- **Retrait de la checklist de livrables, remplacée par un lien
+  OneDrive/SharePoint par chapitre** (colonne "LIVRABLES" du tableau
+  "F - Suivi des chapitres SMI"). Décision produit : les fichiers vivent
+  dans un dossier OneDrive/SharePoint d'entreprise organisé par chapitre,
+  pas dans l'app.
+  - Migration `2026_07_24_100000_add_lien_onedrive_to_suivi_chapitres_table.php`
+    ajoute `suivi_chapitres.lien_onedrive` (nullable) — un lien par
+    couple projet↔chapitre, pas de nouvelle table (`suivi_chapitres` a
+    déjà exactement cette granularité).
+  - Supprimés : `app/Http/Controllers/LivrablesController.php`,
+    `app/Http/Controllers/PreuveController.php`, les routes
+    `projet.livrables.save`/`.single`, `preuves.upload`, `preuves.destroy`.
+    Le JS de preuves-par-livrable dans `edit-projet.blade.php` et
+    `details-projet.blade.php` (upload/viewer/print par livrable) a été
+    retiré ; le viewer/modal partagé (`viewDocument`/`closePreuveViewer`/
+    `preuveViewerModal`) reste, il sert toujours aux "Fichiers
+    d'intervention du projet" (`ProjetPreuveController`).
+  - **Tables `livrables_smi`/`projet_livrables`/`livrable_preuves`
+    conservées en base sans suppression** (décision explicite — pas de
+    perte de données si un projet réel avait des livrables/preuves
+    saisis avant ce changement) mais plus aucun code applicatif ne les
+    lit ni ne les écrit.
+  - **`avancement_percent` change de source** : avant, calculé à 100%
+    depuis le ratio de livrables Terminé/Total (`ProjetProgressService`
+    lisait `projet_livrables`) — pour chaque projet ET pour le "Av. %"
+    par chapitre (`edit-projet.blade.php` l'affichait en readonly/auto).
+    Maintenant : "Av. %" par chapitre redevient un champ saisi
+    manuellement partout (comme il l'était déjà à la création dans
+    `nouveau-projet.blade.php` — seul `edit-projet.blade.php` l'avait
+    rendu readonly) et `avancement_percent` du projet =
+    **moyenne des Av.% de tous ses chapitres**
+    (`ProjetProgressService::recalculerAvancement()`, lit
+    `suivi_chapitres.avancement_percent`). Recalculé après tout
+    create/update de chapitres, à la fois dans
+    `NouveauProjetController::store` (nouveau, n'appelait auparavant
+    jamais ce service) et `EditController::update`.
+  - **Connu et non traité** : `tableau-de-bord.blade.php` (KPI global de
+    livrables `$livPct`/`$livStats`) et `Api\ProjetController::update`/
+    `destroy` (code mort, non routé — voir Architecture générale)
+    interrogent encore `projet_livrables` directement. Comme plus aucune
+    ligne n'y est créée depuis ce changement, ce KPI du dashboard PMO va
+    rester figé sur les anciennes données (ou à 0 pour un projet créé
+    après le 2026-07-24) — à corriger si quelqu'un remarque ce chiffre
+    incohérent sur le dashboard.

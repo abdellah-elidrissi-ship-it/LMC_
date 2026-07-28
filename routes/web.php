@@ -9,8 +9,6 @@ use App\Http\Controllers\ConsultantController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\GanttController;
-use App\Http\Controllers\LivrablesController;
-use App\Http\Controllers\PreuveController;
 use App\Http\Controllers\ProjetPreuveController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\VerifyEmailController;
@@ -120,24 +118,6 @@ Route::middleware(['auth', 'approuve'])->group(function () {
         Route::delete('/admin/calendrier/taches/{id}',      [CalendrierAdminController::class, 'destroy'])->name('admin.calendrier.tache.destroy');
         Route::delete('/admin/calendrier/{consultantId}/vider', [CalendrierAdminController::class, 'viderCalendrier'])->name('admin.calendrier.vider');
     });
-
-    // Livrables SMI
-    Route::post('/projet/{id}/livrables', [LivrablesController::class, 'save'])
-        ->name('projet.livrables.save')
-        ->middleware('permission:modifier_projets');
-
-    // Sauvegarde AJAX d'un seul livrable (depuis details — dropdown change)
-    Route::post('/projet/{id}/livrables/single', [LivrablesController::class, 'saveSingle'])
-        ->name('projet.livrables.single')
-        ->middleware('permission:modifier_projets');
-
-    // Preuves des livrables
-    Route::post('/preuves/upload', [PreuveController::class, 'upload'])
-        ->name('preuves.upload')
-        ->middleware('permission:gerer_preuves');
-    Route::delete('/preuves/{id}', [PreuveController::class, 'destroy'])
-        ->name('preuves.destroy')
-        ->middleware('permission:gerer_preuves');
 
     // Preuves projet
     Route::post('/preuves-projet/upload', [ProjetPreuveController::class, 'upload'])

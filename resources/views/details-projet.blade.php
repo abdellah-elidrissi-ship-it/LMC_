@@ -215,6 +215,15 @@
         .livrables-toggle:hover { background: var(--accent); border-color: var(--accent); color: white; }
         .livrables-count { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.25rem; }
 
+        .onedrive-icon { width: 16px; height: 10px; flex-shrink: 0; display: block; }
+        .onedrive-link-btn {
+            display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none;
+            font-size: 0.72rem; font-weight: 600; color: var(--accent);
+            background: var(--surface-hover); border: 1px solid var(--border);
+            padding: 0.3rem 0.7rem; border-radius: var(--radius-sm); transition: all 0.2s;
+        }
+        .onedrive-link-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
+
         .livrables-inline-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; background: var(--surface); border-radius: var(--radius-sm); overflow: hidden; }
         .livrables-inline-table thead th { background: var(--surface-hover); color: var(--text-muted); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.5rem 0.6rem; border: 1px solid var(--border); }
         .livrables-inline-table td { padding: 0.45rem 0.6rem; border: 1px solid var(--border); color: var(--text-secondary); }
@@ -583,24 +592,6 @@ $statusClass = match($projet->statut) {
 
 $ganttCount = DB::table('gantt_taches')->where('projet_id', $id)->count();
 
-$livrableRows = DB::select("
-    SELECT ls.id, ls.chapitre_code, ls.clause, ls.libelle, ls.phase_smi, ls.ordre,
-           COALESCE(pl.statut, 'Non commencé') as statut
-    FROM livrables_smi ls
-    LEFT JOIN projet_livrables pl ON pl.livrable_id = ls.id AND pl.projet_id = ?
-    ORDER BY ls.ordre ASC
-", [$id]);
-
-$preuvesParLivrable = [];
-$preuveRows = DB::table('livrable_preuves')
-    ->where('projet_id', $id)
-    ->orderBy('created_at', 'desc')
-    ->get();
-foreach ($preuveRows as $pr) {
-    $pr->url = $pr->fichier_path;
-    $preuvesParLivrable[$pr->livrable_id][] = $pr;
-}
-
 $fichiersIntervention = DB::table('projet_preuves')
     ->where('projet_id', $id)
     ->orderBy('created_at', 'desc')
@@ -609,35 +600,6 @@ $fichiersIntervention = DB::table('projet_preuves')
 foreach ($fichiersIntervention as $pr) {
     $pr->url = $pr->fichier_path;
 }
-
-$livrablesByChap = [];
-$totalLivrablesGlobal = 0;
-$terminesLivrablesGlobal = 0;
-
-foreach ($livrableRows as $lrow) {
-    $chap = $lrow->chapitre_code;
-    if (!isset($livrablesByChap[$chap])) {
-        $livrablesByChap[$chap] = ['items' => [], 'total' => 0, 'termines' => 0];
-    }
-    $livrablesByChap[$chap]['items'][] = $lrow;
-    $livrablesByChap[$chap]['total']++;
-    $totalLivrablesGlobal++;
-    if ($lrow->statut === 'Terminé') {
-        $livrablesByChap[$chap]['termines']++;
-        $terminesLivrablesGlobal++;
-    }
-}
-
-$avancementParChapitre = [];
-foreach ($livrablesByChap as $chapCode => $chapData) {
-    $avancementParChapitre[$chapCode] = $chapData['total'] > 0
-        ? round(($chapData['termines'] / $chapData['total']) * 100)
-        : 0;
-}
-
-$avancementGlobalLivrables = $totalLivrablesGlobal > 0 ? round(($terminesLivrablesGlobal / $totalLivrablesGlobal) * 100) : 0;
-
-$chapCodeById = DB::table('chapitres_smis')->pluck('code_chapitre', 'id')->toArray();
 
 $chapsColl = collect($chapitres);
 $joursChapitres = $chapsColl->sum('jours_intervention');
@@ -814,14 +776,11 @@ $user = auth()->user();
         </div>
         <div class="mt-3">
             <div class="d-flex justify-content-between mb-1">
-                <span style="font-size:0.8rem; color:var(--text-secondary);">Avancement global (livrables)</span>
-                <span style="font-weight:600; color:var(--text-primary);">{{ $avancementGlobalLivrables }}%</span>
+                <span style="font-size:0.8rem; color:var(--text-secondary);">Avancement global (moyenne des chapitres)</span>
+                <span style="font-weight:600; color:var(--text-primary);">{{ $projet->avancement_percent }}%</span>
             </div>
             <div class="progress-container">
-                <div class="progress-fill" style="width: {{ $avancementGlobalLivrables }}%;"></div>
-            </div>
-            <div style="font-size:0.7rem; color:var(--text-muted); text-align:right; margin-top:0.3rem;">
-                {{ $terminesLivrablesGlobal }}/{{ $totalLivrablesGlobal }} livrables terminés
+                <div class="progress-fill" style="width: {{ $projet->avancement_percent }}%;"></div>
             </div>
         </div>
     </div>
@@ -902,7 +861,7 @@ $user = auth()->user();
                     <tr>
                         <th class="print-col"></th>
                         <th>Chapitre</th>
-                        <th>Livrables</th>
+                        <th>OneDrive</th>
                         <th class="text-center">Avancement</th>
                         <th>Phase</th>
                         <th class="text-center">J. intervention</th>
@@ -918,14 +877,6 @@ $user = auth()->user();
                             'Démarré'   => 'phase-started',
                             default     => 'phase-not-started'
                         };
-                        $chapCode    = $chapCodeById[$chap->chapitre_id] ?? $chap->code_chapitre ?? null;
-                        $chapLiv     = $chapCode && isset($livrablesByChap[$chapCode]) ? $livrablesByChap[$chapCode] : null;
-                        $livTotal    = $chapLiv['total'] ?? 0;
-                        $livDone     = $chapLiv['termines'] ?? 0;
-                        $livPct      = $livTotal > 0 ? round(($livDone / $livTotal) * 100) : 0;
-                        $avancementReel = $chapCode && isset($avancementParChapitre[$chapCode]) ? $avancementParChapitre[$chapCode] : $chap->avancement_percent;
-                        $collapseId  = 'liv-chap-' . $chap->chapitre_id;
-                        $chapLivrables = $chapLiv['items'] ?? [];
                     @endphp
                     <tr>
                         <td class="print-col">
@@ -933,15 +884,11 @@ $user = auth()->user();
                                 "code"         => $chap->code_chapitre,
                                 "titre"        => $chap->titre_chapitre,
                                 "phase"        => $chap->phase,
-                                "avancement"   => $avancementReel,
+                                "avancement"   => $chap->avancement_percent,
                                 "jours"        => $chap->jours_intervention,
                                 "observations" => $chap->observations,
                                 "exigences"    => $chap->exigences_cles,
-                                "livrables"    => array_map(fn($l) => [
-                                    "clause"  => $l->clause,
-                                    "libelle" => $l->libelle,
-                                    "statut"  => $l->statut
-                                ], $chapLivrables),
+                                "lien_onedrive" => $chap->lien_onedrive,
                                 "projet_nom"    => $projet->nom_client,
                                 "chef_nom"      => $projet->chef_nom,
                                 "projet_statut" => $projet->statut
@@ -953,84 +900,26 @@ $user = auth()->user();
                             <strong style="color:var(--accent);">{{ $chap->code_chapitre }}</strong>
                             <span style="color:var(--text-muted); margin-left:0.5rem; font-size:0.75rem;">{{ $chap->titre_chapitre }}</span>
                         </td>
-                        <td style="min-width:180px;">
-                            @if($livTotal > 0)
-                                <button class="livrables-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#{{ $collapseId }}">
-                                    <i class="bi bi-list-ul me-1"></i> Voir livrables
-                                </button>
-                                <div class="livrables-count">{{ $livDone }}/{{ $livTotal }} complétés ({{ $livPct }}%)</div>
+                        <td style="min-width:150px;">
+                            @if(!empty($chap->lien_onedrive))
+                                <a class="onedrive-link-btn" href="{{ $chap->lien_onedrive }}" target="_blank" rel="noopener">
+                                    <svg class="onedrive-icon" viewBox="0 0 36 22" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.2 4.6c-3.3 0-6.1 2.3-6.9 5.4-2.9.4-5.1 2.9-5.1 5.9 0 3.3 2.7 6 6 6h15.3c3.1 0 5.5-2.5 5.5-5.5 0-2.7-1.9-4.9-4.4-5.4C23.5 7 20.3 4.6 16.7 4.6c-.9 0-1.7.1-2.5.4z" fill="#0A5DB2"/>
+                                        <path d="M14.6 7.4c-2.5 0-4.6 1.7-5.3 4-2.2.3-3.9 2.2-3.9 4.5 0 2.5 2 4.5 4.5 4.5h12.4c2.5 0 4.6-2 4.6-4.6 0-2.2-1.5-4-3.6-4.5-.6-2.9-3.1-5-6.2-5-.9 0-1.7.2-2.5.6z" fill="#28A8EA"/>
+                                    </svg>
+                                    Ouvrir le dossier
+                                </a>
                             @else
-                                <span style="color:var(--text-muted);">Aucun livrable</span>
+                                <span style="color:var(--text-muted);">—</span>
                             @endif
                         </td>
                         <td class="text-center">
-                            <strong style="color:var(--accent);">{{ $avancementReel }}%</strong>
-                            @if($avancementReel != $chap->avancement_percent)
-                                <div style="font-size:0.6rem; color:var(--text-muted);">(basé sur livrables)</div>
-                            @endif
+                            <strong style="color:var(--accent);">{{ $chap->avancement_percent }}%</strong>
                         </td>
                         <td><span class="phase-badge {{ $phaseClass }}">{{ $chap->phase }}</span></td>
                         <td class="text-center">{{ $chap->jours_intervention }}</td>
                         <td style="color:var(--text-muted); max-width:200px;">{{ Str::limit($chap->observations ?? '—', 35) }}</td>
                     </tr>
-
-                    @if($livTotal > 0)
-                    <tr class="collapse" id="{{ $collapseId }}">
-                        <td colspan="7" style="background:var(--surface-hover); padding:1rem;">
-                            <table class="livrables-inline-table">
-                                <thead>
-                                    <tr>
-                                        <th>Clause</th>
-                                        <th>Libellé</th>
-                                        <th>Statut</th>
-                                        <th style="text-align:center;">Preuves</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($chapLiv['items'] as $liv)
-                                    @php
-                                        $statusClass = match($liv->statut) {
-                                            'Terminé'   => 'completed',
-                                            'En cours'  => 'in-progress',
-                                            default     => 'pending'
-                                        };
-                                        $livPreuves  = $preuvesParLivrable[$liv->id] ?? [];
-                                        $preuveCount = count($livPreuves);
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $liv->clause ?: '—' }}</td>
-                                        <td>{{ $liv->libelle }}</td>
-                                        <td><span class="livrable-status {{ $statusClass }}">{{ $liv->statut }}</span></td>
-                                        <td style="text-align:center; vertical-align:middle;">
-                                            <div style="display:flex; align-items:center; justify-content:center; gap:0.5rem;">
-                                                <button class="btn-preuve-voir"
-                                                        onclick="showPreuves({{ $liv->id }}, '{{ addslashes($liv->libelle) }}')"
-                                                        title="Voir les preuves">
-                                                    <i class="bi bi-eye-fill"></i>
-                                                </button>
-                                                <span class="preuve-count-badge {{ $preuveCount == 0 ? 'zero' : '' }}">{{ $preuveCount }}</span>
-                                            </div>
-                                            <div id="preuves-{{ $liv->id }}" style="display:none;">
-                                                @foreach($livPreuves as $pr)
-                                                <div class="preuve-data"
-                                                     data-id="{{ $pr->id }}"
-                                                     data-label="{{ $pr->label }}"
-                                                     data-nom="{{ $pr->fichier_nom }}"
-                                                     data-mime="{{ $pr->mime_type }}"
-                                                     data-url="{{ $pr->url }}"
-                                                     data-taille="{{ $pr->taille_kb }}"
-                                                     data-date="{{ \Carbon\Carbon::parse($pr->created_at)->format('d/m/Y H:i') }}">
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    @endif
                     @endforeach
                 </tbody>
             </table>
@@ -1326,175 +1215,6 @@ function downloadFile(url, filename) {
     document.body.removeChild(a);
 }
 
-// ===== PREUVES =====
-function showPreuves(livId, libelle) {
-    const preuvesDiv = document.getElementById('preuves-' + livId);
-    if (!preuvesDiv) return;
-
-    const preuveItems = preuvesDiv.querySelectorAll('.preuve-data');
-    if (preuveItems.length === 0) {
-        alert('Aucune preuve pour ce livrable');
-        return;
-    }
-
-    let html = '<div class="preuve-list">';
-    preuveItems.forEach(item => {
-        const label  = item.dataset.label || item.dataset.nom;
-        const nom    = item.dataset.nom;
-        const mime   = item.dataset.mime;
-        const url    = item.dataset.url;
-        const taille = item.dataset.taille;
-        const date   = item.dataset.date;
-
-        const isImage = mime && mime.startsWith('image/');
-        const isPdf   = mime === 'application/pdf';
-        const icon    = isPdf   ? 'bi-file-earmark-pdf-fill' :
-                        isImage ? 'bi-file-earmark-image-fill' :
-                                  'bi-file-earmark-fill';
-
-        const safeUrl   = url.replace(/'/g, "\\'");
-        const safeMime  = (mime || '').replace(/'/g, "\\'");
-        const safeLabel = (label || nom).replace(/'/g, "\\'");
-        const safeNom   = (nom || '').replace(/'/g, "\\'");
-
-        html += `
-    <div class="preuve-item" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
-        <div onclick="viewPreuve('${safeUrl}', '${safeMime}', '${safeLabel}', '${safeNom}')"
-             style="display:flex; align-items:center; gap:0.75rem; flex:1; cursor:pointer;">
-            ${isImage
-                ? `<img src="${url}" class="preuve-thumb">`
-                : `<div class="preuve-thumb-icon"><i class="bi ${icon}"></i></div>`
-            }
-            <div class="preuve-info">
-                <h6>${label || nom}</h6>
-                <p>${taille} Ko • ${date}</p>
-            </div>
-        </div>
-
-        <button type="button"
-            class="intervention-btn"
-            onclick="event.stopPropagation(); printLivrablePreuve('${safeUrl}', '${safeMime}', '${safeLabel}')"
-            title="Imprimer">
-            <i class="bi bi-printer-fill"></i>
-        </button>
-    </div>
-`;
-    });
-    html += '</div>';
-
-    document.getElementById('preuveViewerTitle').textContent = `Preuves - ${libelle}`;
-    document.getElementById('preuveViewerBody').innerHTML = html;
-    document.getElementById('preuveViewerModal').classList.add('active');
-}
-
-function printLivrablePreuve(url, mime, title) {
-    const isImage = mime && mime.startsWith('image/');
-    const isPdf = mime === 'application/pdf';
-
-    if (isImage) {
-        const iframe = document.createElement('iframe');
-        iframe.style.position = 'fixed';
-        iframe.style.right = '0';
-        iframe.style.bottom = '0';
-        iframe.style.width = '0';
-        iframe.style.height = '0';
-        iframe.style.border = '0';
-
-        document.body.appendChild(iframe);
-
-        const doc = iframe.contentWindow.document;
-        doc.open();
-        doc.write(`
-            <html>
-            <head>
-                <title>Impression - ${title}</title>
-                <style>
-                    body {
-                        margin: 0;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        min-height: 100vh;
-                        background: white;
-                    }
-                    img {
-                        max-width: 100%;
-                        max-height: 95vh;
-                    }
-                </style>
-            </head>
-            <body>
-                <img src="${url}" onload="window.print()">
-            </body>
-            </html>
-        `);
-        doc.close();
-
-        setTimeout(() => {
-            iframe.contentWindow.print();
-        }, 500);
-
-    } else if (isPdf) {
-        const viewerUrl = '/view-file?url=' + encodeURIComponent(url);
-
-        const iframe = document.createElement('iframe');
-        iframe.style.position = 'fixed';
-        iframe.style.width = '0';
-        iframe.style.height = '0';
-        iframe.style.border = '0';
-        iframe.src = viewerUrl;
-
-        document.body.appendChild(iframe);
-
-        iframe.onload = function () {
-            setTimeout(() => {
-                iframe.contentWindow.print();
-            }, 600);
-        };
-
-    } else {
-        downloadFile(url, title);
-    }
-}
-
-function viewPreuve(url, mime, title, filename) {
-    const body    = document.getElementById('preuveViewerBody');
-    const isImage = mime && mime.startsWith('image/');
-    const isPdf   = mime === 'application/pdf';
-    const dlName  = filename || title;
-
-    if (isImage) {
-        body.innerHTML = `
-            <img src="${url}" alt="${title}">
-            <div style="text-align:center; margin-top:1rem;">
-                <button onclick="downloadFile('${url}', '${dlName}')" class="btn-download">
-                    <i class="bi bi-download"></i> Télécharger
-                </button>
-            </div>`;
-    } else if (isPdf) {
-        const viewerUrl = '/view-file?url=' + encodeURIComponent(url);
-        body.innerHTML = `
-            <iframe src="${viewerUrl}" class="pdf-embed"></iframe>
-            <div style="text-align:center; margin-top:1rem;">
-                <button onclick="downloadFile('${url}', '${dlName}')" class="btn-download">
-                    <i class="bi bi-download"></i> Télécharger
-                </button>
-            </div>`;
-    } else {
-        body.innerHTML = `
-            <div class="file-preview">
-                <i class="bi bi-file-earmark" style="font-size:4rem; color:var(--text-muted);"></i>
-                <p style="margin:1rem 0;">${title}</p>
-                <p style="font-size:0.8rem; color:var(--text-muted);">Aperçu non disponible</p>
-                <button onclick="downloadFile('${url}', '${dlName}')" class="btn-download">
-                    <i class="bi bi-download"></i> Télécharger
-                </button>
-            </div>`;
-    }
-
-    document.getElementById('preuveViewerTitle').textContent = title;
-}
-
 function viewDocument(url, mime, title, filename = null) {
     const body    = document.getElementById('preuveViewerBody');
     const isImage = mime && mime.startsWith('image/');
@@ -1546,22 +1266,11 @@ function showPrintDocument(chapData) {
     const today     = new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric' });
 
     let livrablesHtml = '';
-    if (chapData.livrables && chapData.livrables.length > 0) {
+    if (chapData.lien_onedrive) {
         livrablesHtml = `
             <div class="print-section">
-                <div class="print-section-title">Livrables du chapitre</div>
-                <table class="print-table">
-                    <thead><tr><th>Clause</th><th>Livrable</th><th>Statut</th></tr></thead>
-                    <tbody>
-                        ${chapData.livrables.map(l => `
-                            <tr>
-                                <td>${l.clause || '—'}</td>
-                                <td>${l.libelle}</td>
-                                <td>${l.statut}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
+                <div class="print-section-title">Dossier OneDrive</div>
+                <p>${chapData.lien_onedrive}</p>
             </div>`;
     }
 

@@ -7,23 +7,17 @@ use Illuminate\Support\Facades\DB;
 class ProjetProgressService
 {
     /**
-     * Recalcule avancement_percent à partir du ratio de livrables Terminé,
+     * Recalcule avancement_percent à partir de la moyenne des Av.% saisis
+     * manuellement par chapitre (suivi_chapitres.avancement_percent),
      * et le persiste. Retourne le pourcentage calculé.
      */
     public static function recalculerAvancement(int $projetId): int
     {
-        $totalLivrables = DB::table('projet_livrables')
+        $moyenne = DB::table('suivi_chapitres')
             ->where('projet_id', $projetId)
-            ->count();
+            ->avg('avancement_percent');
 
-        $livrablesTermines = DB::table('projet_livrables')
-            ->where('projet_id', $projetId)
-            ->where('statut', 'Terminé')
-            ->count();
-
-        $avancement = $totalLivrables > 0
-            ? round(($livrablesTermines / $totalLivrables) * 100)
-            : 0;
+        $avancement = $moyenne !== null ? (int) round($moyenne) : 0;
 
         DB::table('projets')
             ->where('id', $projetId)
